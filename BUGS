@@ -4,11 +4,9 @@ Known Bugs in AXIS
 * ctrl-k doesn't work in MDI tab
 
 Bugs in EMC that limit functionality in AXIS
-* Can't step first line of program
+* Can't step to first line of program
+* Pressing "step" (t) twice quickly may run instead of stepping
 
 Bugs in segmentqueue that affect AXIS
-* Pressing "step" twice in a row continues
-* Pressing the "s" key (resume) while running leaves buttons in an inconsistent
-  state
-
-
+* Pressing "step" (t) twice runs instead of stepping (every time)
+* Pressing "s" key (resume) while running leaves interpreter in the wrong state
