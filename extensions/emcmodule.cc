@@ -117,7 +117,7 @@ static PyObject *Ini_find(pyIniFile *self, PyObject *args) {
     return PyString_FromString(const_cast<char*>(out));
 }
 
-static int Ini_dealloc(pyIniFile *self) {
+static void Ini_dealloc(pyIniFile *self) {
     self->i.close();
     PyObject_Del(self);
 }
