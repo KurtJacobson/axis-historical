@@ -1,5 +1,5 @@
 //    This is a component of rs274py, a set of rs274 tools for Python
-//    Copyright 2004 Jeff Epler <jepler@unpythonic.net> and 
+//    Copyright 2004, 2005 Jeff Epler <jepler@unpythonic.net> and 
 //    Chris Radek <chris@timeguy.com>
 //
 //    This program is free software; you can redistribute it and/or modify
