@@ -1,16 +1,7 @@
-NEEDED for 1.0
-* don't let GUI go directly from spindle CCW to CW (grey out button?)
-* all keystrokes
-* set relative coordinate offsets (right-click on axis in xemc)
-* limit override 
-* pick better Z-buffer extents using machine limits from inifile
-
-Known Bugs
-* jog buttons don't work if you tab to them and use the space bar
-* (feature?) f-key actions can be done from MDI tab
-* ctrl-k doesn't work in MDI tab
 
 Wishlist items
+* limit override 
+* pick better Z-buffer extents using machine limits from inifile
 * messages when paused (or about to pause) should offer the opportunity to
   unpause in the dialog
 * make step button work from program beginning (if possible?)
@@ -31,10 +22,10 @@ Missing dialogs/subwindows from xemc:
 * coordinate systems
 * calibration, logging, variables, diagnostics
 
-Missing keys (XEmc)
-0..9    Feed override
+Missing keys from xemc:
+0..9    Feed override       1..5 select axes in AXIS
 Alt-T   edit tool
-Alt-XYZ set coordinate offset (plus Alt-A)
+Alt-XYZ set coordinate offset (plus Alt-A?)
 L       override limits     Don't add until onscreen indicator available
 Alt-P / Alt-S Logging
 

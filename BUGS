@@ -1,0 +1,14 @@
+Known Bugs in AXIS
+* jog buttons don't work if you tab to them and use the space bar
+* (feature?) f-key actions can be done from MDI tab
+* ctrl-k doesn't work in MDI tab
+
+Bugs in EMC that limit functionality in AXIS
+* Can't step first line of program
+
+Bugs in segmentqueue that affect AXIS
+* Pressing "step" twice in a row continues
+* Pressing the "s" key (resume) while running leaves buttons in an inconsistent
+  state
+
+
