@@ -1190,7 +1190,7 @@ bind .keys <Key-Return> { wm withdraw .keys }
 text .keys.text \
 	-background [systembuttonface] \
 	-font {Helvetica -12} \
-	-height 20 \
+	-height 22 \
 	-relief flat \
 	-tabs {100 300 400} \
 	-width 88
