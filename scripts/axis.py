@@ -559,22 +559,28 @@ def ensure_mode(m):
     return True
 
 def open_file_guts(f):
-    ensure_mode(emc.MODE_AUTO)
-    f = os.path.abspath(f)
-    c.reset_interpreter()
-    c.program_open(f)
-    t.configure(state="normal")
-    t.delete("0.0", "end")
-    for i, l in enumerate(open(f)):
-        l = l.expandtabs().replace("\r", "")
-        t.insert("end", "%6d: " % (i+1), "lineno", l)
-    code = parse_lines(f)
-    interp = rs274.Interpreter(GLCanon)
-    interp.execute(prologue_code)
-    o.g = g = interp.execute(code)
-    t.configure(state="disabled")
-    make_main_list(g)
-    make_selection_list(g)
+    root_window.tk.call("blt::busy", "hold", ".")
+    root_window.update()
+    try:
+        ensure_mode(emc.MODE_AUTO)
+        f = os.path.abspath(f)
+        c.reset_interpreter()
+        c.program_open(f)
+        t.configure(state="normal")
+        t.delete("0.0", "end")
+        for i, l in enumerate(open(f)):
+            root_window.update()
+            l = l.expandtabs().replace("\r", "")
+            t.insert("end", "%6d: " % (i+1), "lineno", l)
+        code = parse_lines(f)
+        interp = rs274.Interpreter(GLCanon)
+        interp.execute(prologue_code)
+        o.g = g = interp.execute(code)
+        t.configure(state="disabled")
+        make_main_list(g)
+        make_selection_list(g)
+    finally:
+        root_window.tk.call("blt::busy", "release", ".")
 
 def set_feedrate(*args):
     try:
