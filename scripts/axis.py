@@ -477,10 +477,19 @@ class LivePlotter:
                 root_window.tk.call("nf_dialog", ".error",
                                     "AXIS error", text, "error",0,"OK")
             else: # TEXT, DISPLAY
-                # XXX messages when paused should offer the opportunity to 
-                # unpause in the dialog
-                root_window.tk.call("nf_dialog", ".error",
-                                    "AXIS error", text, "info",0,"OK")
+                # This gives time for the "interpreter is paused" state to
+                # reach us.  Typically a message is followed by a pause
+                # command, as for a manual tool change.
+                for i in range(4):
+                    self.stat.poll()
+                if self.stat.interp_state == emc.INTERP_PAUSED:
+                    options = 1, "Close", "Continue"
+                else:
+                    options = 0, "OK",
+                result = root_window.tk.call("nf_dialog", ".error",
+                                    "AXIS error", text, "info",*options)
+                if result == 1:
+                    commands.task_resume()
         self.after = self.win.after(20, self.update)
 
         if program_start_line_last == -1 or \
@@ -606,6 +615,7 @@ def open_file_guts(f):
 
         f = os.path.abspath(f)
         o.g = canon = GLCanon(widgets.text)
+        canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         result = gcode.parse(f, canon)
         print "parse result", result
         if result >= rs274.RS274NGC_MIN_ERROR:
