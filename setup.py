@@ -39,7 +39,7 @@ emcsourcedir  = os.environ.get("EMCSOURCEDIR", "/usr/src")
 emcplat       = os.environ.get("PLAT", "linux_2_4_20")
 emcinstprefix = os.environ.get("EMCINSTPREFIX", "/usr/local/emc")
 
-togl = Extension("_togl", ["thirdparty/_toglmodule.c"], **get_togl_flags())
+togl = Extension("_togl", ["extensions/_toglmodule.c"], **get_togl_flags())
 
 emc = Extension("emc", ["extensions/emcmodule.cc"],
     define_macros=[('DEFAULT_NMLFILE', '"%s/emc/emc.nml"' % emcsourcedir)],
