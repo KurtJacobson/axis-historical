@@ -25,6 +25,9 @@ __version__ = string.split('$Revision$')[1]
 __date__ = string.join(string.split('$Date$')[1:3], ' ')
 __author__ = 'Jeff Epler <jepler@unpythonic.net>'
 
+
+# This works around a bug in some BLT installations by exporting symbols
+# from _tkinter.so's copy of libtcl and libtk to libblt
 from Tkinter import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -104,7 +107,7 @@ class MyOpengl(Opengl):
             glInitNames()
             glPushName(0)
 
-            self.g.draw()
+            glCallList(select_program)
 
             try:
                 buffer = list(glRenderMode(GL_RENDER))
@@ -363,7 +366,7 @@ def select_next(event):
     o.tkRedraw()
 
 
-program = highlight = None
+select_program = program = highlight = None
 
 def make_cone():
     global cone_program
@@ -381,15 +384,20 @@ def make_cone():
     glDisable(GL_LIGHTING)
     glEndList()
 
+def make_selection_list(g):
+    global select_program
+    if select_program is None: select_program = glGenLists(1)
+    glNewList(select_program, GL_COMPILE)
+    g.draw(1)
+    glEndList()
+
 def make_main_list(g):
     global program
     if program is None: program = glGenLists(1)
     glNewList(program, GL_COMPILE)
     glDisable(GL_LIGHTING)
     glMatrixMode(GL_MODELVIEW)
-
-    g.draw()
-
+    g.draw(0)
     glEndList()
 
 import array
@@ -539,6 +547,7 @@ def main():
     interp.execute(prologue_code)
     g = interp.execute(code)
     make_main_list(g)
+    make_selection_list(g)
     t.configure(state="disabled")
 
     make_cone()
