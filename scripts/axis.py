@@ -537,10 +537,21 @@ class LivePlotter:
         self.win.live_plot_size = 0
         o.redraw_soon()
 
+def running(do_poll=True):
+    if do_poll: s.poll()
+    return s.task_mode == emc.MODE_AUTO and s.interp_state != emc.INTERP_IDLE
+
+def manual_ok(do_poll=True):
+    if do_poll: s.poll()
+    if s.task_state != emc.STATE_ON: return False
+    return s.interp_state == emc.INTERP_IDLE
+
 def ensure_mode(m):
     s.poll()
-    if s.task_mode == emc.MODE_AUTO and s.interp_state!=emc.INTERP_IDLE: return
-    if s.task_mode != m: c.mode(m)
+    if s.task_mode == m: return True
+    if running(do_poll=False): return False
+    c.mode(m)
+    return True
 
 def open_file_guts(f):
     ensure_mode(emc.MODE_AUTO)
@@ -620,6 +631,7 @@ widgets = nf.Widgets(root_window,
 )
 
 def activate_axis(i):
+    if not manual_ok(): return
     if i >= axiscount: return
     axis = getattr(widgets, "axis_%s" % "xyzabc"[i])
     axis.focus()
@@ -740,9 +752,10 @@ class TclCommands(nf.TclCommands):
         if s.task_state == emc.STATE_ESTOP_RESET:
             c.state(emc.STATE_ON)
         else:
-            c.state(emc.STATE_ESTOP_RESET)
+            c.state(emc.STATE_OFF)
 
     def open_file(*event):
+        if running(): return
         f = root_window.tk.call("tk_getOpenFile", "-initialdir", ".",
             "-defaultextension", ".ngc",
             "-filetypes", "{{rs274ngc files} {.ngc}} {{All files} *}")
@@ -752,6 +765,7 @@ class TclCommands(nf.TclCommands):
         open_file_guts(f)
 
     def reload_file(*event):
+        if running(): return
         s.poll()
         o.set_highlight_line(None)
         open_file_guts(s.file)
@@ -799,47 +813,62 @@ class TclCommands(nf.TclCommands):
     def clear_live_plot(*ignored):
         live_plotter.clear()
 
+    # The next three don't have 'manual_ok' because that's done in jog_on /
+    # jog_off
     def jog_plus(event=None):
         jog_on(vars.current_axis.get(), 1)
     def jog_minus(event=None):
         jog_on(vars.current_axis.get(), -1)
     def jog_stop(event=None):
         jog_off(vars.current_axis.get())
+
     def home_axis(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.home("xyzabc".index(vars.current_axis.get()))
     def brake(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.brake(vars.brake.get())
     def flood(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.flood(vars.flood.get())
     def mist(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.mist(vars.mist.get())
     def spindle(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.spindle(vars.spindledir.get())
     def spindle_increase(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.spindle(emc.SPINDLE_INCREASE)
     def spindle_decrease(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.spindle(emc.SPINDLE_DECREASE)
     def spindle_constant(event=None):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.spindle(emc.SPINDLE_CONSTANT)
     def set_first_line(lineno):
+        if not manual_ok(): return
         set_first_line(lineno)
 
     def mist_toggle(*args):
+        if not manual_ok(): return
         s.poll()
         c.mist(not s.mist)
     def flood_toggle(*args):
+        if not manual_ok(): return
         s.poll()
         c.flood(not s.flood)
 
     def spindle_forward_toggle(*args):
+        if not manual_ok(): return
         s.poll()
         if s.spindle_direction == 0:
             c.spindle(1)
@@ -847,6 +876,7 @@ class TclCommands(nf.TclCommands):
             c.spindle(0)
 
     def spindle_backward_toggle(*args):
+        if not manual_ok(): return
         s.poll()
         if s.spindle_direction == 0:
             c.spindle(-1)
@@ -855,8 +885,10 @@ class TclCommands(nf.TclCommands):
         return "break" # bound to F10, don't activate menu
 
     def brake_on(*args):
+        if not manual_ok(): return
         c.brake(1)
     def brake_off(*args):
+        if not manual_ok(): return
         c.brake(0)
 commands = TclCommands(root_window)
 root_window.bind("<Escape>", commands.task_stop)
@@ -893,12 +925,15 @@ root_window.bind("<Home>", commands.home_axis)
 widgets.mdi_history.bind("<Configure>", "%W see {end - 1 lines}")
 
 def jog(*args):
+    if not manual_ok(): return
     ensure_mode(emc.MODE_MANUAL)
     c.jog(*args)
 
+# XXX correct for machines with more than six axes
 jog_after = [None] * 6
 jog_cont  = [False] * 6
 def jog_on(a, b):
+    if not manual_ok(): return
     if isinstance(a, (str, unicode)):
         a = "xyzabc".index(a)
     if jog_after[a]:
@@ -921,6 +956,7 @@ def jog_off(a):
     jog_after[a] = root_window.after_idle(lambda: jog_off_actual(a))
 
 def jog_off_actual(a):
+    if not manual_ok(): return
     activate_axis(a)
     jog_after[a] = None
     if jog_cont[a]:
