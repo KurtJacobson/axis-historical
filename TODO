@@ -7,10 +7,9 @@ NEEDED for 1.0
 * install axis in emc's plat bin directory
 * all keystrokes
 * toggle machine/commanded, relative/absolute coordinates
-* show that stuff in status bar
-* set relative coordinate offset (right-click on axis in xemc)
+* show coordinate stuff in status bar
+* set relative coordinate offsets (right-click on axis in xemc)
 * limit override 
-* axis speed (jogging)
 
 Wishlist items
 * make step button work from program beginning (if possible?)
@@ -20,6 +19,7 @@ Wishlist items
 * context menu on code area, options "copy", "start at this line"
 * make the view follow the cone around
 * remove use of GLUT for fonts.  remove import of GLUT.
+* axis speed (jogging) XXX feed rate already affects jog speed inside emc, is this actually necessary?
 
 Missing dialogs/subwindows from xemc:
 * tool list editor (at least display?)
