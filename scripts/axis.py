@@ -594,6 +594,7 @@ def ensure_mode(m):
 
 
 def open_file_guts(f):
+    set_first_line(0)
     old_focus = root_window.tk.call("focus", "-lastfor", ".")
     root_window.tk.call("blt::busy", "hold", ".")
     # blt::busy adds a fake window that keeps mouse events from reaching
@@ -943,9 +944,9 @@ class TclCommands(nf.TclCommands):
     # The next three don't have 'manual_ok' because that's done in jog_on /
     # jog_off
     def jog_plus(event=None):
-        jog_on(vars.current_axis.get(), 1)
+        jog_on(vars.current_axis.get(), jog_speed)
     def jog_minus(event=None):
-        jog_on(vars.current_axis.get(), -1)
+        jog_on(vars.current_axis.get(), -jog_speed)
     def jog_stop(event=None):
         jog_off(vars.current_axis.get())
 
@@ -1132,6 +1133,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
     max_feed_override = float(inifile.find("DISPLAY", "MAX_FEED_OVERRIDE"))
     max_feed_override = int(max_feed_override * 100 + 0.5)
+    jog_speed = float(inifile.find("TRAJ", "DEFAULT_VELOCITY"))
     widgets.feedoverride.configure(to=max_feed_override)
     emc.nmlfile = inifile.find("EMC", "NML_FILE")
     del sys.argv[1:3]
@@ -1178,7 +1180,13 @@ activate_axis(0, True)
 
 make_cone()
 
-fontbase = int(o.tk.call(o._w, "loadbitmapfont", "9x15"))
+# Find font for coordinate readout and get metrics
+coordinate_font = o.option_get("font", "Font") or "9x15"
+coordinate_font_metrics = o.tk.call("font", "metrics", coordinate_font).split()
+linespace_index = coordinate_font_metrics.index("-linespace")
+coordinate_linespace = int(coordinate_font_metrics[linespace_index+1])
+
+fontbase = int(o.tk.call(o._w, "loadbitmapfont", coordinate_font))
 live_plotter = LivePlotter(o)
 def redraw(self):
     if self.select_event:
@@ -1237,7 +1245,8 @@ def redraw(self):
         positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
 
     maxlen = max([len(p) for p in positions])
-
+    pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
+                    for p in positions])
     glDepthFunc(GL_ALWAYS)
     glDepthMask(GL_FALSE)
     glEnable(GL_BLEND)
@@ -1245,14 +1254,14 @@ def redraw(self):
     glColor4f(0,0,0,.7)
     glBegin(GL_QUADS)
     glVertex3f(0, ypos, 1)
-    glVertex3f(9*maxlen+30, ypos, 1)
-    glVertex3f(9*maxlen+30, ypos - 20 - 15*axiscount, 1)
-    glVertex3f(0, ypos - 20 - 15*axiscount, 1)
+    glVertex3f(pixel_width+30, ypos, 1)
+    glVertex3f(pixel_width+30, ypos - 20 - coordinate_linespace*axiscount, 1)
+    glVertex3f(0, ypos - 20 - coordinate_linespace*axiscount, 1)
     glEnd()
     glDisable(GL_BLEND)
 
     maxlen = 0
-    ypos -= 20
+    ypos -= coordinate_linespace+5
     i=0
     glColor(1,1,1)
     for string in positions:
@@ -1263,7 +1272,7 @@ def redraw(self):
         glRasterPos(23, ypos)
         for char in string:
             glCallList(fontbase + ord(char))
-        ypos -= 15
+        ypos -= coordinate_linespace
         i = i + 1
     glDepthFunc(GL_LESS)
     glDepthMask(GL_TRUE)
