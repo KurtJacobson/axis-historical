@@ -1189,7 +1189,7 @@ message .about.message \
 
 This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.
 
-Visit the AXIS web site at  http://axis.unpy.net
+Visit the AXIS web site at http://axis.unpy.net
 } \
 	-width 300
 
