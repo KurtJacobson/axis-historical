@@ -27,7 +27,7 @@
 #include "interpl.hh"
 
 #ifndef PyMODINIT_FUNC
-#define PyMODINIT_FUNC void
+#define PyMODINIT_FUNC extern "C" void
 #endif
 
 /* This definition of offsetof avoids the g++ warning
