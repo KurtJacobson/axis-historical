@@ -343,8 +343,12 @@ double GET_EXTERNAL_POSITION_B() { return 0.0; }
 double GET_EXTERNAL_POSITION_C() { return 0.0; }
 void INIT_CANON() {}
 void GET_EXTERNAL_PARAMETER_FILE_NAME(char *name, int max_size) {
-    // XXX wrong
-    strcpy(name, "/usr/src/emc/sim.var");
+    PyObject *result = PyObject_GetAttrString(callback, "parameter_file");
+    if(!result) { name[0] = 0; return; }
+    char *s = PyString_AsString(result);    
+    if(!s) { name[0] = 0; return; }
+    memset(name, 0, max_size);
+    strncpy(name, s, max_size - 1);
 }
 int GET_EXTERNAL_LENGTH_UNIT_TYPE() { return CANON_UNITS_INCHES; }
 CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int tool) {
