@@ -275,6 +275,13 @@ setup_menu_accel .menu.help 0 {_About AXIS}
 
 setup_menu_accel .menu.help 1 {_Key Reference}
 
+.menu.help add command \
+	-command {wm transient .mouse .;wm deiconify .mouse} \
+	-label {Navigation} \
+	-underline 0
+
+setup_menu_accel .menu.help 2 {_Navigation}
+
 # Configure widget .menu.help
 wm title .menu.help help
 wm resiz .menu.help 1 1
@@ -1216,6 +1223,58 @@ wm resiz .about 0 0
 wm minsize .about 1 1
 wm maxsize .about 1905 1170
 wm protocol .about WM_DELETE_WINDOW {wm wi .about}
+
+toplevel .mouse
+bind .mouse <Key-Return> { wm withdraw .mouse }
+
+text .mouse.text \
+	-background [systembuttonface] \
+	-font {Helvetica -12} \
+	-height 5 \
+	-relief flat \
+	-tabs {100} \
+	-width 30
+.mouse.text insert end {  Left Button	Pan view
+Middle Button	Rotate view
+ Right Button	Zoom view
+}
+
+.mouse.text tag configure key \
+	-borderwidth {} \
+	-elide {} \
+	-font fixed
+
+.mouse.text tag add key 1.0 1.13 2.0 2.13 3.0 3.13
+
+.mouse.text tag configure desc \
+	-borderwidth {} \
+	-elide {}
+
+.mouse.text tag add desc 1.14 1.22 2.14 2.25 3.14 3.23
+
+button .mouse.ok \
+	-command {wm wi .mouse} \
+	-default active \
+	-padx 0 \
+	-pady 0 \
+	-width 10
+setup_widget_accel .mouse.ok OK
+
+# Pack widget .mouse.text
+pack .mouse.text \
+	-expand 1 \
+	-fill y
+
+# Pack widget .mouse.ok
+pack .mouse.ok
+
+# Configure widget .mouse
+wm title .mouse {AXIS key reference}
+wm resiz .mouse 1 1
+wm minsize .mouse 1 1
+wm maxsize .mouse 1905 1170
+wm protocol .mouse WM_DELETE_WINDOW {wm wi .mouse}
+
 
 toplevel .keys
 bind .keys <Key-Return> { wm withdraw .keys }

@@ -183,6 +183,7 @@ wm maxsize . [winfo screenwidth .] [winfo screenheight .]
 
 wm withdraw .about
 wm withdraw .keys
+wm withdraw .mouse
 
 DynamicHelp::add .tabs.manual.spindlef.ccw -text {Turn spindle counterclockwise [F9]}
 DynamicHelp::add .tabs.manual.spindlef.cw -text {Turn spindle clockwise [F10]}
