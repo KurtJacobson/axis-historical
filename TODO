@@ -1,9 +1,5 @@
-NEEDED for public beta release
-* update README file
-
 NEEDED for 1.0
 * feed override limit of 1.2 (120%) should come from inifile?
-* re-word emergency stop, machine power menu items, tooltips, key reference
 * don't let GUI go directly from spindle CCW to CW (grey out button?)
 * use real rs274 parser instead of homebrew (get rid of separate validate)
 * install axis in emc's plat bin directory
@@ -12,6 +8,10 @@ NEEDED for 1.0
 * show coordinate stuff in status bar
 * set relative coordinate offsets (right-click on axis in xemc)
 * limit override 
+* pick better Z-buffer extents using machine limits from inifile
+
+Known Bugs
+* jog buttons don't work if you tab to them and use the space bar
 
 Wishlist items
 * make step button work from program beginning (if possible?)
@@ -21,6 +21,7 @@ Wishlist items
 * context menu on code area, options "copy", "start at this line"
 * make the view follow the cone around
 * axis speed (jogging) XXX feed rate already affects jog speed inside emc, is this actually necessary?
+* more built-in help
 
 Missing dialogs/subwindows from xemc:
 * tool list editor (at least display?)
