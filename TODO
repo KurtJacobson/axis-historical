@@ -1,0 +1,26 @@
+NEEDED for public beta release
+* hook up feed override
+* fill out menu bar
+* make step button work from program beginning (if possible?)
+* make status bar reflect reality (only machine state so far) 
+* make active g-codes work (or ungrid it for now)
+* A NAME
+* set first line
+
+NEEDED for 1.0
+* use real rs274 parser instead of homebrew
+* integrate build of Togl
+* install pyemc in emc's plat bin directory
+
+Wishlist items
+* improve opengl navigation
+* Way to show diameter of drills, width of cuts (poor-man's CSG preview)
+* Way to turn off lines already plotted in live preview
+* context menu on code area, options "copy", "start at this line"
+* make the view follow the cone around
+* remove use of GLUT for fonts.  remove import of GLUT.
+
+Missing dialogs/subwindows from xemc:
+* tool list editor (at least display?)
+* axis editor
+* informational dialogs like xemc

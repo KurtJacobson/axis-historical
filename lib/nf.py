@@ -1,0 +1,106 @@
+import os
+import Tkinter
+
+__all__ = 'makecommand makevar makebool makewidget start'.split()
+
+class _Emptyclass: pass
+
+def newinstance(klass):
+    value = _Emptyclass()
+    value.__class__ = klass
+    return value
+
+class TclCommands:
+    def __init__(self, master):
+        for k, v in self.__class__.__dict__.items():
+            if k.startswith("__") and k.endswith("__"): continue
+            makecommand(master, v.__name__, v)
+            setattr(self, k, v)
+
+class Variables:
+    def __init__(self, master, *variables):
+        for (name, klass) in variables:
+            setattr(self, name, makevar(master, name, klass))
+
+class Widgets:
+    def __init__(self, master, *widgets):
+        for (name, klass, path) in widgets:
+            setattr(self, name, makewidget(master, klass, path))
+
+def makecommand(master, name, func, subst=None, needcleanup=0):
+    f = Tkinter.CallWrapper(func, subst, master).__call__
+    master.tk.createcommand(name, f)
+    if needcleanup:
+        if master._tclCommands is None:
+            master._tclCommands = []
+        master._tclCommands.append(name)
+    return name
+
+def makevar(master, name, klass, *default):
+    self = newinstance(klass)
+    self._master = master
+    self._tk = master.tk
+    self._name = name
+    if default:
+        self.set(default[0])
+    else:
+        self.set(self._default)
+    return self
+
+def makebool(master, name, *default):
+    return makevar(master, name, Tkinter.BooleanVar, *default)
+def makeint(master, name, *default):
+    return makevar(master, name, Tkinter.IntVar, *default)
+def makefloat(master, name, *default):
+    return makevar(master, name, Tkinter.DoubleVar, *default)
+def makestring(master, name, *default):
+    return makevar(master, name, Tkinter.StringVar, *default)
+
+def makewidget(master, klass, path):
+    path = str(path)
+    self = newinstance(klass)
+    if path[0] == '.':
+        if master._w == '.': self._name = path[1:]
+        else: self._name = path[len(master._w)+1:]
+        self._w = path
+    else:
+        self._name = path
+        if master._w == '.': self._w = '.' + path
+        else: self._w = master._w + '.' + path
+    self.children = {}
+    master.children[self._name] = self
+    self.master = master
+    self.tk = master.tk
+    return self
+ 
+def find_prefix(f):
+    s = os.path.join(f, "share")
+    if os.path.exists(s): return f
+    if f == "/" or f == '': raise RuntimeError, "Share directory not found"
+    return find_prefix(os.path.dirname(f))
+
+PREFIX = find_prefix(__file__)
+SHARE = os.path.join(PREFIX, "share", "axis")
+tcl_libdir = os.path.join(SHARE, "tcl")
+
+def source_lib_tcl(r, f):
+    r.tk.call("source", os.path.join(tcl_libdir, f))
+
+def start(r):
+    r.tk.call("set", "imagedir", os.path.join(SHARE, "images"))
+    r.tk.call("lappend", "auto_path", os.path.join(tcl_libdir, "bwidget"))
+    r.tk.call("lappend", "auto_path", "/usr/lib")
+
+    source_lib_tcl(r, "accel.tcl")
+    source_lib_tcl(r, "support.tcl")
+    source_lib_tcl(r, "combobox.tcl")
+    source_lib_tcl(r, "dialog.tcl")
+
+    source_lib_tcl(r, "sb.tcl"); r.tk.call("sb::install")
+    source_lib_tcl(r, "rb.tcl"); r.tk.call("rb::install")
+    source_lib_tcl(r, "cb.tcl"); r.tk.call("cb::install")
+
+    r.tk.call("package", "require", "BLT")
+    r.tk.call("package", "require", "BWidget")
+    r.tk.call("namespace", "import", "blt::tabset")
+    r.tk.call("namespace", "import", "combobox::combobox")

@@ -1,0 +1,7 @@
+include MANIFEST COPYING README
+recursive-include extensions *.c *.cc
+global-include *.py *.g
+recursive-include images *.xbm *.gif
+recursive-include tcl *.tcl *.nf
+recursive-include thirdparty *.tcl *.gif *.xbm *.rc LICENSE.txt
+global-exclude CVS

@@ -1,0 +1,71 @@
+README file for AXIS, a front-end for emc 
+Copyright 2004 Jeff Epler <jepler@unpythonic.net>
+
+AXIS's home page is
+    http://axis.unpythonic.net/
+The current CVS tree can be viewed at
+    http://unpy.net/cgi-bin/viewcvs.cgi/axis/
+though it may be integrated into the emc2 tree at some future time.
+
+axis is a front-end for emc with file display and live preview.  Use it by
+making a symlink from your plat/XXX/bin directory to /usr/bin/axis, and
+specifing "DISPLAY = axis" in your inifile.
+
+gplot is a rs274ngc viewer and live plot viewer.
+Usage: "gplot [-d nmlfile] ngcfile"
+Navigation:
+    Left click              Select g-code under pointer
+    Left drag               Translate
+    Middle drag             Free rotate
+    Right drag              Zoom
+    Mouse wheel             Zoom
+
+    C                       Clear live plot list
+    X, Y, Z                 Orthographic projection looking along axis
+    Shift-Z                 Orthographic projection looking along Z, "landscape"
+    Space                   Default perspective projection
+    O                       Toggle perspective/orthographic
+
+    Up/Down                 Select next/previous line of g-code
+
+Python 2.2 or newer with Tkinter, BLT, and PyOpenGL are required.  Hardware
+accelerated OpenGL is nice, but not required.  BLT is not required for gplot,
+and only Python 2.2 is required for mdi.
+
+Installation on RedHat or Fedora should be something like:
+    $ env PLAT=xxx EMCSOURCEDIR=yyy python setup.py bdist_rpm
+    $ sudo rpm -ivh dist/axis*.i386.rpm
+    $ gplot examples/joy.out
+and installation on non-RPM systems should use "python setup.py install"
+EMCSOURCEDIR is the directory where the "emc" and "rcslib" reside, and PLAT is
+the same as you use to build the non-realtime portion of emc.
+
+If you want to view a live plot but don't want to use axis, first start emc,
+then start gplot.  It should guess the path to emc.nml, but if not, give the
+path as the -d argument
+    $ gplot -d /usr/src/emc/emc.nml file.ngc
+The path of the machine will be plotted in red over file.ngc, with a cone
+showing the controlled point.
+
+
+
+
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+Portions of the program, located in the "thirdparty" subdirectory of the
+source distribution, are covered by other licenses.  Please see those
+files for details.
