@@ -359,7 +359,6 @@ CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int tool) {
     if(result == NULL ||
         !PyArg_ParseTuple(result, "idd", &t.id, &t.length, &t.diameter))
             interp_error ++;
-    printf("t.id=%d t.diameter=%f [%d]\n", t.id, t.diameter, interp_error);
     Py_XDECREF(result);
     return t;
 }
