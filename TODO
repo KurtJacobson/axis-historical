@@ -1,8 +1,10 @@
 NEEDED for public beta release
-* most important keystrokes
-* check that it fits on 800x600 BDI, or shorten text widget
+* update README file
 
 NEEDED for 1.0
+* feed override limit of 1.2 (120%) should come from inifile?
+* re-word emergency stop, machine power menu items, tooltips, key reference
+* don't let GUI go directly from spindle CCW to CW (grey out button?)
 * use real rs274 parser instead of homebrew (get rid of separate validate)
 * install axis in emc's plat bin directory
 * all keystrokes
