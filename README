@@ -1,5 +1,5 @@
 README file for AXIS, a front-end for EMC 
-Copyright (C) 2004 Jeff Epler <jepler@unpythonic.net> and
+Copyright (C) 2004, 2005 Jeff Epler <jepler@unpythonic.net> and
     Chris Radek <chris@timeguy.com>
 
 AXIS's home page is
@@ -9,44 +9,11 @@ The current CVS tree can be viewed at
 though it may be integrated into the EMC2 tree at some future time.
 
 AXIS is a front-end for EMC with file preview and live plot.  Use it by
-specifing "DISPLAY = axis" in your inifile and making a symlink from your
-plat/nonrealtime/bin directory to /usr/bin/axis:
-
-    cd /usr/local/emc/plat/nonrealtime/bin; ln -s /usr/bin/axis .
-                           ^^^^^^^^^^^ (adjust for your PLAT if necessary)
-       ^^^^^^^^^^^^^^ (adjust for your toplevel EMC directory if necessary)
-
-
-gplot is an rs274ngc (G-Code) viewer and live plot viewer.
-Usage: "gplot [-d nmlfile] ngcfile"
-Navigation:
-    Left click             Select g-code under pointer
-    Left drag              Translate
-    Middle drag            Free rotate
-    Right drag             Zoom
-    Mouse wheel            Zoom
-
-    C                      Clear live plot list
-    X, Y, Z                Orthographic projection looking along axis
-    Shift-Z                Orthographic projection looking along Z, "landscape"
-    Space                  Default perspective projection
-    O                      Toggle perspective/orthographic
-
-    Up/Down                Select next/previous line of g-code
-
+specifing "DISPLAY = axis" in your inifile.
 
 The AXIS user interface is intended to be mostly self-documented by its
 use of familiar controls and plain English tooltips and menus.  A few less
 evident features are documented with basic built-in help screens.
-
-gplot and the AXIS preview window currently use an internal G-Code parser 
-which has some limitations.  Known problems are with coordinate system offsets
-and some arcs specified with the R word.  In version 1.0, AXIS will use the
-EMC parser and will therefore be feature- and bug-compatible with EMC.
-This will also greatly reduce the time taken to load programs.
-
-Note these current limitations only affect the preview display and NOT the
-operation of EMC or your machine.
 
 Python 2.2 or newer with Tkinter, BLT, and PyOpenGL are required.  Hardware
 accelerated OpenGL is nice, but not required.  BLT is not required for gplot,
@@ -55,26 +22,16 @@ and only Python 2.2 is required for mdi.
 
 For installation on an RPM-based system such as Red Hat or Fedora, cd to
 the axis source directory and run something like:
-    $ env PLAT=xxx EMCSOURCEDIR=yyy python setup.py bdist_rpm
+    $ env PLAT=xxx EMCROOT=yyy python setup.py bdist_rpm
     $ sudo rpm -ivh dist/axis*.i386.rpm
 
 For installation without using RPM or on non-RPM systems, cd to the axis
 source directory and run:
-    $ env PLAT=xxx EMCSOURCEDIR=yyy python setup.py install
+    $ env PLAT=xxx EMCROOT=yyy python setup.py install
 
-In the above commands, EMCSOURCEDIR is the directory where the "emc" and
+In the above commands, EMCROOT is the directory where the "emc" and
 "rcslib" directories reside, and PLAT is the same as you use to build the
 non-realtime portion of EMC.
-
-If you want to view a live plot but don't want to use AXIS, first start emc,
-then start gplot.  It should guess the path to emc.nml, but if not, give the
-path as the -d argument
-    $ gplot -d /usr/src/emc/emc.nml file.ngc
-The path of the machine will be plotted in red over file.ngc, with a cone
-showing the controlled point.
-
-
-
 
 
 This program is free software; you can redistribute it and/or modify
