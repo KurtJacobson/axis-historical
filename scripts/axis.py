@@ -819,7 +819,6 @@ class TclCommands(nf.TclCommands):
 
     def task_stop(*event):
         c.abort()
-        c.abort()
 
     def send_mdi(*event):
         command = vars.mdi_command.get()
