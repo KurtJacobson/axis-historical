@@ -422,7 +422,7 @@ class LivePlotter:
 
     def start(self):
         if self.running.get(): return
-        if not os.path.exists(emc.emlfile):
+        if not os.path.exists(emc.nmlfile):
             return False
         try:
             self.stat = emc.stat()
@@ -479,7 +479,7 @@ def main():
     opts, args = getopt.getopt(sys.argv[1:], 'd:')
 
     for k, v in opts:
-        if k == '-d': emc.emlfile = v
+        if k == '-d': emc.nmlfile = v
 
     if not args:
         try:
@@ -488,7 +488,7 @@ def main():
         except emc.error: pass
         else:
             if f != '':
-                args = [os.path.join(os.path.dirname(emc.emlfile), f)]
+                args = [os.path.join(os.path.dirname(emc.nmlfile), f)]
     prologue_code = parse_lines('<prologue>', prologue)
     if args:
         root_window.wm_title("gplot %s - axis" % args[0])
