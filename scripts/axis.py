@@ -376,6 +376,11 @@ def select_next(event):
     o.set_highlight_line(i)
     o.tkRedraw()
 
+def scroll_up(event):
+    t.yview_scroll(-2, "units")
+
+def scroll_down(event):
+    t.yview_scroll(2, "units")
 
 select_program = program = highlight = None
 
@@ -1182,7 +1187,9 @@ if args:
     for i, l in enumerate(open(args[0])):
         l = l.expandtabs().replace("\r", "")
         t.insert("end", "%6d: " % (i+1), "lineno", l)
-t.bind("<Button>", select_line)
+t.bind("<Button-1>", select_line)
+t.bind("<Button-4>", scroll_up)
+t.bind("<Button-5>", scroll_down)
 t.configure(state="disabled")
 activate_axis(0, True)
 
