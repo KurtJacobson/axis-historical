@@ -25,15 +25,18 @@ from distutils import sysconfig
 from distutils.core import setup, Extension
 from build_scripts import *
 from togl_setup import get_togl_flags
+from emc_setup import *
 
 name="axis"
 version="1.0b2"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
-emcsourcedir  = os.environ.get("EMCSOURCEDIR", "/usr/src")
-emcplat       = os.environ.get("PLAT", "linux_2_4_22")
-emcinstprefix = os.environ.get("EMCINSTPREFIX", "/usr/local/emc")
+emcroot = find_emc_root()
+emcplat = find_emc_plat(emcroot)
+
+print "Building for EMC in", emcroot
+print "Non-realtime PLAT", emcplat
 
 togl = Extension("_togl", ["extensions/_toglmodule.c"], **get_togl_flags())
 
@@ -41,37 +44,37 @@ gcode = Extension("gcode", [
         "extensions/gcodemodule.cc"
     ],
     include_dirs=[
-        os.path.join(emcsourcedir, "emc", "plat", emcplat, "include",
+        os.path.join(emcroot, "emc", "plat", emcplat, "include",
              "rs274ngc_new"),
-        os.path.join(emcsourcedir, "emc", "plat", emcplat, "include"),
-        os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "include")
+        os.path.join(emcroot, "emc", "plat", emcplat, "include"),
+        os.path.join(emcroot, "rcslib", "plat", emcplat, "include")
     ],
     library_dirs = [
-        os.path.join(emcsourcedir, "emc", "plat", emcplat, "lib"),
-        os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "lib")
+        os.path.join(emcroot, "emc", "plat", emcplat, "lib"),
+        os.path.join(emcroot, "rcslib", "plat", emcplat, "lib")
     ],
     extra_link_args = [
         '-DNEW_INTERPRETER', 
         '-Wl,-rpath,%s' % 
-            os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "lib"),
-        os.path.join(emcsourcedir, "emc", "plat", emcplat, "lib", "rs274abc.o"),
+            os.path.join(emcroot, "rcslib", "plat", emcplat, "lib"),
+        os.path.join(emcroot, "emc", "plat", emcplat, "lib", "rs274abc.o"),
         '-lrcs', '-lm', '-lstdc++',
     ]
 )
 
 emc = Extension("emc", ["extensions/emcmodule.cc"],
-    define_macros=[('DEFAULT_NMLFILE', '"%s/emc/emc.nml"' % emcsourcedir)],
+    define_macros=[('DEFAULT_NMLFILE', '"%s/emc/emc.nml"' % emcroot)],
     include_dirs=[
-        os.path.join(emcsourcedir, "emc", "plat", emcplat, "include"),
-        os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "include")
+        os.path.join(emcroot, "emc", "plat", emcplat, "include"),
+        os.path.join(emcroot, "rcslib", "plat", emcplat, "include")
     ],
     library_dirs = [
-        os.path.join(emcsourcedir, "emc", "plat", emcplat, "lib"),
-        os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "lib")
+        os.path.join(emcroot, "emc", "plat", emcplat, "lib"),
+        os.path.join(emcroot, "rcslib", "plat", emcplat, "lib")
     ],
     libraries = ["emc", "rcs", "m", "stdc++"],
     extra_link_args = ['-Wl,-rpath,%s' % 
-        os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "lib")]
+        os.path.join(emcroot, "rcslib", "plat", emcplat, "lib")]
 )
 
 glfixes = Extension("_glfixes", ["extensions/_glfixes.c"], libraries = ["GL"], 
