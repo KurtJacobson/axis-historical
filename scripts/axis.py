@@ -29,6 +29,20 @@ ldflags = sys.getdlopenflags(); sys.setdlopenflags(0x102)
 import _tkinter
 sys.setdlopenflags(ldflags)
 
+# Print Tk errors to stdout. python.org/sf/639266
+import Tkinter 
+OldTk = Tkinter.Tk
+class Tk(OldTk):
+    def __init__(self, *args, **kw):
+        OldTk.__init__(self, *args, **kw)
+        self.tk.createcommand('tkerror', self.tkerror)
+
+    def tkerror(self, arg):
+        print "TCL error in asynchronous code:"
+        print self.tk.call("set", "errorInfo")
+
+Tkinter.Tk = Tk
+
 from Tkinter import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -819,7 +833,6 @@ widgets.mdi_history.bind("<Configure>", "%W see {end - 1 lines}")
 
 def jog(*args):
     ensure_mode(emc.MODE_MANUAL)
-    print "jog", args
     c.jog(*args)
 
 jog_after = [None] * 6
