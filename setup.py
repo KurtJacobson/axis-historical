@@ -20,13 +20,9 @@ import sys, os
 sys.path.insert(0, "lib")
 sys.path.insert(0, "setup")
 
-import warnings
-warnings.filterwarnings('ignore', message="the regex module is deprecated; please use the re module", category=DeprecationWarning)
-import yapps
 from glob import glob
 from distutils import sysconfig
 from distutils.core import setup, Extension
-from build_py import build_py
 from build_scripts import *
 from togl_setup import get_togl_flags
 
@@ -36,10 +32,32 @@ DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
 emcsourcedir  = os.environ.get("EMCSOURCEDIR", "/usr/src")
-emcplat       = os.environ.get("PLAT", "linux_2_4_20")
+emcplat       = os.environ.get("PLAT", "linux_2_4_22")
 emcinstprefix = os.environ.get("EMCINSTPREFIX", "/usr/local/emc")
 
 togl = Extension("_togl", ["extensions/_toglmodule.c"], **get_togl_flags())
+
+gcode = Extension("gcode", [
+        "extensions/gcodemodule.cc"
+    ],
+    include_dirs=[
+        os.path.join(emcsourcedir, "emc", "plat", emcplat, "include",
+             "rs274ngc_new"),
+        os.path.join(emcsourcedir, "emc", "plat", emcplat, "include"),
+        os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "include")
+    ],
+    library_dirs = [
+        os.path.join(emcsourcedir, "emc", "plat", emcplat, "lib"),
+        os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "lib")
+    ],
+    extra_link_args = [
+        '-DNEW_INTERPRETER', 
+        '-Wl,-rpath,%s' % 
+            os.path.join(emcsourcedir, "rcslib", "plat", emcplat, "lib"),
+        os.path.join(emcsourcedir, "emc", "plat", emcplat, "lib", "rs274abc.o"),
+        '-lrcs', '-lm', '-lstdc++',
+    ]
+)
 
 emc = Extension("emc", ["extensions/emcmodule.cc"],
     define_macros=[('DEFAULT_NMLFILE', '"%s/emc/emc.nml"' % emcsourcedir)],
@@ -67,7 +85,7 @@ setup(name=name, version=version,
     scripts={WINDOWED('gplot'): 'scripts/gplot.py',
              WINDOWED('axis'): 'scripts/axis.py',
              TERMINAL('mdi'): 'scripts/mdi.py'},
-    cmdclass = {'build_scripts': build_scripts, 'build_py': build_py},
+    cmdclass = {'build_scripts': build_scripts},
     data_files = [(os.path.join(SHAREDIR, "tcl"), glob("tcl/*.tcl")),
                   (os.path.join(SHAREDIR, "tcl"), glob("tcl/axis.nf")),
                   (os.path.join(SHAREDIR, "tcl"), glob("thirdparty/*.tcl")),
@@ -84,7 +102,7 @@ setup(name=name, version=version,
                   (DOCDIR, ["COPYING", "README",
                         "thirdparty/bwidget/LICENSE.txt",
                         "thirdparty/LICENSE-Togl"])],
-    ext_modules = [emc, glfixes, togl],
+    ext_modules = [emc, glfixes, togl, gcode],
     url="http://axis.unpythonic.net/",
     license="GPL",
 )

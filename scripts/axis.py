@@ -57,6 +57,7 @@ import rs274.options
 root_window = Tkinter.Tk()
 rs274.options.install(root_window)
 import nf; nf.start(root_window)
+import gcode
 
 try:
     nf.source_lib_tcl(root_window,"axis.nf")
@@ -68,7 +69,7 @@ program_start_line = 0
 program_start_line_last = -1
 
 from math import hypot, atan2, sin, cos, pi, sqrt
-from rs274 import execute_code, ArcsToSegmentsMixin, parse_lines
+from rs274 import ArcsToSegmentsMixin
 import _tkinter
 import emc
 
@@ -589,21 +590,21 @@ def open_file_guts(f):
     root_window.update()
     try:
         ensure_mode(emc.MODE_AUTO)
-        f = os.path.abspath(f)
         c.reset_interpreter()
         c.program_open(f)
+
+        f = os.path.abspath(f)
+        o.g = canon = GLCanon(widgets.text)
+        gcode.parse(f, canon)
         t.configure(state="normal")
         t.delete("0.0", "end")
         for i, l in enumerate(open(f)):
             l = l.expandtabs().replace("\r", "")
             t.insert("end", "%6d: " % (i+1), "lineno", l)
-        code = parse_lines(f)
-        interp = rs274.Interpreter(GLCanon)
-        interp.execute(prologue_code)
-        o.g = g = interp.execute(code)
         t.configure(state="disabled")
-        make_main_list(g)
-        make_selection_list(g)
+
+        make_main_list(canon)
+        make_selection_list(canon)
     finally:
         # Before unbusying, I update again, so that any keystroke events
         # that reached the program while it was busy are sent to the
@@ -1084,9 +1085,6 @@ for i in range(len(axisnames), 6):
 s = emc.stat(); s.poll()
 c = emc.command()
 e = emc.error_channel()
-
-prologue = ["g80 g17 g40 g20 g90 g94 g54 g49 g99 g64 m5 m9 m48 f60 s0\n"]
-prologue_code = parse_lines('<prologue>', prologue)
 
 o = MyOpengl(widgets.preview_frame, width=60, height=40, double=1, depth=1)
 o.last_line = 1
