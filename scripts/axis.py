@@ -637,6 +637,7 @@ vars = nf.Variables(root_window,
     ("feedrate", IntVar),
     ("tool", IntVar),
     ("active_codes", StringVar),
+    ("metric", IntVar),
 )
 vars.highlight_line.set(-1)
 vars.running_line.set(-1)
@@ -1165,7 +1166,11 @@ def redraw(self):
     glLoadIdentity()
     s.poll()
 
-    positions = ["%c:% 9.4f" % i for i in zip(axisnames, s.actual_position)]
+    if vars.metric.get():
+        positions = ["%c:% 9.2f" % i for i in 
+                zip(axisnames, map(lambda p: p*25.4, s.actual_position))]
+    else:
+        positions = ["%c:% 9.4f" % i for i in zip(axisnames, s.actual_position)]
 
     maxlen = max([len(p) for p in positions])
 

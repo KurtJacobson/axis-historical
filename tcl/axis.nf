@@ -137,13 +137,33 @@ setup_menu_accel .menu.edit 6 {_Perspective view}
 
 .menu.edit add separator
 
+.menu.edit add radiobutton \
+	-command redraw \
+	-label {Display Inches} \
+	-variable metric \
+	-value 0 \
+	-underline 8
+
+setup_menu_accel .menu.edit 8 {Display _Inches}
+
+.menu.edit add radiobutton \
+	-command redraw \
+	-label {Display MM} \
+	-variable metric \
+	-value 1 \
+	-underline 8
+
+setup_menu_accel .menu.edit 9 {Display _MM}
+
+.menu.edit add separator
+
 .menu.edit add checkbutton \
 	-command redraw \
 	-variable show_program \
 	-label {Show program} \
 	-underline 1
 
-setup_menu_accel .menu.edit 8 {S_how program}
+setup_menu_accel .menu.edit 11 {S_how program}
 
 .menu.edit add checkbutton \
 	-command redraw \
@@ -151,7 +171,7 @@ setup_menu_accel .menu.edit 8 {S_how program}
 	-label {Show live plot} \
 	-underline 3
 
-setup_menu_accel .menu.edit 9 {Sho_w live plot}
+setup_menu_accel .menu.edit 12 {Sho_w live plot}
 
 .menu.edit add checkbutton \
 	-command redraw \
@@ -159,7 +179,7 @@ setup_menu_accel .menu.edit 9 {Sho_w live plot}
 	-label {Show tool} \
 	-underline 10
 
-setup_menu_accel .menu.edit 10 {Show too_l}
+setup_menu_accel .menu.edit 13 {Show too_l}
 
 .menu.edit add command \
 	-accelerator Ctrl-K \
@@ -167,7 +187,7 @@ setup_menu_accel .menu.edit 10 {Show too_l}
 	-label {Clear live plot} \
 	-underline 1
 
-setup_menu_accel .menu.edit 11 {C_lear live plot}
+setup_menu_accel .menu.edit 14 {C_lear live plot}
 
 # Configure widget .menu.edit
 wm title .menu.edit edit
