@@ -2,14 +2,19 @@ import commands
 import _tkinter
 import os
 
+def removesuffix(s, suff):
+    i = s.find(suff)
+    if i == -1: return s
+    return s[:i]
+
 def add(l, c):
     if c in l: return
     l.append(c)
 
 def add_if_exists(l, c):
     c = os.path.abspath(c)
-    if c.startswith("/lib"): return
     if c in l: return
+    if c.startswith("/lib"): return
     if not os.path.exists(c): return
     l.append(c)
 
@@ -28,12 +33,12 @@ def get_togl_flags():
         add_if_exists(lib_dirs, os.path.join(m, ".."))
         if l.startswith("lib"): l = l[3:]
         if l.startswith("tcl"):
-            tcl_library = os.path.splitext(l)[0]
-            add_if_exists(include_dirs, os.path.join(m, "..", "..", "include", l))
+            tcl_library = removesuffix(l, ".so")
+            add_if_exists(include_dirs, os.path.join(m, "..", "..", "include", l[:6]))
             add_if_exists(include_dirs, os.path.join(m, "..", "..", "include"))
         if l.startswith("tk"):
-            tk_library = os.path.splitext(l)[0]
-            add_if_exists(include_dirs, os.path.join(m, "..", "..", "include", l))
+            tk_library = removesuffix(l, ".so")
+            add_if_exists(include_dirs, os.path.join(m, "..", "..", "include", l[:5]))
             add_if_exists(include_dirs, os.path.join(m, "..", "..", "include"))
 
     if not tcl_library: raise RuntimeError, "not able to find tcl library"
