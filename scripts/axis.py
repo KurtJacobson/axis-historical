@@ -559,16 +559,11 @@ class LivePlotter:
 
         mid = len(active_codes)/2
         a, b = active_codes[:mid], active_codes[mid:]
+        codes = " ".join(a) + "\n" + " ".join(b)
+        widgets.code_text.configure(state="normal")
         widgets.code_text.delete("0.0", "end")
-        for i in a:
-            if i != a[-1]: widgets.code_text.insert("end", " ")
-            widgets.code_text.insert("end", i, i)
-        widgets.code_text.insert("end", "\n")
-        for i in b:
-            widgets.code_text.insert("end", i, i)
-            if i != b[-1]: widgets.code_text.insert("end", " ")
-#        active_codes = " ".join(a) + "\n" + " ".join(b)
-#        vupdate(vars.active_codes, active_codes)
+        widgets.code_text.insert("end", codes)
+        widgets.code_text.configure(state="disabled")
 
     def clear(self):
         del self.data[:]
