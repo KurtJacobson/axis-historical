@@ -85,9 +85,6 @@ proc update_state {args} {
     state  {$interp_state == $INTERP_IDLE} .toolbar.file_open {.menu.file 0}
     state  {$interp_state == $INTERP_IDLE && $taskfile != ""} \
                 .toolbar.reload {.menu.file 1}
-    state  {$task_state == $STATE_ON && $interp_state == $INTERP_IDLE \
-            && $taskfile != ""} \
-                .toolbar.verify {.menu.program 0}
 
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_IDLE \
             && $taskfile != ""} \

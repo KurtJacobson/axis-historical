@@ -199,18 +199,11 @@ menu .menu.program \
 	-tearoff 0
 
 .menu.program add command \
-	-command program_verify \
-	-label {Verify program} \
-	-underline 0
-
-setup_menu_accel .menu.program 0 {_Verify program}
-
-.menu.program add command \
 	-command set_next_line \
 	-label {Set next line} \
 	-underline 4
 
-setup_menu_accel .menu.program 1 {Set _next line}
+setup_menu_accel .menu.program 0 {Set _next line}
 
 .menu.program add command \
 	-accelerator R \
@@ -218,7 +211,7 @@ setup_menu_accel .menu.program 1 {Set _next line}
 	-label {Run program} \
 	-underline 0
 
-setup_menu_accel .menu.program 2 {_Run program}
+setup_menu_accel .menu.program 1 {_Run program}
 
 .menu.program add command \
 	-accelerator T \
@@ -226,7 +219,7 @@ setup_menu_accel .menu.program 2 {_Run program}
 	-label Step \
 	-underline 0
 
-setup_menu_accel .menu.program 3 _Step
+setup_menu_accel .menu.program 2 _Step
 
 .menu.program add command \
 	-accelerator P \
@@ -234,7 +227,7 @@ setup_menu_accel .menu.program 3 _Step
 	-label Pause \
 	-underline 0
 
-setup_menu_accel .menu.program 4 _Pause
+setup_menu_accel .menu.program 3 _Pause
 
 .menu.program add command \
 	-accelerator S \
@@ -242,7 +235,7 @@ setup_menu_accel .menu.program 4 _Pause
 	-label Resume \
 	-underline 2
 
-setup_menu_accel .menu.program 5 Re_sume
+setup_menu_accel .menu.program 4 Re_sume
 
 .menu.program add command \
 	-accelerator ESC \
@@ -250,7 +243,7 @@ setup_menu_accel .menu.program 5 Re_sume
 	-label Stop \
 	-underline 1
 
-setup_menu_accel .menu.program 6 S_top
+setup_menu_accel .menu.program 5 S_top
 
 # Configure widget .menu.program
 wm title .menu.program program
@@ -362,14 +355,6 @@ Button .toolbar.reload \
 	-relief link \
 	-takefocus 0
 setup_widget_accel .toolbar.reload {}
-
-Button .toolbar.verify \
-	-command { program_verify } \
-	-helptext {Verify validity of file} \
-	-image [load_image tool_verify] \
-	-relief link \
-	-takefocus 0
-setup_widget_accel .toolbar.verify {}
 
 vrule .toolbar.rule4
 
@@ -494,10 +479,6 @@ pack .toolbar.file_open \
 
 # Pack widget .toolbar.reload
 pack .toolbar.reload \
-	-side left
-
-# Pack widget .toolbar.verify
-pack .toolbar.verify \
 	-side left
 
 # Pack widget .toolbar.rule4
