@@ -26,15 +26,18 @@ from distutils.core import setup, Extension
 from build_scripts import *
 from togl_setup import get_togl_flags
 from emc_setup import *
+import distutils.command.install
 
 name="axis"
 version="1.0b2"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
-emcroot = find_emc_root()
-emcplat = find_emc_plat(emcroot)
+emcroot = os.getenv("EMCROOT", find_emc_root())
+emcplat = os.getenv("PLAT", find_emc_plat(emcroot))
 
+distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
+        "%s/emc/plat/%s/bin" % (emcroot, emcplat)
 print "Building for EMC in", emcroot
 print "Non-realtime PLAT", emcplat
 

@@ -1,7 +1,6 @@
 NEEDED for 1.0
 * feed override limit of 1.2 (120%) should come from inifile?
 * don't let GUI go directly from spindle CCW to CW (grey out button?)
-* install axis in emc's plat bin directory
 * all keystrokes
 * toggle machine/commanded, relative/absolute coordinates
 * show coordinate stuff in status bar
