@@ -1028,7 +1028,7 @@ activate_axis(0)
 
 make_cone()
 
-fontbase = o.tk.call(o._w, "loadbitmapfont", "9x15")
+fontbase = int(o.tk.call(o._w, "loadbitmapfont", "9x15"))
 live_plotter = LivePlotter(o)
 def redraw(self):
     if self.select_event:
