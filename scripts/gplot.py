@@ -26,14 +26,11 @@ __date__ = string.join(string.split('$Date$')[1:3], ' ')
 __author__ = 'Jeff Epler <jepler@unpythonic.net>'
 
 
-# This works around a bug in some BLT installations by exporting symbols
-# from _tkinter.so's copy of libtcl and libtk to libblt
 from Tkinter import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import *
-from OpenGL.Tk import *
-from OpenGL.Tk import _default_root as root_window
+from rs274.OpenGLTk import *
+root_window = Tk()
 from _glfixes import glInterleavedArrays
 
 from math import hypot, atan2, sin, cos, pi, sqrt
@@ -42,10 +39,6 @@ from rs274.glcanon import GLCanon
 import rs274.options
 import _tkinter
 import emc
-
-GL_ALIASED_LINE_WIDTH_RANGE = 0x846E
-GL_SMOOTH_LINE_WIDTH_RANGE = 0x0B22
-GL_SMOOTH_LINE_WIDTH_GRANULARITY = 0x0B23
 
 if sys.version_info <= (2,3):
     def enumerate(sequence):
