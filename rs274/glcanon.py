@@ -17,6 +17,7 @@
 
 from rs274 import Translated, ArcsToSegmentsMixin
 from OpenGL.GL import *
+from math import sin, cos, pi
 
 class GLCanon(Translated, ArcsToSegmentsMixin):
     def __init__(self, text=None):
