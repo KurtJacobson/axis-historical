@@ -1093,10 +1093,14 @@ def go_manual(event=None):
     root_window.tk.call(".tabs", "select", 0)
     root_window.tk.call("focus", ".")
 root_window.bind("<Key-F3>", go_manual)
+root_window.tk.call(".tabs", "tab", "configure", "manual",
+                            "-command", "focus .")
 
 def go_mdi(event=None):
     root_window.tk.call(".tabs", "select", 1)
     root_window.tk.call("focus", ".tabs.mdi.command")
+root_window.tk.call(".tabs", "tab", "configure", "mdi",
+                            "-command", "focus .tabs.mdi.command")
 root_window.bind("<Key-F5>", go_mdi)
 
 init()
