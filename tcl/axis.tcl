@@ -183,11 +183,11 @@ wm withdraw .keys
 DynamicHelp::add .tabs.manual.spindlef.ccw -text {Turn spindle counterclockwise [F9]}
 DynamicHelp::add .tabs.manual.spindlef.cw -text {Turn spindle clockwise [F10]}
 DynamicHelp::add .tabs.manual.spindlef.stop -text {Stop spindle [F9/F10]}
-DynamicHelp::add .tabs.manual.spindlef.spindleplus -text {Turn spindle Faster}
-DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower}
+DynamicHelp::add .tabs.manual.spindlef.spindleplus -text {Turn spindle Faster [F12]}
+DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower [F11]}
 DynamicHelp::add .tabs.manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
 DynamicHelp::add .tabs.manual.flood -text {Turn flood on or off [F8]}
-DynamicHelp::add .tabs.manual.mist -text {Turn mist on or off [F9]}
+DynamicHelp::add .tabs.manual.mist -text {Turn mist on or off [F7]}
 DynamicHelp::add .tabs.manual.jogf.button -text {Send selected axis home [HOME]}
 DynamicHelp::add .tabs.manual.axes.axisx -text {Select axis [X]}
 DynamicHelp::add .tabs.manual.axes.axisy -text {Select axis [Y]}

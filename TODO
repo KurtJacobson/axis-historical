@@ -1,12 +1,9 @@
-BUGS
-State of "copy" and "set next line"
-
 NEEDED for public beta release
 * most important keystrokes
 * check that it fits on 800x600 BDI, or shorten text widget
 
 NEEDED for 1.0
-* use real rs274 parser instead of homebrew
+* use real rs274 parser instead of homebrew (get rid of separate validate)
 * install axis in emc's plat bin directory
 * all keystrokes
 * toggle machine/commanded, relative/absolute coordinates
@@ -21,7 +18,6 @@ Wishlist items
 * Way to turn off lines already plotted in live preview
 * context menu on code area, options "copy", "start at this line"
 * make the view follow the cone around
-* remove use of GLUT for fonts.  remove import of GLUT.
 * axis speed (jogging) XXX feed rate already affects jog speed inside emc, is this actually necessary?
 
 Missing dialogs/subwindows from xemc:
@@ -29,3 +25,13 @@ Missing dialogs/subwindows from xemc:
 * axis editor
 * coordinate systems
 * calibration, logging, variables, diagnostics
+
+Missing keys (XEmc)
+0..9    Feed override
+Alt-T   edit tool
+Alt-XYZ set coordinate offset (plus Alt-A)
+@ / #   set actual/commanded; set machine/relative
+V       validate            Will no longer need validate
+L       override limits     Don't add until onscreen indicator available
+, / .   jog speed           Won't include, since feed override affects jog speed
+Alt-P / Alt-S Logging

@@ -192,6 +192,7 @@ setup_menu_accel .menu.program 1 {Set _next line}
 setup_menu_accel .menu.program 2 {_Run program}
 
 .menu.program add command \
+	-accelerator T \
 	-command task_step \
 	-label Step \
 	-underline 0
@@ -346,7 +347,7 @@ setup_widget_accel .toolbar.program_run {}
 
 Button .toolbar.program_step \
 	-command task_step \
-	-helptext {Execute next line} \
+	-helptext {Execute next line [T]} \
 	-image [load_image tool_step] \
 	-relief link \
 	-takefocus 0
@@ -354,7 +355,7 @@ setup_widget_accel .toolbar.program_step {}
 
 Button .toolbar.program_pause \
 	-command task_pauseresume \
-	-helptext {Pause program execution} \
+	-helptext {Pause [P] / resume [S] execution} \
 	-image [load_image tool_pause] \
 	-relief link \
 	-takefocus 0
@@ -362,7 +363,7 @@ setup_widget_accel .toolbar.program_pause {}
 
 Button .toolbar.program_stop \
 	-command task_stop \
-	-helptext {Stop program execution} \
+	-helptext {Stop program execution [ESC]} \
 	-image [load_image tool_stop] \
 	-relief link \
 	-takefocus 0

@@ -646,8 +646,8 @@ widgets = nf.Widgets(root_window,
     ("spindle_cw", Radiobutton, ".tabs.manual.spindlef.cw"),
 )
 
-def activate_axis(i):
-    if not manual_ok(): return
+def activate_axis(i, force=0):
+    if not force and not manual_ok(): return
     if i >= axiscount: return
     axis = getattr(widgets, "axis_%s" % "xyzabc"[i])
     axis.focus()
@@ -910,6 +910,7 @@ class TclCommands(nf.TclCommands):
         c.brake(0)
 commands = TclCommands(root_window)
 root_window.bind("<Escape>", commands.task_stop)
+root_window.bind("t", commands.task_step)
 root_window.bind("o", commands.open_file)
 root_window.bind("s", commands.task_resume)
 root_window.bind("t", commands.task_step)
@@ -923,6 +924,8 @@ root_window.bind("<Key-F7>", commands.mist_toggle)
 root_window.bind("<Key-F8>", commands.flood_toggle)
 root_window.bind("<Key-F9>", commands.spindle_forward_toggle)
 root_window.bind("<Key-F10>", commands.spindle_backward_toggle)
+root_window.bind("<Key-F11>", commands.spindle_decrease)
+root_window.bind("<Key-F12>", commands.spindle_increase)
 root_window.bind("B", commands.brake_on)
 root_window.bind("b", commands.brake_off)
 root_window.bind("<Control-k>", commands.clear_live_plot)
@@ -990,6 +993,7 @@ def bind_axis(a, b, d):
 bind_axis("Left", "Right", 0)
 bind_axis("Down", "Up", 1)
 bind_axis("Next", "Prior", 2)
+bind_axis("bracketleft", "bracketright", 3)
 
 def set_tabs(e):
     t.configure(tabs="%d right" % (e.width - 2))
@@ -1043,7 +1047,7 @@ if args:
         t.insert("end", "%6d: " % (i+1), "lineno", l)
 t.bind("<Button>", select_line)
 t.configure(state="disabled")
-activate_axis(0)
+activate_axis(0, True)
 
 make_cone()
 
