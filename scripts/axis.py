@@ -107,6 +107,7 @@ class MyOpengl(Opengl):
         self.last_position = None
         self.last_homed = None
         self.g = None
+        self.set_eyepoint(5.)
 
     def select_prime(self, event):
         self.select_primed = event

@@ -400,7 +400,7 @@ Button .toolbar.view_z \
 	-command set_view_z \
 	-helptext {Top view} \
 	-image [load_image tool_axis_z] \
-	-relief link \
+	-relief sunken \
 	-takefocus 0
 setup_widget_accel .toolbar.view_z {}
 
