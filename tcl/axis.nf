@@ -137,8 +137,8 @@ setup_menu_accel .menu.edit 6 {_Perspective view}
 
 .menu.edit add separator
 
-
 .menu.edit add checkbutton \
+	-command redraw \
 	-variable show_program \
 	-label {Show program} \
 	-underline 1
@@ -146,11 +146,20 @@ setup_menu_accel .menu.edit 6 {_Perspective view}
 setup_menu_accel .menu.edit 8 {S_how program}
 
 .menu.edit add checkbutton \
+	-command redraw \
 	-variable show_live_plot \
 	-label {Show live plot} \
 	-underline 3
 
 setup_menu_accel .menu.edit 9 {Sho_w live plot}
+
+.menu.edit add checkbutton \
+	-command redraw \
+	-variable show_tool \
+	-label {Show tool} \
+	-underline 10
+
+setup_menu_accel .menu.edit 10 {Show too_l}
 
 .menu.edit add command \
 	-accelerator Ctrl-K \
@@ -158,7 +167,7 @@ setup_menu_accel .menu.edit 9 {Sho_w live plot}
 	-label {Clear live plot} \
 	-underline 1
 
-setup_menu_accel .menu.edit 10 {C_lear live plot}
+setup_menu_accel .menu.edit 11 {C_lear live plot}
 
 # Configure widget .menu.edit
 wm title .menu.edit edit

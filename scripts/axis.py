@@ -288,6 +288,11 @@ class MyOpengl(Opengl):
 
     def mouse_rotate_view(self, event):
         self.perspective = True
+        widgets.view_z.configure(relief="link")
+        widgets.view_z2.configure(relief="link")
+        widgets.view_x.configure(relief="link")
+        widgets.view_y.configure(relief="link")
+        widgets.view_p.configure(relief="link")
 
     def actual_tkRedraw(self, *dummy):
         self.after_id = None
@@ -615,6 +620,7 @@ vars = nf.Variables(root_window,
     ("highlight_line", IntVar),
     ("show_program", IntVar),
     ("show_live_plot", IntVar),
+    ("show_tool", IntVar),
     ("feedrate", IntVar),
     ("tool", IntVar),
     ("active_codes", StringVar),
@@ -623,6 +629,7 @@ vars.highlight_line.set(-1)
 vars.running_line.set(-1)
 vars.show_program.set(1)
 vars.show_live_plot.set(1)
+vars.show_tool.set(1)
 vars.feedrate.trace("w", set_feedrate)
 
 widgets = nf.Widgets(root_window, 
@@ -647,6 +654,12 @@ widgets = nf.Widgets(root_window,
     ("spindle_ccw", Radiobutton, ".tabs.manual.spindlef.ccw"),
     ("spindle_stop", Radiobutton, ".tabs.manual.spindlef.stop"),
     ("spindle_cw", Radiobutton, ".tabs.manual.spindlef.cw"),
+
+    ("view_z", Button, ".toolbar.view_z"),
+    ("view_z2", Button, ".toolbar.view_z2"),
+    ("view_x", Button, ".toolbar.view_x"),
+    ("view_y", Button, ".toolbar.view_y"),
+    ("view_p", Button, ".toolbar.view_p"),
 )
 
 def activate_axis(i, force=0):
@@ -661,14 +674,12 @@ def set_first_line(lineno):
     program_start_line = lineno
 
 def jogspeed_continuous():
-    print "jog_c"
     widgets.jogspeed.configure(editable=1)
     widgets.jogspeed.delete(0, "end")
     widgets.jogspeed.insert("end", "Continuous")
     widgets.jogspeed.configure(editable=0)
 
 def jogspeed_incremental():
-    print "jog_i"
     jogspeed = widgets.jogspeed.get()
     if jogspeed == "Continuous" or jogspeed == "0.0001":
         newjogspeed = 0.1
@@ -720,6 +731,11 @@ class TclCommands(nf.TclCommands):
         o.zoomout(event)
 
     def set_view_x(event=None):
+        widgets.view_z.configure(relief="link")
+        widgets.view_z2.configure(relief="link")
+        widgets.view_x.configure(relief="sunken")
+        widgets.view_y.configure(relief="link")
+        widgets.view_p.configure(relief="link")
         o.reset()
         glRotatef(-90, 0, 1, 0)
         glRotatef(-90, 1, 0, 0)
@@ -728,6 +744,11 @@ class TclCommands(nf.TclCommands):
         o.tkRedraw()
 
     def set_view_y(event=None):
+        widgets.view_z.configure(relief="link")
+        widgets.view_z2.configure(relief="link")
+        widgets.view_x.configure(relief="link")
+        widgets.view_y.configure(relief="sunken")
+        widgets.view_p.configure(relief="link")
         o.reset()
         glRotatef(-90, 1, 0, 0)
         o.perspective = False
@@ -735,12 +756,22 @@ class TclCommands(nf.TclCommands):
         o.tkRedraw()
         
     def set_view_z(event=None):
+        widgets.view_z.configure(relief="sunken")
+        widgets.view_z2.configure(relief="link")
+        widgets.view_x.configure(relief="link")
+        widgets.view_y.configure(relief="link")
+        widgets.view_p.configure(relief="link")
         o.reset()
         o.perspective = False
         o.set_eyepoint(5.)
         o.tkRedraw()
 
     def set_view_z2(event=None):
+        widgets.view_z.configure(relief="link")
+        widgets.view_z2.configure(relief="sunken")
+        widgets.view_x.configure(relief="link")
+        widgets.view_y.configure(relief="link")
+        widgets.view_p.configure(relief="link")
         o.reset()
         o.perspective = False
         glRotatef(-90, 0, 0, 1)
@@ -749,6 +780,11 @@ class TclCommands(nf.TclCommands):
 
 
     def set_view_p(event=None):
+        widgets.view_z.configure(relief="link")
+        widgets.view_z2.configure(relief="link")
+        widgets.view_x.configure(relief="link")
+        widgets.view_y.configure(relief="link")
+        widgets.view_p.configure(relief="sunken")
         o.reset()
         glRotatef(35, 1., 0., 0.)
         glRotatef(105, 0., 1., 0.)
@@ -829,6 +865,9 @@ class TclCommands(nf.TclCommands):
         widgets.mdi_history.insert("end", "%s\n" % command)
         widgets.mdi_history.configure(state="disabled")
         c.mdi(command)
+
+    def redraw(*ignored):
+        o.tkRedraw()
 
     def clear_live_plot(*ignored):
         live_plotter.clear()
@@ -1073,7 +1112,7 @@ def redraw(self):
         glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
         glLineWidth(1)
         glDepthFunc(GL_LESS);
-        if live_plotter.running.get() and live_plotter.data:
+        if live_plotter.running.get() and live_plotter.data and vars.show_tool.get():
             pos = live_plotter.data[-3:]
             glPushMatrix()
             glTranslatef(*pos)
