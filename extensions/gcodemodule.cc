@@ -390,7 +390,10 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
         if(result != RS274NGC_OK) break;
     }
     if(interp_error) return NULL;
-    return PyInt_FromLong(result);
+    PyObject *retval = PyTuple_New(2);
+    PyTuple_SetItem(retval, 0, PyInt_FromLong(result));
+    PyTuple_SetItem(retval, 1, PyInt_FromLong(last_sequence_number));
+    return retval;
 }
 
 PyMethodDef gcode_methods[] = {
