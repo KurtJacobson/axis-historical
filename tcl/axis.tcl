@@ -160,7 +160,7 @@ foreach b [bind Entry] {
         <Shift-Key-*> - <Control-Key-*> -
         <Meta-Key-*> - <Alt-Key-*> - <Left> - <Right> -
         <Up> - <Down> - <Prior> - <Next> - <Home> {
-            bind Entry $b +break
+            bind Entry $b {+if {[%W cget -state] == "normal"} break}
         }
     }
 }
@@ -169,7 +169,7 @@ proc is_continuous {} {
     expr {"[.tabs.manual.jogf.jogspeed get]" == "Continuous"}
 }
 
-bind Entry <Key> {+if {[string length %A]} break}
+bind Entry <Key> {+if {[%W cget -state] == "normal" && [string length %A]} break}
 
 bind . <Configure> { if {"%W" == "."} {
     wm minsize %W [winfo reqwidth %W] [winfo reqheight %W] }
