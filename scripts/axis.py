@@ -628,6 +628,7 @@ widgets = nf.Widgets(root_window,
 )
 
 def activate_axis(i):
+    if i >= axiscount: return
     axis = getattr(widgets, "axis_%s" % "xyzabc"[i])
     axis.focus()
     axis.invoke()
@@ -635,6 +636,25 @@ def activate_axis(i):
 def set_first_line(lineno):
     global program_start_line
     program_start_line = lineno
+
+def jogspeed_continuous():
+    print "jog_c"
+    widgets.jogspeed.configure(editable=1)
+    widgets.jogspeed.delete(0, "end")
+    widgets.jogspeed.insert("end", "Continuous")
+    widgets.jogspeed.configure(editable=0)
+
+def jogspeed_incremental():
+    print "jog_i"
+    jogspeed = widgets.jogspeed.get()
+    if jogspeed == "Continuous" or jogspeed == "0.0001":
+        newjogspeed = 0.1
+    else:
+        newjogspeed = float(jogspeed) / 10
+    widgets.jogspeed.configure(editable=1)
+    widgets.jogspeed.delete(0, "end")
+    widgets.jogspeed.insert("end", "%s" % newjogspeed)
+    widgets.jogspeed.configure(editable=0)
 
 class SelectionHandler:
     def __init__(self, win, **kw):
@@ -827,7 +847,16 @@ root_window.bind("y", lambda event: activate_axis(1))
 root_window.bind("z", lambda event: activate_axis(2))
 root_window.bind("a", lambda event: activate_axis(3))
 root_window.bind("b", lambda event: activate_axis(4))
-root_window.bind("c", lambda event: activate_axis(5))
+root_window.bind("~", lambda event: activate_axis(0))
+root_window.bind("1", lambda event: activate_axis(1))
+root_window.bind("2", lambda event: activate_axis(2))
+root_window.bind("3", lambda event: activate_axis(3))
+root_window.bind("4", lambda event: activate_axis(4))
+root_window.bind("5", lambda event: activate_axis(5))
+root_window.bind("c", lambda event: jogspeed_continuous())
+root_window.bind("i", lambda event: jogspeed_incremental())
+# c: continuous
+# i: incremental
 root_window.bind("<Home>", commands.home_axis)
 widgets.mdi_history.bind("<Configure>", "%W see {end - 1 lines}")
 

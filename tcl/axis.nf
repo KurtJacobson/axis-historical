@@ -74,7 +74,7 @@ setup_menu_accel .menu.file 4 {_Machine Power}
 
 
 .menu.file add command \
-	-command confirm_quit \
+	-command {destroy .} \
 	-label Quit \
 	-underline 0
 
@@ -116,17 +116,17 @@ setup_menu_accel .menu.edit 3 {_Rotated Top view}
 
 .menu.edit add command \
 	-command set_view_x \
-	-label {Front view} \
-	-underline 0
-
-setup_menu_accel .menu.edit 4 {_Front view}
-
-.menu.edit add command \
-	-command set_view_y \
 	-label {Side view} \
 	-underline 0
 
-setup_menu_accel .menu.edit 5 {_Side view}
+setup_menu_accel .menu.edit 4 {_Side view}
+
+.menu.edit add command \
+	-command set_view_y \
+	-label {Front view} \
+	-underline 0
+
+setup_menu_accel .menu.edit 5 {_Front view}
 
 .menu.edit add separator
 
@@ -394,7 +394,7 @@ setup_widget_accel .toolbar.view_z2 {}
 
 Button .toolbar.view_x \
 	-command set_view_x \
-	-helptext {Front view} \
+	-helptext {Side view} \
 	-image [load_image tool_axis_x] \
 	-relief link \
 	-takefocus 0
@@ -402,7 +402,7 @@ setup_widget_accel .toolbar.view_x {}
 
 Button .toolbar.view_y \
 	-command set_view_y \
-	-helptext {Side view} \
+	-helptext {Front view} \
 	-image [load_image tool_axis_y] \
 	-relief link \
 	-takefocus 0
