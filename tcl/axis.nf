@@ -914,6 +914,7 @@ setup_widget_accel .tabs.mdi.historyl History:
 text .tabs.mdi.history \
 	-height 8 \
 	-width 40
+.tabs.mdi.history insert end {}
 .tabs.mdi.history configure -state disabled
 grid rowconfigure .tabs.mdi.history 0 -weight 1
 
@@ -1093,6 +1094,7 @@ text .t.text \
 	-relief flat \
 	-takefocus 0 \
 	-yscrollcommand {.t.sb set}
+.t.text insert end {}
 
 scrollbar .t.sb \
 	-borderwidth 0 \
