@@ -105,6 +105,7 @@ class MyOpengl(Opengl):
         self.select_buffer_size = 100
         self.select_primed = False
         self.last_position = None
+        self.last_homed = None
         self.g = None
 
     def select_prime(self, event):
@@ -164,12 +165,11 @@ class MyOpengl(Opengl):
         glMatrixMode(GL_MODELVIEW)
 
     def set_current_line(self, line):
-        if vars.highlight_line.get() > 0: return
         if line == vars.running_line.get(): return
         t.tag_remove("executing", "0.0", "end")
         if line is not None and line > 0:
             vupdate(vars.running_line, line)
-            if self.highlight_line is None:
+            if vars.highlight_line.get() <= 0:
                 t.see("%d.0" % (line+2))
                 t.see("%d.0" % line)
             t.tag_add("executing", "%d.0" % line, "%d.end" % line)
@@ -178,6 +178,7 @@ class MyOpengl(Opengl):
 
     def set_highlight_line(self, line):
         if line == vars.highlight_line.get(): return
+        self.highlight_line = line
         t.tag_remove("sel", "0.0", "end")
         if line is not None and line > 0:
             t.see("%d.0" % (line+2))
@@ -496,8 +497,10 @@ class LivePlotter:
                 glEnd()
                 glLineWidth(1)
                 glDrawBuffer(GL_BACK)
-        if self.stat.actual_position != o.last_position:
+        if (self.stat.actual_position != o.last_position
+                or self.stat.homed != o.last_homed):
             o.redraw_soon()
+            o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
 
         vupdate(vars.interp_state, self.stat.interp_state)
@@ -509,7 +512,7 @@ class LivePlotter:
         vupdate(vars.flood, self.stat.flood)
         vupdate(vars.brake, self.stat.spindle_brake)
         vupdate(vars.spindledir, self.stat.spindle_direction)
-        vupdate(vars.feedrate, int(100 * self.stat.feedrate))
+        vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
 
         current_tool = [i for i in s.tool_table if i[0] == s.tool_in_spindle]
         if s.tool_in_spindle == 0:
@@ -1120,8 +1123,7 @@ def redraw(self):
         if s.homed[i]:
             glRasterPos(6, ypos)
             glBitmap(13, 16, 0, 3, 17, 0, homeicon)
-        else:
-            glRasterPos(23, ypos)
+        glRasterPos(23, ypos)
         glListBase(fontbase)
         glCallLists(string)
         ypos -= 15
