@@ -15,7 +15,10 @@ def find_emc_root(candidates = []):
         if is_emc_root(c): return c
 
 def find_emc_plat(root):
-    platdir = os.path.join(root, "emc", "plat")
-    for plat in ['nonrealtime'] + os.listdir(platdir):
-        inivar = os.path.join(platdir, plat, "bin", "inivar")
-        if os.path.exists(inivar): return plat
+    emcplatdir = os.path.join(root, "emc", "plat")
+    rcsplatdir = os.path.join(root, "rcslib", "plat")
+    
+    for plat in ['nonrealtime'] + os.listdir(emcplatdir):
+        inivar = os.path.join(emcplatdir, plat, "bin", "inivar")
+        rcsinc = os.path.join(rcsplatdir, plat, "include", "rcs.hh")
+        if os.path.exists(inivar) and os.path.exists(rcsinc): return plat
