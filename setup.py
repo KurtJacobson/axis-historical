@@ -31,7 +31,7 @@ from build_scripts import *
 from togl_setup import get_togl_flags
 
 name="axis"
-version="1.0b1"
+version="1.0b2"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
@@ -82,7 +82,8 @@ setup(name=name, version=version,
                   (os.path.join(SHAREDIR, "images"), glob("images/*.gif")),
                   (os.path.join(SHAREDIR, "images"), glob("images/*.xbm")),
                   (DOCDIR, ["COPYING", "README",
-                        "thirdparty/bwidget/LICENSE.txt"])],
+                        "thirdparty/bwidget/LICENSE.txt",
+                        "thirdparty/LICENSE-Togl"])],
     ext_modules = [emc, glfixes, togl],
     url="http://axis.unpythonic.net/",
     license="GPL",
