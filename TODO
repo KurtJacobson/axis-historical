@@ -25,6 +25,7 @@ Wishlist items
 * axis speed (jogging) XXX feed rate already affects jog speed inside emc, is this actually necessary?
 * more built-in help
 * for live plot, G0 vs G1 should be different colors
+* file open dialog should remember the directory from previous open
 
 Missing dialogs/subwindows from xemc:
 * tool list editor (at least display?)
