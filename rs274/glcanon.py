@@ -28,6 +28,8 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.ox = self.oy = self.oz = 0
         self.text = text
 
+    def message(self, message): pass
+
     def get_external_parameter_filename(self): # XXX not used and wrong
         return "/usr/src/emc/sim.var"
 

@@ -174,7 +174,6 @@ void maybe_new_line() {
 void ARC_FEED(double first_end, double second_end, double first_axis,
         double second_axis, int rotation, double axis_end_point,
         double a_position, double b_position, double c_position) {
-    printf("%f %f %f\n", first_end, second_end, axis_end_point);
     if(metric) {
         first_end /= 25.4;
         second_end /= 25.4;
@@ -182,7 +181,6 @@ void ARC_FEED(double first_end, double second_end, double first_axis,
         second_axis /= 25.4;
         axis_end_point /= 25.4;
     }
-    printf("%f %f %f\n", first_end, second_end, axis_end_point);
     maybe_new_line();
     if(interp_error) return;
     PyObject *result =
@@ -334,9 +332,9 @@ double GET_EXTERNAL_PROBE_POSITION_A() { return 0.0; }
 double GET_EXTERNAL_PROBE_POSITION_B() { return 0.0; }
 double GET_EXTERNAL_PROBE_POSITION_C() { return 0.0; }
 double GET_EXTERNAL_PROBE_VALUE() { return 0.0; }
-double GET_EXTERNAL_POSITION_X() { printf("GEPX\n"); return 0.0; }
+double GET_EXTERNAL_POSITION_X() { return 0.0; }
 double GET_EXTERNAL_POSITION_Y() { return 0.0; }
-double GET_EXTERNAL_POSITION_Z() { printf("GEPZ\n"); return 0.0; }
+double GET_EXTERNAL_POSITION_Z() { return 0.0; }
 double GET_EXTERNAL_POSITION_A() { return 0.0; }
 double GET_EXTERNAL_POSITION_B() { return 0.0; }
 double GET_EXTERNAL_POSITION_C() { return 0.0; }

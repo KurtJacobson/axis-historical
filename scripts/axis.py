@@ -477,6 +477,8 @@ class LivePlotter:
                 root_window.tk.call("nf_dialog", ".error",
                                     "AXIS error", text, "error",0,"OK")
             else: # TEXT, DISPLAY
+                # XXX messages when paused should offer the opportunity to 
+                # unpause in the dialog
                 root_window.tk.call("nf_dialog", ".error",
                                     "AXIS error", text, "info",0,"OK")
         self.after = self.win.after(20, self.update)
@@ -595,7 +597,12 @@ def open_file_guts(f):
 
         f = os.path.abspath(f)
         o.g = canon = GLCanon(widgets.text)
-        gcode.parse(f, canon)
+        result = gcode.parse(f, canon)
+        print "parse result", result
+        if result >= rs274.RS274NGC_MIN_ERROR:
+            root_window.tk.call("nf_dialog", ".error", "G-Code error in %s" %f,
+                    rs274.errorlist.get(result, result), "error",0,"OK")
+            
         t.configure(state="normal")
         t.delete("0.0", "end")
         for i, l in enumerate(open(f)):
