@@ -1,7 +1,7 @@
 #include <Python.h>
 #include "../thirdparty/togl.c"
 
-static int first_time = 0;
+static int first_time = 1;
 
 static Tcl_Interp *get_interpreter(PyObject *tkapp) {
     PyObject *interpaddrobj = PyObject_CallMethod(tkapp, "interpaddr", NULL);
@@ -32,6 +32,7 @@ PyObject *install(PyObject *s, PyObject *arg) {
 
     if(first_time) {
         Tcl_InitHashTable(&CommandTable, TCL_STRING_KEYS);
+        first_time = 0;
     }
 
     Py_INCREF(Py_None);
