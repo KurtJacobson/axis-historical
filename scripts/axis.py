@@ -25,6 +25,9 @@ __date__ = string.join(string.split('$Date$')[1:3], ' ')
 __author__ = 'Jeff Epler <jepler@unpythonic.net>'
 
 import sys, array, time
+
+# This works around a bug in some BLT installations by exporting symbols
+# from _tkinter.so's copy of libtcl and libtk to libblt
 ldflags = sys.getdlopenflags(); sys.setdlopenflags(0x102)
 import _tkinter
 sys.setdlopenflags(ldflags)
@@ -73,12 +76,6 @@ homeicon = array.array('B',
         0x1e, 0x40,   0x3e, 0x20,   0x3e, 0x20,   0x3e, 0x20,
         0xff, 0xf8,   0x23, 0xe0,   0x23, 0xe0,   0x23, 0xe0,
         0x13, 0xc0,   0x0f, 0x80,   0x02, 0x00,   0x02, 0x00])
-
-def makecommand(f): nf.makecommand(root_window, f.__name__, f)
-
-GL_ALIASED_LINE_WIDTH_RANGE = 0x846E
-GL_SMOOTH_LINE_WIDTH_RANGE = 0x0B22
-GL_SMOOTH_LINE_WIDTH_GRANULARITY = 0x0B23
 
 if sys.version_info <= (2,3):
     def enumerate(sequence):
@@ -142,7 +139,7 @@ class MyOpengl(Opengl):
             glInitNames()
             glPushName(0)
 
-            self.g.draw()
+            glCallList(select_program)
 
             try:
                 buffer = list(glRenderMode(GL_RENDER))
@@ -367,7 +364,7 @@ def select_next(event):
     o.tkRedraw()
 
 
-program = highlight = None
+select_program = program = highlight = None
 
 def make_cone():
     global cone_program
@@ -385,13 +382,18 @@ def make_cone():
     glDisable(GL_LIGHTING)
     glEndList()
 
+def make_selection_list(g):
+    global select_program
+    if select_program is None: select_program = glGenLists(1)
+    glNewList(select_program, GL_COMPILE)
+    g.draw(1)
+    glEndList()
+
 def make_main_list(g):
     global program
     if program is None: program = glGenLists(1)
     glNewList(program, GL_COMPILE)
-
-    g.draw()
-
+    g.draw(0)
     glEndList()
 
 import array
@@ -556,6 +558,7 @@ def open_file_guts(f):
     o.g = g = interp.execute(code)
     t.configure(state="disabled")
     make_main_list(g)
+    make_selection_list(g)
 
 def set_feedrate(*args):
     try:

@@ -52,56 +52,73 @@ class GLCanon(ArcsToSegmentsMixin):
             color = (1,.5,.5)
         self.dwells.append((self.state.lineno, color, self.ox, self.oy, self.oz, self.state.gmodes[2]-17))
 
-    def draw_lines(self, lines):
-        for lineno, x1,y1,z1, x2,y2,z2 in lines:
-            glLoadName(lineno)
-            glBegin(GL_LINES)
-            glVertex3f(x1,y1,z1)
-            glVertex3f(x2,y2,z2)
-            glEnd()
+
+    def draw_lines(self, lines, for_selection):
+        if for_selection:
+            for lineno, x1,y1,z1, x2,y2,z2 in lines:
+                glLoadName(lineno)
+                glBegin(GL_LINES)
+                glVertex3f(x1,y1,z1)
+                glVertex3f(x2,y2,z2)
+                glEnd()
+        else:
+            first = True
+            for lineno, x1,y1,z1, x2,y2,z2 in lines:
+                if first:
+                    glBegin(GL_LINE_STRIP)
+                    first = False
+                    glVertex3f(x1,y1,z1)
+                elif x1 != ox or y1 != oy or z1 != oz:
+                    glEnd()
+                    glBegin(GL_LINE_STRIP)
+                    glVertex3f(x1,y1,z1)
+                glVertex3f(x2,y2,z2)
+                ox = x2; oy = y2; oz = z2
+            if not first:
+                glEnd()
 
     def highlight(self, lineno):
         glLineWidth(3)
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
         c = 0, 255, 255
         glColor3fv(c)
+        glBegin(GL_LINES)
         for line in self.traverse:
             if line[0] != lineno: continue
-            glBegin(GL_LINES)
             glVertex3fv(line[1:4])
             glVertex3fv(line[4:7])
-            glEnd()
         for line in self.feed:
             if line[0] != lineno: continue
-            glBegin(GL_LINES)
             glVertex3fv(line[1:4])
             glVertex3fv(line[4:7])
-            glEnd()
         for line in self.dwells:
             if line[0] != lineno: continue
-            self.draw_dwells([(line[0], c) + line[2:]])
-        glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST)
+            self.draw_dwells([(line[0], c) + line[2:]], 2)
+        glEnd()
         glLineWidth(1)
 
-    def draw(self):
+    def draw(self, for_selection=0):
         glEnable(GL_LINE_STIPPLE)
         glColor3f(.3,.5,.5)
-        self.draw_lines(self.traverse)
+        self.draw_lines(self.traverse, for_selection)
         glDisable(GL_LINE_STIPPLE)
 
         glColor3f(1,1,1)
-        self.draw_lines(self.feed)
+        self.draw_lines(self.feed, for_selection)
 
         glColor3f(1,.5,.5)
-        self.draw_dwells(self.dwells)
+        glLineWidth(2)
+        self.draw_dwells(self.dwells, for_selection)
+        glLineWidth(1)
 
-    def draw_dwells(self, dwells):
+    def draw_dwells(self, dwells, for_selection):
         delta = .015625
+        if for_selection == 0:
+            glBegin(GL_LINES)
         for l,c,x,y,z,axis in dwells:
             glColor3fv(c)
-            glLineWidth(2)
-            glLoadName(l)
-            glBegin(GL_LINES)
+            if for_selection == 1:
+                glLoadName(l)
+                glBegin(GL_LINES)
             if axis == 0:
                 glVertex3f(x-delta,y-delta,z)
                 glVertex3f(x+delta,y+delta,z)
@@ -132,7 +149,9 @@ class GLCanon(ArcsToSegmentsMixin):
                 glVertex3f(x,y-delta,z-delta)
                 glVertex3f(x,y-delta,z+delta)
                 glVertex3f(x,y+delta,z-delta)
+            if for_selection == 1:
+                glEnd()
+        if for_selection == 0:
             glEnd()
-            glLineWidth(1)
 
 
