@@ -297,7 +297,7 @@ Button .toolbar.machine_estop \
 	-image [load_image tool_estop] \
 	-relief sunken \
 	-takefocus 0
-bind .toolbar.machine_estop <ButtonPress> { estop_clicked }
+bind .toolbar.machine_estop <Button> { estop_clicked }
 setup_widget_accel .toolbar.machine_estop {}
 
 Button .toolbar.machine_power \
@@ -1189,56 +1189,42 @@ bind .keys <Key-Return> { wm withdraw .keys }
 
 text .keys.text \
 	-background [systembuttonface] \
-	-font 9x15 \
-	-height 33 \
+	-font {Helvetica -12} \
+	-height 20 \
 	-relief flat \
-	-tabs 120 \
-	-width 33
-.keys.text insert end {F1	Emergency Stop
-F2	Turn machine on
-
-X, `	Select first axis
-Y, 1	Select second axis
-Z, 2	Select third axis
-A, 3	Select fourth axis
-   4	Select fifth axis
-   5	Select sixth axis
-I	Select jog increment
-C	Continuous Jog
-Home	Send current axis home
-Left, Right	Jog first axis
-Up, Down	Jog second axis
-Pg Up, Pg Dn	Jog third axis
-
-F3	Manual Control
+	-tabs {100 300 400} \
+	-width 88
+.keys.text insert end {F1	Emergency stop	O	Open program
+F2	Turn machine on	R	Run program
+		T	Step program
+X, `	Select first axis	P	Pause program
+Y, 1	Select second axis	S	Resume program
+Z, 2	Select third axis	ESC	Stop program
+A, 3	Select fourth axis		
+   4	Select fifth axis	F7	Toggle mist
+   5	Select sixth axis	F8	Toggle flood
+I	Select jog increment		
+C	Continuous jog	B	Spindle brake off
+Home	Send current axis home	Shift-B	Spindle brake on
+Left, Right	Jog first axis	F9	Turn spindle clockwise
+Up, Down	Jog second axis	F10	Turn spindle counterclockwise
+Pg Up, Pg Dn	Jog third axis	F11	Turn spindle more slowly
+[, ]	Jog fourth axis	F12	Turn spindle more quickly
+			
+F3	Manual control	Control-K	Clear live plot
 F5	Code entry
-
-O	Open program
-R	Run program
-ESC	Stop program
-P	Pause program
-S	Resume program
-
-B	Brake off
-Shift-B	Brake on
-F7	Toggle mist
-F8	Toggle flood
-F9	Turn spindle clockwise
-F10	Turn spindle counterclockwise
-
-Control-K	Clear live plot}
+}
 .keys.text tag configure key \
 	-borderwidth {} \
 	-elide {} \
-	-font 9x15
+	-font fixed
 
-.keys.text tag add key 1.0 1.2 2.0 2.2 4.0 4.4 5.0 5.4 6.0 6.4 7.0 7.4 8.0 8.4 9.0 9.4 10.0 10.1 11.0 11.1 12.0 12.4 13.0 13.11 14.0 14.8 15.0 15.12 17.0 17.2 18.0 18.2 20.0 20.1 21.0 21.1 22.0 22.3 23.0 23.1 24.0 24.1 26.0 26.1 27.0 27.7 28.0 28.2 29.0 29.2 30.0 30.2 31.0 31.3 33.0 33.9
+.keys.text tag add key 1.0 1.2 1.18 1.19 2.0 2.2 2.19 2.20 3.2 3.3 4.0 4.4 4.23 4.24 5.0 5.4 5.24 5.25 6.0 6.4 6.23 6.26 7.0 7.4 8.0 8.4 8.23 8.25 9.0 9.4 9.23 9.25 10.0 10.1 11.0 11.1 11.17 11.18 12.0 12.4 12.28 12.35 13.0 13.11 13.27 13.29 14.0 14.8 14.25 14.28 15.0 15.12 15.28 15.31 16.0 16.4 16.21 16.24 18.0 18.2 18.18 18.27 19.0 19.2
 .keys.text tag configure desc \
 	-borderwidth {} \
-	-elide {} \
-	-font {Helvetica -12}
+	-elide {}
 
-.keys.text tag add desc 1.3 1.17 2.3 2.18 4.5 4.22 5.5 5.23 6.5 6.22 7.5 7.23 8.5 8.22 9.5 9.22 10.2 10.22 11.2 11.16 12.5 12.27 13.12 13.26 14.9 14.24 15.13 15.27 17.3 17.17 18.3 18.13 20.2 20.14 21.2 21.13 22.4 22.16 23.2 23.15 24.2 24.16 26.2 26.11 27.8 27.16 28.3 28.14 29.3 29.15 30.3 30.25 31.4 31.33 33.10 33.25
+.keys.text tag add desc 1.3 1.17 1.20 1.32 2.3 2.18 2.21 2.32 3.4 3.16 4.5 4.22 4.25 4.38 5.5 5.23 5.26 5.40 6.5 6.22 6.27 6.39 7.5 7.23 8.5 8.22 8.26 8.37 9.5 9.22 9.26 9.38 10.2 10.22 11.2 11.16 11.19 11.36 12.5 12.27 12.36 12.52 13.12 13.26 13.30 13.52 14.9 14.24 14.29 14.58 15.13 15.27 15.32 15.56 16.5 16.20 16.25 16.50 18.3 18.17 18.28 18.43 19.3 19.13
 
 button .keys.ok \
 	-command {wm wi .keys} \
