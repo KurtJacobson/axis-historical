@@ -1188,7 +1188,9 @@ bind .about <Key-Return> { wm wi .about }
 
 message .about.message \
 	-borderwidth 0 \
-	-text {AXIS Copyright (C) 2004 Jeff Epler and Chris Radek.
+	-text {AXIS version 1.0b1
+
+Copyright (C) 2004 Jeff Epler and Chris Radek.
 
 This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.
 
