@@ -391,9 +391,9 @@ def make_cone():
     glTranslatef(0,0,.25)
     gluDisk(q, 0, .1, 32, 1)
     glPopMatrix()
-    gluDeleteQuadric(q)
     glDisable(GL_LIGHTING)
     glEndList()
+    gluDeleteQuadric(q)
 
 def make_selection_list(g):
     global select_program
