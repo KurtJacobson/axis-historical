@@ -488,11 +488,13 @@ class LivePlotter:
             self.win.live_plot_size = len(self.data)/3
             if len(self.data) >= 6:
                 glDrawBuffer(GL_FRONT)
+                glLineWidth(3)
                 glColor3f(1,0,0)
                 glBegin(GL_LINES)
                 glVertex3f(*self.data[-6:-3])
                 glVertex3f(*self.data[-3:])
                 glEnd()
+                glLineWidth(1)
                 glDrawBuffer(GL_BACK)
         if self.stat.actual_position != o.last_position:
             o.redraw_soon()
@@ -1060,7 +1062,9 @@ def redraw(self):
     if vars.show_live_plot.get():
         glColor3f(1,0,0)
         glDepthFunc(GL_ALWAYS)
+        glLineWidth(3)
         glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
+        glLineWidth(1)
         glDepthFunc(GL_LESS);
         if live_plotter.running.get() and live_plotter.data:
             pos = live_plotter.data[-3:]
