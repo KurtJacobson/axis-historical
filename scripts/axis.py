@@ -487,14 +487,8 @@ class LivePlotter:
                 # command, as for a manual tool change.
                 for i in range(4):
                     self.stat.poll()
-                if self.stat.interp_state == emc.INTERP_PAUSED:
-                    options = 1, "Close", "Continue"
-                else:
-                    options = 0, "OK",
                 result = root_window.tk.call("nf_dialog", ".error",
-                                    "AXIS error", text, "info",*options)
-                if result == 1:
-                    commands.task_resume()
+                                    "AXIS error", text, "info", 0, "OK")
         self.after = self.win.after(20, self.update)
 
         if program_start_line_last == -1 or \
