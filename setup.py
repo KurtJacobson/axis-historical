@@ -28,7 +28,7 @@ from distutils.core import setup, Extension
 from build_py import build_py
 from build_scripts import *
 name="axis"
-version="0.9.6"
+version="0.9.6.1"
 DOCDIR="doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
