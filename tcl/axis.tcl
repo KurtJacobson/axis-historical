@@ -49,6 +49,11 @@ proc state {e args} {
         if {[llength $w] == 2} {
             set idx [lindex $w 1]
             set w [lindex $w 0]
+            # The indices are made for non-tearoff menus.  It's just
+            # possible that the menus could be made to have tearoffs by
+            # the X resources database.  This next line is supposed to
+            # properly adjust the numbers for that case.
+            if {[$w cget -tearoff]} { incr $idx }
             $w entryconfigure $idx -state $newstate
         } else {
             $w configure -state $newstate
@@ -88,28 +93,28 @@ proc update_state {args} {
 
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_IDLE \
             && $taskfile != ""} \
-                .toolbar.program_run {.menu.program 2}
+                .toolbar.program_run {.menu.program 1}
     relief {$interp_state != $INTERP_IDLE} .toolbar.program_run
     state  {$task_state == $STATE_ON && $taskfile != "" && \
       ($interp_state == $INTERP_PAUSED)} \
-                .toolbar.program_step {.menu.program 3}
+                .toolbar.program_step {.menu.program 2}
     state  {$task_state == $STATE_ON && \
       ($interp_state == $INTERP_READING || $interp_state == $INTERP_WAITING) } \
-                {.menu.program 4}
+                {.menu.program 3}
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_PAUSED } \
-                {.menu.program 5}
+                {.menu.program 4}
     state  {$task_state == $STATE_ON && $interp_state != $INTERP_IDLE} \
                 .toolbar.program_pause
     relief {$interp_state == $INTERP_PAUSED} \
                 .toolbar.program_pause
     state  {$task_state == $STATE_ON && $interp_state != $INTERP_IDLE} \
-                .toolbar.program_stop {.menu.program 6}
+                .toolbar.program_stop {.menu.program 5}
     relief {$interp_state == $INTERP_IDLE} \
                 .toolbar.program_stop
 
     state {$running_line > 0 || $highlight_line > 0} {.menu.edit 0}
     state {$interp_state == $INTERP_IDLE && $highlight_line != -1} \
-                {.menu.program 1}
+                {.menu.program 0}
 
     state {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE\
             && $spindledir != 0} .tabs.manual.spindlef.spindleminus \
