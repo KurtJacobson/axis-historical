@@ -178,6 +178,24 @@ PyTypeObject Ini_Type = {
 #define EMC_COMMAND_TIMEOUT 1.0  // how long to wait until timeout
 #define EMC_COMMAND_DELAY   0.01 // how long to sleep between checks
 
+static int emcWaitCommandComplete(int serial_number, RCS_STAT_CHANNEL *s) {
+    double start = etime();
+
+    while (etime() - start < EMC_COMMAND_TIMEOUT) {
+        if(s->peek() == EMC_STAT_TYPE) {
+           EMC_STAT *stat = (EMC_STAT*)s->get_address();
+           printf("WaitComplete: %d %d %d\n", serial_number, stat->echo_serial_number, stat->status);
+           if (stat->echo_serial_number == serial_number &&
+               ( stat->status == RCS_DONE || stat->status == RCS_ERROR )) {
+                return s->get_address()->status;
+           }
+        }
+        esleep(EMC_COMMAND_DELAY);
+    }
+    return -1;
+}
+
+
 static void emcWaitCommandReceived(int serial_number, RCS_STAT_CHANNEL *s) {
     double start = etime();
 
@@ -963,7 +981,17 @@ static PyObject *emcauto(pyCommandChannel *s, PyObject *o) {
     return Py_None;
 }
 
+PyObject *wait_complete(pyCommandChannel *s, PyObject *o) {
+    return PyInt_FromLong(emcWaitCommandComplete(s->serial, s->s));
+}
+
+static PyMemberDef Command_members[] = {
+    {"serial", T_INT, offsetof(pyCommandChannel, serial), READONLY},
+    {NULL}
+};
+
 static PyMethodDef Command_methods[] = {
+    {"wait_complete", (PyCFunction)wait_complete, METH_NOARGS},
     {"state", (PyCFunction)state, METH_VARARGS},
     {"mdi", (PyCFunction)mdi, METH_VARARGS},
     {"mode", (PyCFunction)mode, METH_VARARGS},
@@ -1013,7 +1041,7 @@ PyTypeObject Command_Type = {
     0,                      /*tp_iter*/
     0,                      /*tp_iternext*/
     Command_methods,        /*tp_methods*/
-    0,                      /*tp_members*/
+    Command_members,        /*tp_members*/
     0,                      /*tp_getset*/
     0,                      /*tp_base*/
     0,                      /*tp_dict*/
