@@ -164,9 +164,10 @@ class MyOpengl(Opengl):
         glMatrixMode(GL_MODELVIEW)
 
     def set_current_line(self, line):
+        if vars.highlight_line.get() > 0: return
         if line == vars.running_line.get(): return
         t.tag_remove("executing", "0.0", "end")
-        if line is not None:
+        if line is not None and line > 0:
             vupdate(vars.running_line, line)
             if self.highlight_line is None:
                 t.see("%d.0" % (line+2))
@@ -178,10 +179,10 @@ class MyOpengl(Opengl):
     def set_highlight_line(self, line):
         if line == vars.highlight_line.get(): return
         t.tag_remove("sel", "0.0", "end")
-        if line is not None:
-            t.see("%d.0" % (l+2))
-            t.see("%d.0" % l)
-            t.tag_add("sel", "%d.0" % l, "%d.end" % l)
+        if line is not None and line > 0:
+            t.see("%d.0" % (line+2))
+            t.see("%d.0" % line)
+            t.tag_add("sel", "%d.0" % line, "%d.end" % line)
             vupdate(vars.highlight_line, line)
         else:
             vupdate(vars.highlight_line, -1)
@@ -606,6 +607,8 @@ vars = nf.Variables(root_window,
     ("tool", IntVar),
     ("active_codes", StringVar),
 )
+vars.highlight_line.set(-1)
+vars.running_line.set(-1)
 vars.show_program.set(1)
 vars.show_live_plot.set(1)
 vars.feedrate.trace("w", set_feedrate)

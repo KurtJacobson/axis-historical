@@ -107,7 +107,7 @@ proc update_state {args} {
     relief {$interp_state == $INTERP_IDLE} \
                 .toolbar.program_stop
 
-    state {$running_line != -1 || $highlight_line != -1} {.menu.edit 0}
+    state {$running_line > 0 || $highlight_line > 0} {.menu.edit 0}
     state {$interp_state == $INTERP_IDLE && $highlight_line != -1} \
                 {.menu.program 1}
 
