@@ -1,4 +1,4 @@
-include MANIFEST COPYING README
+include MANIFEST COPYING README BUGS
 recursive-include extensions *.c *.cc
 global-include *.py *.g
 recursive-include images *.xbm *.gif
