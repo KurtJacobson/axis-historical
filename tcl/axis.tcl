@@ -109,7 +109,6 @@ proc update_state {args} {
     state {$interp_state == $INTERP_IDLE && $highlight_line != -1} \
                 {.menu.program 1}
 
-    puts [list spindledir = $::spindledir [expr $::spindledir != 0]]
     state {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE\
             && $spindledir != 0} .tabs.manual.spindlef.spindleminus \
         .tabs.manual.spindlef.spindleplus
