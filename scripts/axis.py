@@ -1198,8 +1198,8 @@ def redraw(self):
             glRasterPos(6, ypos)
             glBitmap(13, 16, 0, 3, 17, 0, homeicon)
         glRasterPos(23, ypos)
-        glListBase(fontbase)
-        glCallLists(string)
+        for char in string:
+            glCallList(fontbase + ord(char))
         ypos -= 15
         i = i + 1
     glDepthFunc(GL_LESS)
