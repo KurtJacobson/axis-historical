@@ -46,7 +46,15 @@ proc enable_group {ws} { foreach w $ws { $w configure -state normal } }
 proc state {e args} {
     set e [uplevel \#0 [list expr $e]]
     if {$e} { set newstate normal } else {set newstate disabled}
-    foreach w $args { $w configure -state $newstate }
+    foreach w $args {
+        if {[llength $w] == 2} {
+            set idx [lindex $w 1]
+            set w [lindex $w 0]
+            $w entryconfigure $idx -state $newstate
+        } else {
+            $w configure -state $newstate
+        }
+    }
 }
 proc relief {e args} {
     set e [uplevel \#0 [list expr $e]]
@@ -70,27 +78,37 @@ proc update_state {args} {
     state  {$task_state != $STATE_ESTOP} .toolbar.machine_power 
     relief {$task_state == $STATE_ON}    .toolbar.machine_power 
 
-    state  {$interp_state == $INTERP_IDLE} .toolbar.file_open
-    state  {$interp_state == $INTERP_IDLE && $taskfile != ""} .toolbar.reload
+    state  {$interp_state == $INTERP_IDLE} .toolbar.file_open {.menu.file 0}
+    state  {$interp_state == $INTERP_IDLE && $taskfile != ""} \
+                .toolbar.reload {.menu.file 1}
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_IDLE \
             && $taskfile != ""} \
-                .toolbar.verify
+                .toolbar.verify {.menu.program 0}
 
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_IDLE \
             && $taskfile != ""} \
-                .toolbar.program_run
+                .toolbar.program_run {.menu.program 2}
     relief {$interp_state != $INTERP_IDLE} .toolbar.program_run
     state  {$task_state == $STATE_ON && $taskfile != "" && \
       ($interp_state == $INTERP_PAUSED)} \
-                .toolbar.program_step
+                .toolbar.program_step {.menu.program 3}
+    state  {$task_state == $STATE_ON && \
+      ($interp_state == $INTERP_READING || $interp_state == $INTERP_WAITING) } \
+                {.menu.program 4}
+    state  {$task_state == $STATE_ON && $interp_state == $INTERP_PAUSED } \
+                {.menu.program 5}
     state  {$task_state == $STATE_ON && $interp_state != $INTERP_IDLE} \
                 .toolbar.program_pause
     relief {$interp_state == $INTERP_PAUSED} \
                 .toolbar.program_pause
     state  {$task_state == $STATE_ON && $interp_state != $INTERP_IDLE} \
-                .toolbar.program_stop
+                .toolbar.program_stop {.menu.program 6}
     relief {$interp_state == $INTERP_IDLE} \
                 .toolbar.program_stop
+
+    state {$running_line != -1 || $highight_line != -1} {.menu.edit 0}
+    state {$interp_state == $INTERP_IDLE && $highight_line != -1} \
+                {.menu.program 1}
 
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
         enable_group $::manual
@@ -109,11 +127,15 @@ set task_state -1
 set task_mode -1
 set interp_pause 0
 set interp_state 0
+set running_line -1
+set highlight_line -1
 trace variable taskfile w queue_update_state
 trace variable task_state w queue_update_state
 trace variable task_mode w queue_update_state
 trace variable interp_pause w queue_update_state
 trace variable interp_state w queue_update_state
+trace variable running_line w queue_update_state
+trace variable highlight_line w queue_update_state
 
 bind . <Control-Tab> {
     set l [llength [.tabs tab names]]
@@ -147,3 +169,5 @@ bind . <Configure> { if {"%W" == "."} {
 }
 #after idle { wm minsize . [winfo reqwidth .] [winfo reqheight .] }
 wm maxsize . [winfo screenwidth .] [winfo screenheight .]
+
+wm withdraw .about

@@ -36,16 +36,49 @@ menu .menu.file \
 	-tearoff 0
 
 .menu.file add command \
+	-accelerator O \
+	-command open_file \
 	-label Open \
 	-underline 0
 
 setup_menu_accel .menu.file 0 _Open
 
 .menu.file add command \
+	-accelerator Ctrl-R \
+	-command reload_file \
+	-label Reload \
+	-underline 0
+
+setup_menu_accel .menu.file 1 _Reload
+
+.menu.file add separator
+
+
+.menu.file add command \
+	-accelerator F1 \
+	-command estop_clicked \
+	-label {Emergency Stop} \
+	-underline 0
+
+setup_menu_accel .menu.file 3 {_Emergency Stop}
+
+.menu.file add command \
+	-accelerator F2 \
+	-command onoff_clicked \
+	-label {Machine Power} \
+	-underline 0
+
+setup_menu_accel .menu.file 4 {_Machine Power}
+
+.menu.file add separator
+
+
+.menu.file add command \
+	-command confirm_quit \
 	-label Quit \
 	-underline 0
 
-setup_menu_accel .menu.file 1 _Quit
+setup_menu_accel .menu.file 6 _Quit
 
 # Configure widget .menu.file
 wm title .menu.file file
@@ -56,14 +89,151 @@ wm maxsize .menu.file 1585 1170
 menu .menu.edit \
 	-tearoff 0
 
+.menu.edit add command \
+	-accelerator Ctrl-C \
+	-command copy_line \
+	-label Copy \
+	-underline 0
+
+setup_menu_accel .menu.edit 0 _Copy
+
+.menu.edit add separator
+
+
+.menu.edit add command \
+	-command set_view_z \
+	-label {Top view} \
+	-underline 0
+
+setup_menu_accel .menu.edit 2 {_Top view}
+
+.menu.edit add command \
+	-command set_view_z2 \
+	-label {Rotated Top view} \
+	-underline 0
+
+setup_menu_accel .menu.edit 3 {_Rotated Top view}
+
+.menu.edit add command \
+	-command set_view_x \
+	-label {Front view} \
+	-underline 0
+
+setup_menu_accel .menu.edit 4 {_Front view}
+
+.menu.edit add command \
+	-command set_view_y \
+	-label {Side view} \
+	-underline 0
+
+setup_menu_accel .menu.edit 5 {_Side view}
+
+.menu.edit add separator
+
+
+.menu.edit add checkbutton \
+	-variable show_program \
+	-label {Show program} \
+	-underline 1
+
+setup_menu_accel .menu.edit 7 {S_how program}
+
+.menu.edit add checkbutton \
+	-variable show_live_plot \
+	-label {Show live plot} \
+	-underline 3
+
+setup_menu_accel .menu.edit 8 {Sho_w live plot}
+
+.menu.edit add command \
+	-command clear_live_plot \
+	-label {Clear live plot} \
+	-underline 1
+
+setup_menu_accel .menu.edit 9 {C_lear live plot}
+
 # Configure widget .menu.edit
 wm title .menu.edit edit
 wm resiz .menu.edit 1 1
 wm minsize .menu.edit 1 1
 wm maxsize .menu.edit 1585 1170
 
+menu .menu.program \
+	-tearoff 0
+
+.menu.program add command \
+	-command program_verify \
+	-label {Verify program} \
+	-underline 0
+
+setup_menu_accel .menu.program 0 {_Verify program}
+
+.menu.program add command \
+	-command set_next_line \
+	-label {Set next line} \
+	-underline 4
+
+.menu.program add command \
+	-accelerator R \
+	-command task_run \
+	-label {Run program} \
+	-underline 0
+
+setup_menu_accel .menu.program 2 {_Run program}
+
+.menu.program add command \
+	-command task_step \
+	-label Step \
+	-underline 0
+
+setup_menu_accel .menu.program 3 _Step
+
+.menu.program add command \
+	-accelerator P \
+	-command task_pause \
+	-label Pause \
+	-underline 0
+
+setup_menu_accel .menu.program 4 _Pause
+
+.menu.program add command \
+	-accelerator S \
+	-command task_resume \
+	-label Resume \
+	-underline 2
+
+setup_menu_accel .menu.program 5 Re_sume
+
+.menu.program add command \
+	-accelerator ESC \
+	-command task_stop \
+	-label Stop \
+	-underline 1
+
+setup_menu_accel .menu.program 6 S_top
+
+# Configure widget .menu.program
+wm title .menu.program program
+wm resiz .menu.program 1 1
+wm minsize .menu.program 1 1
+wm maxsize .menu.program 1905 1170
+
 menu .menu.help \
 	-tearoff 0
+
+.menu.help add command \
+	-command {wm transient .about .;wm deiconify .about} \
+	-label {About AXIS} \
+	-underline 0
+
+setup_menu_accel .menu.help 0 {_About AXIS}
+
+.menu.help add command \
+	-command {wm deiconfiy .keys} \
+	-label {Key Reference} \
+	-underline 0 -state disabled
+
+setup_menu_accel .menu.help 1 {_Key Reference}
 
 # Configure widget .menu.help
 wm title .menu.help help
@@ -86,11 +256,18 @@ setup_menu_accel .menu 1 _File
 setup_menu_accel .menu 2 _Edit
 
 .menu add cascade \
+	-menu .menu.program \
+	-label Program \
+	-underline 0
+
+setup_menu_accel .menu 3 _Program
+
+.menu add cascade \
 	-menu .menu.help \
 	-label Help \
 	-underline 0
 
-setup_menu_accel .menu 3 _Help
+setup_menu_accel .menu 4 _Help
 
 # Configure widget .menu
 wm title .menu menu
@@ -892,6 +1069,7 @@ frame .t \
 
 text .t.text \
 	-borderwidth 0 \
+	-exportselection 0 \
 	-height 9 \
 	-highlightthickness 0 \
 	-relief flat \
@@ -942,6 +1120,48 @@ pack .feedoverride.foscale \
 	-expand 1 \
 	-fill x \
 	-side left
+
+toplevel .about
+bind .about <Key-Return> { wm wi .about }
+
+message .about.message \
+	-borderwidth 0 \
+	-text {AXIS Copyright (C) 2004 Jeff Epler and Chris Radek.
+
+This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.
+} \
+	-width 300
+
+button .about.ok \
+	-command {wm wi .about} \
+	-default active \
+	-padx 0 \
+	-pady 0 \
+	-width 10
+setup_widget_accel .about.ok OK
+
+label .about.image \
+	-borderwidth 0 \
+	-image [load_image banner]
+setup_widget_accel .about.image {}
+
+# Pack widget .about.image
+pack .about.image
+
+# Pack widget .about.message
+pack .about.message \
+	-expand 1 \
+	-fill both
+
+# Pack widget .about.ok
+pack .about.ok
+
+# Configure widget .about
+wm protocol .about WM_DELETE_WINDOW {wm wi .about}
+wm title .about {About AXIS}
+wm resiz .about 0 0
+wm minsize .about 1 1
+wm maxsize .about 1905 1170
 
 # Grid widget .feedoverride
 grid .feedoverride \

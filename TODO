@@ -1,11 +1,7 @@
 NEEDED for public beta release
 * hook up feed override
-* fill out menu bar
-* make step button work from program beginning (if possible?)
 * make status bar reflect reality (only machine state so far) 
 * make active g-codes work (or ungrid it for now)
-* A NAME
-* set first line
 
 NEEDED for 1.0
 * use real rs274 parser instead of homebrew
@@ -13,6 +9,7 @@ NEEDED for 1.0
 * install pyemc in emc's plat bin directory
 
 Wishlist items
+* make step button work from program beginning (if possible?)
 * improve opengl navigation
 * Way to show diameter of drills, width of cuts (poor-man's CSG preview)
 * Way to turn off lines already plotted in live preview

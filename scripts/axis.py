@@ -41,9 +41,12 @@ import rs274.options
 rs274.options.install(root_window)
 import nf; nf.start(root_window)
 
-nf.source_lib_tcl(root_window,"axis.nf")
-nf.source_lib_tcl(root_window,"axis.tcl")
-
+try:
+    nf.source_lib_tcl(root_window,"axis.nf")
+    nf.source_lib_tcl(root_window,"axis.tcl")
+except TclError:
+    print root_window.tk.call("set", "errorInfo")
+    raise
 program_start_line = 0
 program_start_line_last = -1
 
@@ -152,10 +155,13 @@ class MyOpengl(Opengl):
     def set_current_line(self, line):
         t.tag_remove("executing", "0.0", "end")
         if line is not None:
+            vupdate(vars.running_line, line)
             if self.highlight_line is None:
                 t.see("%d.0" % (line+2))
                 t.see("%d.0" % line)
             t.tag_add("executing", "%d.0" % line, "%d.end" % line)
+        else:
+            vupdate(vars.running_line, -1)
 
     def set_highlight_line(self, line):
         l = self.highlight_line = line
@@ -164,6 +170,9 @@ class MyOpengl(Opengl):
             t.see("%d.0" % (l+2))
             t.see("%d.0" % l)
             t.tag_add("sel", "%d.0" % l, "%d.end" % l)
+            vupdate(vars.highlight_line, line)
+        else:
+            vupdate(vars.highlight_line, -1)
         global highlight
         if highlight is not None: glDeleteLists(highlight, 1)
         highlight = glGenLists(1)
@@ -378,8 +387,6 @@ def make_main_list(g):
     global program
     if program is None: program = glGenLists(1)
     glNewList(program, GL_COMPILE)
-    glDisable(GL_LIGHTING)
-    glMatrixMode(GL_MODELVIEW)
 
     g.draw()
 
@@ -529,7 +536,13 @@ vars = nf.Variables(root_window,
     ("flood", BooleanVar),
     ("brake", BooleanVar),
     ("spindledir", IntVar),
+    ("running_line", IntVar),
+    ("highlight_line", IntVar),
+    ("show_program", IntVar),
+    ("show_live_plot", IntVar),
 )
+vars.show_program.set(1)
+vars.show_live_plot.set(1)
 
 widgets = nf.Widgets(root_window, 
     ("text", Text, ".t.text"),
@@ -564,7 +577,35 @@ def set_first_line(lineno):
     global program_start_line
     program_start_line = lineno
 
+class SelectionHandler:
+    def __init__(self, win, **kw):
+        self.kw = kw
+        self.win = win
+        self.win.selection_handle(self.handler, *kw)
+        self.value = ""
+
+    def set_value(self, value):
+        self.win.selection_own(**self.kw)
+        self.value = value
+
+    def handler(self, offset, maxchars):
+        offset = int(offset)
+        maxchars = int(maxchars)
+        return self.value[offset:offset+maxchars]
+
+selection = SelectionHandler(root_window)
+
 class TclCommands(nf.TclCommands):
+    def copy_line(*args):
+        line = -1
+        if vars.running_line.get() != -1: line = vars.running_line.get()
+        if vars.highlight_line.get() != -1: line = vars.highlight_line.get()
+        if line == -1: return
+        selection.set_value(t.get("%d.8" % line, "%d.end" % line))
+
+    def set_next_line(*args):
+        line = vars.highlight_line.get()
+        if line != -1: set_first_line(line)
 
     def program_verify(*args):
         set_first_line(-1)
@@ -716,6 +757,7 @@ root_window.bind("<Escape>", commands.task_stop)
 root_window.bind("o", commands.open_file)
 root_window.bind("s", commands.task_resume)
 root_window.bind("p", commands.task_pause)
+root_window.bind("<Alt-p>", "#nothing")
 root_window.bind("r", commands.task_run)
 root_window.bind("<Control-r>", commands.reload_file)
 root_window.bind("<Key-F1>", commands.estop_clicked)
@@ -837,23 +879,29 @@ def redraw(self):
         self.select(self.select_event)
         self.select_event = None
 
+    glDisable(GL_LIGHTING)
+    glMatrixMode(GL_MODELVIEW)
 
-    if program is not None: glCallList(program)
-    if highlight is not None: glCallList(highlight)
-    glColor3f(1,0,0)
-    glDepthFunc(GL_ALWAYS)
-    glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
-    glDepthFunc(GL_LESS);
-    if live_plotter.running.get() and live_plotter.data:
-        pos = live_plotter.data[-3:]
+    if vars.show_program.get():
+        if program is not None: glCallList(program)
+        if highlight is not None: glCallList(highlight)
+
+    if vars.show_live_plot.get():
+        glColor3f(1,0,0)
+        glDepthFunc(GL_ALWAYS)
+        glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
+        glDepthFunc(GL_LESS);
+        if live_plotter.running.get() and live_plotter.data:
+            pos = live_plotter.data[-3:]
+            glPushMatrix()
+            glTranslatef(*pos)
+            glCallList(cone_program)
+            glPopMatrix()
+    if vars.show_live_plot.get() or vars.show_program.get():
         glPushMatrix()
-        glTranslatef(*pos)
-        glCallList(cone_program)
+        glScalef(1/25.4, 1/25.4, 1/25.4)
+        draw_axes()
         glPopMatrix()
-    glPushMatrix()
-    glScalef(1/25.4, 1/25.4, 1/25.4)
-    draw_axes()
-    glPopMatrix()
 
 
     glMatrixMode(GL_PROJECTION)
