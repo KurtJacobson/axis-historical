@@ -104,6 +104,7 @@ class MyOpengl(Opengl):
         self.select_event = None
         self.select_buffer_size = 100
         self.select_primed = False
+        self.last_position = None
         self.g = None
 
     def select_prime(self, event):
@@ -163,6 +164,7 @@ class MyOpengl(Opengl):
         glMatrixMode(GL_MODELVIEW)
 
     def set_current_line(self, line):
+        if line == vars.running_line.get(): return
         t.tag_remove("executing", "0.0", "end")
         if line is not None:
             vupdate(vars.running_line, line)
@@ -174,7 +176,7 @@ class MyOpengl(Opengl):
             vupdate(vars.running_line, -1)
 
     def set_highlight_line(self, line):
-        l = self.highlight_line = line
+        if line == vars.highlight_line.get(): return
         t.tag_remove("sel", "0.0", "end")
         if line is not None:
             t.see("%d.0" % (l+2))
@@ -491,7 +493,9 @@ class LivePlotter:
                 glVertex3f(*self.data[-3:])
                 glEnd()
                 glDrawBuffer(GL_BACK)
-        o.redraw_soon()
+        if self.stat.actual_position != o.last_position:
+            o.redraw_soon()
+            o.last_position = self.stat.actual_position
 
         vupdate(vars.interp_state, self.stat.interp_state)
         vupdate(vars.task_mode, self.stat.task_mode)
