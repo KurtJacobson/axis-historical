@@ -893,12 +893,15 @@ class TclCommands(nf.TclCommands):
 
     def open_file(*event):
         if running(): return
-        f = root_window.tk.call("tk_getOpenFile", "-initialdir", ".",
+        global open_directory
+        f = root_window.tk.call("tk_getOpenFile", "-initialdir", open_directory,
             "-defaultextension", ".ngc",
             "-filetypes", "{{rs274ngc files} {.ngc}} {{All files} *}")
         if not f: return
         o.set_highlight_line(None)
         f = str(f)
+        open_directory = os.path.dirname(f)
+        print "new open_directory", open_directory
         open_file_guts(f)
 
     def reload_file(*event):
@@ -1139,11 +1142,14 @@ import sys, getopt, _tkinter
 axiscount = 3
 axisnames = "X Y Z".split()
 
+open_directory = "programs"
+
 if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     import ConfigParser
     inifile = emc.ini(sys.argv[2])
     axiscount = int(inifile.find("TRAJ", "AXES"))
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
+    open_directory = inifile.find("DISPLAY", "PROGRAM_PREFIX")
     max_feed_override = float(inifile.find("DISPLAY", "MAX_FEED_OVERRIDE"))
     max_feed_override = int(max_feed_override * 100 + 0.5)
     jog_speed = float(inifile.find("TRAJ", "DEFAULT_VELOCITY"))
