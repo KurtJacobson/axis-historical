@@ -514,6 +514,7 @@ class LivePlotter:
             o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
 
+        vupdate(vars.exec_state, self.stat.exec_state)
         vupdate(vars.interp_state, self.stat.interp_state)
         vupdate(vars.task_mode, self.stat.task_mode)
         vupdate(vars.task_state, self.stat.task_state)
@@ -590,10 +591,18 @@ def open_file_guts(f):
     root_window.tk.call("place", "._busy", "-x", "9999", "-y", "9999")
     root_window.tk.call("focus", "-force", "._busy")
     root_window.update()
+    t0 = time.time()
+
     try:
         ensure_mode(emc.MODE_AUTO)
         c.reset_interpreter()
         c.program_open(f)
+            
+        t.configure(state="normal")
+        t.delete("0.0", "end")
+        for i, l in enumerate(open(f)):
+            l = l.expandtabs().replace("\r", "")
+            t.insert("end", "%6d: " % (i+1), "lineno", l)
 
         f = os.path.abspath(f)
         o.g = canon = GLCanon(widgets.text)
@@ -602,12 +611,7 @@ def open_file_guts(f):
         if result >= rs274.RS274NGC_MIN_ERROR:
             root_window.tk.call("nf_dialog", ".error", "G-Code error in %s" %f,
                     rs274.errorlist.get(result, result), "error",0,"OK")
-            
-        t.configure(state="normal")
-        t.delete("0.0", "end")
-        for i, l in enumerate(open(f)):
-            l = l.expandtabs().replace("\r", "")
-            t.insert("end", "%6d: " % (i+1), "lineno", l)
+
         t.configure(state="disabled")
 
         make_main_list(canon)
@@ -620,6 +624,7 @@ def open_file_guts(f):
         # widget is destroyed and focus has passed to some other widget,
         # which will handle the keystrokes instead, leading to the
         # R-while-loading bug.
+        print "load_time", time.time() - t0
         root_window.update()
         root_window.tk.call("blt::busy", "release", ".")
         root_window.tk.call("destroy", "._busy")
@@ -630,6 +635,7 @@ vars = nf.Variables(root_window,
     ("mdi_command", StringVar),
     ("taskfile", StringVar),
     ("interp_pause", IntVar),
+    ("exec_state", IntVar),
     ("task_state", IntVar),
     ("interp_state", IntVar),
     ("task_mode", IntVar),

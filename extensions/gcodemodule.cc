@@ -151,20 +151,23 @@ PyTypeObject LineCodeType = {
 
 PyObject *callback;
 int interp_error;
-int last_lineno;
-int lineno;
+int last_sequence_number;
 int plane;
 bool metric;
 
 void maybe_new_line() {
     if(interp_error) return;
-    if(lineno == last_lineno) return;
-    last_lineno = lineno;
     LineCode *new_line_code =
         (LineCode*)(PyObject_New(LineCode, &LineCodeType));
     rs274ngc_active_settings(new_line_code->settings);
     rs274ngc_active_g_codes(new_line_code->gcodes);
     rs274ngc_active_m_codes(new_line_code->mcodes);
+    int sequence_number = new_line_code->gcodes[0];
+    if(sequence_number == last_sequence_number) {
+        Py_DECREF(new_line_code);
+        return;
+    }
+    last_sequence_number = sequence_number;
     PyObject *result = 
         PyObject_CallMethod(callback, "next_line", "O", new_line_code);
     if(result == NULL) interp_error ++;
@@ -370,15 +373,13 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
     if(!PyArg_ParseTuple(args, "sO", &f, &callback)) return NULL;
 
     metric=false;
-    lineno=1;
     interp_error = 0;
-    last_lineno = -1;
+    last_sequence_number = -1;
 
     rs274ngc_init();
     rs274ngc_open(f);
     int result;
     while(!interp_error) {
-        lineno++;
         result = rs274ngc_read();
         if(result != RS274NGC_OK) break;
         result = rs274ngc_execute();

@@ -35,12 +35,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
 
     def next_line(self, st):
         self.state = st
-        if self.text is None: return
-        state = " ".join(
-            ["G%g" % i for i in st.gcodes[1:] if i is not None]
-            + ["M%g" % i for i in st.mcodes[1:] if i is not None]
-            + ["S%g F%g" % (st.spindle, st.speed)])
-        self.text.insert("%d.end" % st.sequence_number, "\t" + state, "state")
+        self.lineno = self.state.sequence_number + 1
 
     def set_spindle_rate(self, arg): pass
     def set_feed_rate(self, arg): pass
@@ -51,7 +46,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         if a:
             c = cos(a * pi/180); s = sin(a * pi/180)
             y, z = y * c - z * s, y*s + z*c
-        self.traverse.append((self.state.sequence_number, self.ox, self.oy, self.oz, x,y,z))
+        self.traverse.append((self.lineno, self.ox, self.oy, self.oz, x,y,z))
         self.ox = x
         self.oy = y
         self.oz = z
@@ -60,7 +55,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         if a:
             c = cos(a * pi/180); s = sin(a * pi/180)
             y, z = y * c - z * s, y*s + z*c
-        self.feed.append((self.state.sequence_number, self.ox, self.oy, self.oz, x,y,z))
+        self.feed.append((self.lineno, self.ox, self.oy, self.oz, x,y,z))
         self.ox = x
         self.oy = y
         self.oz = z
@@ -70,7 +65,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
             color = (1,1,1)
         else:
             color = (1,.5,.5)
-        self.dwells.append((self.state.sequence_number, color, self.ox, self.oy, self.oz, self.state.plane/10-17))
+        self.dwells.append((self.lineno, color, self.ox, self.oy, self.oz, self.state.plane/10-17))
 
 
     def draw_lines(self, lines, for_selection):

@@ -45,8 +45,8 @@ class ArcsToSegmentsMixin:
             f = n = [x1,z1,y1, a, b, c]
             xyz = [0,2,1]
         else:
-            f = n = [z1,y1,x1, a, b, c]
-            xyz = [2,1,0]
+            f = n = [z1,x1,y1, a, b, c]
+            xyz = [1,2,0]
         o = [self.ox-self.offset_x, self.oy-self.offset_y, self.oz-self.offset_z, 0, 0, 0]
         theta1 = math.atan2(o[xyz[1]]-cy, o[xyz[0]]-cx)
         theta2 = math.atan2(n[xyz[1]]-cy, n[xyz[0]]-cx)
