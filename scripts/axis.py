@@ -583,6 +583,7 @@ def open_file_guts(f):
         make_selection_list(g)
     finally:
         root_window.tk.call("blt::busy", "release", ".")
+        o.tkRedraw()
 
 def set_feedrate(*args):
     try:
