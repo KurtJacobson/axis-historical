@@ -1,12 +1,16 @@
 NEEDED for public beta release
-* hook up feed override
-* make status bar reflect reality (only machine state so far) 
-* make active g-codes work (or ungrid it for now)
+* most important keystrokes
 
 NEEDED for 1.0
 * use real rs274 parser instead of homebrew
-* integrate build of Togl
-* install pyemc in emc's plat bin directory
+* integrate build of Togl (or get debian build fixed for bdi)
+* install axis in emc's plat bin directory
+* all keystrokes
+* toggle machine/commanded, relative/absolute coordinates
+* show that stuff in status bar
+* set relative coordinate offset (right-click on axis in xemc)
+* limit override 
+* axis speed (jogging)
 
 Wishlist items
 * make step button work from program beginning (if possible?)

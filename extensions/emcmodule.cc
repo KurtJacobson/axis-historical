@@ -325,7 +325,7 @@ static PyMemberDef Stat_members[] = {
     {"queue", T_INT, O(motion.traj.queue), READONLY},
     {"id", T_INT, O(motion.traj.id), READONLY},
     {"paused", T_INT, O(motion.traj.paused), READONLY},
-    {"scale", T_DOUBLE, O(motion.traj.scale), READONLY},
+    {"feedrate", T_DOUBLE, O(motion.traj.scale), READONLY},
     
     {"velocity", T_DOUBLE, O(motion.traj.velocity), READONLY},
     {"acceleration", T_DOUBLE, O(motion.traj.acceleration), READONLY},
@@ -671,6 +671,15 @@ static PyObject *mode(pyCommandChannel *s, PyObject *o) {
     return Py_None;
 }
 
+static PyObject *feedrate(pyCommandChannel *s, PyObject *o) {
+    EMC_TRAJ_SET_SCALE m;
+    if(!PyArg_ParseTuple(o, "d", &m.scale)) return NULL;
+    m.serial_number = next_serial(s);
+    s->c->write(m);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 static PyObject *spindle(pyCommandChannel *s, PyObject *o) {
     int dir;
     if(!PyArg_ParseTuple(o, "i", &dir)) return NULL;
@@ -995,6 +1004,7 @@ static PyMethodDef Command_methods[] = {
     {"state", (PyCFunction)state, METH_VARARGS},
     {"mdi", (PyCFunction)mdi, METH_VARARGS},
     {"mode", (PyCFunction)mode, METH_VARARGS},
+    {"feedrate", (PyCFunction)feedrate, METH_VARARGS},
     {"spindle", (PyCFunction)spindle, METH_VARARGS},
     {"tool_offset", (PyCFunction)tool_offset, METH_VARARGS},
     {"mist", (PyCFunction)mist, METH_VARARGS},

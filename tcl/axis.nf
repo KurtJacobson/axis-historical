@@ -917,9 +917,8 @@ label .tabs.mdi.gcodes \
 	-anchor w \
 	-borderwidth 2 \
 	-justify left \
-	-relief sunken
-setup_widget_accel .tabs.mdi.gcodes {G80 G17 G40 G20 G90 G94 G54 G99 G64
-M5 M9 M48 F60 S0}
+	-relief sunken \
+	-textv active_codes
 
 vspace .tabs.mdi.vs3 \
 	-height 16
@@ -947,7 +946,7 @@ grid .tabs.mdi.gcodes \
 	-column 0 \
 	-row 7 \
 	-columnspan 2 \
-	-sticky w
+	-sticky new
 
 # Grid widget .tabs.mdi.go
 grid .tabs.mdi.go \
@@ -1052,14 +1051,6 @@ pack .info.task_state \
 
 # Pack widget .info.tool
 pack .info.tool \
-	-side left
-
-# Pack widget .info.offset
-pack .info.offset \
-	-side left
-
-# Pack widget .info.position
-pack .info.position \
 	-side left
 
 frame .t \

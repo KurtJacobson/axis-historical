@@ -24,7 +24,7 @@ __version__ = string.split('$Revision$')[1]
 __date__ = string.join(string.split('$Date$')[1:3], ' ')
 __author__ = 'Jeff Epler <jepler@unpythonic.net>'
 
-import sys, array
+import sys, array, time
 ldflags = sys.getdlopenflags(); sys.setdlopenflags(0x102)
 import _tkinter
 sys.setdlopenflags(ldflags)
@@ -395,7 +395,10 @@ def make_main_list(g):
 import array
 
 def vupdate(var, val):
-    if var.get() == val: return
+    try:
+        if var.get() == val: return
+    except ValueError:
+        pass
     var.set(val)
 
 def colinear(p1, p2, p3):
@@ -495,7 +498,34 @@ class LivePlotter:
         vupdate(vars.flood, self.stat.flood)
         vupdate(vars.brake, self.stat.spindle_brake)
         vupdate(vars.spindledir, self.stat.spindle_direction)
+        vupdate(vars.feedrate, int(100 * self.stat.feedrate))
+        current_tool = [i for i in s.tool_table if i[0] == s.tool_in_spindle]
+        if s.tool_in_spindle == 0:
+            vupdate(vars.tool, "No tool")
+        elif current_tool == []:
+            vupdate(vars.tool, "Unknown tool %d" % s.tool_in_spindle)
+        else:
+            vupdate(vars.tool,
+                 "Tool %d, offset %g, radius %g" % current_tool[0])
+        active_codes = []
+        for i in s.gcodes[1:]:
+            if i == -1: continue
+            if i % 10 == 0:
+                active_codes.append("G%d" % (i/10))
+            else:
+                active_codes.append("G%d.%d" % (i/10, i%10))
 
+        for i in s.mcodes[1:]:
+            if i == -1: continue
+            active_codes.append("M%d" % i)
+
+        active_codes.append("F%.0f" % s.settings[1])
+        active_codes.append("S%.0f" % s.settings[2])
+
+        mid = len(active_codes)/2
+        a, b = active_codes[:mid], active_codes[mid:]
+        active_codes = " ".join(a) + "\n" + " ".join(b)
+        vupdate(vars.active_codes, active_codes)
 
     def clear(self):
         del self.data[:]
@@ -524,6 +554,17 @@ def open_file_guts(f):
     t.configure(state="disabled")
     make_main_list(g)
 
+def set_feedrate(*args):
+    try:
+        value = vars.feedrate.get()
+    except ValueError: return
+    value = value / 100.
+    c.feedrate(value)
+    for i in range(5):
+        if s.feedrate == value: break
+        time.sleep(.05)
+        s.poll()
+
 vars = nf.Variables(root_window, 
     ("mdi_command", StringVar),
     ("taskfile", StringVar),
@@ -540,9 +581,13 @@ vars = nf.Variables(root_window,
     ("highlight_line", IntVar),
     ("show_program", IntVar),
     ("show_live_plot", IntVar),
+    ("feedrate", IntVar),
+    ("tool", IntVar),
+    ("active_codes", StringVar),
 )
 vars.show_program.set(1)
 vars.show_live_plot.set(1)
+vars.feedrate.trace("w", set_feedrate)
 
 widgets = nf.Widgets(root_window, 
     ("text", Text, ".t.text"),
