@@ -31,7 +31,7 @@ from build_scripts import *
 from togl_setup import get_togl_flags
 
 name="axis"
-version="0.9.6.1"
+version="1.0b1"
 DOCDIR="doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
