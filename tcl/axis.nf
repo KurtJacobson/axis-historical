@@ -1019,6 +1019,7 @@ setup_widget_accel .tabs.mdi.gcodel {Active G-Codes:}
 text .tabs.mdi.gcodes \
 	-borderwidth 2 \
 	-relief sunken -height 2 -width 20
+.tabs.mdi.gcodes configure -state disabled
 
 vspace .tabs.mdi.vs3 \
 	-height 16
@@ -1292,6 +1293,7 @@ Middle Button	Rotate view
 	-elide {}
 
 .mouse.text tag add desc 1.14 1.22 2.14 2.25 3.14 3.23
+.mouse.text configure -state disabled
 
 button .mouse.ok \
 	-command {wm wi .mouse} \
@@ -1357,6 +1359,7 @@ F5	Code entry
 	-elide {}
 
 .keys.text tag add desc 1.3 1.24 1.27 1.39 2.3 2.18 2.21 2.32 3.4 3.16 4.5 4.22 4.25 4.38 5.5 5.23 5.26 5.40 6.5 6.22 6.27 6.39 7.5 7.23 8.5 8.22 8.26 8.37 9.5 9.22 9.26 9.38 10.2 10.22 11.2 11.16 11.19 11.36 12.5 12.27 12.36 12.52 13.12 13.26 13.30 13.52 14.9 14.24 14.29 14.58 15.13 15.27 15.32 15.56 16.5 16.20 16.25 16.50 18.3 18.17 18.28 18.43 19.3 19.13
+.keys.text configure -state disabled
 
 button .keys.ok \
 	-command {wm wi .keys} \
