@@ -569,8 +569,21 @@ def ensure_mode(m):
     c.mode(m)
     return True
 
+
 def open_file_guts(f):
+    old_focus = root_window.tk.call("focus", "-lastfor", ".")
     root_window.tk.call("blt::busy", "hold", ".")
+    # blt::busy adds a fake window that keeps mouse events from reaching
+    # widgets.  It does nothing about keys.  To hide key events, I must
+    # first provide a widget that will be given keyboard focus.  It must
+    # break on <Key> events, because most keybindings are on . which
+    # means they are automatically applied to all widgets in the
+    # top-level window.  In order to focus the window, it must be
+    # visible.  I place it in a location that should be offscreen.
+    root_window.tk.call("label", "._busy")
+    root_window.tk.call("bind", "._busy", "<Key>", "break")
+    root_window.tk.call("place", "._busy", "-x", "9999", "-y", "9999")
+    root_window.tk.call("focus", "-force", "._busy")
     root_window.update()
     try:
         ensure_mode(emc.MODE_AUTO)
@@ -580,7 +593,6 @@ def open_file_guts(f):
         t.configure(state="normal")
         t.delete("0.0", "end")
         for i, l in enumerate(open(f)):
-            root_window.update()
             l = l.expandtabs().replace("\r", "")
             t.insert("end", "%6d: " % (i+1), "lineno", l)
         code = parse_lines(f)
@@ -591,19 +603,18 @@ def open_file_guts(f):
         make_main_list(g)
         make_selection_list(g)
     finally:
+        # Before unbusying, I update again, so that any keystroke events
+        # that reached the program while it was busy are sent to the
+        # label, not to another window in the application.  If this
+        # update call is removed, the events are only handled after that
+        # widget is destroyed and focus has passed to some other widget,
+        # which will handle the keystrokes instead, leading to the
+        # R-while-loading bug.
+        root_window.update()
         root_window.tk.call("blt::busy", "release", ".")
+        root_window.tk.call("destroy", "._busy")
+        root_window.tk.call("focus", old_focus)
         o.tkRedraw()
-
-def set_feedrate(*args):
-    try:
-        value = vars.feedrate.get()
-    except ValueError: return
-    value = value / 100.
-    c.feedrate(value)
-    for i in range(5):
-        if s.feedrate == value: break
-        time.sleep(.05)
-        s.poll()
 
 vars = nf.Variables(root_window, 
     ("mdi_command", StringVar),
@@ -631,7 +642,6 @@ vars.running_line.set(-1)
 vars.show_program.set(1)
 vars.show_live_plot.set(1)
 vars.show_tool.set(1)
-vars.feedrate.trace("w", set_feedrate)
 
 widgets = nf.Widgets(root_window, 
     ("text", Text, ".t.text"),
@@ -710,6 +720,20 @@ class SelectionHandler:
 selection = SelectionHandler(root_window)
 
 class TclCommands(nf.TclCommands):
+    def set_feedrate(newval):
+        try:
+            value = int(newval)
+        except ValueError: return
+        value = value / 100.
+        c.feedrate(value)
+
+        # This code attempts to debounce the feedrate slider.  Without this
+        # code, the slider will jump back to the old location 
+        for i in range(5):
+            if s.feedrate == value: break
+            time.sleep(.01)
+            s.poll()
+
     def copy_line(*args):
         line = -1
         if vars.running_line.get() != -1: line = vars.running_line.get()

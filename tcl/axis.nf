@@ -1133,7 +1133,8 @@ scale .feedoverride.foscale \
 	-showvalue 0 \
 	-to 120.0 \
 	-variable feedrate \
-	-resolution 5
+	-resolution 5 \
+	-command set_feedrate
 
 label .feedoverride.l
 setup_widget_accel .feedoverride.l {Feed Override (%):}
