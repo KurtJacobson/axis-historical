@@ -297,7 +297,7 @@ Button .toolbar.machine_estop \
 	-image [load_image tool_estop] \
 	-relief sunken \
 	-takefocus 0
-bind .toolbar.machine_estop <Button> { estop_clicked }
+bind .toolbar.machine_estop <Button-1> { estop_clicked }
 setup_widget_accel .toolbar.machine_estop {}
 
 Button .toolbar.machine_power \
@@ -651,10 +651,10 @@ button .tabs.manual.jogf.jogminus \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.jogf.jogminus <Button> {
+bind .tabs.manual.jogf.jogminus <Button-1> {
     if {[is_continuous]} { jog_minus }
 }
-bind .tabs.manual.jogf.jogminus <ButtonRelease> {
+bind .tabs.manual.jogf.jogminus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
 setup_widget_accel .tabs.manual.jogf.jogminus -
@@ -664,10 +664,10 @@ button .tabs.manual.jogf.jogplus \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.jogf.jogplus <Button> {
+bind .tabs.manual.jogf.jogplus <Button-1> {
     if {[is_continuous]} { jog_plus }
 }
-bind .tabs.manual.jogf.jogplus <ButtonRelease> {
+bind .tabs.manual.jogf.jogplus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
 setup_widget_accel .tabs.manual.jogf.jogplus +
@@ -755,11 +755,11 @@ button .tabs.manual.spindlef.spindleminus \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.spindlef.spindleminus <Button> {
+bind .tabs.manual.spindlef.spindleminus <Button-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_decrease
 }
-bind .tabs.manual.spindlef.spindleminus <ButtonRelease> {
+bind .tabs.manual.spindlef.spindleminus <ButtonRelease-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_constant
 }
@@ -769,11 +769,11 @@ button .tabs.manual.spindlef.spindleplus \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.spindlef.spindleplus <Button> {
+bind .tabs.manual.spindlef.spindleplus <Button-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_increase
 }
-bind .tabs.manual.spindlef.spindleplus <ButtonRelease> {
+bind .tabs.manual.spindlef.spindleplus <ButtonRelease-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_constant
 }
@@ -1115,7 +1115,7 @@ pack .t.sb \
 
 frame .feedoverride
 
-entry .feedoverride.foentry \
+label .feedoverride.foentry \
 	-textvariable feedrate \
 	-width 3
 
@@ -1123,7 +1123,8 @@ scale .feedoverride.foscale \
 	-orient horizontal \
 	-showvalue 0 \
 	-to 120.0 \
-	-variable feedrate
+	-variable feedrate \
+	-resolution 5
 
 label .feedoverride.l
 setup_widget_accel .feedoverride.l {Feed Override (%):}
