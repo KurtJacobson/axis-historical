@@ -26,6 +26,7 @@ Wishlist items
 * more built-in help
 * for live plot, G0 vs G1 should be different colors
 * file open dialog should remember the directory from previous open
+* file open's initial default directory should be read from the ini
 
 Missing dialogs/subwindows from xemc:
 * tool list editor (at least display?)
