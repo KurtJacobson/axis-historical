@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #    This is a component of AXIS, a front-end for emc
-#    Copyright 2004 Jeff Epler <jepler@unpythonic.net>
+#    Copyright 2004, 2005 Jeff Epler <jepler@unpythonic.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -34,7 +34,29 @@ DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
 emcroot = os.getenv("EMCROOT", find_emc_root())
+if emcroot is None:
+    print """\
+setup.py failed to locate the root directory of your emc installation.
+Determine the location of your emc installation and re-run setup.py with a
+commandline like this:
+    $ env EMCROOT=/usr/local/emc python setup.py
+
+See the README file for more information.
+"""
+    raise SystemExit, 1
 emcplat = os.getenv("PLAT", find_emc_plat(emcroot))
+if emcplat is None:
+    print """\
+setup.py failed to locate the (non-realtime) platform of your emc installation.
+Determine the platform name and re-run setup.py with a commandline like this:
+    $ env PLAT=nonrealtime python setup.py
+
+If you had to specify EMCSOURCEDIR, the commandline would look like
+    $ env EMCSOURCEDIR=/usr/local/emc PLAT=nonrealtime python setup.py
+
+See the README file for more information.
+"""
+    raise SystemExit, 1
 
 distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
         "%s/emc/plat/%s/bin" % (emcroot, emcplat)
@@ -88,8 +110,7 @@ setup(name=name, version=version,
     author="Jeff Epler", author_email="jepler@unpythonic.net",
     package_dir={'': 'lib', 'rs274' : 'rs274'},
     packages=['', 'rs274'],
-    scripts={WINDOWED('gplot'): 'scripts/gplot.py',
-             WINDOWED('axis'): 'scripts/axis.py',
+    scripts={WINDOWED('axis'): 'scripts/axis.py',
              TERMINAL('mdi'): 'scripts/mdi.py'},
     cmdclass = {'build_scripts': build_scripts},
     data_files = [(os.path.join(SHAREDIR, "tcl"), glob("tcl/*.tcl")),
