@@ -64,10 +64,10 @@ proc relief {e args} {
 proc update_state {args} {
     if {$::taskfile == ""} {
         wm ti . "AXIS (No file)"
-	wm iconname . "AXIS"
+        wm iconname . "AXIS"
     } else {
         wm ti . "$::taskfile - AXIS"
-	wm iconname . "$::taskfile"
+        wm iconname . "[lindex [file split $::taskfile] end]"
     }
 
     switch $::task_state \
@@ -198,3 +198,5 @@ DynamicHelp::add .tabs.manual.axes.axisc -text {Select axis [5]}
 DynamicHelp::add .tabs.manual.jogf.jogminus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogplus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogspeed -text {Select jog ingrement}
+
+# vim:ts=8:sts=4:et:
