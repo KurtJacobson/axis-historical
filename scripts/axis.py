@@ -910,7 +910,6 @@ class TclCommands(nf.TclCommands):
         c.brake(0)
 commands = TclCommands(root_window)
 root_window.bind("<Escape>", commands.task_stop)
-root_window.bind("t", commands.task_step)
 root_window.bind("o", commands.open_file)
 root_window.bind("s", commands.task_resume)
 root_window.bind("t", commands.task_step)
