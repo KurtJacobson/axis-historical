@@ -106,8 +106,8 @@ proc update_state {args} {
     relief {$interp_state == $INTERP_IDLE} \
                 .toolbar.program_stop
 
-    state {$running_line != -1 || $highight_line != -1} {.menu.edit 0}
-    state {$interp_state == $INTERP_IDLE && $highight_line != -1} \
+    state {$running_line != -1 || $highlight_line != -1} {.menu.edit 0}
+    state {$interp_state == $INTERP_IDLE && $highlight_line != -1} \
                 {.menu.program 1}
 
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
