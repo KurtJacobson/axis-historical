@@ -128,6 +128,13 @@ setup_menu_accel .menu.edit 4 {_Side view}
 
 setup_menu_accel .menu.edit 5 {_Front view}
 
+.menu.edit add command \
+	-command set_view_p \
+	-label {Perspective view} \
+	-underline 0
+
+setup_menu_accel .menu.edit 6 {_Perspective view}
+
 .menu.edit add separator
 
 
@@ -136,21 +143,22 @@ setup_menu_accel .menu.edit 5 {_Front view}
 	-label {Show program} \
 	-underline 1
 
-setup_menu_accel .menu.edit 7 {S_how program}
+setup_menu_accel .menu.edit 8 {S_how program}
 
 .menu.edit add checkbutton \
 	-variable show_live_plot \
 	-label {Show live plot} \
 	-underline 3
 
-setup_menu_accel .menu.edit 8 {Sho_w live plot}
+setup_menu_accel .menu.edit 9 {Sho_w live plot}
 
 .menu.edit add command \
+	-accelerator Ctrl-K \
 	-command clear_live_plot \
 	-label {Clear live plot} \
 	-underline 1
 
-setup_menu_accel .menu.edit 9 {C_lear live plot}
+setup_menu_accel .menu.edit 10 {C_lear live plot}
 
 # Configure widget .menu.edit
 wm title .menu.edit edit
@@ -172,6 +180,8 @@ setup_menu_accel .menu.program 0 {_Verify program}
 	-command set_next_line \
 	-label {Set next line} \
 	-underline 4
+
+setup_menu_accel .menu.program 1 {Set _next line}
 
 .menu.program add command \
 	-accelerator R \
@@ -229,9 +239,9 @@ menu .menu.help \
 setup_menu_accel .menu.help 0 {_About AXIS}
 
 .menu.help add command \
-	-command {wm deiconfiy .keys} \
+	-command {wm transient .keys .;wm deiconify .keys} \
 	-label {Key Reference} \
-	-underline 0 -state disabled
+	-underline 0
 
 setup_menu_accel .menu.help 1 {_Key Reference}
 
@@ -362,7 +372,7 @@ vrule .toolbar.rule8
 
 Button .toolbar.view_zoomin \
 	-command zoomin \
-	-helptext {Zoom in} \
+	-helptext {Zoom in [+]} \
 	-image [load_image tool_zoomin] \
 	-relief link \
 	-takefocus 0
@@ -370,7 +380,7 @@ setup_widget_accel .toolbar.view_zoomin {}
 
 Button .toolbar.view_zoomout \
 	-command zoomout \
-	-helptext {Zoom out} \
+	-helptext {Zoom out [-]} \
 	-image [load_image tool_zoomout] \
 	-relief link \
 	-takefocus 0
@@ -420,7 +430,7 @@ vrule .toolbar.rule12
 
 Button .toolbar.clear_plot \
 	-command clear_live_plot \
-	-helptext {Clear live plot} \
+	-helptext {Clear live plot [Ctrl-K]} \
 	-image [load_image tool_clear] \
 	-relief link \
 	-takefocus 0
@@ -711,33 +721,6 @@ setup_widget_accel .tabs.manual.spindlel Spindle:
 
 frame .tabs.manual.spindlef
 
-button .tabs.manual.spindlef.spindleminus \
-	-padx 0 \
-	-pady 0 \
-	-width 2
-setup_widget_accel .tabs.manual.spindlef.spindleminus -
-bind .tabs.manual.spindlef.spindleminus <ButtonPress> {
-	if {[%W cget -state] == "disabled"} { continue }
-	spindle_decrease
-}
-bind .tabs.manual.spindlef.spindleminus <ButtonRelease> {
-	if {[%W cget -state] == "disabled"} { continue }
-	spindle_constant
-}
-button .tabs.manual.spindlef.spindleplus \
-	-padx 0 \
-	-pady 0 \
-	-width 2
-setup_widget_accel .tabs.manual.spindlef.spindleplus +
-bind .tabs.manual.spindlef.spindleplus <ButtonPress> {
-	if {[%W cget -state] == "disabled"} { continue }
-	spindle_increase
-}
-bind .tabs.manual.spindlef.spindleplus <ButtonRelease> {
-	if {[%W cget -state] == "disabled"} { continue }
-	spindle_constant
-}
-
 radiobutton .tabs.manual.spindlef.ccw \
 	-borderwidth 2 \
 	-command spindle \
@@ -766,6 +749,34 @@ radiobutton .tabs.manual.spindlef.cw \
 	-value 1 \
 	-variable spindledir
 setup_widget_accel .tabs.manual.spindlef.cw {}
+
+button .tabs.manual.spindlef.spindleminus \
+	-padx 0 \
+	-pady 0 \
+	-width 2
+bind .tabs.manual.spindlef.spindleminus <Button> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_decrease
+}
+bind .tabs.manual.spindlef.spindleminus <ButtonRelease> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_constant
+}
+setup_widget_accel .tabs.manual.spindlef.spindleminus -
+
+button .tabs.manual.spindlef.spindleplus \
+	-padx 0 \
+	-pady 0 \
+	-width 2
+bind .tabs.manual.spindlef.spindleplus <Button> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_increase
+}
+bind .tabs.manual.spindlef.spindleplus <ButtonRelease> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_constant
+}
+setup_widget_accel .tabs.manual.spindlef.spindleplus +
 
 checkbutton .tabs.manual.spindlef.brake \
 	-command brake \
@@ -845,7 +856,7 @@ grid .tabs.manual.axis \
 # Grid widget .tabs.manual.flood
 grid .tabs.manual.flood \
 	-column 1 \
-	-row 5 \
+	-row 6 \
 	-columnspan 2 \
 	-padx 4 \
 	-sticky w
@@ -866,7 +877,7 @@ grid .tabs.manual.lube \
 # Grid widget .tabs.manual.mist
 grid .tabs.manual.mist \
 	-column 1 \
-	-row 6 \
+	-row 5 \
 	-columnspan 2 \
 	-padx 4 \
 	-sticky w
@@ -902,8 +913,8 @@ setup_widget_accel .tabs.mdi.historyl History:
 
 text .tabs.mdi.history \
 	-height 8 \
-	-state disabled \
 	-width 40
+.tabs.mdi.history configure -state disabled
 grid rowconfigure .tabs.mdi.history 0 -weight 1
 
 vspace .tabs.mdi.vs1 \
@@ -933,7 +944,8 @@ label .tabs.mdi.gcodes \
 	-borderwidth 2 \
 	-justify left \
 	-relief sunken \
-	-textv active_codes
+	-textvariable active_codes
+setup_widget_accel .tabs.mdi.gcodes {}
 
 vspace .tabs.mdi.vs3 \
 	-height 16
@@ -1163,11 +1175,90 @@ pack .about.message \
 pack .about.ok
 
 # Configure widget .about
-wm protocol .about WM_DELETE_WINDOW {wm wi .about}
 wm title .about {About AXIS}
 wm resiz .about 0 0
 wm minsize .about 1 1
 wm maxsize .about 1905 1170
+wm protocol .about WM_DELETE_WINDOW {wm wi .about}
+
+toplevel .keys
+bind .keys <Key-Return> { wm withdraw .keys }
+
+text .keys.text \
+	-background [systembuttonface] \
+	-font 9x15 \
+	-height 33 \
+	-relief flat \
+	-tabs 120 \
+	-width 33
+.keys.text insert end {F1	Emergency Stop
+F2	Turn machine on
+
+X, `	Select first axis
+Y, 1	Select second axis
+Z, 2	Select third axis
+A, 3	Select fourth axis
+   4	Select fifth axis
+   5	Select sixth axis
+I	Select jog increment
+C	Continuous Jog
+Home	Send current axis home
+Left, Right	Jog first axis
+Up, Down	Jog second axis
+Pg Up, Pg Dn	Jog third axis
+
+F3	Manual Control
+F5	Code entry
+
+O	Open program
+R	Run program
+ESC	Stop program
+P	Pause program
+S	Resume program
+
+B	Brake off
+Shift-B	Brake on
+F7	Toggle mist
+F8	Toggle flood
+F9	Turn spindle clockwise
+F10	Turn spindle counterclockwise
+
+Control-K	Clear live plot}
+.keys.text tag configure key \
+	-borderwidth {} \
+	-elide {} \
+	-font 9x15
+
+.keys.text tag add key 1.0 1.2 2.0 2.2 4.0 4.4 5.0 5.4 6.0 6.4 7.0 7.4 8.0 8.4 9.0 9.4 10.0 10.1 11.0 11.1 12.0 12.4 13.0 13.11 14.0 14.8 15.0 15.12 17.0 17.2 18.0 18.2 20.0 20.1 21.0 21.1 22.0 22.3 23.0 23.1 24.0 24.1 26.0 26.1 27.0 27.7 28.0 28.2 29.0 29.2 30.0 30.2 31.0 31.3 33.0 33.9
+.keys.text tag configure desc \
+	-borderwidth {} \
+	-elide {} \
+	-font {Helvetica -12}
+
+.keys.text tag add desc 1.3 1.17 2.3 2.18 4.5 4.22 5.5 5.23 6.5 6.22 7.5 7.23 8.5 8.22 9.5 9.22 10.2 10.22 11.2 11.16 12.5 12.27 13.12 13.26 14.9 14.24 15.13 15.27 17.3 17.17 18.3 18.13 20.2 20.14 21.2 21.13 22.4 22.16 23.2 23.15 24.2 24.16 26.2 26.11 27.8 27.16 28.3 28.14 29.3 29.15 30.3 30.25 31.4 31.33 33.10 33.25
+
+button .keys.ok \
+	-command {wm wi .keys} \
+	-default active \
+	-padx 0 \
+	-pady 0 \
+	-width 10
+setup_widget_accel .keys.ok OK
+
+# Pack widget .keys.text
+pack .keys.text \
+	-expand 1 \
+	-fill y
+
+# Pack widget .keys.ok
+pack .keys.ok
+
+# Configure widget .keys
+wm title .keys {AXIS key reference}
+wm resiz .keys 1 1
+wm minsize .keys 1 1
+wm maxsize .keys 1905 1170
+wm protocol .keys WM_DELETE_WINDOW {wm wi .keys}
 
 # Grid widget .feedoverride
 grid .feedoverride \

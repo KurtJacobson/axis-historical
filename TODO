@@ -24,4 +24,5 @@ Wishlist items
 Missing dialogs/subwindows from xemc:
 * tool list editor (at least display?)
 * axis editor
-* informational dialogs like xemc
+* coordinate systems
+* calibration, logging, variables, diagnostics

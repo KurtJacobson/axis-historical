@@ -177,3 +177,23 @@ bind . <Configure> { if {"%W" == "."} {
 wm maxsize . [winfo screenwidth .] [winfo screenheight .]
 
 wm withdraw .about
+wm withdraw .keys
+
+DynamicHelp::add .tabs.manual.spindlef.ccw -text {Turn spindle counterclockwise [F9]}
+DynamicHelp::add .tabs.manual.spindlef.cw -text {Turn spindle clockwise [F10]}
+DynamicHelp::add .tabs.manual.spindlef.stop -text {Stop spindle [F9/F10]}
+DynamicHelp::add .tabs.manual.spindlef.spindleplus -text {Turn spindle Faster}
+DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower}
+DynamicHelp::add .tabs.manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
+DynamicHelp::add .tabs.manual.flood -text {Turn flood on or off [F8]}
+DynamicHelp::add .tabs.manual.mist -text {Turn mist on or off [F9]}
+DynamicHelp::add .tabs.manual.jogf.button -text {Send selected axis home [HOME]}
+DynamicHelp::add .tabs.manual.axes.axisx -text {Select axis [X]}
+DynamicHelp::add .tabs.manual.axes.axisy -text {Select axis [Y]}
+DynamicHelp::add .tabs.manual.axes.axisz -text {Select axis [Z]}
+DynamicHelp::add .tabs.manual.axes.axisa -text {Select axis [A]}
+DynamicHelp::add .tabs.manual.axes.axisb -text {Select axis [4]}
+DynamicHelp::add .tabs.manual.axes.axisc -text {Select axis [5]}
+DynamicHelp::add .tabs.manual.jogf.jogminus -text {Jog selected axis}
+DynamicHelp::add .tabs.manual.jogf.jogplus -text {Jog selected axis}
+DynamicHelp::add .tabs.manual.jogf.jogspeed -text {Select jog ingrement}
