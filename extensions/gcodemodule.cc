@@ -352,7 +352,16 @@ void GET_EXTERNAL_PARAMETER_FILE_NAME(char *name, int max_size) {
 }
 int GET_EXTERNAL_LENGTH_UNIT_TYPE() { return CANON_UNITS_INCHES; }
 CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int tool) {
-    CANON_TOOL_TABLE t = {0, 0, 0}; return t;
+    CANON_TOOL_TABLE t = {0,0,0};
+    if(interp_error) return t;
+    PyObject *result =
+        PyObject_CallMethod(callback, "get_tool", "i", tool);
+    if(result == NULL ||
+        !PyArg_ParseTuple(result, "idd", &t.id, &t.length, &t.diameter))
+            interp_error ++;
+    printf("t.id=%d t.diameter=%f [%d]\n", t.id, t.diameter, interp_error);
+    Py_XDECREF(result);
+    return t;
 }
 void SET_FEED_REFERENCE(int ref) {}
 int GET_EXTERNAL_QUEUE_EMPTY() { return true; }
@@ -382,14 +391,14 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
 
     rs274ngc_init();
     rs274ngc_open(f);
-    int result;
+    int result = 0;
     while(!interp_error) {
         result = rs274ngc_read();
         if(result != RS274NGC_OK) break;
         result = rs274ngc_execute();
         if(result != RS274NGC_OK) break;
     }
-    if(interp_error) return NULL;
+    if(interp_error || !result) return NULL;
     PyObject *retval = PyTuple_New(2);
     PyTuple_SetItem(retval, 0, PyInt_FromLong(result));
     PyTuple_SetItem(retval, 1, PyInt_FromLong(last_sequence_number));

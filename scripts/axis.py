@@ -592,6 +592,14 @@ def ensure_mode(m):
     c.mode(m)
     return True
 
+class AxisCanon(GLCanon):
+    def get_tool(self, tool):
+        print tool, len(s.tool_table)
+        for t in s.tool_table:
+            if t[0] == tool:
+                print tool, t
+                return t
+        return tool,0.,0.
 
 def open_file_guts(f):
     set_first_line(0)
@@ -623,7 +631,7 @@ def open_file_guts(f):
             t.insert("end", "%6d: " % (i+1), "lineno", l)
 
         f = os.path.abspath(f)
-        o.g = canon = GLCanon(widgets.text)
+        o.g = canon = AxisCanon(widgets.text)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         result, seq = gcode.parse(f, canon)
         print "parse result", result
