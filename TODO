@@ -1,5 +1,9 @@
+BUGS
+State of "copy" and "set next line"
+
 NEEDED for public beta release
 * most important keystrokes
+* check that it fits on 800x600 BDI, or shorten text widget
 
 NEEDED for 1.0
 * use real rs274 parser instead of homebrew

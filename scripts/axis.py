@@ -774,6 +774,7 @@ class TclCommands(nf.TclCommands):
     def reload_file(*event):
         if running(): return
         s.poll()
+        if s.file == '': return
         o.set_highlight_line(None)
         open_file_guts(s.file)
 
@@ -805,6 +806,7 @@ class TclCommands(nf.TclCommands):
             c.auto(emc.AUTO_PAUSE)
 
     def task_stop(*event):
+        c.abort()
         c.abort()
 
     def send_mdi(*event):
