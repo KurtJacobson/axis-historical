@@ -61,7 +61,7 @@ proc relief {e args} {
     foreach w $args { $w configure -relief $newstate }
 }
 
-proc update_state {args} {
+proc update_title {args} {
     if {$::taskfile == ""} {
         wm ti . "AXIS (No file)"
         wm iconname . "AXIS"
@@ -70,6 +70,9 @@ proc update_state {args} {
         wm iconname . "[lindex [file split $::taskfile] end]"
     }
 
+}
+
+proc update_state {args} {
     switch $::task_state \
         $::STATE_ESTOP { set ::task_state_string ESTOP } \
         $::STATE_ESTOP_RESET { set ::task_state_string {ESTOP RESET} } \
@@ -135,6 +138,7 @@ set interp_state 0
 set running_line -1
 set highlight_line -1
 set spindledir {}
+trace variable taskfile w update_title
 trace variable taskfile w queue_update_state
 trace variable task_state w queue_update_state
 trace variable task_mode w queue_update_state
