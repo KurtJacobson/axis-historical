@@ -46,7 +46,6 @@ Tkinter.Tk = Tk
 from Tkinter import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import *
 from OpenGL.Tk import *
 from OpenGL.Tk import _default_root as root_window
 from _glfixes import glInterleavedArrays
@@ -339,17 +338,6 @@ def draw_axes():
     glVertex3f(-1.5,0.0,26.5)
 
     glEnd();
-
-#    Not sure I like this.
-#    glColor3f(0.2,1.0,0.2)
-#    glRasterPos(30,0,0)
-#    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, ord('X'))
-#    glColor3f(1.0,0.2,0.2)
-#    glRasterPos(0,30,0)
-#    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, ord('Y'))
-#    glColor3f(0.2,0.2,1.0)
-#    glRasterPos(0,0,30)
-#    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, ord('Z'))
 
 def toggle_perspective(e):
     o.perspective = not o.perspective
@@ -1001,6 +989,7 @@ activate_axis(0)
 
 make_cone()
 
+fontbase = o.tk.call(o._w, "loadbitmapfont", "9x15")
 live_plotter = LivePlotter(o)
 def redraw(self):
     if self.select_event:
@@ -1070,8 +1059,8 @@ def redraw(self):
             glBitmap(13, 16, 0, 3, 17, 0, homeicon)
         else:
             glRasterPos(23, ypos)
-        for char in string:
-            glutBitmapCharacter(GLUT_BITMAP_9_BY_15, ord(char))
+        glListBase(fontbase)
+        glCallLists(string)
         ypos -= 15
         i = i + 1
     glDepthFunc(GL_LESS)
