@@ -864,8 +864,8 @@ grid .tabs.manual.spindlef.stop \
 vspace .tabs.manual.space2 \
 	-height 16
 
-label .tabs.manual.lube
-setup_widget_accel .tabs.manual.lube Lubricant:
+label .tabs.manual.coolant
+setup_widget_accel .tabs.manual.coolant Coolant:
 
 checkbutton .tabs.manual.mist \
 	-command mist \
@@ -906,8 +906,8 @@ grid .tabs.manual.jogf \
 	-padx 4 \
 	-sticky w
 
-# Grid widget .tabs.manual.lube
-grid .tabs.manual.lube \
+# Grid widget .tabs.manual.coolant
+grid .tabs.manual.coolant \
 	-column 0 \
 	-row 5 \
 	-sticky w
