@@ -922,7 +922,7 @@ class TclCommands(nf.TclCommands):
     def task_pauseresume(*event):
         ensure_mode(emc.MODE_AUTO)
         s.poll()
-        if s.paused:
+        if s.interp_state == emc.INTERP_PAUSED:
             c.auto(emc.AUTO_RESUME)
         else:
             c.auto(emc.AUTO_PAUSE)
