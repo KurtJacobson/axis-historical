@@ -34,7 +34,6 @@ set INTERP_WAITING 4
 
 set manual [concat [winfo children .tabs.manual.axes] \
     [winfo children .tabs.manual.jogf] \
-    .tabs.manual.spindlef.spindleminus .tabs.manual.spindlef.spindleplus \
     .tabs.manual.spindlef.cw .tabs.manual.spindlef.ccw \
     .tabs.manual.spindlef.stop .tabs.manual.spindlef.brake \
     .tabs.manual.flood .tabs.manual.mist .tabs.mdi.history .tabs.mdi.command \
@@ -110,6 +109,11 @@ proc update_state {args} {
     state {$interp_state == $INTERP_IDLE && $highlight_line != -1} \
                 {.menu.program 1}
 
+    puts [list spindledir = $::spindledir [expr $::spindledir != 0]]
+    state {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE\
+            && $spindledir != 0} .tabs.manual.spindlef.spindleminus \
+        .tabs.manual.spindlef.spindleplus
+
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
         enable_group $::manual
     } else {
@@ -129,6 +133,7 @@ set interp_pause 0
 set interp_state 0
 set running_line -1
 set highlight_line -1
+set spindledir {}
 trace variable taskfile w queue_update_state
 trace variable task_state w queue_update_state
 trace variable task_mode w queue_update_state
@@ -136,6 +141,7 @@ trace variable interp_pause w queue_update_state
 trace variable interp_state w queue_update_state
 trace variable running_line w queue_update_state
 trace variable highlight_line w queue_update_state
+trace variable spindledir w queue_update_state
 
 bind . <Control-Tab> {
     set l [llength [.tabs tab names]]

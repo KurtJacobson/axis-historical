@@ -513,6 +513,7 @@ class LivePlotter:
         vupdate(vars.brake, self.stat.spindle_brake)
         vupdate(vars.spindledir, self.stat.spindle_direction)
         vupdate(vars.feedrate, int(100 * self.stat.feedrate))
+
         current_tool = [i for i in s.tool_table if i[0] == s.tool_in_spindle]
         if s.tool_in_spindle == 0:
             vupdate(vars.tool, "No tool")
@@ -828,9 +829,44 @@ class TclCommands(nf.TclCommands):
     def spindle(event=None):
         ensure_mode(emc.MODE_MANUAL)
         c.spindle(vars.spindledir.get())
+    def spindle_increase(event=None):
+        ensure_mode(emc.MODE_MANUAL)
+        c.spindle(emc.SPINDLE_INCREASE)
+    def spindle_decrease(event=None):
+        ensure_mode(emc.MODE_MANUAL)
+        c.spindle(emc.SPINDLE_DECREASE)
+    def spindle_constant(event=None):
+        ensure_mode(emc.MODE_MANUAL)
+        c.spindle(emc.SPINDLE_CONSTANT)
     def set_first_line(lineno):
         set_first_line(lineno)
 
+    def mist_toggle(*args):
+        s.poll()
+        c.mist(not s.mist)
+    def flood_toggle(*args):
+        s.poll()
+        c.flood(not s.flood)
+
+    def spindle_forward_toggle(*args):
+        s.poll()
+        if s.spindle_direction == 0:
+            c.spindle(1)
+        else:
+            c.spindle(0)
+
+    def spindle_backward_toggle(*args):
+        s.poll()
+        if s.spindle_direction == 0:
+            c.spindle(-1)
+        else:
+            c.spindle(0)
+        return "break" # bound to F10, don't activate menu
+
+    def brake_on(*args):
+        c.brake(1)
+    def brake_off(*args):
+        c.brake(0)
 commands = TclCommands(root_window)
 root_window.bind("<Escape>", commands.task_stop)
 root_window.bind("o", commands.open_file)
@@ -841,12 +877,17 @@ root_window.bind("r", commands.task_run)
 root_window.bind("<Control-r>", commands.reload_file)
 root_window.bind("<Key-F1>", commands.estop_clicked)
 root_window.bind("<Key-F2>", commands.onoff_clicked)
+root_window.bind("<Key-F7>", commands.mist_toggle)
+root_window.bind("<Key-F8>", commands.flood_toggle)
+root_window.bind("<Key-F9>", commands.spindle_forward_toggle)
+root_window.bind("<Key-F10>", commands.spindle_backward_toggle)
+root_window.bind("B", commands.brake_on)
+root_window.bind("b", commands.brake_off)
 root_window.bind("<Control-k>", commands.clear_live_plot)
 root_window.bind("x", lambda event: activate_axis(0))
 root_window.bind("y", lambda event: activate_axis(1))
 root_window.bind("z", lambda event: activate_axis(2))
 root_window.bind("a", lambda event: activate_axis(3))
-root_window.bind("b", lambda event: activate_axis(4))
 root_window.bind("~", lambda event: activate_axis(0))
 root_window.bind("1", lambda event: activate_axis(1))
 root_window.bind("2", lambda event: activate_axis(2))

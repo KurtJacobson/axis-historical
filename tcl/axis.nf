@@ -716,12 +716,27 @@ button .tabs.manual.spindlef.spindleminus \
 	-pady 0 \
 	-width 2
 setup_widget_accel .tabs.manual.spindlef.spindleminus -
-
+bind .tabs.manual.spindlef.spindleminus <ButtonPress> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_decrease
+}
+bind .tabs.manual.spindlef.spindleminus <ButtonRelease> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_constant
+}
 button .tabs.manual.spindlef.spindleplus \
 	-padx 0 \
 	-pady 0 \
 	-width 2
 setup_widget_accel .tabs.manual.spindlef.spindleplus +
+bind .tabs.manual.spindlef.spindleplus <ButtonPress> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_increase
+}
+bind .tabs.manual.spindlef.spindleplus <ButtonRelease> {
+	if {[%W cget -state] == "disabled"} { continue }
+	spindle_constant
+}
 
 radiobutton .tabs.manual.spindlef.ccw \
 	-borderwidth 2 \
