@@ -963,7 +963,7 @@ class TclCommands(nf.TclCommands):
             c.spindle(0)
 
     def spindle_backward_toggle(*args):
-        if not manual_ok(): return
+        if not manual_ok(): return "break"
         s.poll()
         if s.spindle_direction == 0:
             c.spindle(-1)

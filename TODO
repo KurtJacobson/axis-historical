@@ -12,6 +12,8 @@ NEEDED for 1.0
 
 Known Bugs
 * jog buttons don't work if you tab to them and use the space bar
+* (feature?) f-key actions can be done from MDI tab
+* double tap on jog with increment will jog between 1 and 2 increments
 
 Wishlist items
 * make step button work from program beginning (if possible?)

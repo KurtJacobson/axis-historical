@@ -36,7 +36,7 @@ set manual [concat [winfo children .tabs.manual.axes] \
     [winfo children .tabs.manual.jogf] \
     .tabs.manual.spindlef.cw .tabs.manual.spindlef.ccw \
     .tabs.manual.spindlef.stop .tabs.manual.spindlef.brake \
-    .tabs.manual.flood .tabs.manual.mist .tabs.mdi.history .tabs.mdi.command \
+    .tabs.manual.flood .tabs.manual.mist .tabs.mdi.command \
     .tabs.mdi.go]
 
 proc disable_group {ws} { foreach w $ws { $w configure -state disabled } }
@@ -162,18 +162,22 @@ bind . <Control-Tab> {
 foreach b [bind Entry] {
     switch -glob $b {
         <Shift-Key-*> - <Control-Key-*> -
-        <Meta-Key-*> - <Alt-Key-*> - <Left> - <Right> -
-        <Up> - <Down> - <Prior> - <Next> - <Home> {
+        <Meta-Key-*> - <Alt-Key-*> {
             bind Entry $b {+if {[%W cget -state] == "normal"} break}
         }
     }
 }
+foreach b { <Key-Left> <Key-Right>
+        <Key-Up> <Key-Down> <Key-Prior> <Key-Next> <Key-Home>
+        <Left> <Right> <Up> <Down> <Prior> <Next> <Home> } {
+    bind Entry $b {+if {[%W cget -state] == "normal"} break}
+}
+bind Entry <Key> {+if {[%W cget -state] == "normal" && [string length %A]} break}
 
 proc is_continuous {} {
     expr {"[.tabs.manual.jogf.jogspeed get]" == "Continuous"}
 }
 
-bind Entry <Key> {+if {[%W cget -state] == "normal" && [string length %A]} break}
 
 bind . <Configure> { if {"%W" == "."} {
     wm minsize %W [winfo reqwidth %W] [winfo reqheight %W] }
@@ -185,8 +189,8 @@ wm withdraw .about
 wm withdraw .keys
 wm withdraw .mouse
 
-DynamicHelp::add .tabs.manual.spindlef.ccw -text {Turn spindle counterclockwise [F9]}
-DynamicHelp::add .tabs.manual.spindlef.cw -text {Turn spindle clockwise [F10]}
+DynamicHelp::add .tabs.manual.spindlef.ccw -text {Turn spindle counterclockwise [F10]}
+DynamicHelp::add .tabs.manual.spindlef.cw -text {Turn spindle clockwise [F9]}
 DynamicHelp::add .tabs.manual.spindlef.stop -text {Stop spindle [F9/F10]}
 DynamicHelp::add .tabs.manual.spindlef.spindleplus -text {Turn spindle Faster [F12]}
 DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower [F11]}

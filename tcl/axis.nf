@@ -581,7 +581,8 @@ tabset .tabs \
 	-samewidth 0 \
 	-scrollincrement 2 \
 	-selectpad 4 \
-	-tearoff 0
+	-tearoff 0 \
+	-takefocus 0
 
 tab .tabs.manual
 
@@ -866,15 +867,15 @@ vspace .tabs.manual.space2 \
 label .tabs.manual.lube
 setup_widget_accel .tabs.manual.lube Lubricant:
 
-checkbutton .tabs.manual.flood \
-	-command flood \
-	-variable flood
-setup_widget_accel .tabs.manual.flood Flood
-
 checkbutton .tabs.manual.mist \
 	-command mist \
 	-variable mist
 setup_widget_accel .tabs.manual.mist Mist
+
+checkbutton .tabs.manual.flood \
+	-command flood \
+	-variable flood
+setup_widget_accel .tabs.manual.flood Flood
 
 # Grid widget .tabs.manual.axes
 grid .tabs.manual.axes \
@@ -950,7 +951,8 @@ setup_widget_accel .tabs.mdi.historyl History:
 
 text .tabs.mdi.history \
 	-height 8 \
-	-width 40
+	-width 40 \
+	-takefocus 0
 .tabs.mdi.history insert end {}
 .tabs.mdi.history configure -state disabled
 grid rowconfigure .tabs.mdi.history 0 -weight 1
@@ -1161,7 +1163,8 @@ scale .feedoverride.foscale \
 	-to 120.0 \
 	-variable feedrate \
 	-resolution 5 \
-	-command set_feedrate
+	-command set_feedrate \
+	-takefocus 0
 
 label .feedoverride.l
 setup_widget_accel .feedoverride.l {Feed Override (%):}
