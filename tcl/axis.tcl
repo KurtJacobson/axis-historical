@@ -64,8 +64,10 @@ proc relief {e args} {
 proc update_state {args} {
     if {$::taskfile == ""} {
         wm ti . "AXIS (No file)"
+	wm iconname . "AXIS"
     } else {
         wm ti . "$::taskfile - AXIS"
+	wm iconname . "$::taskfile"
     }
 
     switch $::task_state \
