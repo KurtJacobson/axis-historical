@@ -49,11 +49,11 @@ Tkinter.Tk = Tk
 from Tkinter import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.Tk import *
-from OpenGL.Tk import _default_root as root_window
+from rs274.OpenGLTk import *
 from _glfixes import glInterleavedArrays
 from rs274.glcanon import GLCanon
 import rs274.options
+root_window = Tkinter.Tk()
 rs274.options.install(root_window)
 import nf; nf.start(root_window)
 

@@ -3,7 +3,6 @@ NEEDED for public beta release
 
 NEEDED for 1.0
 * use real rs274 parser instead of homebrew
-* integrate build of Togl (or get debian build fixed for bdi)
 * install axis in emc's plat bin directory
 * all keystrokes
 * toggle machine/commanded, relative/absolute coordinates

@@ -18,6 +18,7 @@
 
 import sys, os
 sys.path.insert(0, "lib")
+sys.path.insert(0, "setup")
 
 import warnings
 warnings.filterwarnings('ignore', message="the regex module is deprecated; please use the re module", category=DeprecationWarning)
@@ -27,6 +28,8 @@ from distutils import sysconfig
 from distutils.core import setup, Extension
 from build_py import build_py
 from build_scripts import *
+from togl_setup import get_togl_flags
+
 name="axis"
 version="0.9.6.1"
 DOCDIR="doc/%s-%s" % (name, version)
@@ -35,6 +38,8 @@ SHAREDIR="share/%s" % (name)
 emcsourcedir  = os.environ.get("EMCSOURCEDIR", "/usr/src")
 emcplat       = os.environ.get("PLAT", "linux_2_4_20")
 emcinstprefix = os.environ.get("EMCINSTPREFIX", "/usr/local/emc")
+
+togl = Extension("_togl", ["thirdparty/_toglmodule.c"], **get_togl_flags())
 
 emc = Extension("emc", ["extensions/emcmodule.cc"],
     define_macros=[('DEFAULT_NMLFILE', '"%s/emc/emc.nml"' % emcsourcedir)],
@@ -78,7 +83,7 @@ setup(name=name, version=version,
                   (os.path.join(SHAREDIR, "images"), glob("images/*.xbm")),
                   (DOCDIR, ["COPYING", "README",
                         "thirdparty/bwidget/LICENSE.txt"])],
-    ext_modules = [emc, glfixes],
+    ext_modules = [emc, glfixes, togl],
     url="http://axis.unpythonic.net/",
     license="GPL",
 )
