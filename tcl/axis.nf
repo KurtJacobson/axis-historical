@@ -1269,8 +1269,8 @@ pack .mouse.text \
 pack .mouse.ok
 
 # Configure widget .mouse
-wm title .mouse {AXIS key reference}
-wm resiz .mouse 1 1
+wm title .mouse {AXIS Navigation}
+wm resiz .mouse 0 0
 wm minsize .mouse 1 1
 wm maxsize .mouse 1905 1170
 wm protocol .mouse WM_DELETE_WINDOW {wm wi .mouse}
@@ -1336,7 +1336,7 @@ pack .keys.ok
 
 # Configure widget .keys
 wm title .keys {AXIS key reference}
-wm resiz .keys 1 1
+wm resiz .keys 0 0
 wm minsize .keys 1 1
 wm maxsize .keys 1905 1170
 wm protocol .keys WM_DELETE_WINDOW {wm wi .keys}
