@@ -560,8 +560,16 @@ class LivePlotter:
 
         mid = len(active_codes)/2
         a, b = active_codes[:mid], active_codes[mid:]
-        active_codes = " ".join(a) + "\n" + " ".join(b)
-        vupdate(vars.active_codes, active_codes)
+        widgets.code_text.delete("0.0", "end")
+        for i in a:
+            if i != a[-1]: widgets.code_text.insert("end", " ")
+            widgets.code_text.insert("end", i, i)
+        widgets.code_text.insert("end", "\n")
+        for i in b:
+            widgets.code_text.insert("end", i, i)
+            if i != b[-1]: widgets.code_text.insert("end", " ")
+#        active_codes = " ".join(a) + "\n" + " ".join(b)
+#        vupdate(vars.active_codes, active_codes)
 
     def clear(self):
         del self.data[:]
@@ -616,11 +624,14 @@ def open_file_guts(f):
         f = os.path.abspath(f)
         o.g = canon = GLCanon(widgets.text)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
-        result = gcode.parse(f, canon)
+        result, seq = gcode.parse(f, canon)
         print "parse result", result
         if result >= rs274.RS274NGC_MIN_ERROR:
-            root_window.tk.call("nf_dialog", ".error", "G-Code error in %s" %f,
-                    rs274.errorlist.get(result, result), "error",0,"OK")
+            error_str = rs274.errorlist.get(result, "Unknown error %s" % result)
+            root_window.tk.call("nf_dialog", ".error",
+                    "G-Code error in %s" % os.path.basename(f),
+                    "On line %d of %s:\n%s" % (seq+1, f, error_str),
+                    "error",0,"OK")
 
         t.configure(state="disabled")
 
@@ -663,6 +674,8 @@ vars = nf.Variables(root_window,
     ("tool", IntVar),
     ("active_codes", StringVar),
     ("metric", IntVar),
+    ("coord_type", IntVar),
+    ("display_type", IntVar),
 )
 vars.highlight_line.set(-1)
 vars.running_line.set(-1)
@@ -674,6 +687,7 @@ widgets = nf.Widgets(root_window,
     ("text", Text, ".t.text"),
     ("preview_frame", Frame, ".preview"),
     ("mdi_history", Text, ".tabs.mdi.history"),
+    ("code_text", Text, ".tabs.mdi.gcodes"),
 
     ("axis_x", Radiobutton, ".tabs.manual.axes.axisx"),
     ("axis_y", Radiobutton, ".tabs.manual.axes.axisy"),
@@ -1003,6 +1017,15 @@ class TclCommands(nf.TclCommands):
     def brake_off(*args):
         if not manual_ok(): return
         c.brake(0)
+
+    def toggle_display_type(*args):
+        vars.display_type.set(not vars.display_type.get())
+        o.tkRedraw()
+
+    def toggle_coord_type(*args):
+        vars.coord_type.set(not vars.coord_type.get())
+        o.tkRedraw()
+
 commands = TclCommands(root_window)
 root_window.bind("<Escape>", commands.task_stop)
 root_window.bind("o", commands.open_file)
@@ -1035,6 +1058,10 @@ root_window.bind("4", lambda event: activate_axis(4))
 root_window.bind("5", lambda event: activate_axis(5))
 root_window.bind("c", lambda event: jogspeed_continuous())
 root_window.bind("i", lambda event: jogspeed_incremental())
+root_window.bind("@", commands.toggle_display_type)
+root_window.bind("#", commands.toggle_coord_type)
+
+
 # c: continuous
 # i: incremental
 root_window.bind("<Home>", commands.home_axis)
@@ -1058,6 +1085,8 @@ def jog_on(a, b):
         return
     jogspeed = widgets.jogspeed.get()
     if jogspeed != "Continuous":
+        s.poll()
+        if s.state != 1: return
         jogspeed = float(jogspeed)
         jog(emc.JOG_INCREMENT, a, b, jogspeed)
         jog_cont[a] = False
@@ -1193,11 +1222,19 @@ def redraw(self):
     glLoadIdentity()
     s.poll()
 
+    if vars.display_type.get():
+        positions = s.position
+    else:
+        positions = s.actual_position
+
+    if vars.coord_type.get():
+        positions = [(i-j) for i, j in zip(positions, s.origin)]
+
     if vars.metric.get():
         positions = ["%c:% 9.2f" % i for i in 
-                zip(axisnames, map(lambda p: p*25.4, s.actual_position))]
+                zip(axisnames, map(lambda p: p*25.4, positions))]
     else:
-        positions = ["%c:% 9.4f" % i for i in zip(axisnames, s.actual_position)]
+        positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
 
     maxlen = max([len(p) for p in positions])
 

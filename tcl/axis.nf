@@ -41,7 +41,7 @@ menu .menu.file \
 	-label Open \
 	-underline 0
 
-setup_menu_accel .menu.file 0 _Open
+setup_menu_accel .menu.file end _Open
 
 .menu.file add command \
 	-accelerator Ctrl-R \
@@ -49,7 +49,7 @@ setup_menu_accel .menu.file 0 _Open
 	-label Reload \
 	-underline 0
 
-setup_menu_accel .menu.file 1 _Reload
+setup_menu_accel .menu.file end _Reload
 
 .menu.file add separator
 
@@ -58,17 +58,17 @@ setup_menu_accel .menu.file 1 _Reload
 	-accelerator F1 \
 	-command estop_clicked \
 	-label {Toggle Emergency Stop} \
-	-underline 0
+	-underline 7
 
-setup_menu_accel .menu.file 3 {Toggle _Emergency Stop}
+setup_menu_accel .menu.file end {Toggle _Emergency Stop}
 
 .menu.file add command \
 	-accelerator F2 \
 	-command onoff_clicked \
 	-label {Toggle Machine Power} \
-	-underline 0
+	-underline 7
 
-setup_menu_accel .menu.file 4 {Toggle _Machine Power}
+setup_menu_accel .menu.file end {Toggle _Machine Power}
 
 .menu.file add separator
 
@@ -78,7 +78,7 @@ setup_menu_accel .menu.file 4 {Toggle _Machine Power}
 	-label Quit \
 	-underline 0
 
-setup_menu_accel .menu.file 6 _Quit
+setup_menu_accel .menu.file end _Quit
 
 # Configure widget .menu.file
 wm title .menu.file file
@@ -95,7 +95,7 @@ menu .menu.edit \
 	-label Copy \
 	-underline 0
 
-setup_menu_accel .menu.edit 0 _Copy
+setup_menu_accel .menu.edit end _Copy
 
 .menu.edit add separator
 
@@ -105,81 +105,83 @@ setup_menu_accel .menu.edit 0 _Copy
 	-label {Top view} \
 	-underline 0
 
-setup_menu_accel .menu.edit 2 {_Top view}
+setup_menu_accel .menu.edit end {_Top view}
 
 .menu.edit add command \
 	-command set_view_z2 \
 	-label {Rotated Top view} \
 	-underline 0
 
-setup_menu_accel .menu.edit 3 {_Rotated Top view}
+setup_menu_accel .menu.edit end {_Rotated Top view}
 
 .menu.edit add command \
 	-command set_view_x \
 	-label {Side view} \
 	-underline 0
 
-setup_menu_accel .menu.edit 4 {_Side view}
+setup_menu_accel .menu.edit end {_Side view}
 
 .menu.edit add command \
 	-command set_view_y \
 	-label {Front view} \
 	-underline 0
 
-setup_menu_accel .menu.edit 5 {_Front view}
+setup_menu_accel .menu.edit end {_Front view}
 
 .menu.edit add command \
 	-command set_view_p \
 	-label {Perspective view} \
 	-underline 0
 
-setup_menu_accel .menu.edit 6 {_Perspective view}
+setup_menu_accel .menu.edit end {_Perspective view}
 
 .menu.edit add separator
 
+
 .menu.edit add radiobutton \
+	-value 0 \
+	-variable metric \
 	-command redraw \
 	-label {Display Inches} \
-	-variable metric \
-	-value 0 \
 	-underline 8
 
-setup_menu_accel .menu.edit 8 {Display _Inches}
+setup_menu_accel .menu.edit end {Display _Inches}
 
 .menu.edit add radiobutton \
+	-value 1 \
+	-variable metric \
 	-command redraw \
 	-label {Display MM} \
-	-variable metric \
-	-value 1 \
 	-underline 8
 
-setup_menu_accel .menu.edit 9 {Display _MM}
+setup_menu_accel .menu.edit end {Display _MM}
 
 .menu.edit add separator
 
+
 .menu.edit add checkbutton \
-	-command redraw \
 	-variable show_program \
+	-command redraw \
 	-label {Show program} \
 	-underline 1
 
-setup_menu_accel .menu.edit 11 {S_how program}
+setup_menu_accel .menu.edit end {S_how program}
 
 .menu.edit add checkbutton \
-	-command redraw \
 	-variable show_live_plot \
+	-command redraw \
 	-label {Show live plot} \
 	-underline 3
 
-setup_menu_accel .menu.edit 12 {Sho_w live plot}
+setup_menu_accel .menu.edit end {Sho_w live plot}
 
 .menu.edit add checkbutton \
-	-command redraw \
 	-variable show_tool \
+	-command redraw \
 	-label {Show tool} \
-	-underline 10
+	-underline 8
 
-setup_menu_accel .menu.edit 13 {Show too_l}
+setup_menu_accel .menu.edit end {Show too_l}
 
 .menu.edit add command \
 	-accelerator Ctrl-K \
@@ -187,7 +189,7 @@ setup_menu_accel .menu.edit 13 {Show too_l}
 	-label {Clear live plot} \
 	-underline 1
 
-setup_menu_accel .menu.edit 14 {C_lear live plot}
+setup_menu_accel .menu.edit end {C_lear live plot}
 
 # Configure widget .menu.edit
 wm title .menu.edit edit
@@ -203,7 +205,7 @@ menu .menu.program \
 	-label {Set next line} \
 	-underline 4
 
-setup_menu_accel .menu.program 0 {Set _next line}
+setup_menu_accel .menu.program end {Set _next line}
 
 .menu.program add command \
 	-accelerator R \
@@ -211,7 +213,7 @@ setup_menu_accel .menu.program 0 {Set _next line}
 	-label {Run program} \
 	-underline 0
 
-setup_menu_accel .menu.program 1 {_Run program}
+setup_menu_accel .menu.program end {_Run program}
 
 .menu.program add command \
 	-accelerator T \
@@ -219,7 +221,7 @@ setup_menu_accel .menu.program 1 {_Run program}
 	-label Step \
 	-underline 0
 
-setup_menu_accel .menu.program 2 _Step
+setup_menu_accel .menu.program end _Step
 
 .menu.program add command \
 	-accelerator P \
@@ -227,7 +229,7 @@ setup_menu_accel .menu.program 2 _Step
 	-label Pause \
 	-underline 0
 
-setup_menu_accel .menu.program 3 _Pause
+setup_menu_accel .menu.program end _Pause
 
 .menu.program add command \
 	-accelerator S \
@@ -235,7 +237,7 @@ setup_menu_accel .menu.program 3 _Pause
 	-label Resume \
 	-underline 2
 
-setup_menu_accel .menu.program 4 Re_sume
+setup_menu_accel .menu.program end Re_sume
 
 .menu.program add command \
 	-accelerator ESC \
@@ -243,7 +245,7 @@ setup_menu_accel .menu.program 4 Re_sume
 	-label Stop \
 	-underline 1
 
-setup_menu_accel .menu.program 5 S_top
+setup_menu_accel .menu.program end S_top
 
 # Configure widget .menu.program
 wm title .menu.program program
@@ -259,21 +261,21 @@ menu .menu.help \
 	-label {About AXIS} \
 	-underline 0
 
-setup_menu_accel .menu.help 0 {_About AXIS}
+setup_menu_accel .menu.help end {_About AXIS}
 
 .menu.help add command \
 	-command {wm transient .keys .;wm deiconify .keys} \
 	-label {Key Reference} \
 	-underline 0
 
-setup_menu_accel .menu.help 1 {_Key Reference}
+setup_menu_accel .menu.help end {_Key Reference}
 
 .menu.help add command \
 	-command {wm transient .mouse .;wm deiconify .mouse} \
-	-label {Navigation} \
+	-label Navigation \
 	-underline 0
 
-setup_menu_accel .menu.help 2 {_Navigation}
+setup_menu_accel .menu.help end _Navigation
 
 # Configure widget .menu.help
 wm title .menu.help help
@@ -281,33 +283,87 @@ wm resiz .menu.help 1 1
 wm minsize .menu.help 1 1
 wm maxsize .menu.help 1585 1170
 
+menu .menu.view \
+	-tearoff 0
+
+.menu.view add radiobutton \
+	-value 1 \
+	-variable display_type \
+	-label {Show commanded position} \
+	-accel {@}
+
+
+setup_menu_accel .menu.view end {Show commanded position}
+
+.menu.view add radiobutton \
+	-value 0 \
+	-variable display_type \
+	-label {Show actual position} \
+	-accel {@}
+
+
+setup_menu_accel .menu.view end {Show actual position}
+
+.menu.view add separator
+
+
+.menu.view add radiobutton \
+	-value 1 \
+	-variable coord_type \
+	-label {Show machine position} \
+	-accel {#}
+
+setup_menu_accel .menu.view end {Show machine position}
+
+.menu.view add radiobutton \
+	-value 0 \
+	-variable coord_type \
+	-label {Show relative position} \
+	-accel {#}
+
+
+setup_menu_accel .menu.view end {Show relative position}
+
+# Configure widget .menu.view
+wm title .menu.view view
+wm resiz .menu.view 1 1
+wm minsize .menu.view 1 1
+wm maxsize .menu.view 1905 1170
+
 .menu add cascade \
 	-menu .menu.file \
 	-label File \
 	-underline 0
 
-setup_menu_accel .menu 1 _File
+setup_menu_accel .menu end _File
 
 .menu add cascade \
 	-menu .menu.edit \
 	-label Edit \
 	-underline 0
 
-setup_menu_accel .menu 2 _Edit
+setup_menu_accel .menu end _Edit
 
 .menu add cascade \
 	-menu .menu.program \
 	-label Program \
 	-underline 0
 
-setup_menu_accel .menu 3 _Program
+setup_menu_accel .menu end _Program
 
 .menu add cascade \
 	-menu .menu.help \
 	-label Help \
 	-underline 0
 
-setup_menu_accel .menu 4 _Help
+setup_menu_accel .menu end _Help
+
+.menu add cascade \
+	-menu .menu.view \
+	-label View \
+	-underline 0
+
+setup_menu_accel .menu end _View
 
 # Configure widget .menu
 wm title .menu menu
@@ -562,8 +618,8 @@ tabset .tabs \
 	-samewidth 0 \
 	-scrollincrement 2 \
 	-selectpad 4 \
-	-tearoff 0 \
-	-takefocus 0
+	-takefocus 0 \
+	-tearoff 0
 
 tab .tabs.manual
 
@@ -872,6 +928,12 @@ grid .tabs.manual.axis \
 	-pady 1 \
 	-sticky nw
 
+# Grid widget .tabs.manual.coolant
+grid .tabs.manual.coolant \
+	-column 0 \
+	-row 5 \
+	-sticky w
+
 # Grid widget .tabs.manual.flood
 grid .tabs.manual.flood \
 	-column 1 \
@@ -885,12 +947,6 @@ grid .tabs.manual.jogf \
 	-column 1 \
 	-row 1 \
 	-padx 4 \
-	-sticky w
-
-# Grid widget .tabs.manual.coolant
-grid .tabs.manual.coolant \
-	-column 0 \
-	-row 5 \
 	-sticky w
 
 # Grid widget .tabs.manual.mist
@@ -932,8 +988,8 @@ setup_widget_accel .tabs.mdi.historyl History:
 
 text .tabs.mdi.history \
 	-height 8 \
-	-width 40 \
-	-takefocus 0
+	-takefocus 0 \
+	-width 40
 .tabs.mdi.history insert end {}
 .tabs.mdi.history configure -state disabled
 grid rowconfigure .tabs.mdi.history 0 -weight 1
@@ -960,13 +1016,9 @@ vspace .tabs.mdi.vs2 \
 label .tabs.mdi.gcodel
 setup_widget_accel .tabs.mdi.gcodel {Active G-Codes:}
 
-label .tabs.mdi.gcodes \
-	-anchor w \
+text .tabs.mdi.gcodes \
 	-borderwidth 2 \
-	-justify left \
-	-relief sunken \
-	-textvariable active_codes
-setup_widget_accel .tabs.mdi.gcodes {}
+	-relief sunken -height 2 -width 20
 
 vspace .tabs.mdi.vs3 \
 	-height 16
@@ -1090,7 +1142,7 @@ label .info.position \
 	-borderwidth 2 \
 	-relief sunken \
 	-textvariable position \
-	-width 19
+	-width 25
 setup_widget_accel .info.position {Position: Commanded}
 
 # Pack widget .info.task_state
@@ -1099,6 +1151,10 @@ pack .info.task_state \
 
 # Pack widget .info.tool
 pack .info.tool \
+	-side left
+
+# Pack widget .info.position
+pack .info.position \
 	-side left
 
 frame .t \
@@ -1137,15 +1193,16 @@ frame .feedoverride
 label .feedoverride.foentry \
 	-textvariable feedrate \
 	-width 3
+setup_widget_accel .feedoverride.foentry 0
 
 scale .feedoverride.foscale \
-	-orient horizontal \
-	-showvalue 0 \
-	-to 120.0 \
-	-variable feedrate \
-	-resolution 5 \
 	-command set_feedrate \
-	-takefocus 0
+	-orient horizontal \
+	-resolution 5.0 \
+	-showvalue 0 \
+	-takefocus 0 \
+	-to 120.0 \
+	-variable feedrate
 
 label .feedoverride.l
 setup_widget_accel .feedoverride.l {Feed Override (%):}
@@ -1218,20 +1275,18 @@ text .mouse.text \
 	-font {Helvetica -12} \
 	-height 5 \
 	-relief flat \
-	-tabs {100} \
+	-tabs 100 \
 	-width 30
 .mouse.text insert end {  Left Button	Pan view
 Middle Button	Rotate view
  Right Button	Zoom view
 }
-
 .mouse.text tag configure key \
 	-borderwidth {} \
 	-elide {} \
 	-font fixed
 
 .mouse.text tag add key 1.0 1.13 2.0 2.13 3.0 3.13
-
 .mouse.text tag configure desc \
 	-borderwidth {} \
 	-elide {}
@@ -1260,7 +1315,6 @@ wm resiz .mouse 0 0
 wm minsize .mouse 1 1
 wm maxsize .mouse 1905 1170
 wm protocol .mouse WM_DELETE_WINDOW {wm wi .mouse}
-
 
 toplevel .keys
 bind .keys <Key-Return> { wm withdraw .keys }

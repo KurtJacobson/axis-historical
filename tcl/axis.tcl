@@ -115,6 +115,9 @@ proc update_state {args} {
             && $spindledir != 0} .tabs.manual.spindlef.spindleminus \
         .tabs.manual.spindlef.spindleplus
 
+    set ::position [list Position: [lindex {Machine Relative} $::coord_type] \
+                                   [lindex {Actual Commanded} $::display_type]]
+
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
         enable_group $::manual
     } else {
@@ -134,6 +137,8 @@ set interp_pause 0
 set interp_state 0
 set running_line -1
 set highlight_line -1
+set coord_type 0
+set display_type 0
 set spindledir {}
 trace variable taskfile w update_title
 trace variable taskfile w queue_update_state
@@ -144,6 +149,8 @@ trace variable interp_state w queue_update_state
 trace variable running_line w queue_update_state
 trace variable highlight_line w queue_update_state
 trace variable spindledir w queue_update_state
+trace variable coord_type w queue_update_state
+trace variable display_type w queue_update_state
 
 bind . <Control-Tab> {
     set l [llength [.tabs tab names]]
@@ -205,4 +212,7 @@ DynamicHelp::add .tabs.manual.jogf.jogminus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogplus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogspeed -text {Select jog ingrement}
 
+set family_g0 "In this modal group:\nG0: straight traverse\nG1: straight feed\n..."
+DynamicHelp::add .tabs.mdi.gcodes -tag G1 -text "Motion mode: straight feed\n$family_g0"
+DynamicHelp::add .tabs.mdi.gcodes -tag G0 -text "Motion mode: straight traverse\n$family_g0"
 # vim:ts=8:sts=4:et:
