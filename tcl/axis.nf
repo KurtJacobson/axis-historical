@@ -292,11 +292,11 @@ frame .toolbar \
 vrule .toolbar.rule16
 
 Button .toolbar.machine_estop \
-	-command estop_clicked \
 	-helptext {Emergency Stop [F1]} \
 	-image [load_image tool_estop] \
 	-relief sunken \
 	-takefocus 0
+bind .toolbar.machine_estop <ButtonPress> { estop_clicked }
 setup_widget_accel .toolbar.machine_estop {}
 
 Button .toolbar.machine_power \
