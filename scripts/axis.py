@@ -698,6 +698,8 @@ widgets = nf.Widgets(root_window,
     ("view_x", Button, ".toolbar.view_x"),
     ("view_y", Button, ".toolbar.view_y"),
     ("view_p", Button, ".toolbar.view_p"),
+
+    ("feedoverride", Scale, ".feedoverride.foscale"),
 )
 
 def activate_axis(i, force=0):
@@ -1099,6 +1101,9 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     inifile = emc.ini(sys.argv[2])
     axiscount = int(inifile.find("TRAJ", "AXES"))
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
+    max_feed_override = float(inifile.find("DISPLAY", "MAX_FEED_OVERRIDE"))
+    max_feed_override = int(max_feed_override * 100 + 0.5)
+    widgets.feedoverride.configure(to=max_feed_override)
     emc.nmlfile = inifile.find("EMC", "NML_FILE")
     del sys.argv[1:3]
 opts, args = getopt.getopt(sys.argv[1:], 'd:')

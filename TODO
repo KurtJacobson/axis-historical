@@ -1,5 +1,4 @@
 NEEDED for 1.0
-* feed override limit of 1.2 (120%) should come from inifile?
 * don't let GUI go directly from spindle CCW to CW (grey out button?)
 * all keystrokes
 * toggle machine/commanded, relative/absolute coordinates
@@ -11,6 +10,7 @@ NEEDED for 1.0
 Known Bugs
 * jog buttons don't work if you tab to them and use the space bar
 * (feature?) f-key actions can be done from MDI tab
+* ctrl-k doesn't work in MDI tab
 * double tap on jog with increment will jog between 1 and 2 increments
 * path to .var file for interpreter is hardcoded
 
