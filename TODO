@@ -10,6 +10,8 @@ Known Bugs
 * (feature?) f-key actions can be done from MDI tab
 * ctrl-k doesn't work in MDI tab
 * double tap on jog with increment will jog between 1 and 2 increments
+* if you load a file, "set next line", then load another file, emc will start
+  in the middle of that second file
 
 Wishlist items
 * messages when paused (or about to pause) should offer the opportunity to
