@@ -8,7 +8,7 @@ def is_emc_root(f):
         and os.path.isdir(os.path.join(f, "rcslib", "src"))
         and os.path.isdir(os.path.join(f, "rcslib", "plat")))
 
-builtin_candidates = ['/usr/local/emc','/usr/emc','/usr/src','/usr/local/src']
+builtin_candidates = ['/usr/local/emc','/usr/emc','/usr/src','/usr/local/src','/usr/local']
 
 def find_emc_root(candidates = []):
     for c in candidates + builtin_candidates:
