@@ -77,4 +77,4 @@ def TERMINAL(s):
     if os.name == "nt": return "%s.py" % s
     return s
 
-
+# vim:sw=4:sts=4:et:

@@ -87,3 +87,5 @@ setup(name=name, version=version,
     url="http://axis.unpythonic.net/",
     license="GPL",
 )
+
+# vim:ts=8:sts=4:et:

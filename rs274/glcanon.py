@@ -154,4 +154,4 @@ class GLCanon(ArcsToSegmentsMixin):
         if for_selection == 0:
             glEnd()
 
-
+# vim:ts=8:sts=4:et:

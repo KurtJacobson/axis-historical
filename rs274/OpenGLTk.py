@@ -516,4 +516,4 @@ http://www.yorvic.york.ac.uk/~mjh/
 
         self.activate()
 
-    
+# vim:ts=8:sts=4:et:

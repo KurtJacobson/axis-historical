@@ -458,3 +458,5 @@ def SelectColorMenu(master, *args, **kw):
     else:
         w = master._w + '.' + name
     return master.tk.call("SelectColor::menu", args, *master._options(kw))
+
+# vim:ts=8:sts=4:et:

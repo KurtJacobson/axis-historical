@@ -18,3 +18,4 @@ try:
             c.mdi(mdi)
 except (SystemExit, EOFError, KeyboardInterrupt): pass
 
+# vim:sw=4:sts=4:et:

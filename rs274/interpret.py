@@ -373,4 +373,4 @@ def display_code(lines):
         print ")"
         v.do_pending()
 
-
+# vim:ts=8:sts=4:et:

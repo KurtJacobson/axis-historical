@@ -89,3 +89,4 @@ class build_py(_build_py):
 
         self.byte_compile(self.get_outputs(include_bytecode=0))
 
+# vim:sw=4:sts=4:et:

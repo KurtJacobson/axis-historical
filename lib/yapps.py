@@ -1053,3 +1053,5 @@ if __name__=='__main__':
 	    else:
 		print 'Warning - unrecognized option:  ', opt[0], opt[1]
 	apply(generate, tuple(args), {'embed':embed})
+
+# vim:ts=8:sts=4:et:

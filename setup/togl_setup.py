@@ -41,3 +41,5 @@ def get_togl_flags():
     libs.extend([tcl_library, tk_library])
     return {'include_dirs': include_dirs, 'library_dirs': lib_dirs, 
             'libraries': libs} 
+
+# vim:sw=4:sts=4:et:

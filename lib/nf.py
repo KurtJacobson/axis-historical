@@ -104,3 +104,5 @@ def start(r):
     r.tk.call("package", "require", "BWidget")
     r.tk.call("namespace", "import", "blt::tabset")
     r.tk.call("namespace", "import", "combobox::combobox")
+
+# vim:ts=8:sts=4:et:
