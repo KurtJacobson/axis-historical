@@ -32,7 +32,7 @@ from togl_setup import get_togl_flags
 
 name="axis"
 version="1.0b1"
-DOCDIR="doc/%s-%s" % (name, version)
+DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
 emcsourcedir  = os.environ.get("EMCSOURCEDIR", "/usr/src")
