@@ -57,18 +57,18 @@ setup_menu_accel .menu.file 1 _Reload
 .menu.file add command \
 	-accelerator F1 \
 	-command estop_clicked \
-	-label {Emergency Stop} \
+	-label {Toggle Emergency Stop} \
 	-underline 0
 
-setup_menu_accel .menu.file 3 {_Emergency Stop}
+setup_menu_accel .menu.file 3 {Toggle _Emergency Stop}
 
 .menu.file add command \
 	-accelerator F2 \
 	-command onoff_clicked \
-	-label {Machine Power} \
+	-label {Toggle Machine Power} \
 	-underline 0
 
-setup_menu_accel .menu.file 4 {_Machine Power}
+setup_menu_accel .menu.file 4 {Toggle _Machine Power}
 
 .menu.file add separator
 
@@ -322,7 +322,7 @@ frame .toolbar \
 vrule .toolbar.rule16
 
 Button .toolbar.machine_estop \
-	-helptext {Emergency Stop [F1]} \
+	-helptext {Toggle Emergency Stop [F1]} \
 	-image [load_image tool_estop] \
 	-relief sunken \
 	-takefocus 0
@@ -331,7 +331,7 @@ setup_widget_accel .toolbar.machine_estop {}
 
 Button .toolbar.machine_power \
 	-command onoff_clicked \
-	-helptext {Turn machine on/off [F2]} \
+	-helptext {Toggle machine power [F2]} \
 	-image [load_image tool_power] \
 	-relief link \
 	-state disabled \
@@ -342,7 +342,7 @@ vrule .toolbar.rule0
 
 Button .toolbar.file_open \
 	-command { open_file } \
-	-helptext {Open rs274ngc file [O]} \
+	-helptext {Open G-Code file [O]} \
 	-image [load_image tool_open] \
 	-relief link \
 	-takefocus 0
@@ -1181,6 +1181,8 @@ message .about.message \
 	-text {AXIS Copyright (C) 2004 Jeff Epler and Chris Radek.
 
 This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.
+
+Visit the AXIS web site at  http://axis.unpy.net
 } \
 	-width 300
 
@@ -1225,7 +1227,7 @@ text .keys.text \
 	-relief flat \
 	-tabs {100 300 400} \
 	-width 88
-.keys.text insert end {F1	Emergency stop	O	Open program
+.keys.text insert end {F1	Toggle Emergency stop	O	Open program
 F2	Turn machine on	R	Run program
 		T	Step program
 X, `	Select first axis	P	Pause program
@@ -1250,12 +1252,12 @@ F5	Code entry
 	-elide {} \
 	-font fixed
 
-.keys.text tag add key 1.0 1.2 1.18 1.19 2.0 2.2 2.19 2.20 3.2 3.3 4.0 4.4 4.23 4.24 5.0 5.4 5.24 5.25 6.0 6.4 6.23 6.26 7.0 7.4 8.0 8.4 8.23 8.25 9.0 9.4 9.23 9.25 10.0 10.1 11.0 11.1 11.17 11.18 12.0 12.4 12.28 12.35 13.0 13.11 13.27 13.29 14.0 14.8 14.25 14.28 15.0 15.12 15.28 15.31 16.0 16.4 16.21 16.24 18.0 18.2 18.18 18.27 19.0 19.2
+.keys.text tag add key 1.0 1.2 1.25 1.26 2.0 2.2 2.19 2.20 3.2 3.3 4.0 4.4 4.23 4.24 5.0 5.4 5.24 5.25 6.0 6.4 6.23 6.26 7.0 7.4 8.0 8.4 8.23 8.25 9.0 9.4 9.23 9.25 10.0 10.1 11.0 11.1 11.17 11.18 12.0 12.4 12.28 12.35 13.0 13.11 13.27 13.29 14.0 14.8 14.25 14.28 15.0 15.12 15.28 15.31 16.0 16.4 16.21 16.24 18.0 18.2 18.18 18.27 19.0 19.2
 .keys.text tag configure desc \
 	-borderwidth {} \
 	-elide {}
 
-.keys.text tag add desc 1.3 1.17 1.20 1.32 2.3 2.18 2.21 2.32 3.4 3.16 4.5 4.22 4.25 4.38 5.5 5.23 5.26 5.40 6.5 6.22 6.27 6.39 7.5 7.23 8.5 8.22 8.26 8.37 9.5 9.22 9.26 9.38 10.2 10.22 11.2 11.16 11.19 11.36 12.5 12.27 12.36 12.52 13.12 13.26 13.30 13.52 14.9 14.24 14.29 14.58 15.13 15.27 15.32 15.56 16.5 16.20 16.25 16.50 18.3 18.17 18.28 18.43 19.3 19.13
+.keys.text tag add desc 1.3 1.24 1.27 1.39 2.3 2.18 2.21 2.32 3.4 3.16 4.5 4.22 4.25 4.38 5.5 5.23 5.26 5.40 6.5 6.22 6.27 6.39 7.5 7.23 8.5 8.22 8.26 8.37 9.5 9.22 9.26 9.38 10.2 10.22 11.2 11.16 11.19 11.36 12.5 12.27 12.36 12.52 13.12 13.26 13.30 13.52 14.9 14.24 14.29 14.58 15.13 15.27 15.32 15.56 16.5 16.20 16.25 16.50 18.3 18.17 18.28 18.43 19.3 19.13
 
 button .keys.ok \
 	-command {wm wi .keys} \
