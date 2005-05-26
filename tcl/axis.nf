@@ -753,14 +753,29 @@ combobox .tabs.manual.jogf.jogspeed \
 	-width 10
 .tabs.manual.jogf.jogspeed list insert end Continuous 0.10000 0.01000 0.00100 0.00010
 
-button .tabs.manual.jogf.button \
+button .tabs.manual.jogf.home \
 	-command home_axis \
 	-padx 2m \
 	-pady 0
-setup_widget_accel .tabs.manual.jogf.button Home
+setup_widget_accel .tabs.manual.jogf.home Home
 
-# Grid widget .tabs.manual.jogf.button
-grid .tabs.manual.jogf.button \
+button .tabs.manual.jogf.zero \
+	-command set_axis_offset \
+	-padx 2m \
+	-pady 0
+setup_widget_accel .tabs.manual.jogf.zero {Zero Offset}
+
+# Grid widget .tabs.manual.jogf.home
+grid .tabs.manual.jogf.home \
+	-column 0 \
+	-row 2 \
+	-columnspan 3 \
+	-ipadx 2 \
+	-pady 2 \
+	-sticky w
+
+# Grid widget .tabs.manual.jogf.zero
+grid .tabs.manual.jogf.zero \
 	-column 0 \
 	-row 1 \
 	-columnspan 3 \

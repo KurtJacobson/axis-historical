@@ -206,7 +206,8 @@ DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower [
 DynamicHelp::add .tabs.manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
 DynamicHelp::add .tabs.manual.flood -text {Turn flood on or off [F8]}
 DynamicHelp::add .tabs.manual.mist -text {Turn mist on or off [F7]}
-DynamicHelp::add .tabs.manual.jogf.button -text {Send selected axis home [HOME]}
+DynamicHelp::add .tabs.manual.jogf.home -text {Send selected axis home [HOME]}
+DynamicHelp::add .tabs.manual.jogf.zero -text {Zero selected axis's G54 offset [Shift-HOME]}
 DynamicHelp::add .tabs.manual.axes.axisx -text {Select axis [X]}
 DynamicHelp::add .tabs.manual.axes.axisy -text {Select axis [Y]}
 DynamicHelp::add .tabs.manual.axes.axisz -text {Select axis [Z]}
