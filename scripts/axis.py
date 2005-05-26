@@ -313,6 +313,26 @@ def init():
     glClearColor(0,0,0,0)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 
+def draw_small_origin():
+    glBegin(GL_LINES);
+    glColor3f(0.0,1.0,1.0)
+
+    glVertex3f(-2.0, -2.0, 0.0)
+    glVertex3f( 2.0,  2.0, 0.0)
+    glVertex3f(-2.0,  2.0, 0.0)
+    glVertex3f( 2.0, -2.0, 0.0)
+
+    glVertex3f(-2.0, 0.0, -2.0)
+    glVertex3f( 2.0, 0.0,  2.0)
+    glVertex3f(-2.0, 0.0,  2.0)
+    glVertex3f( 2.0, 0.0, -2.0)
+
+    glVertex3f(0.0, -2.0, -2.0)
+    glVertex3f(0.0,  2.0,  2.0)
+    glVertex3f(0.0, -2.0,  2.0)
+    glVertex3f(0.0,  2.0, -2.0)
+    glEnd()
+
 def draw_axes():
     glBegin(GL_LINES);
 
@@ -939,6 +959,7 @@ class TclCommands(nf.TclCommands):
         widgets.mdi_history.insert("end", "%s\n" % command)
         widgets.mdi_history.configure(state="disabled")
         c.mdi(command)
+        o.tkRedraw()
 
     def redraw(*ignored):
         o.tkRedraw()
@@ -959,6 +980,18 @@ class TclCommands(nf.TclCommands):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.home("xyzabc".index(vars.current_axis.get()))
+    def set_axis_offset(event=None):
+        if not manual_ok(): return
+        ensure_mode(emc.MODE_MDI)
+        offset_axis = "xyzabc".index(vars.current_axis.get())
+        s.poll()
+        actual_position = s.actual_position[offset_axis]
+        offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), actual_position)
+        print offset_command
+        c.mdi(offset_command)
+        ensure_mode(emc.MODE_MANUAL)
+        s.poll()
+        o.tkRedraw()
     def brake(event=None):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
@@ -1071,6 +1104,7 @@ root_window.bind("#", commands.toggle_coord_type)
 # c: continuous
 # i: incremental
 root_window.bind("<Home>", commands.home_axis)
+root_window.bind("<Shift-Home>", commands.set_axis_offset)
 widgets.mdi_history.bind("<Configure>", "%W see {end - 1 lines}")
 
 def jog(*args):
@@ -1224,9 +1258,15 @@ def redraw(self):
             glCallList(cone_program)
             glPopMatrix()
     if vars.show_live_plot.get() or vars.show_program.get():
+        s.poll()
         glPushMatrix()
         glScalef(1/25.4, 1/25.4, 1/25.4)
-        draw_axes()
+        if vars.coord_type.get() and (s.origin[0] or s.origin[1] or s.origin[2]):
+            draw_small_origin()
+            glTranslatef(s.origin[0]*25.4, s.origin[1]*25.4, s.origin[2]*25.4)
+            draw_axes()
+        else:
+            draw_axes()
         glPopMatrix()
 
 

@@ -308,7 +308,7 @@ setup_menu_accel .menu.view end {Show actual position}
 
 
 .menu.view add radiobutton \
-	-value 1 \
+	-value 0 \
 	-variable coord_type \
 	-label {Show machine position} \
 	-accel {#}
@@ -316,7 +316,7 @@ setup_menu_accel .menu.view end {Show actual position}
 setup_menu_accel .menu.view end {Show machine position}
 
 .menu.view add radiobutton \
-	-value 0 \
+	-value 1 \
 	-variable coord_type \
 	-label {Show relative position} \
 	-accel {#}
