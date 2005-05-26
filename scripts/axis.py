@@ -60,6 +60,7 @@ import nf; nf.start(root_window)
 import gcode
 
 try:
+    root_window.tk.call("proc", "_", "s", "set s")
     nf.source_lib_tcl(root_window,"axis.nf")
     nf.source_lib_tcl(root_window,"axis.tcl")
 except TclError:
