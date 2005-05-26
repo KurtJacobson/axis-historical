@@ -2,6 +2,7 @@ Known Bugs in AXIS
 * jog buttons don't work if you tab to them and use the space bar
 * (feature?) f-key actions can be done from MDI tab
 * ctrl-k doesn't work in MDI tab
+* keyboard shortcut Shift-Home is not in the help screen
 
 Bugs in EMC that limit functionality in AXIS
 * Can't step to first line of program
