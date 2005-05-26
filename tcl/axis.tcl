@@ -142,7 +142,7 @@ set interp_pause 0
 set interp_state 0
 set running_line -1
 set highlight_line -1
-set coord_type 0
+set coord_type 1
 set display_type 0
 set spindledir {}
 trace variable taskfile w update_title

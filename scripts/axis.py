@@ -1178,6 +1178,8 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     jog_speed = float(inifile.find("TRAJ", "DEFAULT_VELOCITY"))
     widgets.feedoverride.configure(to=max_feed_override)
     emc.nmlfile = inifile.find("EMC", "NML_FILE")
+    vars.coord_type.set(inifile.find("DISPLAY", "POSITION_OFFSET") == "RELATIVE")
+    vars.display_type.set(inifile.find("DISPLAY", "POSITION_FEEDBACK") == "COMMANDED")
     del sys.argv[1:3]
 opts, args = getopt.getopt(sys.argv[1:], 'd:')
 for i in range(len(axisnames), 6):
