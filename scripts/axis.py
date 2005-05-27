@@ -315,23 +315,40 @@ def init():
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 
 def draw_small_origin():
-    glBegin(GL_LINES);
+    r = 2.0;
     glColor3f(0.0,1.0,1.0)
 
-    glVertex3f(-2.0, -2.0, 0.0)
-    glVertex3f( 2.0,  2.0, 0.0)
-    glVertex3f(-2.0,  2.0, 0.0)
-    glVertex3f( 2.0, -2.0, 0.0)
+    glBegin(GL_LINE_STRIP)
+    for i in range(37):
+        theta = (i*10)*math.pi/180.0
+        glVertex3f(r*cos(theta),r*sin(theta),0.0)
+    glEnd()
+    glBegin(GL_LINE_STRIP)
+    for i in range(37):
+        theta = (i*10)*math.pi/180.0
+        glVertex3f(0.0, r*cos(theta), r*sin(theta))
+    glEnd()
+    glBegin(GL_LINE_STRIP)
+    for i in range(37):
+        theta = (i*10)*math.pi/180.0
+        glVertex3f(r*cos(theta),0.0, r*sin(theta))
+    glEnd()
 
-    glVertex3f(-2.0, 0.0, -2.0)
-    glVertex3f( 2.0, 0.0,  2.0)
-    glVertex3f(-2.0, 0.0,  2.0)
-    glVertex3f( 2.0, 0.0, -2.0)
+    glBegin(GL_LINES);
+    glVertex3f(-r, -r, 0.0)
+    glVertex3f( r,  r, 0.0)
+    glVertex3f(-r,  r, 0.0)
+    glVertex3f( r, -r, 0.0)
 
-    glVertex3f(0.0, -2.0, -2.0)
-    glVertex3f(0.0,  2.0,  2.0)
-    glVertex3f(0.0, -2.0,  2.0)
-    glVertex3f(0.0,  2.0, -2.0)
+    glVertex3f(-r, 0.0, -r)
+    glVertex3f( r, 0.0,  r)
+    glVertex3f(-r, 0.0,  r)
+    glVertex3f( r, 0.0, -r)
+
+    glVertex3f(0.0, -r, -r)
+    glVertex3f(0.0,  r,  r)
+    glVertex3f(0.0, -r,  r)
+    glVertex3f(0.0,  r, -r)
     glEnd()
 
 def draw_axes():
