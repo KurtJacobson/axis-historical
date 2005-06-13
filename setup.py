@@ -39,7 +39,7 @@ if emcroot is None:
 setup.py failed to locate the root directory of your emc installation.
 Determine the location of your emc installation and re-run setup.py with a
 commandline like this:
-    $ env EMCROOT=/usr/local/emc python setup.py
+    $ env EMCROOT=/usr/local/emc python setup.py install
 
 See the README file for more information.
 """
@@ -49,10 +49,10 @@ if emcplat is None:
     print """\
 setup.py failed to locate the (non-realtime) platform of your emc installation.
 Determine the platform name and re-run setup.py with a commandline like this:
-    $ env PLAT=nonrealtime python setup.py
+    $ env PLAT=nonrealtime python setup.py install
 
 If you had to specify EMCSOURCEDIR, the commandline would look like
-    $ env EMCSOURCEDIR=/usr/local/emc PLAT=nonrealtime python setup.py
+    $ env EMCSOURCEDIR=/usr/local/emc PLAT=nonrealtime python setup.py install
 
 See the README file for more information.
 """
