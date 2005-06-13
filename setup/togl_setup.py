@@ -28,6 +28,7 @@ def get_togl_flags():
     tk_library = None
     lddinfo = commands.getoutput("ldd %s" % _tkinter.__file__)
     tkinterlibs = [line.strip().split(" => ") for line in lddinfo.split("\n")]
+    tkinterlibs = [i for i in tkinterlibs if len(i) == 2]
     for l, m in tkinterlibs:
         m = m.split("(")[0].strip()
         add_if_exists(lib_dirs, os.path.join(m, ".."))
