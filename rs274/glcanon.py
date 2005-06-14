@@ -44,7 +44,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
     def select_plane(self, arg): pass
 
     def get_tool(self, tool):
-        print "get_tool", tool
         return tool, .75, .0625
 
     def straight_traverse_translated(self, x,y,z, a,b,c):
