@@ -71,7 +71,7 @@ proc update_title {args} {
         wm ti . "AXIS (No file)"
         wm iconname . "AXIS"
     } else {
-        wm ti . "$::taskfile - AXIS"
+        wm ti . "[lindex [file split $::taskfile] end] - AXIS"
         wm iconname . "[lindex [file split $::taskfile] end]"
     }
 
