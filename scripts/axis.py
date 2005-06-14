@@ -60,7 +60,6 @@ import nf; nf.start(root_window)
 import gcode
 
 try:
-    root_window.tk.call("proc", "_", "s", "set s")
     nf.source_lib_tcl(root_window,"axis.nf")
     nf.source_lib_tcl(root_window,"axis.tcl")
 except TclError:
@@ -313,43 +312,6 @@ def init():
     glDisable(GL_LIGHTING)
     glClearColor(0,0,0,0)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-
-def draw_small_origin():
-    r = 2.0;
-    glColor3f(0.0,1.0,1.0)
-
-    glBegin(GL_LINE_STRIP)
-    for i in range(37):
-        theta = (i*10)*math.pi/180.0
-        glVertex3f(r*cos(theta),r*sin(theta),0.0)
-    glEnd()
-    glBegin(GL_LINE_STRIP)
-    for i in range(37):
-        theta = (i*10)*math.pi/180.0
-        glVertex3f(0.0, r*cos(theta), r*sin(theta))
-    glEnd()
-    glBegin(GL_LINE_STRIP)
-    for i in range(37):
-        theta = (i*10)*math.pi/180.0
-        glVertex3f(r*cos(theta),0.0, r*sin(theta))
-    glEnd()
-
-    glBegin(GL_LINES);
-    glVertex3f(-r, -r, 0.0)
-    glVertex3f( r,  r, 0.0)
-    glVertex3f(-r,  r, 0.0)
-    glVertex3f( r, -r, 0.0)
-
-    glVertex3f(-r, 0.0, -r)
-    glVertex3f( r, 0.0,  r)
-    glVertex3f(-r, 0.0,  r)
-    glVertex3f( r, 0.0, -r)
-
-    glVertex3f(0.0, -r, -r)
-    glVertex3f(0.0,  r,  r)
-    glVertex3f(0.0, -r,  r)
-    glVertex3f(0.0,  r, -r)
-    glEnd()
 
 def draw_axes():
     glBegin(GL_LINES);
@@ -626,10 +588,8 @@ def ensure_mode(m):
 
 class AxisCanon(GLCanon):
     def get_tool(self, tool):
-        print tool, len(s.tool_table)
         for t in s.tool_table:
             if t[0] == tool:
-                print tool, t
                 return t
         return tool,0.,0.
 
@@ -977,7 +937,6 @@ class TclCommands(nf.TclCommands):
         widgets.mdi_history.insert("end", "%s\n" % command)
         widgets.mdi_history.configure(state="disabled")
         c.mdi(command)
-        o.tkRedraw()
 
     def redraw(*ignored):
         o.tkRedraw()
@@ -998,18 +957,6 @@ class TclCommands(nf.TclCommands):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.home("xyzabc".index(vars.current_axis.get()))
-    def set_axis_offset(event=None):
-        if not manual_ok(): return
-        ensure_mode(emc.MODE_MDI)
-        offset_axis = "xyzabc".index(vars.current_axis.get())
-        s.poll()
-        actual_position = s.actual_position[offset_axis]
-        offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), actual_position)
-        print offset_command
-        c.mdi(offset_command)
-        ensure_mode(emc.MODE_MANUAL)
-        s.poll()
-        o.tkRedraw()
     def brake(event=None):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
@@ -1122,7 +1069,6 @@ root_window.bind("#", commands.toggle_coord_type)
 # c: continuous
 # i: incremental
 root_window.bind("<Home>", commands.home_axis)
-root_window.bind("<Shift-Home>", commands.set_axis_offset)
 widgets.mdi_history.bind("<Configure>", "%W see {end - 1 lines}")
 
 def jog(*args):
@@ -1196,8 +1142,6 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     jog_speed = float(inifile.find("TRAJ", "DEFAULT_VELOCITY"))
     widgets.feedoverride.configure(to=max_feed_override)
     emc.nmlfile = inifile.find("EMC", "NML_FILE")
-    vars.coord_type.set(inifile.find("DISPLAY", "POSITION_OFFSET") == "RELATIVE")
-    vars.display_type.set(inifile.find("DISPLAY", "POSITION_FEEDBACK") == "COMMANDED")
     del sys.argv[1:3]
 opts, args = getopt.getopt(sys.argv[1:], 'd:')
 for i in range(len(axisnames), 6):
@@ -1278,15 +1222,9 @@ def redraw(self):
             glCallList(cone_program)
             glPopMatrix()
     if vars.show_live_plot.get() or vars.show_program.get():
-        s.poll()
         glPushMatrix()
         glScalef(1/25.4, 1/25.4, 1/25.4)
-        if vars.coord_type.get() and (s.origin[0] or s.origin[1] or s.origin[2]):
-            draw_small_origin()
-            glTranslatef(s.origin[0]*25.4, s.origin[1]*25.4, s.origin[2]*25.4)
-            draw_axes()
-        else:
-            draw_axes()
+        draw_axes()
         glPopMatrix()
 
 

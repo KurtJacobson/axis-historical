@@ -38,7 +38,6 @@ class ArcsToSegmentsMixin:
         self.plane = plane
 
     def arc_feed(self, x1, y1, cx, cy, rot, z1, a, b, c):
-        print "arc_feed", self.plane
         if self.plane == 1:
             f = n = [x1,y1,z1, a, b, c]
             xyz = [0,1,2]
