@@ -25,7 +25,7 @@ __version__ = string.split('$Revision$')[1]
 __date__ = string.join(string.split('$Date$')[1:3], ' ')
 __author__ = 'Jeff Epler <jepler@unpythonic.net>'
 
-import sys, array, time
+import sys, array, time, atexit, tempfile, shutil, os, errno
 
 # This works around a bug in some BLT installations by exporting symbols
 # from _tkinter.so's copy of libtcl and libtk to libblt
@@ -626,14 +626,23 @@ def ensure_mode(m):
 
 class AxisCanon(GLCanon):
     def get_tool(self, tool):
-        print tool, len(s.tool_table)
         for t in s.tool_table:
             if t[0] == tool:
-                print tool, t
                 return t
         return tool,0.,0.
 
-def open_file_guts(f):
+def open_file_guts(f, filtered = False):
+    if program_filter and not filtered:
+        tempfile = os.path.join(tempdir, os.path.basename(f))
+        result = os.system("%s < %s > %s" % (program_filter, f, tempfile))
+        if result:
+            root_window.tk.call("nf_dialog", ".error",
+                    "Program_filter %r failed" % program_filter,
+                    "Exit code %d" % result,
+                    "error",0,"OK")
+            return
+        return open_file_guts(tempfile, True)
+
     set_first_line(0)
     old_focus = root_window.tk.call("focus", "-lastfor", ".")
     root_window.tk.call("blt::busy", "hold", ".")
@@ -1191,6 +1200,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     axiscount = int(inifile.find("TRAJ", "AXES"))
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
     open_directory = inifile.find("DISPLAY", "PROGRAM_PREFIX")
+    program_filter = inifile.find("EMC", "PROGRAM_FILTER")
     max_feed_override = float(inifile.find("DISPLAY", "MAX_FEED_OVERRIDE"))
     max_feed_override = int(max_feed_override * 100 + 0.5)
     jog_speed = float(inifile.find("TRAJ", "DEFAULT_VELOCITY"))
@@ -1356,9 +1366,29 @@ def redraw(self):
 
 o.redraw = redraw
 
+def mkdtemp():
+    try:
+        return tempfile.mkdtemp()
+    except AttributeError:
+        while 1:
+            t = tempfile.mktemp()
+            try:
+                os.mkdir(t)
+                return t
+            except os.error, detail:
+                if detail.errno != errno.EEXIST: raise
+                pass
+
+def remove_tempdir(t):
+    shutil.rmtree(t)
+tempdir = mkdtemp()
+atexit.register(remove_tempdir, tempdir)
+
 code = []
 if args:
     open_file_guts(args[0])
+elif os.environ.has_key("AXIS_OPEN_FILE"):
+    open_file_guts(os.environ["AXIS_OPEN_FILE"])
 
 o.mainloop()
 
