@@ -41,8 +41,7 @@ Determine the location of your emc installation and re-run setup.py with a
 commandline like this:
     $ env EMCROOT=/usr/local/emc python setup.py install
 
-See the README file for more information.
-"""
+See the README file for more information."""
     raise SystemExit, 1
 
 emc2_marker = os.path.join(emcroot, "include", "emc.hh")
@@ -98,8 +97,7 @@ else:
     If you had to specify EMCROOT, the commandline would look like
         $ env EMCROOT=/usr/local/emc PLAT=nonrealtime python setup.py install
 
-    See the README file for more information.
-    """
+    See the README file for more information."""
         raise SystemExit, 1
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/emc/plat/%s/bin" % (emcroot, emcplat)
