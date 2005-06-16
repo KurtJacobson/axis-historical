@@ -22,7 +22,31 @@
 #include "rcs.hh"
 #include "emc.hh"
 #include "rs274ngc.hh"
+
+#if AXIS_USE_EMC2
+#include "interp_return.hh"
+#define active_settings  interp_new.active_settings
+#define active_g_codes   interp_new.active_g_codes
+#define active_m_codes   interp_new.active_m_codes
+#define interp_init	 interp_new.init
+#define interp_open      interp_new.open
+#define interp_read	 interp_new.read
+#define interp_execute	 interp_new.execute
+char _parameter_file_name[LINELEN];
+#else
 #include "rs274ngc_return.hh"
+#define INTERP_OK        RS274NGC_OK
+#define ACTIVE_SETTINGS  RS274NGC_ACTIVE_SETTINGS
+#define ACTIVE_G_CODES   RS274NGC_ACTIVE_G_CODES 
+#define ACTIVE_M_CODES   RS274NGC_ACTIVE_M_CODES 
+#define active_settings  rs274ngc_active_settings
+#define active_g_codes   rs274ngc_active_g_codes
+#define active_m_codes   rs274ngc_active_m_codes
+#define interp_init	 rs274ngc_init
+#define interp_open      rs274ngc_open
+#define interp_read	 rs274ngc_read
+#define interp_execute   rs274ngc_execute
+#endif
 #include "canon.hh"
 #include "interpl.hh"
 
@@ -35,6 +59,7 @@
  */
 #undef offsetof
 #define offsetof(T,x) (int)(-1+(char*)&(((T*)1)->x))
+
 
 
 static PyObject *pose(const EmcPose &p) {
@@ -61,16 +86,16 @@ extern PyTypeObject LinearMoveType, CircularMoveType, UnknownMessageType;
 
 typedef struct {
     PyObject_HEAD
-    double settings[RS274NGC_ACTIVE_SETTINGS];
-    int gcodes[RS274NGC_ACTIVE_G_CODES];
-    int mcodes[RS274NGC_ACTIVE_M_CODES];
+    double settings[ACTIVE_SETTINGS];
+    int gcodes[ACTIVE_G_CODES];
+    int mcodes[ACTIVE_M_CODES];
 } LineCode;
 
 PyObject *LineCode_gcodes(LineCode *l) {
-    return int_array(l->gcodes, RS274NGC_ACTIVE_G_CODES);
+    return int_array(l->gcodes, ACTIVE_G_CODES);
 }
 PyObject *LineCode_mcodes(LineCode *l) {
-    return int_array(l->mcodes, RS274NGC_ACTIVE_M_CODES);
+    return int_array(l->mcodes, ACTIVE_M_CODES);
 }
 
 PyGetSetDef LineCodeGetSet[] = {
@@ -155,13 +180,17 @@ int last_sequence_number;
 int plane;
 bool metric;
 
+#ifdef AXIS_USE_EMC2
+Interp interp_new;
+#endif
+
 void maybe_new_line() {
     if(interp_error) return;
     LineCode *new_line_code =
         (LineCode*)(PyObject_New(LineCode, &LineCodeType));
-    rs274ngc_active_settings(new_line_code->settings);
-    rs274ngc_active_g_codes(new_line_code->gcodes);
-    rs274ngc_active_m_codes(new_line_code->mcodes);
+    active_settings(new_line_code->settings);
+    active_g_codes(new_line_code->gcodes);
+    active_m_codes(new_line_code->mcodes);
     int sequence_number = new_line_code->gcodes[0];
     if(sequence_number == last_sequence_number) {
         Py_DECREF(new_line_code);
@@ -388,14 +417,14 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
     interp_error = 0;
     last_sequence_number = -1;
 
-    rs274ngc_init();
-    rs274ngc_open(f);
+    interp_init();
+    interp_open(f);
     int result = 0;
     while(!interp_error) {
-        result = rs274ngc_read();
-        if(result != RS274NGC_OK) break;
-        result = rs274ngc_execute();
-        if(result != RS274NGC_OK) break;
+        result = interp_read();
+        if(result != INTERP_OK) break;
+        result = interp_execute();
+        if(result != INTERP_OK) break;
     }
     if(interp_error || !result) return NULL;
     PyObject *retval = PyTuple_New(2);

@@ -16,22 +16,23 @@ use of familiar controls and plain English tooltips and menus.  A few less
 evident features are documented with basic built-in help screens.
 
 Python 2.2 or newer with Tkinter, BLT, and PyOpenGL are required.  Hardware
-accelerated OpenGL is nice, but not required.  BLT is not required for gplot,
-and only Python 2.2 is required for mdi.
+accelerated OpenGL is nice, but not required.
 
 
 For installation on an RPM-based system such as Red Hat or Fedora, cd to
 the axis source directory and run something like:
-    $ env PLAT=xxx EMCROOT=yyy python setup.py bdist_rpm
+    $ env EMCROOT=xxx python setup.py bdist_rpm
     $ sudo rpm -ivh dist/axis*.i386.rpm
 
 For installation without using RPM or on non-RPM systems, cd to the axis
 source directory and run:
-    $ env PLAT=xxx EMCROOT=yyy python setup.py install
+    $ env EMCROOT=xxx python setup.py install
 
 In the above commands, EMCROOT is the directory where the "emc" and
-"rcslib" directories reside, and PLAT is the same as you use to build the
-non-realtime portion of EMC.
+"rcslib" directories reside.  If you are building for EMC1, you may also
+be required to give the value for PLAT, the non-realtime platform that EMC
+is configured to use.  In this case, the commandline would look like
+    $ env EMCROOT=xxx PLAT=yyy python setup.py install
 
 
 This program is free software; you can redistribute it and/or modify

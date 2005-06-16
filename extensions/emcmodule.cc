@@ -20,6 +20,9 @@
 #include <structmember.h>
 #include "rcs.hh"
 #include "emc.hh"
+#ifdef AXIS_USE_EMC2
+#include "global_defs.h"
+#endif
 #include "inifile.h"
 #include <cmath>
 
@@ -36,6 +39,16 @@
 #endif
 
 #define NUM_AXES (6)
+
+#ifdef AXIS_USE_EMC2
+#define EMC_OPERATOR_ERROR_LEN LINELEN
+#define EMC_OPERATOR_TEXT_LEN LINELEN
+#define EMC_OPERATOR_DISPLAY_LEN LINELEN
+#else
+#define ACTIVE_SETTINGS  EMC_TASK_ACTIVE_SETTINGS
+#define ACTIVE_G_CODES   EMC_TASK_ACTIVE_G_CODES 
+#define ACTIVE_M_CODES   EMC_TASK_ACTIVE_M_CODES 
+#endif
 
 #define LOCAL_SPINDLE_FORWARD (1)
 #define LOCAL_SPINDLE_REVERSE (-1)
@@ -430,15 +443,15 @@ static PyObject *Stat_probed(pyStatChannel *s) {
 }
 
 static PyObject *Stat_activegcodes(pyStatChannel *s) {
-    return int_array(s->status.task.activeGCodes, EMC_TASK_ACTIVE_G_CODES);
+    return int_array(s->status.task.activeGCodes, ACTIVE_G_CODES);
 }
 
 static PyObject *Stat_activemcodes(pyStatChannel *s) {
-    return int_array(s->status.task.activeMCodes, EMC_TASK_ACTIVE_M_CODES);
+    return int_array(s->status.task.activeMCodes, ACTIVE_M_CODES);
 }
 
 static PyObject *Stat_activesettings(pyStatChannel *s) {
-   return double_array(s->status.task.activeSettings, EMC_TASK_ACTIVE_SETTINGS);
+   return double_array(s->status.task.activeSettings, ACTIVE_SETTINGS);
 }
 
 static PyObject *Stat_din(pyStatChannel *s) {
