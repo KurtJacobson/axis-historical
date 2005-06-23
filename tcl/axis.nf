@@ -290,7 +290,8 @@ menu .menu.view \
 	-value 1 \
 	-variable display_type \
 	-accelerator @ \
-	-label {Show commanded position}
+	-label {Show commanded position} \
+	-command redraw
 
 setup_menu_accel .menu.view end [_ {Show commanded position}]
 
@@ -298,7 +299,8 @@ setup_menu_accel .menu.view end [_ {Show commanded position}]
 	-value 0 \
 	-variable display_type \
 	-accelerator @ \
-	-label {Show actual position}
+	-label {Show actual position} \
+	-command redraw
 
 setup_menu_accel .menu.view end [_ {Show actual position}]
 
@@ -309,7 +311,8 @@ setup_menu_accel .menu.view end [_ {Show actual position}]
 	-value 0 \
 	-variable coord_type \
 	-accelerator # \
-	-label {Show machine position}
+	-label {Show machine position} \
+	-command redraw
 
 setup_menu_accel .menu.view end [_ {Show machine position}]
 
@@ -317,7 +320,8 @@ setup_menu_accel .menu.view end [_ {Show machine position}]
 	-value 1 \
 	-variable coord_type \
 	-accelerator # \
-	-label {Show relative position}
+	-label {Show relative position} \
+	-command redraw
 
 setup_menu_accel .menu.view end [_ {Show relative position}]
 

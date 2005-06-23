@@ -110,6 +110,7 @@ class MyOpengl(Opengl):
         self.select_primed = False
         self.last_position = None
         self.last_homed = None
+        self.last_origin = None
         self.g = None
         self.set_eyepoint(5.)
 
@@ -555,10 +556,12 @@ class LivePlotter:
                 glLineWidth(1)
                 glDrawBuffer(GL_BACK)
         if (self.stat.actual_position != o.last_position
-                or self.stat.homed != o.last_homed):
+                or self.stat.homed != o.last_homed
+                or self.stat.origin != o.last_origin):
             o.redraw_soon()
             o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
+            o.last_origin = self.stat.origin
 
         vupdate(vars.exec_state, self.stat.exec_state)
         vupdate(vars.interp_state, self.stat.interp_state)
@@ -572,28 +575,29 @@ class LivePlotter:
         vupdate(vars.spindledir, self.stat.spindle_direction)
         vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
 
-        current_tool = [i for i in s.tool_table if i[0] == s.tool_in_spindle]
-        if s.tool_in_spindle == 0:
+        current_tool = [i for i in self.stat.tool_table 
+                            if i[0] == self.stat.tool_in_spindle]
+        if self.stat.tool_in_spindle == 0:
             vupdate(vars.tool, "No tool")
         elif current_tool == []:
-            vupdate(vars.tool, "Unknown tool %d" % s.tool_in_spindle)
+            vupdate(vars.tool, "Unknown tool %d" % self.stat.tool_in_spindle)
         else:
             vupdate(vars.tool,
                  "Tool %d, offset %g, radius %g" % current_tool[0])
         active_codes = []
-        for i in s.gcodes[1:]:
+        for i in self.stat.gcodes[1:]:
             if i == -1: continue
             if i % 10 == 0:
                 active_codes.append("G%d" % (i/10))
             else:
                 active_codes.append("G%d.%d" % (i/10, i%10))
 
-        for i in s.mcodes[1:]:
+        for i in self.stat.mcodes[1:]:
             if i == -1: continue
             active_codes.append("M%d" % i)
 
-        active_codes.append("F%.0f" % s.settings[1])
-        active_codes.append("S%.0f" % s.settings[2])
+        active_codes.append("F%.0f" % self.stat.settings[1])
+        active_codes.append("S%.0f" % self.stat.settings[2])
 
         mid = len(active_codes)/2
         a, b = active_codes[:mid], active_codes[mid:]
