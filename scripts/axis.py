@@ -1018,11 +1018,11 @@ class TclCommands(nf.TclCommands):
         s.poll()
         actual_position = s.actual_position[offset_axis]
         offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), actual_position)
-        print offset_command
         c.mdi(offset_command)
         ensure_mode(emc.MODE_MANUAL)
         s.poll()
         o.tkRedraw()
+        commands.reload_file()
     def brake(event=None):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
