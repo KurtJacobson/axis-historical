@@ -46,6 +46,9 @@ See the README file for more information."""
 
 emc2_marker = os.path.join(emcroot, "include", "emc.hh")
 is_emc2 = os.path.exists(emc2_marker)
+bdi4_marker = os.path.join(emcroot, "src", "config.h.in")
+is_bdi4 = os.path.exists(bdi4_marker)
+
 if is_emc2:
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/bin" % (emcroot)
@@ -85,6 +88,46 @@ if is_emc2:
         extra_link_args = ['-Wl,-rpath,%s' % 
             os.path.join(emcroot, "lib")]
     )
+elif is_bdi4:
+    distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
+            "%s/emc/plat/linux_rtai/bin" % (emcroot)
+    print "Building for BDI-4 in", emcroot
+
+
+    gcode = Extension("gcode", [
+            "extensions/gcodemodule.cc"
+        ],
+        define_macros = [('AXIS_USE_EMC2', 1)],
+        include_dirs=[
+            os.path.join(emcroot, "src/include"),
+        ],
+        library_dirs = [
+            os.path.join(emcroot, "plat/nonrealtime/lib")
+        ],
+        extra_link_args = [
+            '-DNEW_INTERPRETER', 
+            '-Wl,-rpath,%s' % 
+            os.path.join(emcroot, "plat/nonrealtime/lib"),
+            os.path.join(emcroot, "src", ".tmp", "rs274.o"),
+            '-lnml', '-lm', '-lstdc++',
+        ]
+    )
+
+    emc = Extension("emc", ["extensions/emcmodule.cc"],
+        define_macros=[('DEFAULT_NMLFILE',
+            '"%s/emc.nml"' % emcroot),
+            ('AXIS_USE_EMC2', 1)],
+        include_dirs=[
+            os.path.join(emcroot, "src/include")
+        ],
+        library_dirs = [
+            os.path.join(emcroot, "plat/nonrealtime/lib")
+        ],
+        libraries = ["emc", "nml", "m", "stdc++"],
+        extra_link_args = ['-Wl,-rpath,%s' % 
+            os.path.join(emcroot, "plat/nonrealtime/lib")]
+    )
+
 else:
     emcplat = os.getenv("PLAT", find_emc_plat(emcroot))
     if emcplat is None:

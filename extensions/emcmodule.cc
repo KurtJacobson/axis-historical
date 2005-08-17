@@ -21,9 +21,11 @@
 #include "rcs.hh"
 #include "emc.hh"
 #ifdef AXIS_USE_EMC2
-#include "global_defs.h"
-#endif
+#include "config.h"
+#include "inifile.hh"
+#else
 #include "inifile.h"
+#endif
 #include <cmath>
 
 #ifndef PyMODINIT_FUNC
@@ -44,6 +46,15 @@
 #define EMC_OPERATOR_ERROR_LEN LINELEN
 #define EMC_OPERATOR_TEXT_LEN LINELEN
 #define EMC_OPERATOR_DISPLAY_LEN LINELEN
+#ifndef NML_ERROR_LEN
+#define NML_ERROR_LEN LINELEN
+#endif
+#ifndef NML_TEXT_LEN
+#define NML_TEXT_LEN LINELEN
+#endif
+#ifndef NML_DISPLAY_LEN
+#define NML_DISPLAY_LEN LINELEN
+#endif
 #else
 #define ACTIVE_SETTINGS  EMC_TASK_ACTIVE_SETTINGS
 #define ACTIVE_G_CODES   EMC_TASK_ACTIVE_G_CODES 
@@ -83,7 +94,11 @@
 
 struct pyIniFile {
     PyObject_HEAD
+#ifdef AXIS_USE_EMC2
+    Inifile i;
+#else
     INIFILE i;
+#endif
 };
 
 struct pyStatChannel {
