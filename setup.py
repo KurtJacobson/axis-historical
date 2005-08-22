@@ -44,9 +44,9 @@ commandline like this:
 See the README file for more information."""
     raise SystemExit, 1
 
-emc2_marker = os.path.join(emcroot, "include", "emc.hh")
+emc2_marker = os.path.join(emcroot, "include", "config.h")
 is_emc2 = os.path.exists(emc2_marker)
-bdi4_marker = os.path.join(emcroot, "src", "config.h.in")
+bdi4_marker = os.path.join(emcroot, "src/include", "config.h")
 is_bdi4 = os.path.exists(bdi4_marker)
 
 if is_emc2:
@@ -90,7 +90,7 @@ if is_emc2:
     )
 elif is_bdi4:
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
-            "%s/emc/plat/linux_rtai/bin" % (emcroot)
+            "%s/plat/linux_rtai/bin" % (emcroot)
     print "Building for BDI-4 in", emcroot
 
 
@@ -102,12 +102,12 @@ elif is_bdi4:
             os.path.join(emcroot, "src/include"),
         ],
         library_dirs = [
-            os.path.join(emcroot, "plat/nonrealtime/lib")
+            os.path.join(emcroot, "plat/linux_rtai/lib")
         ],
         extra_link_args = [
             '-DNEW_INTERPRETER', 
             '-Wl,-rpath,%s' % 
-            os.path.join(emcroot, "plat/nonrealtime/lib"),
+            os.path.join(emcroot, "plat/linux_rtai/lib"),
             os.path.join(emcroot, "src", ".tmp", "rs274.o"),
             '-lnml', '-lm', '-lstdc++',
         ]
@@ -121,11 +121,11 @@ elif is_bdi4:
             os.path.join(emcroot, "src/include")
         ],
         library_dirs = [
-            os.path.join(emcroot, "plat/nonrealtime/lib")
+            os.path.join(emcroot, "plat/linux_rtai/lib")
         ],
         libraries = ["emc", "nml", "m", "stdc++"],
         extra_link_args = ['-Wl,-rpath,%s' % 
-            os.path.join(emcroot, "plat/nonrealtime/lib")]
+            os.path.join(emcroot, "plat/linux_rtai/lib")]
     )
 
 else:
