@@ -949,7 +949,7 @@ class TclCommands(nf.TclCommands):
         s.poll()
         if s.file == '': return
         o.set_highlight_line(None)
-        open_file_guts(s.file)
+        open_file_guts(s.file, True)
 
     def task_run(*event):
         global program_start_line, program_start_line_last
