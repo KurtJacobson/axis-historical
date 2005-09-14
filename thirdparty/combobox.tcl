@@ -1361,6 +1361,10 @@ proc ::combobox::WidgetProc {w command args} {
 	    # listbox.
 	    event generate $widgets(listbox) <B1-Enter>
 
+            # This seems to be necessary on certain window managers
+            # including twm and fluxbox
+            after idle raise $widgets(dropdown)
+
 	    return 1
 	}
 
