@@ -752,7 +752,7 @@ combobox .tabs.manual.jogf.jogspeed \
 	-textvariable jogincrement \
 	-value Continuous \
 	-width 10
-.tabs.manual.jogf.jogspeed list insert end Continuous 0.10000 0.01000 0.00100 0.00010
+.tabs.manual.jogf.jogspeed list insert end Continuous 0.1000 0.0100 0.0010 0.0001
 
 button .tabs.manual.jogf.home \
 	-command home_axis \
