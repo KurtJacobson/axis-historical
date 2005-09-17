@@ -123,9 +123,7 @@ elif is_bdi4:
         library_dirs = [
             os.path.join(emcroot, "plat/linux_rtai/lib")
         ],
-        libraries = ["emc", "nml", "m", "stdc++"],
-        extra_link_args = ['-Wl,-rpath,%s' % 
-            os.path.join(emcroot, "plat/linux_rtai/lib")]
+        libraries = ["emc", "nml", "m", "stdc++"]
     )
 
 else:
