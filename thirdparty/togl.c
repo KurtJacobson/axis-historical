@@ -1058,7 +1058,7 @@ int Togl_Configure(Tcl_Interp *interp, struct Togl *togl,
    int oldAuxNumber   = togl->AuxNumber;
 
    if (Tk_ConfigureWidget(interp, togl->TkWin, configSpecs,
-                          argc, (char **)argv, (char *)togl, flags) == TCL_ERROR) {
+                          argc, (const char **)argv, (char *)togl, flags) == TCL_ERROR) {
       return(TCL_ERROR);
    }
 #ifndef USE_OVERLAY
@@ -1244,7 +1244,7 @@ static int Togl_Cmd(ClientData clientData, Tcl_Interp *interp,
                     int argc, char **argv)
 {
    char *name;
-   Tk_Window main = (Tk_Window)clientData;
+   Tk_Window mainwindow = (Tk_Window)clientData;
    Tk_Window tkwin;
    struct Togl *togl;
 
@@ -1254,7 +1254,7 @@ static int Togl_Cmd(ClientData clientData, Tcl_Interp *interp,
 
    /* Create the window. */
    name = argv[1];
-   tkwin = Tk_CreateWindowFromPath(interp, main, name, (char *) NULL);
+   tkwin = Tk_CreateWindowFromPath(interp, mainwindow, name, (char *) NULL);
    if (tkwin == NULL) {
       return TCL_ERROR;
    }
@@ -1594,7 +1594,7 @@ static Window Togl_CreateWindow(Tk_Window tkwin,
   struct Togl *togl = (struct Togl*) instanceData;
   XVisualInfo *visinfo = NULL;
   Display *dpy;
-  Tk_Window *winPtr = (Tk_Window *) togl->TkWin;  Colormap cmap;
+  Colormap cmap;
   int scrnum;
   int directCtx = GL_TRUE;
   Window window;
