@@ -1018,7 +1018,9 @@ class TclCommands(nf.TclCommands):
         s.poll()
         actual_position = s.actual_position[offset_axis]
         offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), actual_position)
+        time.sleep(.1)
         c.mdi(offset_command)
+        time.sleep(.1)
         ensure_mode(emc.MODE_MANUAL)
         s.poll()
         o.tkRedraw()
