@@ -212,7 +212,7 @@ static int emcWaitCommandComplete(int serial_number, RCS_STAT_CHANNEL *s) {
     while (etime() - start < EMC_COMMAND_TIMEOUT) {
         if(s->peek() == EMC_STAT_TYPE) {
            EMC_STAT *stat = (EMC_STAT*)s->get_address();
-           printf("WaitComplete: %d %d %d\n", serial_number, stat->echo_serial_number, stat->status);
+//           printf("WaitComplete: %d %d %d\n", serial_number, stat->echo_serial_number, stat->status);
            if (stat->echo_serial_number == serial_number &&
                ( stat->status == RCS_DONE || stat->status == RCS_ERROR )) {
                 return s->get_address()->status;
