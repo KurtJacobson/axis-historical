@@ -1189,6 +1189,9 @@ def bind_axis(a, b, d):
 bind_axis("Left", "Right", 0)
 bind_axis("Down", "Up", 1)
 bind_axis("Next", "Prior", 2)
+bind_axis("KP_Left", "KP_Right", 0)
+bind_axis("KP_Down", "KP_Up", 1)
+bind_axis("KP_Next", "KP_Prior", 2)
 bind_axis("bracketleft", "bracketright", 3)
 
 def set_tabs(e):
