@@ -825,13 +825,7 @@ class TclCommands(nf.TclCommands):
         except ValueError: return
         value = value / 100.
         c.feedrate(value)
-
-        # This code attempts to debounce the feedrate slider.  Without this
-        # code, the slider will jump back to the old location 
-        for i in range(5):
-            if s.feedrate == value: break
-            time.sleep(.01)
-            s.poll()
+        c.wait_complete()
 
     def copy_line(*args):
         line = -1
