@@ -1012,8 +1012,8 @@ class TclCommands(nf.TclCommands):
         ensure_mode(emc.MODE_MDI)
         offset_axis = "xyzabc".index(vars.current_axis.get())
         s.poll()
-        actual_position = s.actual_position[offset_axis]
-        offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), actual_position)
+        position = s.position[offset_axis]
+        offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
         c.mdi(offset_command)
         ensure_mode(emc.MODE_MANUAL)
         s.poll()
