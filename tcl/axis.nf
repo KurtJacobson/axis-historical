@@ -805,7 +805,7 @@ grid .tabs.manual.jogf.jogspeed \
 	-pady 2
 
 vspace .tabs.manual.space1 \
-	-height 16
+	-height 12
 
 label .tabs.manual.spindlel
 setup_widget_accel .tabs.manual.spindlel [_ Spindle:]
@@ -915,7 +915,7 @@ grid .tabs.manual.spindlef.stop \
 	-ipadx 8
 
 vspace .tabs.manual.space2 \
-	-height 16
+	-height 12
 
 label .tabs.manual.coolant
 setup_widget_accel .tabs.manual.coolant [_ Coolant:]
@@ -1011,7 +1011,7 @@ text .tabs.mdi.history \
 grid rowconfigure .tabs.mdi.history 0 -weight 1
 
 vspace .tabs.mdi.vs1 \
-	-height 16
+	-height 12
 
 label .tabs.mdi.commandl
 setup_widget_accel .tabs.mdi.commandl [_ {MDI Command:}]
@@ -1027,7 +1027,7 @@ button .tabs.mdi.go \
 setup_widget_accel .tabs.mdi.go [_ Go]
 
 vspace .tabs.mdi.vs2 \
-	-height 16
+	-height 12
 
 label .tabs.mdi.gcodel
 setup_widget_accel .tabs.mdi.gcodel [_ {Active G-Codes:}]
@@ -1039,7 +1039,7 @@ text .tabs.mdi.gcodes \
 .tabs.mdi.gcodes configure -state disabled
 
 vspace .tabs.mdi.vs3 \
-	-height 16
+	-height 12
 
 # Grid widget .tabs.mdi.command
 grid .tabs.mdi.command \
