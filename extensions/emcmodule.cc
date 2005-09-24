@@ -90,7 +90,7 @@
  * 'invalid offsetof from non-POD type'.
  */
 #undef offsetof
-#define offsetof(T,x) (int)(-1+(char*)&(((T*)1)->x))
+#define offsetof(T,x) (size_t)(-1+(char*)&(((T*)1)->x))
 
 struct pyIniFile {
     PyObject_HEAD
