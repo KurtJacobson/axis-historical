@@ -1244,7 +1244,7 @@ bind .about <Key-Return> { wm wi .about }
 
 message .about.message \
 	-borderwidth 0 \
-	-text [_ {AXIS version 1.0
+	-text [_ {AXIS version 1.1rc1
 
 Copyright (C) 2004 Jeff Epler and Chris Radek.
 
