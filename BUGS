@@ -1,4 +1,5 @@
 Known Bugs in AXIS
+* if another window takes focus while jogging, the machine may keep moving
 * "override limit" is missing
 * jog buttons don't work if you tab to them and use the space bar
 * (feature?) f-key actions can be done from MDI tab
