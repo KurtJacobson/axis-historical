@@ -710,6 +710,8 @@ def open_file_guts(f, filtered = False):
         o.tkRedraw()
 
 vars = nf.Variables(root_window, 
+    ("emctop_command", StringVar),
+    ("emcini", StringVar),
     ("mdi_command", StringVar),
     ("taskfile", StringVar),
     ("interp_pause", IntVar),
@@ -735,6 +737,7 @@ vars = nf.Variables(root_window,
     ("display_type", IntVar),
     ("override_limits", BooleanVar),
 )
+vars.emctop_command.set(os.path.join(os.path.dirname(sys.argv[0]), "emctop"))
 vars.highlight_line.set(-1)
 vars.running_line.set(-1)
 vars.show_program.set(1)
@@ -742,6 +745,7 @@ vars.show_live_plot.set(1)
 vars.show_tool.set(1)
 
 widgets = nf.Widgets(root_window, 
+    ("menu_view", Menu, ".menu.view"),
     ("text", Text, ".t.text"),
     ("preview_frame", Frame, ".preview"),
     ("mdi_history", Text, ".tabs.mdi.history"),
@@ -1223,6 +1227,7 @@ open_directory = "programs"
 if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     import ConfigParser
     inifile = emc.ini(sys.argv[2])
+    vars.emcini.set(sys.argv[2])
     axiscount = int(inifile.find("TRAJ", "AXES"))
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
     open_directory = inifile.find("DISPLAY", "PROGRAM_PREFIX")
@@ -1243,6 +1248,9 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
         if lu in [.001, .01, .1, 1, 10]: vars.metric.set(1)
         else: vars.metric.set(0)
     del sys.argv[1:3]
+else:
+    widgets.menu_view.entryconfigure("Show EMC Status", state="disabled")
+
 opts, args = getopt.getopt(sys.argv[1:], 'd:')
 for i in range(len(axisnames), 6):
     c = getattr(widgets, "axis_%s" % ("xyzabc"[i]))
@@ -1251,7 +1259,8 @@ s = emc.stat(); s.poll()
 c = emc.command()
 e = emc.error_channel()
 
-o = MyOpengl(widgets.preview_frame, width=60, height=40, double=1, depth=1)
+widgets.preview_frame.pack_propagate(0)
+o = MyOpengl(widgets.preview_frame, width=400, height=300, double=1, depth=1)
 o.last_line = 1
 o.pack(fill="both", expand=1)
 

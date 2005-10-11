@@ -325,6 +325,12 @@ setup_menu_accel .menu.view end [_ {Show machine position}]
 
 setup_menu_accel .menu.view end [_ {Show relative position}]
 
+.menu.view add separator
+
+.menu.view add command \
+	-label {Show EMC Status} \
+	-command {exec $emctop_command -ini $emcini &}
+
 # Configure widget .menu.view
 wm title .menu.view view
 wm iconname .menu.view {}
@@ -895,9 +901,8 @@ setup_widget_accel .tabs.manual.spindlef.brake [_ Brake]
 
 # Grid widget .tabs.manual.spindlef.brake
 grid .tabs.manual.spindlef.brake \
-	-column 0 \
-	-row 2 \
-	-columnspan 3 \
+	-column 2 \
+	-row 1 \
 	-pady 2 \
 	-sticky w
 
@@ -910,7 +915,8 @@ grid .tabs.manual.spindlef.ccw \
 # Grid widget .tabs.manual.spindlef.cw
 grid .tabs.manual.spindlef.cw \
 	-column 2 \
-	-row 0
+	-row 0 \
+	-sticky w
 
 # Grid widget .tabs.manual.spindlef.spindleminus
 grid .tabs.manual.spindlef.spindleminus \
@@ -1468,6 +1474,5 @@ grid rowconfigure . 1 -weight 1
 wm title . {AXIS (no file)}
 wm iconname . {}
 wm resiz . 1 1
-wm minsize . 656 511
 
 # vim:ts=8:sts=8:noet:sw=8

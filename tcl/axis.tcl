@@ -189,10 +189,8 @@ proc is_continuous {} {
 
 
 bind . <Configure> { if {"%W" == "."} {
-    wm minsize %W [winfo reqwidth %W] [winfo reqheight %W] }
+    wm minsize %W [winfo reqwidth %W] [expr [winfo reqheight %W]+4] }
 }
-#after idle { wm minsize . [winfo reqwidth .] [winfo reqheight .] }
-wm maxsize . [winfo screenwidth .] [winfo screenheight .]
 
 wm withdraw .about
 wm withdraw .keys
