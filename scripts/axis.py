@@ -536,7 +536,8 @@ class LivePlotter:
         else:
             self.win.set_current_line(self.stat.motion_line)
 
-        p = array.array('f', list(self.stat.position[:3]))
+        position = [pi / (25.4 * self.stat.linear_units) for pi in self.stat.position[:3]]
+        p = array.array('f', position)
         if not self.data or p != self.data[-3:]:
             if len(self.data) > 6 and \
                     colinear(self.data[-6:-3], self.data[-3:], p):
@@ -1211,6 +1212,14 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     emc.nmlfile = inifile.find("EMC", "NML_FILE")
     vars.coord_type.set(inifile.find("DISPLAY", "POSITION_OFFSET") == "RELATIVE")
     vars.display_type.set(inifile.find("DISPLAY", "POSITION_FEEDBACK") == "COMMANDED")
+    coordinate_display = inifile.find("DISPLAY", "POSITION_UNITS")
+    if coordinate_display:
+        if coordinate_display.lower() in ("mm", "metric"): vars.metric.set(1)
+        else: vars.metric.set(0)
+    else:
+        lu = float(inifile.find("TRAJ", "LINEAR_UNITS"))
+        if lu in [.001, .01, .1, 1, 10]: vars.metric.set(1)
+        else: vars.metric.set(0)
     del sys.argv[1:3]
 opts, args = getopt.getopt(sys.argv[1:], 'd:')
 for i in range(len(axisnames), 6):
@@ -1317,6 +1326,9 @@ def redraw(self):
         positions = s.position
     else:
         positions = s.actual_position
+
+    # XXX: assumes all axes are linear, which is wrong
+    positions = [pi / (25.4 * s.linear_units) for pi in positions]
 
     if vars.coord_type.get():
         positions = [(i-j) for i, j in zip(positions, s.origin)]
