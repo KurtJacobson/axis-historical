@@ -575,7 +575,7 @@ class LivePlotter:
         vupdate(vars.brake, self.stat.spindle_brake)
         vupdate(vars.spindledir, self.stat.spindle_direction)
         vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
-
+        vupdate(vars.override_limits, self.stat.axis[0]['override_limits'])
         current_tool = [i for i in self.stat.tool_table 
                             if i[0] == self.stat.tool_in_spindle]
         if self.stat.tool_in_spindle == 0:
@@ -733,6 +733,7 @@ vars = nf.Variables(root_window,
     ("metric", IntVar),
     ("coord_type", IntVar),
     ("display_type", IntVar),
+    ("override_limits", BooleanVar),
 )
 vars.highlight_line.set(-1)
 vars.running_line.set(-1)
@@ -1093,8 +1094,20 @@ class TclCommands(nf.TclCommands):
         vars.coord_type.set(not vars.coord_type.get())
         o.tkRedraw()
 
+    def toggle_override_limits(*args):
+        if not manual_ok(): return
+        if s.axis[0]['override_limits']:
+            print "override off"
+            ensure_mode(emc.MODE_AUTO)
+        else:
+            print "override on"
+            ensure_mode(emc.MODE_MANUAL)
+            c.override_limits()
+            c.wait_complete()
+
 commands = TclCommands(root_window)
 root_window.bind("<Escape>", commands.task_stop)
+root_window.bind("l", commands.toggle_override_limits)
 root_window.bind("o", commands.open_file)
 root_window.bind("s", commands.task_resume)
 root_window.bind("t", commands.task_step)
@@ -1143,6 +1156,7 @@ def jog(*args):
 # XXX correct for machines with more than six axes
 jog_after = [None] * 6
 jog_cont  = [False] * 6
+jog_count = 0
 def jog_on(a, b):
     if not manual_ok(): return
     if isinstance(a, (str, unicode)):
@@ -1151,6 +1165,10 @@ def jog_on(a, b):
         root_window.after_cancel(jog_after[a])
         jog_after[a] = None
         return
+    global jog_count
+    jog_count += 1
+    if jog_count == 1:
+        root_window.grab_set_global()
     jogspeed = widgets.jogspeed.get()
     if jogspeed != "Continuous":
         s.poll()
@@ -1170,6 +1188,10 @@ def jog_off(a):
 
 def jog_off_actual(a):
     if not manual_ok(): return
+    global jog_count
+    jog_count -= 1
+    if jog_count == 0:
+        root_window.grab_release()
     activate_axis(a)
     jog_after[a] = None
     if jog_cont[a]:

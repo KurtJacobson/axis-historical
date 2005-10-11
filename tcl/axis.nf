@@ -766,10 +766,29 @@ button .tabs.manual.jogf.zero \
 	-pady 0
 setup_widget_accel .tabs.manual.jogf.zero {Zero Offset}
 
+checkbutton .tabs.manual.jogf.override \
+	-command toggle_override_limits \
+	-variable override_limits \
+	-indicatoron 0 \
+	-borderwidth 2 \
+	-padx 2m \
+	-pady 0
+setup_widget_accel .tabs.manual.jogf.override {Override Limits}
+
+
 # Grid widget .tabs.manual.jogf.home
 grid .tabs.manual.jogf.home \
 	-column 0 \
 	-row 2 \
+	-columnspan 3 \
+	-ipadx 2 \
+	-pady 2 \
+	-sticky w
+
+# Grid widget .tabs.manual.jogf.override
+grid .tabs.manual.jogf.override \
+	-column 0 \
+	-row 3 \
 	-columnspan 3 \
 	-ipadx 2 \
 	-pady 2 \
