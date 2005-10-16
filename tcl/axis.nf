@@ -764,15 +764,15 @@ frame .tabs.manual.jogf.zerohome
 
 button .tabs.manual.jogf.zerohome.home \
 	-command home_axis \
-	-padx 4 \
+	-padx 2m \
 	-pady 0
 setup_widget_accel .tabs.manual.jogf.zerohome.home [_ Home]
 
 button .tabs.manual.jogf.zerohome.zero \
 	-command set_axis_offset \
-	-padx 4 \
+	-padx 2m \
 	-pady 0
-setup_widget_accel .tabs.manual.jogf.zerohome.zero {Set Offset}
+setup_widget_accel .tabs.manual.jogf.zerohome.zero {Offset}
 
 checkbutton .tabs.manual.jogf.override \
 	-command toggle_override_limits \
