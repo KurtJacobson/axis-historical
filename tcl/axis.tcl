@@ -33,7 +33,12 @@ set INTERP_PAUSED 3
 set INTERP_WAITING 4
 
 set manual [concat [winfo children .tabs.manual.axes] \
-    [winfo children .tabs.manual.jogf] \
+    .tabs.manual.jogf.zerohome.home \
+    .tabs.manual.jogf.zerohome.zero \
+    .tabs.manual.jogf.override \
+    .tabs.manual.jogf.jogminus \
+    .tabs.manual.jogf.jogplus \
+    .tabs.manual.jogf.jogspeed \
     .tabs.manual.spindlef.cw .tabs.manual.spindlef.ccw \
     .tabs.manual.spindlef.stop .tabs.manual.spindlef.brake \
     .tabs.manual.flood .tabs.manual.mist .tabs.mdi.command \
@@ -204,8 +209,8 @@ DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower [
 DynamicHelp::add .tabs.manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
 DynamicHelp::add .tabs.manual.flood -text {Turn flood on or off [F8]}
 DynamicHelp::add .tabs.manual.mist -text {Turn mist on or off [F7]}
-DynamicHelp::add .tabs.manual.jogf.home -text {Send selected axis home [HOME]}
-DynamicHelp::add .tabs.manual.jogf.zero -text {Zero selected axis's G54 offset [Shift-HOME]}
+DynamicHelp::add .tabs.manual.jogf.zerohome.home -text {Send selected axis home [HOME]}
+DynamicHelp::add .tabs.manual.jogf.zerohome.zero -text {Zero selected axis's G54 offset [Shift-HOME]}
 DynamicHelp::add .tabs.manual.axes.axisx -text {Select axis [X]}
 DynamicHelp::add .tabs.manual.axes.axisy -text {Select axis [Y]}
 DynamicHelp::add .tabs.manual.axes.axisz -text {Select axis [Z]}

@@ -760,33 +760,43 @@ combobox .tabs.manual.jogf.jogspeed \
 	-width 10
 .tabs.manual.jogf.jogspeed list insert end Continuous 0.1000 0.0100 0.0010 0.0001
 
-button .tabs.manual.jogf.home \
-	-command home_axis \
-	-padx 2m \
-	-pady 0
-setup_widget_accel .tabs.manual.jogf.home [_ Home]
+frame .tabs.manual.jogf.zerohome
 
-button .tabs.manual.jogf.zero \
-	-command set_axis_offset \
-	-padx 2m \
+button .tabs.manual.jogf.zerohome.home \
+	-command home_axis \
+	-padx 4 \
 	-pady 0
-setup_widget_accel .tabs.manual.jogf.zero {Zero Offset}
+setup_widget_accel .tabs.manual.jogf.zerohome.home [_ Home]
+
+button .tabs.manual.jogf.zerohome.zero \
+	-command set_axis_offset \
+	-padx 4 \
+	-pady 0
+setup_widget_accel .tabs.manual.jogf.zerohome.zero {Set Offset}
 
 checkbutton .tabs.manual.jogf.override \
 	-command toggle_override_limits \
-	-variable override_limits \
-	-indicatoron 0 \
-	-borderwidth 2 \
-	-padx 2m \
-	-pady 0
+	-variable override_limits
 setup_widget_accel .tabs.manual.jogf.override {Override Limits}
 
-
-# Grid widget .tabs.manual.jogf.home
-grid .tabs.manual.jogf.home \
+grid .tabs.manual.jogf.zerohome \
 	-column 0 \
-	-row 2 \
+	-row 1 \
 	-columnspan 3 \
+	-sticky w
+
+# Grid widget .tabs.manual.jogf.zerohome.home
+grid .tabs.manual.jogf.zerohome.home \
+	-column 0 \
+	-row 0 \
+	-ipadx 2 \
+	-pady 2 \
+	-sticky w
+
+# Grid widget .tabs.manual.jogf.zerohome.zero
+grid .tabs.manual.jogf.zerohome.zero \
+	-column 1 \
+	-row 0 \
 	-ipadx 2 \
 	-pady 2 \
 	-sticky w
@@ -796,16 +806,6 @@ grid .tabs.manual.jogf.override \
 	-column 0 \
 	-row 3 \
 	-columnspan 3 \
-	-ipadx 2 \
-	-pady 2 \
-	-sticky w
-
-# Grid widget .tabs.manual.jogf.zero
-grid .tabs.manual.jogf.zero \
-	-column 0 \
-	-row 1 \
-	-columnspan 3 \
-	-ipadx 2 \
 	-pady 2 \
 	-sticky w
 
@@ -901,8 +901,9 @@ setup_widget_accel .tabs.manual.spindlef.brake [_ Brake]
 
 # Grid widget .tabs.manual.spindlef.brake
 grid .tabs.manual.spindlef.brake \
-	-column 2 \
-	-row 1 \
+	-column 0 \
+	-row 2 \
+	-columnspan 3 \
 	-pady 2 \
 	-sticky w
 
@@ -959,7 +960,7 @@ setup_widget_accel .tabs.manual.flood [_ Flood]
 grid .tabs.manual.axes \
 	-column 1 \
 	-row 0 \
-	-padx 4 \
+	-padx 0 \
 	-sticky w
 
 # Grid widget .tabs.manual.axis
