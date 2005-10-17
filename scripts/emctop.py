@@ -25,6 +25,9 @@ maps = {
 'dout': None
 }
 
+root = Tkinter.Tk()
+root.title("EMC Status")
+
 t = Tkinter.Text()
 sb = Tkinter.Scrollbar(command=t.yview)
 t.configure(yscrollcommand=sb.set)
