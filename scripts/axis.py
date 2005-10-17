@@ -1202,8 +1202,8 @@ def jog_off_actual(a):
         jog(emc.JOG_STOP, a)
 
 def bind_axis(a, b, d):
-    root_window.bind("<KeyPress-%s>" % a, lambda e: jog_on(d, -1))
-    root_window.bind("<KeyPress-%s>" % b, lambda e: jog_on(d, 1))
+    root_window.bind("<KeyPress-%s>" % a, lambda e: jog_on(d,-jog_speed))
+    root_window.bind("<KeyPress-%s>" % b, lambda e: jog_on(d, jog_speed))
     root_window.bind("<KeyRelease-%s>" % a, lambda e: jog_off(d))
     root_window.bind("<KeyRelease-%s>" % b, lambda e: jog_off(d))
 
