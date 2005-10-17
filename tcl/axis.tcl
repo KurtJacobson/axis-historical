@@ -220,6 +220,7 @@ DynamicHelp::add .tabs.manual.axes.axisc -text {Select axis [5]}
 DynamicHelp::add .tabs.manual.jogf.jogminus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogplus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogspeed -text {Select jog ingrement}
+DynamicHelp::add .tabs.manual.jogf.override -text {Temporarily allow jogging outside machine limits [L]}
 
 set family_g0 "In this modal group:\nG0: straight traverse\nG1: straight feed\n..."
 DynamicHelp::add .tabs.mdi.gcodes -tag G1 -text "Motion mode: straight feed\n$family_g0"
