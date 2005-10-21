@@ -4,6 +4,8 @@ Known Bugs in AXIS
 * ctrl-k doesn't work in MDI tab
 * "zero offset" probably doesn't work when metric is involved
 * "override limit" keystroke shortcut not documented
+* Can't choose "cm" as units (supported by at least TkEmc)
+* Can't set Axis Speed
 
 Bugs in EMC that limit functionality in AXIS
 * Can't step to first line of program
