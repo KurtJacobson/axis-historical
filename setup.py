@@ -44,12 +44,16 @@ commandline like this:
 See the README file for more information."""
     raise SystemExit, 1
 
+simple_install = os.getenv("SIMPLEINSTALL", False)
+
 emc2_marker = os.path.join(emcroot, "include", "config.h")
 is_emc2 = os.path.exists(emc2_marker)
 bdi4_marker = os.path.join(emcroot, "src/include", "config.h")
 is_bdi4 = os.path.exists(bdi4_marker)
 
-if is_emc2:
+if simple_install:
+    pass
+elif is_emc2:
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/bin" % (emcroot)
     print "Building for EMC2 in", emcroot
@@ -186,6 +190,11 @@ togl = Extension("_togl", ["extensions/_toglmodule.c"], **get_togl_flags())
 glfixes = Extension("_glfixes", ["extensions/_glfixes.c"], libraries = ["GL"], 
 	library_dirs = ["/usr/X11R6/lib"])
 
+if simple_install:
+    ext_modules = []
+else:
+    ext_modules = [emc, glfixes, togl, gcode]
+
 setup(name=name, version=version,
     description="AXIS front-end for emc",
     author="Jeff Epler", author_email="jepler@unpythonic.net",
@@ -211,7 +220,7 @@ setup(name=name, version=version,
                   (DOCDIR, ["COPYING", "README", "BUGS",
                         "thirdparty/bwidget/LICENSE.txt",
                         "thirdparty/LICENSE-Togl"])],
-    ext_modules = [emc, glfixes, togl, gcode],
+    ext_modules = ext_modules,
     url="http://axis.unpythonic.net/",
     license="GPL",
 )

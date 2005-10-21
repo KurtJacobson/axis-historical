@@ -34,6 +34,13 @@ be required to give the value for PLAT, the non-realtime platform that EMC
 is configured to use.  In this case, the commandline would look like
     $ env EMCROOT=xxx PLAT=yyy python setup.py install
 
+In some cases (Paul C.'s BDI 4.xx, for instance) there is already an
+installed version of axis, but the necessary environment to rebuild
+the extension modules (emcmodule and gcodemodule in particular) is not
+present or is difficult to set up.  In this case, use the environment
+variable SIMPLEINSTALL to (re)install everything but the extension modules:
+    $ env EMCROOT=xxx PLAT=yyy SIMPLEINSTALL=yes setup.py install
+
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
