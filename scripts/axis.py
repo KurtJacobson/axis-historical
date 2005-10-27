@@ -638,7 +638,11 @@ class AxisCanon(GLCanon):
                 return t
         return tool,0.,0.
 
+loaded_file = None
 def open_file_guts(f, filtered = False):
+    if not filtered:
+        global loaded_file
+        loaded_file = f
     if program_filter and not filtered:
         tempfile = os.path.join(tempdir, os.path.basename(f))
         result = os.system("%s < %s > %s" % (program_filter, f, tempfile))
@@ -949,9 +953,9 @@ class TclCommands(nf.TclCommands):
     def reload_file(*event):
         if running(): return
         s.poll()
-        if s.file == '': return
+        if not loaded_file: return
         o.set_highlight_line(None)
-        open_file_guts(s.file, True)
+        open_file_guts(loaded_file)
 
     def task_run(*event):
         global program_start_line, program_start_line_last
