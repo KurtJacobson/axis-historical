@@ -1018,8 +1018,11 @@ class TclCommands(nf.TclCommands):
         ensure_mode(emc.MODE_MDI)
         offset_axis = "xyzabc".index(vars.current_axis.get())
         s.poll()
-        position = s.position[offset_axis]
+        position = s.position[offset_axis] / (25.4 * s.linear_units)
+        if 210 in s.gcodes:
+            position *= 25.4
         offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
+	print offset_command
         c.mdi(offset_command)
         ensure_mode(emc.MODE_MANUAL)
         s.poll()
@@ -1336,7 +1339,7 @@ def redraw(self):
         glScalef(1/25.4, 1/25.4, 1/25.4)
         if vars.coord_type.get() and (s.origin[0] or s.origin[1] or s.origin[2]):
             draw_small_origin()
-            glTranslatef(s.origin[0]*25.4, s.origin[1]*25.4, s.origin[2]*25.4)
+            glTranslatef(s.origin[0]/s.linear_units, s.origin[1]/s.linear_units, s.origin[2]/s.linear_units)
             draw_axes()
         else:
             draw_axes()
@@ -1358,11 +1361,12 @@ def redraw(self):
     else:
         positions = s.actual_position
 
+    if vars.coord_type.get():
+        positions = [(i-j) for i, j in zip(positions, s.origin)]
+
     # XXX: assumes all axes are linear, which is wrong
     positions = [pi / (25.4 * s.linear_units) for pi in positions]
 
-    if vars.coord_type.get():
-        positions = [(i-j) for i, j in zip(positions, s.origin)]
 
     if vars.metric.get():
         positions = ["%c:% 9.2f" % i for i in 
