@@ -52,7 +52,24 @@ bdi4_marker = os.path.join(emcroot, "src/include", "config.h")
 is_bdi4 = os.path.exists(bdi4_marker)
 
 if simple_install:
-    pass
+    try:
+        import emc, gcode, _glfixes, _togl
+    except ImportError, detail:
+        print "%s.  SIMPLE_INSTALL won't work" % (detail.args[0])
+        raise SystemExit, 1
+    d1 = os.path.join(emcroot, "plat", "*", "bin")
+    d2 = os.path.join(emcroot, "emc", "plat", "*", "bin")
+    for bin in ['bin', 'emc/bin'] + glob(d1) + glob(d2):
+        existing_script = os.path.join(emcroot, bin, "axis")
+        if os.path.exists(existing_script):
+            INSTALL_SCHEMES = distutils.command.install.INSTALL_SCHEMES
+            INSTALL_SCHEMES['unix_prefix']['scripts'] = \
+                os.path.join(emcroot, bin)
+            print "SIMPLE_INSTALL bindir is", bin
+            break
+    else:
+        print "Existing 'axis' script not found.  SIMPLE_INSTALL won't work"
+        raise SystemExit, 1
 elif is_emc2:
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/bin" % (emcroot)
