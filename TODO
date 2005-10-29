@@ -1,6 +1,5 @@
 
 Wishlist items
-* limit override 
 * pick better Z-buffer extents using machine limits from inifile
 * messages when paused (or about to pause) should offer the opportunity to
   unpause in the dialog
@@ -13,7 +12,6 @@ Wishlist items
 * more built-in help
 * for live plot, G0 vs G1 should be different colors
 * file open dialog should remember the directory from previous open
-* file open's initial default directory should be read from the ini
 * cone should get smaller as you zoom in (stay the same size on the screen)
 
 Missing dialogs/subwindows from xemc:
@@ -25,8 +23,6 @@ Missing dialogs/subwindows from xemc:
 Missing keys from xemc:
 0..9    Feed override       1..5 select axes in AXIS
 Alt-T   edit tool
-Alt-XYZ set coordinate offset (plus Alt-A?)
-L       override limits     Don't add until onscreen indicator available
 Alt-P / Alt-S Logging
 
 Functions and keys from other frontends that won't be implemented:
