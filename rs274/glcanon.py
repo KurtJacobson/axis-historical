@@ -21,12 +21,12 @@ from math import sin, cos, pi
 
 class GLCanon(Translated, ArcsToSegmentsMixin):
     def __init__(self, text=None):
-        self.traverse = []
-        self.feed = []
-        self.wfeed = []
-        self.dwells = []
+        self.traverse = []; self.traverse_append = self.traverse.append
+        self.feed = []; self.feed_append = self.feed.append
+        self.dwells = []; self.dwells_append = self.dwells.append
         self.choice = None
-        self.ox = self.oy = self.oz = 0
+        self.lo = (0,0,0)
+        self.offset_x = self.offset_y = self.offset_z = 0
         self.text = text
 
     def message(self, message): pass
@@ -46,53 +46,50 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
     def get_tool(self, tool):
         return tool, .75, .0625
 
-    def straight_traverse_translated(self, x,y,z, a,b,c):
-        if a:
-            c = cos(a * pi/180); s = sin(a * pi/180)
-            y, z = y * c - z * s, y*s + z*c
-        self.traverse.append((self.lineno, self.ox, self.oy, self.oz, x,y,z))
-        self.ox = x
-        self.oy = y
-        self.oz = z
+    def set_origin_offsets(self, offset_x, offset_y, offset_z, offset_a, offset_b, offset_c):
+        self.offset_x = offset_x
+        self.offset_y = offset_y
+        self.offset_z = offset_z
 
-    def straight_feed_translated(self, x,y,z, a,b,c):
-        if a:
-            c = cos(a * pi/180); s = sin(a * pi/180)
-            y, z = y * c - z * s, y*s + z*c
-        self.feed.append((self.lineno, self.ox, self.oy, self.oz, x,y,z))
-        self.ox = x
-        self.oy = y
-        self.oz = z
+    def straight_traverse(self, x,y,z, a,b,c):
+        l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
+        self.traverse_append((self.lineno, self.lo, l))
+        self.lo = l
+
+    def straight_feed(self, x,y,z, a,b,c):
+        l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
+        self.feed_append((self.lineno, self.lo, l))
+        self.lo = l
 
     def dwell(self, arg):
         if self.state.feed_mode <= 30:
             color = (1,1,1)
         else:
             color = (1,.5,.5)
-        self.dwells.append((self.lineno, color, self.ox, self.oy, self.oz, self.state.plane/10-17))
+        self.dwells_append((self.lineno, color, self.lo, self.state.plane/10-17))
 
 
     def draw_lines(self, lines, for_selection):
         if for_selection:
-            for lineno, x1,y1,z1, x2,y2,z2 in lines:
+            for lineno, l1, l2 in lines:
                 glLoadName(lineno)
                 glBegin(GL_LINES)
-                glVertex3f(x1,y1,z1)
-                glVertex3f(x2,y2,z2)
+                glVertex3fv(l1)
+                glVertex3fv(l2)
                 glEnd()
         else:
             first = True
-            for lineno, x1,y1,z1, x2,y2,z2 in lines:
+            for lineno, l1, l2 in lines:
                 if first:
                     glBegin(GL_LINE_STRIP)
                     first = False
-                    glVertex3f(x1,y1,z1)
-                elif x1 != ox or y1 != oy or z1 != oz:
+                    glVertex3fv(l1)
+                elif l1 != ol:
                     glEnd()
                     glBegin(GL_LINE_STRIP)
-                    glVertex3f(x1,y1,z1)
-                glVertex3f(x2,y2,z2)
-                ox = x2; oy = y2; oz = z2
+                    glVertex3fv(l1)
+                glVertex3fv(l2)
+                ol = l2
             if not first:
                 glEnd()
 
