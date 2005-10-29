@@ -1026,7 +1026,6 @@ class TclCommands(nf.TclCommands):
         if 210 in s.gcodes:
             position *= 25.4
         offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
-	print offset_command
         c.mdi(offset_command)
         ensure_mode(emc.MODE_MANUAL)
         s.poll()
