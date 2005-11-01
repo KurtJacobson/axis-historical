@@ -384,7 +384,9 @@ static PyMemberDef Stat_members[] = {
 
 // EMC_AUX_STAT     io.aux
     {"estop", T_INT, O(io.aux.estop), READONLY},
+#ifndef AXIS_USE_EMC2
     {"estop_in", T_INT, O(io.aux.estopIn), READONLY},
+#endif
 
 // EMC_LUBE_STAT    io.lube
     {"lube", T_INT, O(io.lube.on), READONLY},
