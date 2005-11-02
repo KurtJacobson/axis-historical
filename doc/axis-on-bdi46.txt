@@ -1,3 +1,6 @@
+NOTE: these instructions apply to a VERY OLD version of AXIS and BDI.
+This document is mostly of historical value.
+
 Here's what I had to do to get AXIS running on BDI-46.
 
 1. Do a hard drive install.  Before doing so, I couldn't apt-get anything
