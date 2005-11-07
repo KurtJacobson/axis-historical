@@ -39,8 +39,11 @@ installed version of axis, but the necessary environment to rebuild
 the extension modules (emcmodule and gcodemodule in particular) is not
 present or is difficult to set up.  In this case, use the environment
 variable SIMPLEINSTALL to (re)install everything but the extension modules:
-    $ env EMCROOT=xxx PLAT=yyy SIMPLEINSTALL=yes setup.py install
+    $ env EMCROOT=xxx PLAT=yyy SIMPLEINSTALL=yes python setup.py install
 
+For BDI 4.30, the install command is (all on one line)
+    $ sudo env EMCROOT=/usr/local/emc PLAT=nonrealtime SIMPLEINSTALL=yes
+           python setup.py install
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
