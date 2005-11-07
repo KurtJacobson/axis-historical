@@ -536,7 +536,8 @@ class LivePlotter:
         else:
             self.win.set_current_line(self.stat.motion_line)
 
-        position = [pi / (25.4 * self.stat.linear_units) for pi in self.stat.position[:3]]
+        lu = self.stat.linear_units or 1
+        position = [pi / (25.4 * lu) for pi in self.stat.position[:3]]
         p = array.array('f', position)
         if not self.data or p != self.data[-3:]:
             if len(self.data) > 6 and \
@@ -1022,7 +1023,8 @@ class TclCommands(nf.TclCommands):
         ensure_mode(emc.MODE_MDI)
         offset_axis = "xyzabc".index(vars.current_axis.get())
         s.poll()
-        position = s.position[offset_axis] / (25.4 * s.linear_units)
+        lu = s.linear_units or 1
+        position = s.position[offset_axis] / (25.4 * lu)
         if 210 in s.gcodes:
             position *= 25.4
         offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
@@ -1296,6 +1298,8 @@ if args:
         l = l.expandtabs().replace("\r", "")
         t.insert("end", "%6d: " % (i+1), "lineno", l)
 t.bind("<Button-1>", select_line)
+t.bind("<B1-Motion>", lambda e: "break")
+t.bind("<B1-Leave>", lambda e: "break")
 t.bind("<Button-4>", scroll_up)
 t.bind("<Button-5>", scroll_down)
 t.configure(state="disabled")
@@ -1340,9 +1344,10 @@ def redraw(self):
         s.poll()
         glPushMatrix()
         glScalef(1/25.4, 1/25.4, 1/25.4)
+        lu = s.linear_units or 1
         if vars.coord_type.get() and (s.origin[0] or s.origin[1] or s.origin[2]):
             draw_small_origin()
-            glTranslatef(s.origin[0]/s.linear_units, s.origin[1]/s.linear_units, s.origin[2]/s.linear_units)
+            glTranslatef(s.origin[0]/lu, s.origin[1]/lu, s.origin[2]/lu)
             draw_axes()
         else:
             draw_axes()
@@ -1367,8 +1372,9 @@ def redraw(self):
     if vars.coord_type.get():
         positions = [(i-j) for i, j in zip(positions, s.origin)]
 
+    lu = s.linear_units or 1    
     # XXX: assumes all axes are linear, which is wrong
-    positions = [pi / (25.4 * s.linear_units) for pi in positions]
+    positions = [pi / (25.4 * lu) for pi in positions]
 
 
     if vars.metric.get():
