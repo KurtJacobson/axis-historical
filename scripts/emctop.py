@@ -25,7 +25,7 @@ maps = {
 'dout': None
 }
 
-root = Tkinter.Tk()
+root = Tkinter.Tk(className="EmcTop")
 root.title("EMC Status")
 
 t = Tkinter.Text()
