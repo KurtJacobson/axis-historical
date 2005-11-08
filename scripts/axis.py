@@ -54,7 +54,7 @@ from rs274.OpenGLTk import *
 from _glfixes import glInterleavedArrays
 from rs274.glcanon import GLCanon
 import rs274.options
-root_window = Tkinter.Tk()
+root_window = Tkinter.Tk(className="Axis")
 rs274.options.install(root_window)
 import nf; nf.start(root_window)
 import gcode
