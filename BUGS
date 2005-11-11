@@ -1,4 +1,5 @@
 Known Bugs in AXIS
+* jogging onto a limit can leave GUI in an unusable state
 * jog buttons don't work if you tab to them and use the space bar
 * (feature?) f-key actions can be done from MDI tab
 * ctrl-k doesn't work in MDI tab
@@ -13,3 +14,6 @@ Bugs in EMC that limit functionality in AXIS
 Bugs in segmentqueue that affect AXIS
 * Pressing "step" (t) twice runs instead of stepping (every time)
 * Pressing "s" key (resume) while running leaves interpreter in the wrong state
+
+Feature requests
+* Progress display while loading large files
