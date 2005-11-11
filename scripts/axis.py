@@ -1168,7 +1168,7 @@ def jog(*args):
 # XXX correct for machines with more than six axes
 jog_after = [None] * 6
 jog_cont  = [False] * 6
-jog_count = 0
+jogging   = [False] * 6
 def jog_on(a, b):
     if not manual_ok(): return
     if isinstance(a, (str, unicode)):
@@ -1177,10 +1177,6 @@ def jog_on(a, b):
         root_window.after_cancel(jog_after[a])
         jog_after[a] = None
         return
-    global jog_count
-    jog_count += 1
-    if jog_count == 1:
-        root_window.grab_set_global()
     jogspeed = widgets.jogspeed.get()
     if jogspeed != "Continuous":
         s.poll()
@@ -1191,6 +1187,7 @@ def jog_on(a, b):
     else:
         jog(emc.JOG_CONTINUOUS, a, b)
         jog_cont[a] = True
+        jogging[a] = True
 
 def jog_off(a):
     if isinstance(a, (str, unicode)):
@@ -1200,14 +1197,16 @@ def jog_off(a):
 
 def jog_off_actual(a):
     if not manual_ok(): return
-    global jog_count
-    jog_count -= 1
-    if jog_count == 0:
-        root_window.grab_release()
     activate_axis(a)
     jog_after[a] = None
     if jog_cont[a]:
+        jogging[a] = False
         jog(emc.JOG_STOP, a)
+
+def jog_off_all():
+    for i in range(6):
+        if jogging[i]:
+            jog_off_actual(i)
 
 def bind_axis(a, b, d):
     root_window.bind("<KeyPress-%s>" % a, lambda e: jog_on(d,-jog_speed))
@@ -1215,6 +1214,7 @@ def bind_axis(a, b, d):
     root_window.bind("<KeyRelease-%s>" % a, lambda e: jog_off(d))
     root_window.bind("<KeyRelease-%s>" % b, lambda e: jog_off(d))
 
+root_window.bind("<FocusOut>", lambda e: str(e.widget) == "." and jog_off_all())
 bind_axis("Left", "Right", 0)
 bind_axis("Down", "Up", 1)
 bind_axis("Next", "Prior", 2)
