@@ -1,5 +1,4 @@
 Known Bugs in AXIS
-* jogging onto a limit can leave GUI in an unusable state
 * jog buttons don't work if you tab to them and use the space bar
 * (feature?) f-key actions can be done from MDI tab
 * ctrl-k doesn't work in MDI tab
