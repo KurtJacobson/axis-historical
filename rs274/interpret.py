@@ -47,7 +47,8 @@ class ArcsToSegmentsMixin:
         else:
             f = n = [z1,x1,y1, a, b, c]
             xyz = [1,2,0]
-        o = [self.ox-self.offset_x, self.oy-self.offset_y, self.oz-self.offset_z, 0, 0, 0]
+        ox, oy, oz = self.lo
+        o = [ox-self.offset_x, oy-self.offset_y, oz-self.offset_z, 0, 0, 0]
         theta1 = math.atan2(o[xyz[1]]-cy, o[xyz[0]]-cx)
         theta2 = math.atan2(n[xyz[1]]-cy, n[xyz[0]]-cx)
         rad = math.hypot(o[xyz[0]]-cx, o[xyz[1]]-cy)
