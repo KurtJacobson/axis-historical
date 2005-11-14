@@ -66,7 +66,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
             color = (1,1,1)
         else:
             color = (1,.5,.5)
-        self.dwells_append((self.lineno, color, self.lo, self.state.plane/10-17))
+        self.dwells_append((self.lineno, color, self.lo[0], self.lo[1], self.lo[2], self.state.plane/10-17))
 
 
     def draw_lines(self, lines, for_selection):
@@ -100,12 +100,12 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         glBegin(GL_LINES)
         for line in self.traverse:
             if line[0] != lineno: continue
-            glVertex3fv(line[1:4])
-            glVertex3fv(line[4:7])
+            glVertex3fv(line[1])
+            glVertex3fv(line[2])
         for line in self.feed:
             if line[0] != lineno: continue
-            glVertex3fv(line[1:4])
-            glVertex3fv(line[4:7])
+            glVertex3fv(line[1])
+            glVertex3fv(line[2])
         for line in self.dwells:
             if line[0] != lineno: continue
             self.draw_dwells([(line[0], c) + line[2:]], 2)
