@@ -257,25 +257,18 @@ menu .menu.help \
 	-tearoff 0
 
 .menu.help add command \
-	-command {wm transient .about .;wm deiconify .about} \
+	-command {wm transient .about .;wm deiconify .about; focus .about.ok} \
 	-label {About AXIS} \
 	-underline 0
 
 setup_menu_accel .menu.help end [_ {_About AXIS}]
 
 .menu.help add command \
-	-command {wm transient .keys .;wm deiconify .keys} \
-	-label {Key Reference} \
-	-underline 0
+	-command {wm transient .keys .;wm deiconify .keys; focus .keys.ok} \
+	-label {Quick Reference} \
+	-underline 6
 
-setup_menu_accel .menu.help end [_ {_Key Reference}]
-
-.menu.help add command \
-	-command {wm transient .mouse .;wm deiconify .mouse} \
-	-label Navigation \
-	-underline 0
-
-setup_menu_accel .menu.help end [_ _Navigation]
+setup_menu_accel .menu.help end [_ {Quick _Reference}]
 
 # Configure widget .menu.help
 wm title .menu.help help
@@ -1267,18 +1260,35 @@ pack .feedoverride.foscale \
 
 toplevel .about
 bind .about <Key-Return> { wm wi .about }
+bind .about <Key-Escape> { wm wi .about }
 
-message .about.message \
+text .about.message \
+	-background [systembuttonface] \
 	-borderwidth 0 \
-	-text [_ {AXIS version 1.1rc1
+	-font {Helvetica -12} \
+	-relief flat \
+	-width 40 \
+	-height 11 \
+	-wrap word \
+	-cursor {}
 
-Copyright (C) 2004 Jeff Epler and Chris Radek.
+.about.message tag configure link \
+	-underline 1 -foreground blue
+.about.message tag bind link <Leave> {
+	.about.message configure -cursor {}
+	.about.message tag configure link -foreground blue}
+.about.message tag bind link <Enter> {
+	.about.message configure -cursor hand2
+	.about.message tag configure link -foreground red}
+.about.message tag bind link <ButtonPress-1><ButtonRelease-1> {launch_website}
+.about.message insert end {AXIS version 1.1rc1
+
+Copyright (C) 2004, 2005 Jeff Epler and Chris Radek.
 
 This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.
 
-Visit the AXIS web site at http://axis.unpy.net
-}] \
-	-width 300
+Visit the AXIS web site at } {} {http://axis.unpy.net} link
+.about.message configure -state disabled
 
 button .about.ok \
 	-command {wm wi .about} \
@@ -1311,58 +1321,9 @@ wm resiz .about 0 0
 wm minsize .about 1 1
 wm protocol .about WM_DELETE_WINDOW {wm wi .about}
 
-toplevel .mouse
-bind .mouse <Key-Return> { wm withdraw .mouse }
-
-text .mouse.text \
-	-background [systembuttonface] \
-	-font {Helvetica -12} \
-	-height 5 \
-	-relief flat \
-	-tabs 100 \
-	-width 30
-.mouse.text insert end {  Left Button	Pan view
-Middle Button	Rotate view
- Right Button	Zoom view
-}
-.mouse.text tag configure key \
-	-borderwidth {} \
-	-elide {} \
-	-font fixed
-
-.mouse.text tag add key 1.0 1.13 2.0 2.13 3.0 3.13
-.mouse.text tag configure desc \
-	-borderwidth {} \
-	-elide {}
-
-.mouse.text tag add desc 1.14 1.22 2.14 2.25 3.14 3.23
-.mouse.text configure -state disabled
-
-button .mouse.ok \
-	-command {wm wi .mouse} \
-	-default active \
-	-padx 0 \
-	-pady 0 \
-	-width 10
-setup_widget_accel .mouse.ok [_ OK]
-
-# Pack widget .mouse.text
-pack .mouse.text \
-	-expand 1 \
-	-fill y
-
-# Pack widget .mouse.ok
-pack .mouse.ok
-
-# Configure widget .mouse
-wm title .mouse {AXIS Navigation}
-wm iconname .mouse {}
-wm resiz .mouse 0 0
-wm minsize .mouse 1 1
-wm protocol .mouse WM_DELETE_WINDOW {wm wi .mouse}
-
 toplevel .keys
 bind .keys <Key-Return> { wm withdraw .keys }
+bind .keys <Key-Escape> { wm withdraw .keys }
 
 text .keys.text \
 	-background [systembuttonface] \
@@ -1370,39 +1331,14 @@ text .keys.text \
 	-height 22 \
 	-relief flat \
 	-tabs {100 300 400} \
-	-width 88
-.keys.text insert end {F1	Emergency stop	F5	Code entry
-F2	Turn machine on		
-		O	Open program
-X, `	Select first axis	R	Run program
-Y, 1	Select second axis	T	Step program
-Z, 2	Select third axis	P	Pause program
-A, 3	Select fourth axis	S	Resume program
-   4	Select fifth axis	ESC	Stop program
-   5	Select sixth axis		
-I	Select jog increment	F7	Toggle mist
-C	Continuous jog	F8	Toggle flood
-Home	Send current axis home		
-Shift-Home	Set G54 offset for active axis	B	Spindle brake off
-Left, Right	Jog first axis	Shift-B	Spindle brake on
-Up, Down	Jog second axis	F9	Turn spindle clockwise
-Pg Up, Pg Dn	Jog third axis	F10	Turn spindle counterclockwise
-[, ]	Jog fourth axis	F11	Turn spindle more slowly
-		F12	Turn spindle more quickly
-F3	Manual control		
-F5	Code entry	Control-K	Clear live plot
-}
+	-width 88 \
+	-cursor {}
+
 .keys.text tag configure key \
 	-borderwidth {} \
 	-elide {} \
 	-font fixed
 
-.keys.text tag add key 1.0 1.2 1.18 1.20 2.0 2.2 3.2 3.3 4.0 4.4 4.23 4.24 5.0 5.4 5.24 5.25 6.0 6.4 6.23 6.24 7.0 7.4 7.24 7.25 8.0 8.4 8.23 8.26 9.0 9.4 10.0 10.1 10.23 10.25 11.0 11.1 11.17 11.19 12.0 12.4 13.0 13.10 13.42 13.43 14.0 14.11 14.27 14.34 15.0 15.8 15.25 15.27 16.0 16.12 16.28 16.31 17.0 17.4 17.21 17.24 18.2 18.5 19.0 19.2 20.0 20.2 20.14 20.23
-.keys.text tag configure desc \
-	-borderwidth {} \
-	-elide {}
-
-.keys.text tag add desc 1.3 1.17 1.21 1.31 2.3 2.18 3.4 3.16 4.5 4.22 4.25 4.36 5.5 5.23 5.26 5.38 6.5 6.22 6.25 6.38 7.5 7.23 7.26 7.40 8.5 8.22 8.27 8.39 9.5 9.22 10.2 10.22 10.26 10.37 11.2 11.16 11.20 11.32 12.5 12.27 13.11 13.41 13.44 13.61 14.12 14.26 14.35 14.51 15.9 15.24 15.28 15.50 16.13 16.27 16.32 16.61 17.5 17.20 17.25 17.49 18.6 18.31 19.3 19.17 20.3 20.13 20.24 20.39
 .keys.text configure -state disabled
 
 button .keys.ok \
@@ -1422,7 +1358,7 @@ pack .keys.text \
 pack .keys.ok
 
 # Configure widget .keys
-wm title .keys {AXIS key reference}
+wm title .keys {AXIS Quick Reference}
 wm iconname .keys {}
 wm resiz .keys 0 0
 wm minsize .keys 1 1

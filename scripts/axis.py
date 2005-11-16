@@ -87,6 +87,71 @@ if sys.version_info <= (2,3):
             yield index, item
             index += 1
 
+def install_help(app):
+    help1 = [
+        ("F1", "Emergency stop"),
+        ("F2", "Turn machine on"),
+        ("", ""),
+        ("X, `", "Activate first axis"),
+        ("Y, 1", "Activate second axis"),
+        ("Z, 2", "Activate third axis"),
+        ("A, 3", "Activate fourth axis"),
+        ("   4", "Activate fifth axis"),
+        ("   5", "Activate sixth axis"),
+        ("I", "Select jog increment"),
+        ("C", "Continuous jog"),
+        ("Home", "Send active axis home"),
+        ("Shift-Home", "Set G54 offset for active axis"),
+        ("Left, Right", "Jog first axis"),
+        ("Up, Down", "Jog second axis"),
+        ("Pg Up, Pg Dn", "Jog third axis"),
+        ("[, ]", "Jog fourth axis"),
+        ("", ""),
+        ("Left Button", "Pan view or select line"),
+        ("Right Button", "Zoom view"),
+        ("Wheel Button", "Rotate view"),
+        ("Rotate Wheel", "Zoom view"),
+    ]
+    help2 = [
+        ("F3", "Manual control"),
+        ("F5", "Code entry (MDI)"),
+        ("L", "Override Limits"),
+        ("", ""),
+        ("O", "Open program"),
+        ("R", "Run program"),
+        ("T", "Step program"),
+        ("P", "Pause program"),
+        ("S", "Resume program"),
+        ("ESC", "Stop program"),
+        ("", ""),
+        ("F7", "Toggle mist"),
+        ("F8", "Toggle flood"),
+        ("", ""),
+        ("B", "Spindle brake off"),
+        ("Shift-B", "Spindle brake on"),
+        ("F9", "Turn spindle clockwise"),
+        ("F10", "Turn spindle counterclockwise"),
+        ("F11", "Turn spindle more slowly"),
+        ("F12", "Turn spindle more quickly"),
+        ("", ""),
+        ("Control-K", "Clear live plot"),
+    ]
+
+    form = r'.keys.text insert end {%s} key "\t" {} {%s} desc'
+    app.tk.call(".keys.text", "configure", "-state", "normal")
+    app.tk.call(".keys.text", "delete", "0.0", "end")
+    for i in range(len(help1)):
+        app.tk.call(".keys.text", "insert", "end",
+                    help1[i][0], "key", "\t", "", help1[i][1], "normal")
+        if i < len(help2):
+            app.tk.call(".keys.text", "insert", "end", "\t")
+            app.tk.call(".keys.text", "insert", "end",
+                    help2[i][0], "key", "\t", "", help2[i][1], "normal")
+        app.tk.call(".keys.text", "insert", "end", "\n")
+    app.tk.call(".keys.text", "configure", "-state", "disabled")
+    app.tk.call(".keys.text", "configure", "-height", len(help1))
+install_help(root_window)
+
 class MyOpengl(Opengl):
     def __init__(self, *args, **kw):
         self.after_id = None
@@ -830,6 +895,10 @@ class SelectionHandler:
 selection = SelectionHandler(root_window)
 
 class TclCommands(nf.TclCommands):
+    def launch_website(event=None):
+        import webbrowser
+        webbrowser.open("http://axis.unpy.net")
+
     def set_feedrate(newval):
         try:
             value = int(newval)

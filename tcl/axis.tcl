@@ -199,7 +199,6 @@ bind . <Configure> { if {"%W" == "."} {
 
 wm withdraw .about
 wm withdraw .keys
-wm withdraw .mouse
 
 DynamicHelp::add .tabs.manual.spindlef.ccw -text {Turn spindle counterclockwise [F10]}
 DynamicHelp::add .tabs.manual.spindlef.cw -text {Turn spindle clockwise [F9]}
@@ -209,14 +208,14 @@ DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower [
 DynamicHelp::add .tabs.manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
 DynamicHelp::add .tabs.manual.flood -text {Turn flood on or off [F8]}
 DynamicHelp::add .tabs.manual.mist -text {Turn mist on or off [F7]}
-DynamicHelp::add .tabs.manual.jogf.zerohome.home -text {Send selected axis home [HOME]}
-DynamicHelp::add .tabs.manual.jogf.zerohome.zero -text {Zero selected axis's G54 offset [Shift-HOME]}
-DynamicHelp::add .tabs.manual.axes.axisx -text {Select axis [X]}
-DynamicHelp::add .tabs.manual.axes.axisy -text {Select axis [Y]}
-DynamicHelp::add .tabs.manual.axes.axisz -text {Select axis [Z]}
-DynamicHelp::add .tabs.manual.axes.axisa -text {Select axis [A]}
-DynamicHelp::add .tabs.manual.axes.axisb -text {Select axis [4]}
-DynamicHelp::add .tabs.manual.axes.axisc -text {Select axis [5]}
+DynamicHelp::add .tabs.manual.jogf.zerohome.home -text {Send active axis home [Home]}
+DynamicHelp::add .tabs.manual.jogf.zerohome.zero -text {Set G54 offset for active axis [Shift-Home]}
+DynamicHelp::add .tabs.manual.axes.axisx -text {Activate axis [X]}
+DynamicHelp::add .tabs.manual.axes.axisy -text {Activate axis [Y]}
+DynamicHelp::add .tabs.manual.axes.axisz -text {Activate axis [Z]}
+DynamicHelp::add .tabs.manual.axes.axisa -text {Activate axis [A]}
+DynamicHelp::add .tabs.manual.axes.axisb -text {Activate axis [4]}
+DynamicHelp::add .tabs.manual.axes.axisc -text {Activate axis [5]}
 DynamicHelp::add .tabs.manual.jogf.jogminus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogplus -text {Jog selected axis}
 DynamicHelp::add .tabs.manual.jogf.jogspeed -text {Select jog ingrement}
