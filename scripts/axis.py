@@ -137,7 +137,6 @@ def install_help(app):
         ("Control-K", "Clear live plot"),
     ]
 
-    form = r'.keys.text insert end {%s} key "\t" {} {%s} desc'
     app.tk.call(".keys.text", "configure", "-state", "normal")
     app.tk.call(".keys.text", "delete", "0.0", "end")
     for i in range(len(help1)):
