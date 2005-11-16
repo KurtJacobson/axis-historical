@@ -28,10 +28,10 @@ For installation without using RPM or on non-RPM systems, cd to the axis
 source directory and run:
     $ env EMCROOT=xxx python setup.py install
 
-In the above commands, EMCROOT is the directory where the "emc" and
-"rcslib" directories reside.  If you are building for EMC1, you may also
-be required to give the value for PLAT, the non-realtime platform that EMC
-is configured to use.  In this case, the commandline would look like
+In the above commands, EMCROOT is absolute path to the directory where the
+"emc" and "rcslib" directories reside.  If you are building for EMC1, you
+may also be required to give the value for PLAT, the non-realtime platform
+that EMC is configured to use.  In this case, the commandline would look like
     $ env EMCROOT=xxx PLAT=yyy python setup.py install
 
 In some cases (Paul C.'s BDI 4.xx, for instance) there is already an
