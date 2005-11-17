@@ -377,7 +377,6 @@ class MyOpengl(Opengl):
         h = self.winfo_height()
 
         ztran = max(e1, e2 * w/h) ** 2
-        print "see", e1, e2, ztran, ztran - self.zcenter
         self.set_eyepoint(ztran - self.zcenter)
 
 
@@ -1053,11 +1052,8 @@ class TclCommands(nf.TclCommands):
         o.reset()
         glRotatef(-90, 0, 0, 1)
         if o.g:
-            print "%6.2f %6.2f %6.2f" % tuple(o.g.max_extents)
-            print "%6.2f %6.2f %6.2f" % tuple(o.g.min_extents)
             mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
             glTranslatef(-mid[0], -mid[1], -mid[2])
-            print "%6.2f %6.2f %6.2f" % tuple(mid)
             size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
             o.set_eyepoint_from_extents(size[1], size[0])
         else:
