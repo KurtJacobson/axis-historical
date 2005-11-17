@@ -176,4 +176,7 @@ sbind all <Key-ISO_Left_Tab> { tkTabToWindow [tk_focusPrev %W] }
 if {[info procs ::tk::TabToWindow] != {}} {
     proc tkTabToWindow w [info body ::tk::TabToWindow]
 }
+
+clear_accel_map
+
 # vim:sw=4:sts=4:

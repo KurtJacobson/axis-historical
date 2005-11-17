@@ -25,7 +25,6 @@ set task_state_text {ESTOP RESET}
 set tool {Tool 0, offset 0.250, radius 0.03125}
 set offset {Work offset 0.000 0.000 0.000}
 set position {Position: Commanded}
-clear_accel_map
 
 . configure \
 	-menu .menu
