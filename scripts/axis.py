@@ -372,6 +372,15 @@ class MyOpengl(Opengl):
         else:
             self.tkRedraw_ortho()
 
+    def set_eyepoint_from_extents(self, e1, e2):
+        w = self.winfo_width()
+        h = self.winfo_height()
+
+        ztran = max(e1, e2 * h/w) ** 2
+        print "see", e1, e2, ztran, ztran - self.zcenter
+        self.set_eyepoint(ztran - self.zcenter)
+
+
 def init():
     glDrawBuffer(GL_BACK)
     glDisable(GL_CULL_FACE)
@@ -990,8 +999,14 @@ class TclCommands(nf.TclCommands):
         o.reset()
         glRotatef(-90, 0, 1, 0)
         glRotatef(-90, 1, 0, 0)
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[1], size[2])
+        else:
+            o.set_eyepoint(5.)
         o.perspective = False
-        o.set_eyepoint(5.)
         o.tkRedraw()
 
     def set_view_y(event=None):
@@ -1002,8 +1017,14 @@ class TclCommands(nf.TclCommands):
         widgets.view_p.configure(relief="link")
         o.reset()
         glRotatef(-90, 1, 0, 0)
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[0], size[2])
+        else:
+            o.set_eyepoint(5.)
         o.perspective = False
-        o.set_eyepoint(5.)
         o.tkRedraw()
         
     def set_view_z(event=None):
@@ -1013,8 +1034,14 @@ class TclCommands(nf.TclCommands):
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
         o.reset()
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[0], size[1])
+        else:
+            o.set_eyepoint(5.)
         o.perspective = False
-        o.set_eyepoint(5.)
         o.tkRedraw()
 
     def set_view_z2(event=None):
@@ -1024,9 +1051,18 @@ class TclCommands(nf.TclCommands):
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
         o.reset()
-        o.perspective = False
         glRotatef(-90, 0, 0, 1)
-        o.set_eyepoint(5.)
+        if o.g:
+            print "%6.2f %6.2f %6.2f" % tuple(o.g.max_extents)
+            print "%6.2f %6.2f %6.2f" % tuple(o.g.min_extents)
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            print "%6.2f %6.2f %6.2f" % tuple(mid)
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[1], size[0])
+        else:
+            o.set_eyepoint(5.)
+        o.perspective = False
         o.tkRedraw()
 
 
