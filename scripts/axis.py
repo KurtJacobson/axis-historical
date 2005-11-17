@@ -376,7 +376,7 @@ class MyOpengl(Opengl):
         w = self.winfo_width()
         h = self.winfo_height()
 
-        ztran = max(e1, e2 * h/w) ** 2
+        ztran = max(e1, e2 * w/h) ** 2
         print "see", e1, e2, ztran, ztran - self.zcenter
         self.set_eyepoint(ztran - self.zcenter)
 
@@ -1085,7 +1085,11 @@ class TclCommands(nf.TclCommands):
 
             size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
             size = sqrt(size[0] **2 + size[1] ** 2 + size[2] ** 2)
-            o.set_eyepoint(size * 1.1 / 2 / sin ( o.fovy * pi / 180 / 2))
+            w = o.winfo_width()
+            h = o.winfo_height()
+            fovx = o.fovy * w / h
+            fov = min(fovx, o.fovy)
+            o.set_eyepoint(size * 1.1 / 2 / sin ( fov * pi / 180 / 2))
         else:
             o.set_eyepoint(5.)
         o.tkRedraw()
