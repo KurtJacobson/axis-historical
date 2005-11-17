@@ -497,13 +497,19 @@ static PyObject *Stat_aout(pyStatChannel *s) {
 }
 
 static void dict_add(PyObject *d, char *name, unsigned char v) {
-    PyDict_SetItemString(d, name, PyInt_FromLong(v));
+    PyObject *o;
+    PyDict_SetItemString(d, name, o = PyInt_FromLong(v));
+    Py_XDECREF(o);
 }
 static void dict_add(PyObject *d, char *name, long v) {
-    PyDict_SetItemString(d, name, PyInt_FromLong(v));
+    PyObject *o;
+    PyDict_SetItemString(d, name, o = PyInt_FromLong(v));
+    Py_XDECREF(o);
 }
 static void dict_add(PyObject *d, char *name, double v) {
-    PyDict_SetItemString(d, name, PyFloat_FromDouble(v));
+    PyObject *o;
+    PyDict_SetItemString(d, name, o = PyFloat_FromDouble(v));
+    Py_XDECREF(o);
 }
 #define F(x) F2(#x, x)
 #define F2(y,x) dict_add(res, y, s->status.motion.axis[axisno].x)
@@ -567,7 +573,7 @@ static PyObject *Stat_axis_one(pyStatChannel *s, int axisno) {
 static PyObject *Stat_axis(pyStatChannel *s) {
     PyObject *res = PyTuple_New(EMC_AXIS_MAX);
     for(int i=0; i<EMC_AXIS_MAX; i++) {
-        PyTuple_SET_ITEM(res, i, Stat_axis_one(s, i));
+        PyTuple_SetItem(res, i, Stat_axis_one(s, i));
     }
     return res;
 }
