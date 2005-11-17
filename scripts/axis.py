@@ -516,6 +516,56 @@ def make_main_list(g):
     if program is None: program = glGenLists(1)
     glNewList(program, GL_COMPILE)
     g.draw(0)
+
+    glBegin(GL_LINES)
+    x,y,z = 0,1,2
+
+    pullback = max(g.max_extents[x] - g.min_extents[x],
+                   g.max_extents[y] - g.min_extents[y],
+                   g.max_extents[z] - g.min_extents[z],
+                   2 ) * .1
+
+    dashwidth = pullback/4
+
+    # x dimension
+    if g.max_extents[x] > g.min_extents[x]:
+        y_pos = g.min_extents[y] - pullback;
+        glVertex3f(g.min_extents[x], y_pos, g.min_extents[z])
+        glVertex3f(g.max_extents[x], y_pos, g.min_extents[z])
+
+        glVertex3f(g.min_extents[x], y_pos - dashwidth, g.min_extents[z])
+        glVertex3f(g.min_extents[x], y_pos + dashwidth, g.min_extents[z])
+
+        glVertex3f(g.max_extents[x], y_pos - dashwidth, g.min_extents[z])
+        glVertex3f(g.max_extents[x], y_pos + dashwidth, g.min_extents[z])
+
+    # y dimension
+    if g.max_extents[y] > g.min_extents[y]:
+        x_pos = g.min_extents[x] - pullback;
+        glVertex3f(x_pos, g.min_extents[y], g.min_extents[z])
+        glVertex3f(x_pos, g.max_extents[y], g.min_extents[z])
+
+        glVertex3f(x_pos - dashwidth, g.min_extents[y], g.min_extents[z])
+        glVertex3f(x_pos + dashwidth, g.min_extents[y], g.min_extents[z])
+
+        glVertex3f(x_pos - dashwidth, g.max_extents[y], g.min_extents[z])
+        glVertex3f(x_pos + dashwidth, g.max_extents[y], g.min_extents[z])
+
+    # z dimension
+    if g.max_extents[z] > g.min_extents[z]:
+        x_pos = g.min_extents[x] - pullback;
+        y_pos = g.min_extents[y] - pullback;
+        glVertex3f(x_pos, y_pos, g.min_extents[z]);
+        glVertex3f(x_pos, y_pos, g.max_extents[z]);
+
+        glVertex3f(x_pos - dashwidth, y_pos, g.min_extents[z])
+        glVertex3f(x_pos + dashwidth, y_pos, g.min_extents[z])
+
+        glVertex3f(x_pos - dashwidth, y_pos, g.max_extents[z])
+        glVertex3f(x_pos + dashwidth, y_pos, g.max_extents[z])
+
+    glEnd()
+
     glEndList()
 
 import array
@@ -752,6 +802,9 @@ def open_file_guts(f, filtered = False):
         o.g = canon = AxisCanon(widgets.text)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         result, seq = gcode.parse(f, canon)
+        print "min %f,%f,%f max %f,%f,%f" % \
+            (o.g.min_extents[0],o.g.min_extents[1],o.g.min_extents[2],
+             o.g.max_extents[0],o.g.max_extents[1],o.g.max_extents[2])
         print "parse result", result
         if result >= rs274.RS274NGC_MIN_ERROR:
             error_str = rs274.errorlist.get(result, "Unknown error %s" % result)
