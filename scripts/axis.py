@@ -1079,7 +1079,15 @@ class TclCommands(nf.TclCommands):
         glRotatef(-90, 0, 1, 0)
         glRotatef(-90, 1, 0, 0)
         o.perspective = True
-        o.set_eyepoint(5.)
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            size = sqrt(size[0] **2 + size[1] ** 2 + size[2] ** 2)
+            o.set_eyepoint(size * 1.1 / 2 / sin ( o.fovy * pi / 180 / 2))
+        else:
+            o.set_eyepoint(5.)
         o.tkRedraw()
         
     def estop_clicked(event=None):
