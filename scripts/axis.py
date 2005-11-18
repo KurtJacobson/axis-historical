@@ -53,6 +53,7 @@ from OpenGL.GLU import *
 from rs274.OpenGLTk import *
 from _glfixes import glInterleavedArrays
 from rs274.glcanon import GLCanon
+from hershey import Hershey
 import rs274.options
 root_window = Tkinter.Tk(className="Axis")
 rs274.options.install(root_window)
@@ -1481,6 +1482,8 @@ coordinate_linespace = int(coordinate_font_metrics[linespace_index+1])
 
 fontbase = int(o.tk.call(o._w, "loadbitmapfont", coordinate_font))
 live_plotter = LivePlotter(o)
+hershey = Hershey()
+
 def redraw(self):
     if self.select_event:
         self.select(self.select_event)
@@ -1509,6 +1512,12 @@ def redraw(self):
     if vars.show_live_plot.get() or vars.show_program.get():
         s.poll()
         glPushMatrix()
+
+        glPushMatrix()
+        hershey.center_string("111111888888")
+        hershey.plot_string("111111888888")
+        glPopMatrix()
+
         glScalef(1/25.4, 1/25.4, 1/25.4)
         lu = s.linear_units or 1
         if vars.coord_type.get() and (s.origin[0] or s.origin[1] or s.origin[2]):
