@@ -19,6 +19,8 @@ from OpenGL.GL import *
 
 #        [[(180.0, 100.0), (220.0, 80.0), (280.0, 20.0), (280.0, 440.0)]], \
 
+translate = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '-': 10, '.': 11}
+
 class Hershey:
     def __init__(self):
         self.lists = glGenLists(10)
@@ -64,9 +66,11 @@ class Hershey:
           (120.0, 140.0), (140.0, 80.0), (180.0, 40.0), (240.0, 20.0),
           (260.0, 20.0), (320.0, 40.0), (360.0, 80.0), (380.0, 160.0),
           (380.0, 260.0), (360.0, 360.0), (320.0, 420.0), (260.0, 440.0),
-          (220.0, 440.0), (160.0, 420.0), (140.0, 380.0)]]
+          (220.0, 440.0), (160.0, 420.0), (140.0, 380.0)]], \
+        [[(100, 250), (350, 250)]], \
+        [[(200, 450), (250, 450)]],
 
-        for i in range(10):
+        for i in range(12):
             digit = self.hershey[i]
             glNewList(self.lists + i, GL_COMPILE)
             glColor3f(1,1,1)
@@ -83,12 +87,15 @@ class Hershey:
         glCallList(self.lists + n)
         glPopMatrix()
 
-    def plot_string(self, s):
+    def plot_string(self, s, frac=0):
+        if frac:
+            len = self.string_len(s)
+            glTranslatef(-len*frac, 0, 0)
         glPushMatrix()
         glScalef(1/500.0, 1/500.0, 1/500.0)
         for c in s:
-            glCallList(self.lists + int(c))
-            if int(c) == 1:
+            glCallList(self.lists + translate[c])
+            if c == '1' or c == '.':
                 glTranslatef(260, 0, 0)
             else:
                 glTranslatef(400, 0, 0)
@@ -97,7 +104,7 @@ class Hershey:
     def string_len(self, s):
         l = 0.0
         for c in s:
-            if int(c) == 1:
+            if c == '1' or c == '.':
                 l += 260.0
             else:
                 l += 400.0
