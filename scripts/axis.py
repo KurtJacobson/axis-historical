@@ -575,34 +575,91 @@ def make_main_list(g):
 
     glEnd()
 
+    dimscale = vars.metric.get() and 25.4 or 1.0
+    fmt = vars.metric.get() and "%.1f" or "%.2f"
+
     # Labels
+    if g.max_extents[z] > g.min_extents[z]:
+        x_pos = g.min_extents[x] - 5.5*dashwidth;
+        y_pos = g.min_extents[y] - pullback;
+
+        glPushMatrix()
+        f = fmt % (g.min_extents[z] * dimscale)
+        glTranslatef(x_pos, y_pos, g.min_extents[z] + dashwidth)
+        glScalef(dashwidth, dashwidth, dashwidth)
+        glRotatef(-90, 0, 0, 1)
+        glRotatef(-90, 0, 1, 0)
+        hershey.plot_string(f, 0)
+        glPopMatrix()
+
+        glPushMatrix()
+        f = fmt % (g.max_extents[z] * dimscale)
+        glTranslatef(x_pos, y_pos, g.max_extents[z] - dashwidth)
+        glScalef(dashwidth, dashwidth, dashwidth)
+        glRotatef(-90, 0, 0, 1)
+        glRotatef(-90, 0, 1, 0)
+        hershey.plot_string(f, 1)
+        glPopMatrix()
+
+        glPushMatrix()
+        f = fmt % ((g.max_extents[z] - g.min_extents[z]) * dimscale)
+        glTranslatef(x_pos, y_pos, (g.max_extents[z] + g.min_extents[z])/2)
+        glScalef(dashwidth, dashwidth, dashwidth)
+        glRotatef(-90, 0, 0, 1)
+        glRotatef(-90, 0, 1, 0)
+        hershey.plot_string(f, .5)
+        glPopMatrix()
+
+    if g.max_extents[y] > g.min_extents[y]:
+        x_pos = g.min_extents[x] - 5.5*dashwidth;
+
+        glPushMatrix()
+        f = fmt % (g.min_extents[y] * dimscale)
+        glTranslatef(x_pos, g.min_extents[y] + dashwidth, g.min_extents[z])
+        glScalef(dashwidth, dashwidth, dashwidth)
+        glRotatef(-90, 0, 0, 1)
+        hershey.plot_string(f, 1)
+        glPopMatrix()
+
+        glPushMatrix()
+        f = fmt % (g.max_extents[y] * dimscale)
+        glTranslatef(x_pos, g.max_extents[y] - dashwidth, g.min_extents[z])
+        glScalef(dashwidth, dashwidth, dashwidth)
+        glRotatef(-90, 0, 0, 1)
+        hershey.plot_string(f, 0)
+        glPopMatrix()
+
+        glPushMatrix()
+        f = fmt % ((g.max_extents[y] - g.min_extents[y]) * dimscale)
+        
+        glTranslatef(x_pos, (g.max_extents[y] + g.min_extents[y])/2, g.min_extents[z])
+        glScalef(dashwidth, dashwidth, dashwidth)
+        glRotatef(-90, 0, 0, 1)
+        hershey.plot_string(f, .5)
+        glPopMatrix()
+
     if g.max_extents[x] > g.min_extents[x]:
         glPushMatrix()
 
-        f = "%.2f" % g.min_extents[x]
-        pullback = max(g.max_extents[x] - g.min_extents[x],
-                       g.max_extents[y] - g.min_extents[y],
-                       g.max_extents[z] - g.min_extents[z],
-                       2 ) * .1
-        dashwidth = pullback / 4
-        y_pos = g.min_extents[y] - 5*dashwidth;
-        glTranslatef(g.min_extents[x], y_pos, g.min_extents[z])
-        glScalef(.1, .1, .1)
-        hershey.plot_string(f, -.1)
+        f = fmt % (g.min_extents[x] * dimscale)
+        y_pos = g.min_extents[y] - 5.5*dashwidth;
+        glTranslatef(g.min_extents[x] + dashwidth, y_pos, g.min_extents[z])
+        glScalef(dashwidth, dashwidth, dashwidth)
+        hershey.plot_string(f, 0)
         glPopMatrix()
 
         glPushMatrix()
-        f = "%.2f" % g.max_extents[x]
-        glTranslatef(g.max_extents[x], y_pos, g.min_extents[z])
-        glScalef(.1, .1, .1)
-        hershey.plot_string(f, 1.1)
+        f = fmt % (g.max_extents[x] * dimscale)
+        glTranslatef(g.max_extents[x] - dashwidth, y_pos, g.min_extents[z])
+        glScalef(dashwidth, dashwidth, dashwidth)
+        hershey.plot_string(f, 1)
         glPopMatrix()
 
         glPushMatrix()
-        f = "%.2f" % (g.max_extents[x] - g.min_extents[x])
+        f = fmt % ((g.max_extents[x] - g.min_extents[x]) * dimscale)
         
         glTranslatef((g.max_extents[x] + g.min_extents[x])/2, y_pos, g.min_extents[z])
-        glScalef(.1, .1, .1)
+        glScalef(dashwidth, dashwidth, dashwidth)
         hershey.plot_string(f, .5)
         glPopMatrix()
 
