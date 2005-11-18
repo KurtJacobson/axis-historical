@@ -575,6 +575,37 @@ def make_main_list(g):
 
     glEnd()
 
+    # Labels
+    if g.max_extents[x] > g.min_extents[x]:
+        glPushMatrix()
+
+        f = "%.2f" % g.min_extents[x]
+        pullback = max(g.max_extents[x] - g.min_extents[x],
+                       g.max_extents[y] - g.min_extents[y],
+                       g.max_extents[z] - g.min_extents[z],
+                       2 ) * .1
+        dashwidth = pullback / 4
+        y_pos = g.min_extents[y] - 5*dashwidth;
+        glTranslatef(g.min_extents[x], y_pos, g.min_extents[z])
+        glScalef(.1, .1, .1)
+        hershey.plot_string(f, -.1)
+        glPopMatrix()
+
+        glPushMatrix()
+        f = "%.2f" % g.max_extents[x]
+        glTranslatef(g.max_extents[x], y_pos, g.min_extents[z])
+        glScalef(.1, .1, .1)
+        hershey.plot_string(f, 1.1)
+        glPopMatrix()
+
+        glPushMatrix()
+        f = "%.2f" % (g.max_extents[x] - g.min_extents[x])
+        
+        glTranslatef((g.max_extents[x] + g.min_extents[x])/2, y_pos, g.min_extents[z])
+        glScalef(.1, .1, .1)
+        hershey.plot_string(f, .5)
+        glPopMatrix()
+
     glEndList()
 
 import array
@@ -1512,11 +1543,6 @@ def redraw(self):
     if vars.show_live_plot.get() or vars.show_program.get():
         s.poll()
         glPushMatrix()
-
-        glPushMatrix()
-        hershey.center_string("111111888888")
-        hershey.plot_string("111111888888")
-        glPopMatrix()
 
         glScalef(1/25.4, 1/25.4, 1/25.4)
         lu = s.linear_units or 1
