@@ -28,6 +28,8 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.lo = (0,0,0)
         self.offset_x = self.offset_y = self.offset_z = 0
         self.text = text
+        self.min_extents = [9e99,9e99,9e99]
+        self.max_extents = [-9e99,-9e99,-9e99]
 
     def message(self, message): pass
 
@@ -37,6 +39,11 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
     def next_line(self, st):
         self.state = st
         self.lineno = self.state.sequence_number + 1
+
+    def calc_extents(self, p):
+        for i in [0,1,2]:
+            self.min_extents[i] = min(self.min_extents[i], p[i])
+            self.max_extents[i] = max(self.max_extents[i], p[i])
 
     def set_spindle_rate(self, arg): pass
     def set_feed_rate(self, arg): pass
@@ -55,11 +62,13 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
         self.traverse_append((self.lineno, self.lo, l))
         self.lo = l
+        self.calc_extents(l)
 
     def straight_feed(self, x,y,z, a,b,c):
         l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
         self.feed_append((self.lineno, self.lo, l))
         self.lo = l
+        self.calc_extents(l)
 
     def dwell(self, arg):
         if self.state.feed_mode <= 30:

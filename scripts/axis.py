@@ -53,6 +53,7 @@ from OpenGL.GLU import *
 from rs274.OpenGLTk import *
 from _glfixes import glInterleavedArrays
 from rs274.glcanon import GLCanon
+from hershey import Hershey
 import rs274.options
 root_window = Tkinter.Tk(className="Axis")
 rs274.options.install(root_window)
@@ -371,6 +372,14 @@ class MyOpengl(Opengl):
             self.tkRedraw_perspective()
         else:
             self.tkRedraw_ortho()
+
+    def set_eyepoint_from_extents(self, e1, e2):
+        w = self.winfo_width()
+        h = self.winfo_height()
+
+        ztran = max(e1, e2 * w/h) ** 2
+        self.set_eyepoint(ztran - self.zcenter)
+
 
 def init():
     glDrawBuffer(GL_BACK)
@@ -937,8 +946,14 @@ class TclCommands(nf.TclCommands):
         o.reset()
         glRotatef(-90, 0, 1, 0)
         glRotatef(-90, 1, 0, 0)
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[1], size[2])
+        else:
+            o.set_eyepoint(5.)
         o.perspective = False
-        o.set_eyepoint(5.)
         o.tkRedraw()
 
     def set_view_y(event=None):
@@ -949,8 +964,14 @@ class TclCommands(nf.TclCommands):
         widgets.view_p.configure(relief="link")
         o.reset()
         glRotatef(-90, 1, 0, 0)
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[0], size[2])
+        else:
+            o.set_eyepoint(5.)
         o.perspective = False
-        o.set_eyepoint(5.)
         o.tkRedraw()
         
     def set_view_z(event=None):
@@ -960,8 +981,14 @@ class TclCommands(nf.TclCommands):
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
         o.reset()
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[0], size[1])
+        else:
+            o.set_eyepoint(5.)
         o.perspective = False
-        o.set_eyepoint(5.)
         o.tkRedraw()
 
     def set_view_z2(event=None):
@@ -971,9 +998,15 @@ class TclCommands(nf.TclCommands):
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
         o.reset()
-        o.perspective = False
         glRotatef(-90, 0, 0, 1)
-        o.set_eyepoint(5.)
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            o.set_eyepoint_from_extents(size[1], size[0])
+        else:
+            o.set_eyepoint(5.)
+        o.perspective = False
         o.tkRedraw()
 
 
@@ -990,7 +1023,19 @@ class TclCommands(nf.TclCommands):
         glRotatef(-90, 0, 1, 0)
         glRotatef(-90, 1, 0, 0)
         o.perspective = True
-        o.set_eyepoint(5.)
+        if o.g:
+            mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            glTranslatef(-mid[0], -mid[1], -mid[2])
+
+            size = [(a-b) for a, b in zip(o.g.max_extents, o.g.min_extents)]
+            size = sqrt(size[0] **2 + size[1] ** 2 + size[2] ** 2)
+            w = o.winfo_width()
+            h = o.winfo_height()
+            fovx = o.fovy * w / h
+            fov = min(fovx, o.fovy)
+            o.set_eyepoint(size * 1.1 / 2 / sin ( fov * pi / 180 / 2))
+        else:
+            o.set_eyepoint(5.)
         o.tkRedraw()
         
     def estop_clicked(event=None):
@@ -1178,10 +1223,8 @@ class TclCommands(nf.TclCommands):
     def toggle_override_limits(*args):
         if not manual_ok(): return
         if s.axis[0]['override_limits']:
-            print "override off"
             ensure_mode(emc.MODE_AUTO)
         else:
-            print "override on"
             ensure_mode(emc.MODE_MANUAL)
             c.override_limits()
             c.wait_complete()
@@ -1384,6 +1427,8 @@ coordinate_linespace = int(coordinate_font_metrics[linespace_index+1])
 
 fontbase = int(o.tk.call(o._w, "loadbitmapfont", coordinate_font))
 live_plotter = LivePlotter(o)
+hershey = Hershey()
+
 def redraw(self):
     if self.select_event:
         self.select(self.select_event)
@@ -1392,9 +1437,204 @@ def redraw(self):
     glDisable(GL_LIGHTING)
     glMatrixMode(GL_MODELVIEW)
 
-    if vars.show_program.get():
-        if program is not None: glCallList(program)
+
+    if vars.show_program.get() and program is not None:
+        glCallList(program)
         if highlight is not None: glCallList(highlight)
+
+        # Dimensions
+        x,y,z,p = 0,1,2,3
+        if str(widgets.view_x['relief']) == "sunken":
+            view = x
+        elif str(widgets.view_y['relief']) == "sunken":
+            view = y
+        elif (str(widgets.view_z['relief']) == "sunken" or
+              str(widgets.view_z2['relief']) == "sunken"):
+            view = z
+        else:
+            view = p
+
+        g = self.g
+
+        dimscale = vars.metric.get() and 25.4 or 1.0
+        fmt = vars.metric.get() and "%.1f" or "%.2f"
+
+        pullback = max(g.max_extents[x] - g.min_extents[x],
+                       g.max_extents[y] - g.min_extents[y],
+                       g.max_extents[z] - g.min_extents[z],
+                       2 ) * .1
+
+        dashwidth = pullback/4
+        halfdash = dashwidth * .5
+
+        if view == z or view == p:
+            z_pos = g.min_extents[z]
+            zdashwidth = 0
+        else:
+            z_pos = g.min_extents[z] - pullback
+            zdashwidth = dashwidth
+        # x dimension
+
+        glBegin(GL_LINES)
+        if view != x and g.max_extents[x] > g.min_extents[x]:
+            y_pos = g.min_extents[y] - pullback;
+            glVertex3f(g.min_extents[x], y_pos, z_pos)
+            glVertex3f(g.max_extents[x], y_pos, z_pos)
+
+            glVertex3f(g.min_extents[x], y_pos - dashwidth, z_pos - zdashwidth)
+            glVertex3f(g.min_extents[x], y_pos + dashwidth, z_pos + zdashwidth)
+
+            glVertex3f(g.max_extents[x], y_pos - dashwidth, z_pos - zdashwidth)
+            glVertex3f(g.max_extents[x], y_pos + dashwidth, z_pos + zdashwidth)
+
+        # y dimension
+        if view != y and g.max_extents[y] > g.min_extents[y]:
+            x_pos = g.min_extents[x] - pullback;
+            glVertex3f(x_pos, g.min_extents[y], z_pos)
+            glVertex3f(x_pos, g.max_extents[y], z_pos)
+
+            glVertex3f(x_pos - dashwidth, g.min_extents[y], z_pos - zdashwidth)
+            glVertex3f(x_pos + dashwidth, g.min_extents[y], z_pos + zdashwidth)
+                                                                              
+            glVertex3f(x_pos - dashwidth, g.max_extents[y], z_pos - zdashwidth)
+            glVertex3f(x_pos + dashwidth, g.max_extents[y], z_pos + zdashwidth)
+
+        # z dimension
+        if view != z and g.max_extents[z] > g.min_extents[z]:
+            x_pos = g.min_extents[x] - pullback;
+            y_pos = g.min_extents[y] - pullback;
+            glVertex3f(x_pos, y_pos, g.min_extents[z]);
+            glVertex3f(x_pos, y_pos, g.max_extents[z]);
+
+            glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.min_extents[z])
+            glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.min_extents[z])
+
+            glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.max_extents[z])
+            glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.max_extents[z])
+
+        glEnd()
+
+        # Labels
+        if vars.coord_type.get():
+            offset = s.origin
+        else:
+            offset = 0, 0, 0
+        if view != z and g.max_extents[z] > g.min_extents[z]:
+            if view == x:
+                x_pos = g.min_extents[x] - pullback;
+                y_pos = g.min_extents[y] - 5.5*dashwidth;
+            else:
+                x_pos = g.min_extents[x] - 5.5*dashwidth;
+                y_pos = g.min_extents[y] - pullback;
+
+            glPushMatrix()
+            f = fmt % ((g.min_extents[z]-offset[z]) * dimscale)
+            glTranslatef(x_pos, y_pos, g.min_extents[z] - halfdash)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            glRotatef(-90, 0, 1, 0)
+            glRotatef(-90, 0, 0, 1)
+            if view != x:
+                glRotatef(-90, 0, 1, 0)
+            hershey.plot_string(f, 0)
+            glPopMatrix()
+
+            glPushMatrix()
+            f = fmt % ((g.max_extents[z]-offset[z]) * dimscale)
+            glTranslatef(x_pos, y_pos, g.max_extents[z] - halfdash)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            glRotatef(-90, 0, 1, 0)
+            glRotatef(-90, 0, 0, 1)
+            if view != x:
+                glRotatef(-90, 0, 1, 0)
+            hershey.plot_string(f, 0)
+            glPopMatrix()
+
+            glPushMatrix()
+            f = fmt % ((g.max_extents[z] - g.min_extents[z]) * dimscale)
+            glTranslatef(x_pos, y_pos, (g.max_extents[z] + g.min_extents[z])/2)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            if view != x:
+                glRotatef(-90, 0, 0, 1)
+            glRotatef(-90, 0, 1, 0)
+            hershey.plot_string(f, .5)
+            glPopMatrix()
+
+        if view != y and g.max_extents[y] > g.min_extents[y]:
+            x_pos = g.min_extents[x] - 5.5*dashwidth;
+
+            glPushMatrix()
+            f = fmt % ((g.min_extents[y] - offset[y]) * dimscale)
+            glTranslatef(x_pos, g.min_extents[y] + halfdash, z_pos)
+            glRotatef(-90, 0, 0, 1)
+            glRotatef(-90, 0, 0, 1)
+            if view == x:
+                glRotatef(90, 0, 1, 0)
+                glTranslatef(dashwidth*1.5, 0, 0)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            hershey.plot_string(f, 0)
+            glPopMatrix()
+
+            glPushMatrix()
+            f = fmt % ((g.max_extents[y] - offset[y]) * dimscale)
+            glTranslatef(x_pos, g.max_extents[y] + halfdash, z_pos)
+            glRotatef(-90, 0, 0, 1)
+            glRotatef(-90, 0, 0, 1)
+            if view == x:
+                glRotatef(90, 0, 1, 0)
+                glTranslatef(dashwidth*1.5, 0, 0)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            hershey.plot_string(f, 0)
+            glPopMatrix()
+
+            glPushMatrix()
+            f = fmt % ((g.max_extents[y] - g.min_extents[y]) * dimscale)
+            
+            glTranslatef(x_pos, (g.max_extents[y] + g.min_extents[y])/2,
+                        z_pos)
+            glRotatef(-90, 0, 0, 1)
+            if view == x:
+                glRotatef(-90, 1, 0, 0)
+                glTranslatef(0, halfdash, 0)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            hershey.plot_string(f, .5)
+            glPopMatrix()
+
+        if view != x and g.max_extents[x] > g.min_extents[x]:
+            y_pos = g.min_extents[y] - 5.5*dashwidth;
+
+            glPushMatrix()
+            f = fmt % ((g.min_extents[x] - offset[x]) * dimscale)
+            glTranslatef(g.min_extents[x] - halfdash, y_pos, z_pos)
+            glRotatef(-90, 0, 0, 1)
+            if view == y:
+                glRotatef(90, 0, 1, 0)
+                glTranslatef(dashwidth*1.5, 0, 0)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            hershey.plot_string(f, 0)
+            glPopMatrix()
+
+            glPushMatrix()
+            f = fmt % ((g.max_extents[x] - offset[x]) * dimscale)
+            glTranslatef(g.max_extents[x] - halfdash, y_pos, z_pos)
+            glRotatef(-90, 0, 0, 1)
+            if view == y:
+                glRotatef(90, 0, 1, 0)
+                glTranslatef(dashwidth*1.5, 0, 0)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            hershey.plot_string(f, 0)
+            glPopMatrix()
+
+            glPushMatrix()
+            f = fmt % ((g.max_extents[x] - g.min_extents[x]) * dimscale)
+            
+            glTranslatef((g.max_extents[x] + g.min_extents[x])/2, y_pos,
+                        z_pos)
+            if view == y:
+                glRotatef(-90, 1, 0, 0)
+                glTranslatef(0, halfdash, 0)
+            glScalef(dashwidth, dashwidth, dashwidth)
+            hershey.plot_string(f, .5)
+            glPopMatrix()
 
     if vars.show_live_plot.get():
         glColor3f(1,0,0)
@@ -1412,6 +1652,7 @@ def redraw(self):
     if vars.show_live_plot.get() or vars.show_program.get():
         s.poll()
         glPushMatrix()
+
         glScalef(1/25.4, 1/25.4, 1/25.4)
         lu = s.linear_units or 1
         if vars.coord_type.get() and (s.origin[0] or s.origin[1] or s.origin[2]):
