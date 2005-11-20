@@ -1521,12 +1521,16 @@ def redraw(self):
         glEnd()
 
         # Labels
+        if vars.coord_type.get():
+            offset = s.origin
+        else:
+            offset = 0, 0, 0
         if view != z and g.max_extents[z] > g.min_extents[z]:
             x_pos = g.min_extents[x] - 5.5*dashwidth;
             y_pos = g.min_extents[y] - pullback;
 
             glPushMatrix()
-            f = fmt % (g.min_extents[z] * dimscale)
+            f = fmt % ((g.min_extents[z]-offset[z]) * dimscale)
             glTranslatef(x_pos, y_pos, g.min_extents[z] - halfdash)
             glRotatef(-90, 0, 1, 0)
             glScalef(dashwidth, dashwidth, dashwidth)
@@ -1536,7 +1540,7 @@ def redraw(self):
             glPopMatrix()
 
             glPushMatrix()
-            f = fmt % (g.max_extents[z] * dimscale)
+            f = fmt % ((g.max_extents[z]-offset[z]) * dimscale)
             glTranslatef(x_pos, y_pos, g.max_extents[z] - halfdash)
             glRotatef(-90, 0, 1, 0)
             glScalef(dashwidth, dashwidth, dashwidth)
@@ -1558,7 +1562,7 @@ def redraw(self):
             x_pos = g.min_extents[x] - 5.5*dashwidth;
 
             glPushMatrix()
-            f = fmt % (g.min_extents[y] * dimscale)
+            f = fmt % ((g.min_extents[y] - offset[y]) * dimscale)
             glTranslatef(x_pos, g.min_extents[y] + halfdash, z_pos)
             glRotatef(-90, 0, 0, 1)
             glScalef(dashwidth, dashwidth, dashwidth)
@@ -1567,7 +1571,7 @@ def redraw(self):
             glPopMatrix()
 
             glPushMatrix()
-            f = fmt % (g.max_extents[y] * dimscale)
+            f = fmt % ((g.max_extents[y] - offset[y]) * dimscale)
             glTranslatef(x_pos, g.max_extents[y] + halfdash, z_pos)
             glRotatef(-90, 0, 0, 1)
             glScalef(dashwidth, dashwidth, dashwidth)
@@ -1588,7 +1592,7 @@ def redraw(self):
         if view != x and g.max_extents[x] > g.min_extents[x]:
             glPushMatrix()
 
-            f = fmt % (g.min_extents[x] * dimscale)
+            f = fmt % ((g.min_extents[x] - offset[x]) * dimscale)
             y_pos = g.min_extents[y] - 5.5*dashwidth;
             glTranslatef(g.min_extents[x] - halfdash, y_pos, z_pos)
             glRotatef(-90, 0, 0, 1)
@@ -1597,7 +1601,7 @@ def redraw(self):
             glPopMatrix()
 
             glPushMatrix()
-            f = fmt % (g.max_extents[x] * dimscale)
+            f = fmt % ((g.max_extents[x] - offset[x]) * dimscale)
             glTranslatef(g.max_extents[x] - halfdash, y_pos, z_pos)
             glRotatef(-90, 0, 0, 1)
             glScalef(dashwidth, dashwidth, dashwidth)
