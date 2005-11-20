@@ -73,7 +73,6 @@ class Hershey:
         for i in range(12):
             digit = self.hershey[i]
             glNewList(self.lists + i, GL_COMPILE)
-            glColor3f(1,1,1)
             for stroke in digit:
                 glBegin(GL_LINE_STRIP)
                 for point in stroke:
