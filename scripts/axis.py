@@ -525,56 +525,6 @@ def make_main_list(g):
     if program is None: program = glGenLists(1)
     glNewList(program, GL_COMPILE)
     g.draw(0)
-
-    glBegin(GL_LINES)
-    x,y,z = 0,1,2
-
-    pullback = max(g.max_extents[x] - g.min_extents[x],
-                   g.max_extents[y] - g.min_extents[y],
-                   g.max_extents[z] - g.min_extents[z],
-                   2 ) * .1
-
-    dashwidth = pullback/4
-
-    # x dimension
-    if g.max_extents[x] > g.min_extents[x]:
-        y_pos = g.min_extents[y] - pullback;
-        glVertex3f(g.min_extents[x], y_pos, g.min_extents[z])
-        glVertex3f(g.max_extents[x], y_pos, g.min_extents[z])
-
-        glVertex3f(g.min_extents[x], y_pos - dashwidth, g.min_extents[z])
-        glVertex3f(g.min_extents[x], y_pos + dashwidth, g.min_extents[z])
-
-        glVertex3f(g.max_extents[x], y_pos - dashwidth, g.min_extents[z])
-        glVertex3f(g.max_extents[x], y_pos + dashwidth, g.min_extents[z])
-
-    # y dimension
-    if g.max_extents[y] > g.min_extents[y]:
-        x_pos = g.min_extents[x] - pullback;
-        glVertex3f(x_pos, g.min_extents[y], g.min_extents[z])
-        glVertex3f(x_pos, g.max_extents[y], g.min_extents[z])
-
-        glVertex3f(x_pos - dashwidth, g.min_extents[y], g.min_extents[z])
-        glVertex3f(x_pos + dashwidth, g.min_extents[y], g.min_extents[z])
-
-        glVertex3f(x_pos - dashwidth, g.max_extents[y], g.min_extents[z])
-        glVertex3f(x_pos + dashwidth, g.max_extents[y], g.min_extents[z])
-
-    # z dimension
-    if g.max_extents[z] > g.min_extents[z]:
-        x_pos = g.min_extents[x] - pullback;
-        y_pos = g.min_extents[y] - pullback;
-        glVertex3f(x_pos, y_pos, g.min_extents[z]);
-        glVertex3f(x_pos, y_pos, g.max_extents[z]);
-
-        glVertex3f(x_pos - dashwidth, y_pos, g.min_extents[z])
-        glVertex3f(x_pos + dashwidth, y_pos, g.min_extents[z])
-
-        glVertex3f(x_pos - dashwidth, y_pos, g.max_extents[z])
-        glVertex3f(x_pos + dashwidth, y_pos, g.max_extents[z])
-
-    glEnd()
-
     glEndList()
 
 import array
@@ -1497,22 +1447,81 @@ def redraw(self):
         glCallList(program)
         if highlight is not None: glCallList(highlight)
 
-        x,y,z = 0,1,2
+        # Dimensions
+        x,y,z,p = 0,1,2,3
+        if str(widgets.view_x['relief']) == "sunken":
+            view = x
+        elif str(widgets.view_y['relief']) == "sunken":
+            view = y
+        elif (str(widgets.view_z['relief']) == "sunken" or
+              str(widgets.view_z2['relief']) == "sunken"):
+            view = z
+        else:
+            view = p
+        print "view", view
 
         g = self.g
+
+        dimscale = vars.metric.get() and 25.4 or 1.0
+        fmt = vars.metric.get() and "%.1f" or "%.2f"
+
         pullback = max(g.max_extents[x] - g.min_extents[x],
                        g.max_extents[y] - g.min_extents[y],
                        g.max_extents[z] - g.min_extents[z],
                        2 ) * .1
 
         dashwidth = pullback/4
-
-        dimscale = vars.metric.get() and 25.4 or 1.0
-        fmt = vars.metric.get() and "%.1f" or "%.2f"
         halfdash = dashwidth * .5
 
+        if view == z or view == p:
+            z_pos = g.min_extents[z]
+            zdashwidth = 0
+        else:
+            z_pos = g.min_extents[z] - pullback
+            zdashwidth = dashwidth
+        # x dimension
+
+        glBegin(GL_LINES)
+        if view != x and g.max_extents[x] > g.min_extents[x]:
+            y_pos = g.min_extents[y] - pullback;
+            glVertex3f(g.min_extents[x], y_pos, z_pos)
+            glVertex3f(g.max_extents[x], y_pos, z_pos)
+
+            glVertex3f(g.min_extents[x], y_pos - dashwidth, z_pos)
+            glVertex3f(g.min_extents[x], y_pos + dashwidth, z_pos)
+
+            glVertex3f(g.max_extents[x], y_pos - dashwidth, z_pos)
+            glVertex3f(g.max_extents[x], y_pos + dashwidth, z_pos)
+
+        # y dimension
+        if view != y and g.max_extents[y] > g.min_extents[y]:
+            x_pos = g.min_extents[x] - pullback;
+            glVertex3f(x_pos, g.min_extents[y], z_pos)
+            glVertex3f(x_pos, g.max_extents[y], z_pos)
+
+            glVertex3f(x_pos - dashwidth, g.min_extents[y], z_pos - zdashwidth)
+            glVertex3f(x_pos + dashwidth, g.min_extents[y], z_pos + zdashwidth)
+                                                                              
+            glVertex3f(x_pos - dashwidth, g.max_extents[y], z_pos - zdashwidth)
+            glVertex3f(x_pos + dashwidth, g.max_extents[y], z_pos + zdashwidth)
+
+        # z dimension
+        if view != z and g.max_extents[z] > g.min_extents[z]:
+            x_pos = g.min_extents[x] - pullback;
+            y_pos = g.min_extents[y] - pullback;
+            glVertex3f(x_pos, y_pos, g.min_extents[z]);
+            glVertex3f(x_pos, y_pos, g.max_extents[z]);
+
+            glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.min_extents[z])
+            glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.min_extents[z])
+
+            glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.max_extents[z])
+            glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.max_extents[z])
+
+        glEnd()
+
         # Labels
-        if g.max_extents[z] > g.min_extents[z]:
+        if view != z and g.max_extents[z] > g.min_extents[z]:
             x_pos = g.min_extents[x] - 5.5*dashwidth;
             y_pos = g.min_extents[y] - pullback;
 
@@ -1545,12 +1554,12 @@ def redraw(self):
             hershey.plot_string(f, .5)
             glPopMatrix()
 
-        if g.max_extents[y] > g.min_extents[y]:
+        if view != y and g.max_extents[y] > g.min_extents[y]:
             x_pos = g.min_extents[x] - 5.5*dashwidth;
 
             glPushMatrix()
             f = fmt % (g.min_extents[y] * dimscale)
-            glTranslatef(x_pos, g.min_extents[y] + halfdash, g.min_extents[z])
+            glTranslatef(x_pos, g.min_extents[y] + halfdash, z_pos)
             glRotatef(-90, 0, 0, 1)
             glScalef(dashwidth, dashwidth, dashwidth)
             glRotatef(-90, 0, 0, 1)
@@ -1559,7 +1568,7 @@ def redraw(self):
 
             glPushMatrix()
             f = fmt % (g.max_extents[y] * dimscale)
-            glTranslatef(x_pos, g.max_extents[y] + halfdash, g.min_extents[z])
+            glTranslatef(x_pos, g.max_extents[y] + halfdash, z_pos)
             glRotatef(-90, 0, 0, 1)
             glScalef(dashwidth, dashwidth, dashwidth)
             glRotatef(-90, 0, 0, 1)
@@ -1570,18 +1579,18 @@ def redraw(self):
             f = fmt % ((g.max_extents[y] - g.min_extents[y]) * dimscale)
             
             glTranslatef(x_pos, (g.max_extents[y] + g.min_extents[y])/2,
-                        g.min_extents[z])
+                        z_pos)
             glScalef(dashwidth, dashwidth, dashwidth)
             glRotatef(-90, 0, 0, 1)
             hershey.plot_string(f, .5)
             glPopMatrix()
 
-        if g.max_extents[x] > g.min_extents[x]:
+        if view != x and g.max_extents[x] > g.min_extents[x]:
             glPushMatrix()
 
             f = fmt % (g.min_extents[x] * dimscale)
             y_pos = g.min_extents[y] - 5.5*dashwidth;
-            glTranslatef(g.min_extents[x] - halfdash, y_pos, g.min_extents[z])
+            glTranslatef(g.min_extents[x] - halfdash, y_pos, z_pos)
             glRotatef(-90, 0, 0, 1)
             glScalef(dashwidth, dashwidth, dashwidth)
             hershey.plot_string(f, 0)
@@ -1589,7 +1598,7 @@ def redraw(self):
 
             glPushMatrix()
             f = fmt % (g.max_extents[x] * dimscale)
-            glTranslatef(g.max_extents[x] - halfdash, y_pos, g.min_extents[z])
+            glTranslatef(g.max_extents[x] - halfdash, y_pos, z_pos)
             glRotatef(-90, 0, 0, 1)
             glScalef(dashwidth, dashwidth, dashwidth)
             hershey.plot_string(f, 0)
@@ -1599,7 +1608,7 @@ def redraw(self):
             f = fmt % ((g.max_extents[x] - g.min_extents[x]) * dimscale)
             
             glTranslatef((g.max_extents[x] + g.min_extents[x])/2, y_pos,
-                        g.min_extents[z])
+                        z_pos)
             glScalef(dashwidth, dashwidth, dashwidth)
             hershey.plot_string(f, .5)
             glPopMatrix()
