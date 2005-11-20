@@ -79,6 +79,8 @@ class Hershey:
                 for point in stroke:
                     glVertex3f(point[0], 500-point[1], 0)
                 glEnd()
+            glPolygonMode(GL_FRONT, GL_FILL)
+            glPolygonMode(GL_BACK, GL_FILL)
             glEndList()
 
     def plot_digit(self, n):
@@ -88,10 +90,16 @@ class Hershey:
         glPopMatrix()
 
     def plot_string(self, s, frac=0):
+        glPushMatrix()
+        mat = glGetDouble(GL_MODELVIEW_MATRIX)
+        if mat[2][2] <= 0:
+            glTranslatef(0, .5, 0)
+            glRotatef(180, 0, 1, 0)
+            glTranslatef(0, -.5, 0)
+            frac = 1 - frac
         if frac:
             len = self.string_len(s)
             glTranslatef(-len*frac, 0, 0)
-        glPushMatrix()
         glScalef(1/500.0, 1/500.0, 1/500.0)
         for c in s:
             glCallList(self.lists + translate[c])
