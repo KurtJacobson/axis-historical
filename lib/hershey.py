@@ -95,6 +95,11 @@ class Hershey:
         if mat[2][2] <= 0:
             glTranslatef(0, .5, 0)
             glRotatef(180, 0, 1, 0)
+            frac = 1 - frac
+            mat = glGetDouble(GL_MODELVIEW_MATRIX)
+        if mat[1][1] <= 0:
+            glTranslatef(0, .5, 0)
+            glRotatef(180, 0, 0, 1)
             glTranslatef(0, -.5, 0)
             frac = 1 - frac
         if frac:
