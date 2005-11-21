@@ -1478,6 +1478,8 @@ def redraw(self):
                 zdashwidth = dashwidth
             # x dimension
 
+            glColor3f(1.0, 0.51, 0.53)
+
             glBegin(GL_LINES)
             if view != x and g.max_extents[x] > g.min_extents[x]:
                 y_pos = g.min_extents[y] - pullback;
