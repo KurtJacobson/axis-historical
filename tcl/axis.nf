@@ -183,6 +183,14 @@ setup_menu_accel .menu.edit end [_ {Sho_w live plot}]
 
 setup_menu_accel .menu.edit end [_ {Show too_l}]
 
+.menu.edit add checkbutton \
+	-variable show_extents \
+	-command redraw \
+	-label {Show extents} \
+	-underline 6
+
+setup_menu_accel .menu.edit end [_ {Show e_xtents}]
+
 .menu.edit add command \
 	-accelerator Ctrl-K \
 	-command clear_live_plot \
