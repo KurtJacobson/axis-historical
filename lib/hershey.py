@@ -67,8 +67,8 @@ class Hershey:
           (260.0, 20.0), (320.0, 40.0), (360.0, 80.0), (380.0, 160.0),
           (380.0, 260.0), (360.0, 360.0), (320.0, 420.0), (260.0, 440.0),
           (220.0, 440.0), (160.0, 420.0), (140.0, 380.0)]], \
-        [[(100, 250), (350, 250)]], \
-        [[(200, 450), (250, 450)]],
+        [[(80, 260), (440, 260)]], \
+        [[(120, 400), (100, 420), (120, 440), (140, 420), (120, 400)]]
 
         for i in range(12):
             digit = self.hershey[i]
@@ -108,8 +108,10 @@ class Hershey:
         glScalef(1/500.0, 1/500.0, 1/500.0)
         for c in s:
             glCallList(self.lists + translate[c])
-            if c == '1' or c == '.':
+            if c == '1':
                 glTranslatef(260, 0, 0)
+            elif c == '.':
+                glTranslatef(180, 0, 0)
             else:
                 glTranslatef(400, 0, 0)
         glPopMatrix()
@@ -117,8 +119,10 @@ class Hershey:
     def string_len(self, s):
         l = 0.0
         for c in s:
-            if c == '1' or c == '.':
+            if c == '1':
                 l += 260.0
+            elif c == '.':
+                l += 180.0
             else:
                 l += 400.0
 
