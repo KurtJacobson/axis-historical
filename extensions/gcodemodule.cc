@@ -199,6 +199,7 @@ void maybe_new_line() {
     last_sequence_number = sequence_number;
     PyObject *result = 
         PyObject_CallMethod(callback, "next_line", "O", new_line_code);
+    Py_DECREF(new_line_code);
     if(result == NULL) interp_error ++;
     Py_XDECREF(result);
 }
