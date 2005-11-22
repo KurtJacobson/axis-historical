@@ -16,7 +16,10 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 from rs274 import Translated, ArcsToSegmentsMixin
-from OpenGL.GL import *
+from minigl import *
+def glColor3fv(args): glColor3f(*args)
+def glVertex3fv(args): glVertex3f(*args)
+
 from math import sin, cos, pi
 
 class GLCanon(Translated, ArcsToSegmentsMixin):
@@ -104,8 +107,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
 
     def highlight(self, lineno):
         glLineWidth(3)
-        c = 0, 255, 255
-        glColor3fv(c)
+        glColor3f(0, 255, 255)
         glBegin(GL_LINES)
         for line in self.traverse:
             if line[0] != lineno: continue

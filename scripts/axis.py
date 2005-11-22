@@ -48,10 +48,8 @@ class Tk(OldTk):
 Tkinter.Tk = Tk
 
 from Tkinter import *
-from OpenGL.GL import *
-from OpenGL.GLU import *
+from minigl import *
 from rs274.OpenGLTk import *
-from _glfixes import glInterleavedArrays
 from rs274.glcanon import GLCanon
 from hershey import Hershey
 import rs274.options
@@ -1717,13 +1715,13 @@ def redraw(self):
     maxlen = 0
     ypos -= coordinate_linespace+5
     i=0
-    glColor(1,1,1)
+    glColor3f(1,1,1)
     for string in positions:
         maxlen = max(maxlen, len(string))
         if s.homed[i]:
             glRasterPos(6, ypos)
             glBitmap(13, 16, 0, 3, 17, 0, homeicon)
-        glRasterPos(23, ypos)
+        glRasterPos2i(23, ypos)
         for char in string:
             glCallList(fontbase + ord(char))
         ypos -= coordinate_linespace

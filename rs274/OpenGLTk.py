@@ -9,8 +9,7 @@
 # University of York, UK
 # 
 
-from OpenGL.GL import *
-from OpenGL.GLU import *
+from minigl import *
 from Tkinter import _default_root
 from Tkinter import *
 import math

@@ -15,7 +15,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from OpenGL.GL import *
+from minigl import *
 
 #        [[(180.0, 100.0), (220.0, 80.0), (280.0, 20.0), (280.0, 440.0)]], \
 
@@ -78,8 +78,6 @@ class Hershey:
                 for point in stroke:
                     glVertex3f(point[0], 500-point[1], 0)
                 glEnd()
-            glPolygonMode(GL_FRONT, GL_FILL)
-            glPolygonMode(GL_BACK, GL_FILL)
             glEndList()
 
     def plot_digit(self, n):
@@ -90,14 +88,14 @@ class Hershey:
 
     def plot_string(self, s, frac=0):
         glPushMatrix()
-        mat = glGetDouble(GL_MODELVIEW_MATRIX)
-        if mat[2][2] <= 0:
+        mat = glGetDoublev(GL_MODELVIEW_MATRIX)
+        if mat[10] <= 0:
             glTranslatef(0, .5, 0)
             glRotatef(180, 0, 1, 0)
             glTranslatef(0, -.5, 0)
             frac = 1 - frac
-            mat = glGetDouble(GL_MODELVIEW_MATRIX)
-        if mat[1][1] <= 0:
+            mat = glGetDoublev(GL_MODELVIEW_MATRIX)
+        if mat[5] <= 0:
             glTranslatef(0, .5, 0)
             glRotatef(180, 0, 0, 1)
             glTranslatef(0, -.5, 0)

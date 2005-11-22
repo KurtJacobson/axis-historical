@@ -51,9 +51,14 @@ is_emc2 = os.path.exists(emc2_marker)
 bdi4_marker = os.path.join(emcroot, "src/include", "config.h")
 is_bdi4 = os.path.exists(bdi4_marker)
 
+minigl = Extension("minigl",
+        ["extensions/minigl.c"],
+        libraries = ["GL", "GLU"],
+	library_dirs = ["/usr/X11R6/lib"])
+
 if simple_install:
     try:
-        import emc, gcode, _glfixes, _togl
+        import emc, gcode, _togl
     except ImportError, detail:
         print "%s.  SIMPLE_INSTALL won't work" % (detail.args[0])
         raise SystemExit, 1
@@ -204,13 +209,15 @@ else:
     )
 
 togl = Extension("_togl", ["extensions/_toglmodule.c"], **get_togl_flags())
-glfixes = Extension("_glfixes", ["extensions/_glfixes.c"], libraries = ["GL"], 
-	library_dirs = ["/usr/X11R6/lib"])
 
 if simple_install:
     ext_modules = []
+    try:
+        import minigl
+    except ImportError:
+        ext_modules.append(minigl)
 else:
-    ext_modules = [emc, glfixes, togl, gcode]
+    ext_modules = [emc, togl, gcode, minigl]
 
 setup(name=name, version=version,
     description="AXIS front-end for emc",
