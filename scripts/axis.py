@@ -1647,9 +1647,18 @@ def redraw(self):
         glLineWidth(1)
         glDepthFunc(GL_LESS);
         if live_plotter.running.get() and live_plotter.data and vars.show_tool.get():
+            if program is not None:
+                g = self.g
+                cone_scale = max(g.max_extents[x] - g.min_extents[x],
+                               g.max_extents[y] - g.min_extents[y],
+                               g.max_extents[z] - g.min_extents[z],
+                               2 ) * .5
+            else:
+                cone_scale = 1
             pos = live_plotter.data[-3:]
             glPushMatrix()
             glTranslatef(*pos)
+            glScalef(cone_scale, cone_scale, cone_scale)
             glCallList(cone_program)
             glPopMatrix()
     if vars.show_live_plot.get() or vars.show_program.get():
