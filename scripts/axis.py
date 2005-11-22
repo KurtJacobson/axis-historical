@@ -1466,7 +1466,8 @@ def redraw(self):
                            2 ) * .1
 
             dashwidth = pullback/4
-            halfdash = dashwidth * .5
+            charsize = dashwidth * 1.5
+            halfchar = charsize * .5
 
             if view == z or view == p:
                 z_pos = g.min_extents[z]
@@ -1525,15 +1526,15 @@ def redraw(self):
             if view != z and g.max_extents[z] > g.min_extents[z]:
                 if view == x:
                     x_pos = g.min_extents[x] - pullback;
-                    y_pos = g.min_extents[y] - 5.5*dashwidth;
+                    y_pos = g.min_extents[y] - 6.0*dashwidth;
                 else:
-                    x_pos = g.min_extents[x] - 5.5*dashwidth;
+                    x_pos = g.min_extents[x] - 6.0*dashwidth;
                     y_pos = g.min_extents[y] - pullback;
 
                 glPushMatrix()
                 f = fmt % ((g.min_extents[z]-offset[z]) * dimscale)
-                glTranslatef(x_pos, y_pos, g.min_extents[z] - halfdash)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                glTranslatef(x_pos, y_pos, g.min_extents[z] - halfchar)
+                glScalef(charsize, charsize, charsize)
                 glRotatef(-90, 0, 1, 0)
                 glRotatef(-90, 0, 0, 1)
                 if view != x:
@@ -1543,8 +1544,8 @@ def redraw(self):
 
                 glPushMatrix()
                 f = fmt % ((g.max_extents[z]-offset[z]) * dimscale)
-                glTranslatef(x_pos, y_pos, g.max_extents[z] - halfdash)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                glTranslatef(x_pos, y_pos, g.max_extents[z] - halfchar)
+                glScalef(charsize, charsize, charsize)
                 glRotatef(-90, 0, 1, 0)
                 glRotatef(-90, 0, 0, 1)
                 if view != x:
@@ -1555,7 +1556,7 @@ def redraw(self):
                 glPushMatrix()
                 f = fmt % ((g.max_extents[z] - g.min_extents[z]) * dimscale)
                 glTranslatef(x_pos, y_pos, (g.max_extents[z] + g.min_extents[z])/2)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                glScalef(charsize, charsize, charsize)
                 if view != x:
                     glRotatef(-90, 0, 0, 1)
                 glRotatef(-90, 0, 1, 0)
@@ -1563,29 +1564,29 @@ def redraw(self):
                 glPopMatrix()
 
             if view != y and g.max_extents[y] > g.min_extents[y]:
-                x_pos = g.min_extents[x] - 5.5*dashwidth;
+                x_pos = g.min_extents[x] - 6.0*dashwidth;
 
                 glPushMatrix()
                 f = fmt % ((g.min_extents[y] - offset[y]) * dimscale)
-                glTranslatef(x_pos, g.min_extents[y] + halfdash, z_pos)
+                glTranslatef(x_pos, g.min_extents[y] + halfchar, z_pos)
                 glRotatef(-90, 0, 0, 1)
                 glRotatef(-90, 0, 0, 1)
                 if view == x:
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                glScalef(charsize, charsize, charsize)
                 hershey.plot_string(f, 0)
                 glPopMatrix()
 
                 glPushMatrix()
                 f = fmt % ((g.max_extents[y] - offset[y]) * dimscale)
-                glTranslatef(x_pos, g.max_extents[y] + halfdash, z_pos)
+                glTranslatef(x_pos, g.max_extents[y] + halfchar, z_pos)
                 glRotatef(-90, 0, 0, 1)
                 glRotatef(-90, 0, 0, 1)
                 if view == x:
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                glScalef(charsize, charsize, charsize)
                 hershey.plot_string(f, 0)
                 glPopMatrix()
 
@@ -1597,33 +1598,33 @@ def redraw(self):
                 glRotatef(-90, 0, 0, 1)
                 if view == x:
                     glRotatef(-90, 1, 0, 0)
-                    glTranslatef(0, halfdash, 0)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                    glTranslatef(0, halfchar, 0)
+                glScalef(charsize, charsize, charsize)
                 hershey.plot_string(f, .5)
                 glPopMatrix()
 
             if view != x and g.max_extents[x] > g.min_extents[x]:
-                y_pos = g.min_extents[y] - 5.5*dashwidth;
+                y_pos = g.min_extents[y] - 6.0*dashwidth;
 
                 glPushMatrix()
                 f = fmt % ((g.min_extents[x] - offset[x]) * dimscale)
-                glTranslatef(g.min_extents[x] - halfdash, y_pos, z_pos)
+                glTranslatef(g.min_extents[x] - halfchar, y_pos, z_pos)
                 glRotatef(-90, 0, 0, 1)
                 if view == y:
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                glScalef(charsize, charsize, charsize)
                 hershey.plot_string(f, 0)
                 glPopMatrix()
 
                 glPushMatrix()
                 f = fmt % ((g.max_extents[x] - offset[x]) * dimscale)
-                glTranslatef(g.max_extents[x] - halfdash, y_pos, z_pos)
+                glTranslatef(g.max_extents[x] - halfchar, y_pos, z_pos)
                 glRotatef(-90, 0, 0, 1)
                 if view == y:
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                glScalef(charsize, charsize, charsize)
                 hershey.plot_string(f, 0)
                 glPopMatrix()
 
@@ -1634,8 +1635,8 @@ def redraw(self):
                             z_pos)
                 if view == y:
                     glRotatef(-90, 1, 0, 0)
-                    glTranslatef(0, halfdash, 0)
-                glScalef(dashwidth, dashwidth, dashwidth)
+                    glTranslatef(0, halfchar, 0)
+                glScalef(charsize, charsize, charsize)
                 hershey.plot_string(f, .5)
                 glPopMatrix()
 
