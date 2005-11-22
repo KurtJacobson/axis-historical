@@ -1,6 +1,6 @@
 include MANIFEST COPYING README BUGS
 recursive-include extensions *.c *.cc
-global-include *.py *.g
+global-include *.py
 recursive-include images *.xbm *.gif
 recursive-include tcl *.tcl *.nf
 recursive-include thirdparty *.tcl *.gif *.xbm *.rc LICENSE* togl.c togl.h
