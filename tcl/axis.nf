@@ -620,6 +620,9 @@ NoteBook .tabs \
 
 set _tabs_manual [.tabs insert end manual -text {Manual Control [F3]} -raisecmd {focus .}]
 set _tabs_mdi [.tabs insert end mdi -text {Code Entry [F5]}]
+$_tabs_manual configure -borderwidth 2
+$_tabs_mdi configure -borderwidth 2
+
 .tabs itemconfigure mdi -raisecmd [list focus ${_tabs_mdi}.command]
 .tabs raise manual
 after idle .tabs compute_size
@@ -950,6 +953,8 @@ checkbutton $_tabs_manual.flood \
 	-variable flood
 setup_widget_accel $_tabs_manual.flood [_ Flood]
 
+grid rowconfigure $_tabs_manual 99 -weight 1
+grid columnconfigure $_tabs_manual 99 -weight 1
 # Grid widget $_tabs_manual.axes
 grid $_tabs_manual.axes \
 	-column 1 \

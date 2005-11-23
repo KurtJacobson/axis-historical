@@ -743,7 +743,11 @@ def open_file_guts(f, filtered = False):
     root_window.tk.call("canvas", ".info.progress",
                 "-width", 1, "-height", 1,
                 "-highlightthickness", 0,
-                "-borderwidth", 2, "-relief", "sunken")
+                "-borderwidth", 2, "-relief", "sunken",
+                "-cursor", "watch")
+    root_window.configure(cursor="watch")
+    root_window.tk.call(".menu", "configure", "-cursor", "watch")
+    t.configure(cursor="watch")
     root_window.tk.call("bind", ".info.progress", "<Key>", "break")
     root_window.tk.call("pack", ".info.progress", "-side", "left", "-fill", "both", "-expand", "1")
     root_window.tk.call(".info.progress", "create", "rectangle", (-10, -10, -10, -10), "-fill", "blue", "-outline", "blue")
@@ -759,10 +763,13 @@ def open_file_guts(f, filtered = False):
             
         t.configure(state="normal")
         t.delete("0.0", "end")
+        print "delete time", time.time() - t0
+        code = []
         for i, l in enumerate(open(f)):
             l = l.expandtabs().replace("\r", "")
-            t.insert("end", "%6d: " % (i+1), "lineno", l)
-
+            #t.insert("end", "%6d: " % (i+1), "lineno", l)
+            code.append("%6d: " % (i+1) + l)
+        t.insert("end", "".join(code))
         f = os.path.abspath(f)
         o.g = canon = AxisCanon(widgets.text, i)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
@@ -805,6 +812,9 @@ def open_file_guts(f, filtered = False):
         root_window.tk.call("destroy", ".info.progress")
         root_window.tk.call("grab", "release", ".info.progress")
         root_window.tk.call("focus", old_focus)
+        root_window.configure(cursor="")
+        root_window.tk.call(".menu", "configure", "-cursor", "")
+        t.configure(cursor="xterm")
         o.tkRedraw()
 
 vars = nf.Variables(root_window, 
