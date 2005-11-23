@@ -100,9 +100,7 @@ def start(r):
     source_lib_tcl(r, "rb.tcl"); r.tk.call("rb::install")
     source_lib_tcl(r, "cb.tcl"); r.tk.call("cb::install")
 
-    r.tk.call("package", "require", "BLT")
     r.tk.call("package", "require", "BWidget")
-    r.tk.call("namespace", "import", "blt::tabset")
     r.tk.call("namespace", "import", "combobox::combobox")
 
 # vim:ts=8:sts=4:et:

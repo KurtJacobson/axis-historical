@@ -844,30 +844,32 @@ vars.show_live_plot.set(1)
 vars.show_tool.set(1)
 vars.show_extents.set(1)
 
+tabs_mdi = str(root_window.tk.call("set", "_tabs_mdi"))
+tabs_manual = str(root_window.tk.call("set", "_tabs_manual"))
 widgets = nf.Widgets(root_window, 
     ("menu_view", Menu, ".menu.view"),
     ("text", Text, ".t.text"),
     ("preview_frame", Frame, ".preview"),
-    ("mdi_history", Text, ".tabs.mdi.history"),
-    ("code_text", Text, ".tabs.mdi.gcodes"),
+    ("mdi_history", Text, tabs_mdi + ".history"),
+    ("code_text", Text, tabs_mdi + ".gcodes"),
 
-    ("axis_x", Radiobutton, ".tabs.manual.axes.axisx"),
-    ("axis_y", Radiobutton, ".tabs.manual.axes.axisy"),
-    ("axis_z", Radiobutton, ".tabs.manual.axes.axisz"),
-    ("axis_a", Radiobutton, ".tabs.manual.axes.axisa"),
-    ("axis_b", Radiobutton, ".tabs.manual.axes.axisb"),
-    ("axis_c", Radiobutton, ".tabs.manual.axes.axisc"),
+    ("axis_x", Radiobutton, tabs_manual + ".axes.axisx"),
+    ("axis_y", Radiobutton, tabs_manual + ".axes.axisy"),
+    ("axis_z", Radiobutton, tabs_manual + ".axes.axisz"),
+    ("axis_a", Radiobutton, tabs_manual + ".axes.axisa"),
+    ("axis_b", Radiobutton, tabs_manual + ".axes.axisb"),
+    ("axis_c", Radiobutton, tabs_manual + ".axes.axisc"),
 
-    ("jogspeed", Entry, ".tabs.manual.jogf.jogspeed"),
+    ("jogspeed", Entry, tabs_manual + ".jogf.jogspeed"),
 
-    ("flood", Checkbutton, ".tabs.manual.flood"),
-    ("mist", Checkbutton, ".tabs.manual.mist"),
+    ("flood", Checkbutton, tabs_manual + ".flood"),
+    ("mist", Checkbutton, tabs_manual + ".mist"),
 
-    ("brake", Checkbutton, ".tabs.manual.spindlef.brake"),
+    ("brake", Checkbutton, tabs_manual + ".spindlef.brake"),
 
-    ("spindle_ccw", Radiobutton, ".tabs.manual.spindlef.ccw"),
-    ("spindle_stop", Radiobutton, ".tabs.manual.spindlef.stop"),
-    ("spindle_cw", Radiobutton, ".tabs.manual.spindlef.cw"),
+    ("spindle_ccw", Radiobutton, tabs_manual + ".spindlef.ccw"),
+    ("spindle_stop", Radiobutton, tabs_manual + ".spindlef.stop"),
+    ("spindle_cw", Radiobutton, tabs_manual + ".spindlef.cw"),
 
     ("view_z", Button, ".toolbar.view_z"),
     ("view_z2", Button, ".toolbar.view_z2"),
@@ -1405,19 +1407,8 @@ o = MyOpengl(widgets.preview_frame, width=400, height=300, double=1, depth=1)
 o.last_line = 1
 o.pack(fill="both", expand=1)
 
-def go_manual(event=None):
-    root_window.tk.call(".tabs", "select", 0)
-    root_window.tk.call("focus", ".")
-root_window.bind("<Key-F3>", go_manual)
-root_window.tk.call(".tabs", "tab", "configure", "manual",
-                            "-command", "focus .")
-
-def go_mdi(event=None):
-    root_window.tk.call(".tabs", "select", 1)
-    root_window.tk.call("focus", ".tabs.mdi.command")
-root_window.tk.call(".tabs", "tab", "configure", "mdi",
-                            "-command", "focus .tabs.mdi.command")
-root_window.bind("<Key-F5>", go_mdi)
+root_window.bind("<Key-F3>", ".tabs raise manual")
+root_window.bind("<Key-F5>", ".tabs raise mdi")
 
 init()
 

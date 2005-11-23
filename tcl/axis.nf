@@ -614,231 +614,224 @@ pack .toolbar.rule12 \
 pack .toolbar.clear_plot \
 	-side left
 
-tabset .tabs \
+NoteBook .tabs \
 	-borderwidth 2 \
-	-gap 0 \
-	-highlightthickness 0 \
-	-outerpad 2 \
-	-perforationcommand {
-	blt::Tearoff %W $bltTabset(x) $bltTabset(y) select
-    } \
-	-relief flat \
-	-samewidth 0 \
-	-scrollincrement 2 \
-	-selectpad 4 \
-	-takefocus 0 \
-	-tearoff 0
+	-arcradius 3
 
-tab .tabs.manual
+set _tabs_manual [.tabs insert end manual -text {Manual Control [F3]} -raisecmd {focus .}]
+set _tabs_mdi [.tabs insert end mdi -text {Code Entry [F5]}]
+.tabs itemconfigure mdi -raisecmd [list focus ${_tabs_mdi}.command]
+.tabs raise manual
+after idle .tabs compute_size
 
-label .tabs.manual.axis
-setup_widget_accel .tabs.manual.axis [_ Axis:]
+label $_tabs_manual.axis
+setup_widget_accel $_tabs_manual.axis [_ Axis:]
 
-frame .tabs.manual.axes
+frame $_tabs_manual.axes
 
-radiobutton .tabs.manual.axes.axisx \
+radiobutton $_tabs_manual.axes.axisx \
 	-anchor w \
 	-padx 0 \
 	-selectcolor #4864ab \
 	-value x \
 	-variable current_axis \
 	-width 2
-setup_widget_accel .tabs.manual.axes.axisx [_ _X]
+setup_widget_accel $_tabs_manual.axes.axisx [_ _X]
 
-radiobutton .tabs.manual.axes.axisy \
+radiobutton $_tabs_manual.axes.axisy \
 	-anchor w \
 	-padx 0 \
 	-selectcolor #4864ab \
 	-value y \
 	-variable current_axis \
 	-width 2
-setup_widget_accel .tabs.manual.axes.axisy [_ _Y]
+setup_widget_accel $_tabs_manual.axes.axisy [_ _Y]
 
-radiobutton .tabs.manual.axes.axisz \
+radiobutton $_tabs_manual.axes.axisz \
 	-anchor w \
 	-padx 0 \
 	-selectcolor #4864ab \
 	-value z \
 	-variable current_axis \
 	-width 2
-setup_widget_accel .tabs.manual.axes.axisz [_ _Z]
+setup_widget_accel $_tabs_manual.axes.axisz [_ _Z]
 
-radiobutton .tabs.manual.axes.axisa \
+radiobutton $_tabs_manual.axes.axisa \
 	-anchor w \
 	-padx 0 \
 	-selectcolor #4864ab \
 	-value a \
 	-variable current_axis \
 	-width 2
-setup_widget_accel .tabs.manual.axes.axisa [_ _A]
+setup_widget_accel $_tabs_manual.axes.axisa [_ _A]
 
-radiobutton .tabs.manual.axes.axisb \
+radiobutton $_tabs_manual.axes.axisb \
 	-anchor w \
 	-padx 0 \
 	-selectcolor #4864ab \
 	-value b \
 	-variable current_axis \
 	-width 2
-setup_widget_accel .tabs.manual.axes.axisb [_ _B]
+setup_widget_accel $_tabs_manual.axes.axisb [_ _B]
 
-radiobutton .tabs.manual.axes.axisc \
+radiobutton $_tabs_manual.axes.axisc \
 	-anchor w \
 	-padx 0 \
 	-selectcolor #4864ab \
 	-value c \
 	-variable current_axis \
 	-width 2
-setup_widget_accel .tabs.manual.axes.axisc [_ _C]
+setup_widget_accel $_tabs_manual.axes.axisc [_ _C]
 
-# Grid widget .tabs.manual.axes.axisa
-grid .tabs.manual.axes.axisa \
+# Grid widget $_tabs_manual.axes.axisa
+grid $_tabs_manual.axes.axisa \
 	-column 0 \
 	-row 1 \
 	-padx 4
 
-# Grid widget .tabs.manual.axes.axisb
-grid .tabs.manual.axes.axisb \
+# Grid widget $_tabs_manual.axes.axisb
+grid $_tabs_manual.axes.axisb \
 	-column 1 \
 	-row 1 \
 	-padx 4
 
-# Grid widget .tabs.manual.axes.axisc
-grid .tabs.manual.axes.axisc \
+# Grid widget $_tabs_manual.axes.axisc
+grid $_tabs_manual.axes.axisc \
 	-column 2 \
 	-row 1 \
 	-padx 4
 
-# Grid widget .tabs.manual.axes.axisx
-grid .tabs.manual.axes.axisx \
+# Grid widget $_tabs_manual.axes.axisx
+grid $_tabs_manual.axes.axisx \
 	-column 0 \
 	-row 0 \
 	-padx 4
 
-# Grid widget .tabs.manual.axes.axisy
-grid .tabs.manual.axes.axisy \
+# Grid widget $_tabs_manual.axes.axisy
+grid $_tabs_manual.axes.axisy \
 	-column 1 \
 	-row 0 \
 	-padx 4
 
-# Grid widget .tabs.manual.axes.axisz
-grid .tabs.manual.axes.axisz \
+# Grid widget $_tabs_manual.axes.axisz
+grid $_tabs_manual.axes.axisz \
 	-column 2 \
 	-row 0 \
 	-padx 4
 
-frame .tabs.manual.jogf
+frame $_tabs_manual.jogf
 
-button .tabs.manual.jogf.jogminus \
+button $_tabs_manual.jogf.jogminus \
 	-command {if {![is_continuous]} {jog_minus}} \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.jogf.jogminus <Button-1> {
+bind $_tabs_manual.jogf.jogminus <Button-1> {
     if {[is_continuous]} { jog_minus }
 }
-bind .tabs.manual.jogf.jogminus <ButtonRelease-1> {
+bind $_tabs_manual.jogf.jogminus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
-setup_widget_accel .tabs.manual.jogf.jogminus [_ -]
+setup_widget_accel $_tabs_manual.jogf.jogminus [_ -]
 
-button .tabs.manual.jogf.jogplus \
+button $_tabs_manual.jogf.jogplus \
 	-command {if {![is_continuous]} {jog_plus}} \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.jogf.jogplus <Button-1> {
+bind $_tabs_manual.jogf.jogplus <Button-1> {
     if {[is_continuous]} { jog_plus }
 }
-bind .tabs.manual.jogf.jogplus <ButtonRelease-1> {
+bind $_tabs_manual.jogf.jogplus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
-setup_widget_accel .tabs.manual.jogf.jogplus [_ +]
+setup_widget_accel $_tabs_manual.jogf.jogplus [_ +]
 
-combobox .tabs.manual.jogf.jogspeed \
+combobox $_tabs_manual.jogf.jogspeed \
 	-editable 0 \
 	-textvariable jogincrement \
 	-value Continuous \
 	-width 10
-.tabs.manual.jogf.jogspeed list insert end Continuous 0.1000 0.0100 0.0010 0.0001
+$_tabs_manual.jogf.jogspeed list insert end Continuous 0.1000 0.0100 0.0010 0.0001
 
-frame .tabs.manual.jogf.zerohome
+frame $_tabs_manual.jogf.zerohome
 
-button .tabs.manual.jogf.zerohome.home \
+button $_tabs_manual.jogf.zerohome.home \
 	-command home_axis \
 	-padx 2m \
 	-pady 0
-setup_widget_accel .tabs.manual.jogf.zerohome.home [_ Home]
+setup_widget_accel $_tabs_manual.jogf.zerohome.home [_ Home]
 
-button .tabs.manual.jogf.zerohome.zero \
+button $_tabs_manual.jogf.zerohome.zero \
 	-command set_axis_offset \
 	-padx 2m \
 	-pady 0
-setup_widget_accel .tabs.manual.jogf.zerohome.zero {Offset}
+setup_widget_accel $_tabs_manual.jogf.zerohome.zero {Offset}
 
-checkbutton .tabs.manual.jogf.override \
+checkbutton $_tabs_manual.jogf.override \
 	-command toggle_override_limits \
 	-variable override_limits
-setup_widget_accel .tabs.manual.jogf.override {Override Limits}
+setup_widget_accel $_tabs_manual.jogf.override {Override Limits}
 
-grid .tabs.manual.jogf.zerohome \
+grid $_tabs_manual.jogf.zerohome \
 	-column 0 \
 	-row 1 \
 	-columnspan 3 \
 	-sticky w
 
-# Grid widget .tabs.manual.jogf.zerohome.home
-grid .tabs.manual.jogf.zerohome.home \
+# Grid widget $_tabs_manual.jogf.zerohome.home
+grid $_tabs_manual.jogf.zerohome.home \
 	-column 0 \
 	-row 0 \
 	-ipadx 2 \
 	-pady 2 \
 	-sticky w
 
-# Grid widget .tabs.manual.jogf.zerohome.zero
-grid .tabs.manual.jogf.zerohome.zero \
+# Grid widget $_tabs_manual.jogf.zerohome.zero
+grid $_tabs_manual.jogf.zerohome.zero \
 	-column 1 \
 	-row 0 \
 	-ipadx 2 \
 	-pady 2 \
 	-sticky w
 
-# Grid widget .tabs.manual.jogf.override
-grid .tabs.manual.jogf.override \
+# Grid widget $_tabs_manual.jogf.override
+grid $_tabs_manual.jogf.override \
 	-column 0 \
 	-row 3 \
 	-columnspan 3 \
 	-pady 2 \
 	-sticky w
 
-# Grid widget .tabs.manual.jogf.jogminus
-grid .tabs.manual.jogf.jogminus \
+# Grid widget $_tabs_manual.jogf.jogminus
+grid $_tabs_manual.jogf.jogminus \
 	-column 0 \
 	-row 0 \
 	-pady 2 \
 	-sticky ns
 
-# Grid widget .tabs.manual.jogf.jogplus
-grid .tabs.manual.jogf.jogplus \
+# Grid widget $_tabs_manual.jogf.jogplus
+grid $_tabs_manual.jogf.jogplus \
 	-column 1 \
 	-row 0 \
 	-pady 2 \
 	-sticky ns
 
-# Grid widget .tabs.manual.jogf.jogspeed
-grid .tabs.manual.jogf.jogspeed \
+# Grid widget $_tabs_manual.jogf.jogspeed
+grid $_tabs_manual.jogf.jogspeed \
 	-column 2 \
 	-row 0 \
 	-pady 2
 
-vspace .tabs.manual.space1 \
+vspace $_tabs_manual.space1 \
 	-height 12
 
-label .tabs.manual.spindlel
-setup_widget_accel .tabs.manual.spindlel [_ Spindle:]
+label $_tabs_manual.spindlel
+setup_widget_accel $_tabs_manual.spindlel [_ Spindle:]
 
-frame .tabs.manual.spindlef
+frame $_tabs_manual.spindlef
 
-radiobutton .tabs.manual.spindlef.ccw \
+radiobutton $_tabs_manual.spindlef.ccw \
 	-borderwidth 2 \
 	-command spindle \
 	-image [load_image spindle_ccw] \
@@ -846,18 +839,18 @@ radiobutton .tabs.manual.spindlef.ccw \
 	-selectcolor [systembuttonface] \
 	-value -1 \
 	-variable spindledir
-setup_widget_accel .tabs.manual.spindlef.ccw {}
+setup_widget_accel $_tabs_manual.spindlef.ccw {}
 
-radiobutton .tabs.manual.spindlef.stop \
+radiobutton $_tabs_manual.spindlef.stop \
 	-borderwidth 2 \
 	-command spindle \
 	-indicatoron 0 \
 	-selectcolor [systembuttonface] \
 	-value 0 \
 	-variable spindledir
-setup_widget_accel .tabs.manual.spindlef.stop [_ Stop]
+setup_widget_accel $_tabs_manual.spindlef.stop [_ Stop]
 
-radiobutton .tabs.manual.spindlef.cw \
+radiobutton $_tabs_manual.spindlef.cw \
 	-borderwidth 2 \
 	-command spindle \
 	-image [load_image spindle_cw] \
@@ -865,291 +858,266 @@ radiobutton .tabs.manual.spindlef.cw \
 	-selectcolor [systembuttonface] \
 	-value 1 \
 	-variable spindledir
-setup_widget_accel .tabs.manual.spindlef.cw {}
+setup_widget_accel $_tabs_manual.spindlef.cw {}
 
-button .tabs.manual.spindlef.spindleminus \
+button $_tabs_manual.spindlef.spindleminus \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.spindlef.spindleminus <Button-1> {
+bind $_tabs_manual.spindlef.spindleminus <Button-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_decrease
 }
-bind .tabs.manual.spindlef.spindleminus <ButtonRelease-1> {
+bind $_tabs_manual.spindlef.spindleminus <ButtonRelease-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_constant
 }
-setup_widget_accel .tabs.manual.spindlef.spindleminus [_ -]
+setup_widget_accel $_tabs_manual.spindlef.spindleminus [_ -]
 
-button .tabs.manual.spindlef.spindleplus \
+button $_tabs_manual.spindlef.spindleplus \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind .tabs.manual.spindlef.spindleplus <Button-1> {
+bind $_tabs_manual.spindlef.spindleplus <Button-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_increase
 }
-bind .tabs.manual.spindlef.spindleplus <ButtonRelease-1> {
+bind $_tabs_manual.spindlef.spindleplus <ButtonRelease-1> {
 	if {[%W cget -state] == "disabled"} { continue }
 	spindle_constant
 }
-setup_widget_accel .tabs.manual.spindlef.spindleplus [_ +]
+setup_widget_accel $_tabs_manual.spindlef.spindleplus [_ +]
 
-checkbutton .tabs.manual.spindlef.brake \
+checkbutton $_tabs_manual.spindlef.brake \
 	-command brake \
 	-variable brake
-setup_widget_accel .tabs.manual.spindlef.brake [_ Brake]
+setup_widget_accel $_tabs_manual.spindlef.brake [_ Brake]
 
-# Grid widget .tabs.manual.spindlef.brake
-grid .tabs.manual.spindlef.brake \
+# Grid widget $_tabs_manual.spindlef.brake
+grid $_tabs_manual.spindlef.brake \
 	-column 0 \
 	-row 2 \
 	-columnspan 3 \
 	-pady 2 \
 	-sticky w
 
-# Grid widget .tabs.manual.spindlef.ccw
-grid .tabs.manual.spindlef.ccw \
+# Grid widget $_tabs_manual.spindlef.ccw
+grid $_tabs_manual.spindlef.ccw \
 	-column 0 \
 	-row 0 \
 	-pady 2
 
-# Grid widget .tabs.manual.spindlef.cw
-grid .tabs.manual.spindlef.cw \
+# Grid widget $_tabs_manual.spindlef.cw
+grid $_tabs_manual.spindlef.cw \
 	-column 2 \
 	-row 0 \
 	-sticky w
 
-# Grid widget .tabs.manual.spindlef.spindleminus
-grid .tabs.manual.spindlef.spindleminus \
+# Grid widget $_tabs_manual.spindlef.spindleminus
+grid $_tabs_manual.spindlef.spindleminus \
 	-column 0 \
 	-row 1 \
 	-pady 2 \
 	-sticky ns
 
-# Grid widget .tabs.manual.spindlef.spindleplus
-grid .tabs.manual.spindlef.spindleplus \
+# Grid widget $_tabs_manual.spindlef.spindleplus
+grid $_tabs_manual.spindlef.spindleplus \
 	-column 1 \
 	-row 1 \
 	-columnspan 2 \
 	-pady 2 \
 	-sticky nsw
 
-# Grid widget .tabs.manual.spindlef.stop
-grid .tabs.manual.spindlef.stop \
+# Grid widget $_tabs_manual.spindlef.stop
+grid $_tabs_manual.spindlef.stop \
 	-column 1 \
 	-row 0 \
 	-ipadx 8
 
-vspace .tabs.manual.space2 \
+vspace $_tabs_manual.space2 \
 	-height 12
 
-label .tabs.manual.coolant
-setup_widget_accel .tabs.manual.coolant [_ Coolant:]
+label $_tabs_manual.coolant
+setup_widget_accel $_tabs_manual.coolant [_ Coolant:]
 
-checkbutton .tabs.manual.mist \
+checkbutton $_tabs_manual.mist \
 	-command mist \
 	-variable mist
-setup_widget_accel .tabs.manual.mist [_ Mist]
+setup_widget_accel $_tabs_manual.mist [_ Mist]
 
-checkbutton .tabs.manual.flood \
+checkbutton $_tabs_manual.flood \
 	-command flood \
 	-variable flood
-setup_widget_accel .tabs.manual.flood [_ Flood]
+setup_widget_accel $_tabs_manual.flood [_ Flood]
 
-# Grid widget .tabs.manual.axes
-grid .tabs.manual.axes \
+# Grid widget $_tabs_manual.axes
+grid $_tabs_manual.axes \
 	-column 1 \
 	-row 0 \
 	-padx 0 \
 	-sticky w
 
-# Grid widget .tabs.manual.axis
-grid .tabs.manual.axis \
+# Grid widget $_tabs_manual.axis
+grid $_tabs_manual.axis \
 	-column 0 \
 	-row 0 \
 	-pady 1 \
 	-sticky nw
 
-# Grid widget .tabs.manual.coolant
-grid .tabs.manual.coolant \
+# Grid widget $_tabs_manual.coolant
+grid $_tabs_manual.coolant \
 	-column 0 \
 	-row 5 \
 	-sticky w
 
-# Grid widget .tabs.manual.flood
-grid .tabs.manual.flood \
+# Grid widget $_tabs_manual.flood
+grid $_tabs_manual.flood \
 	-column 1 \
 	-row 6 \
 	-columnspan 2 \
 	-padx 4 \
 	-sticky w
 
-# Grid widget .tabs.manual.jogf
-grid .tabs.manual.jogf \
+# Grid widget $_tabs_manual.jogf
+grid $_tabs_manual.jogf \
 	-column 1 \
 	-row 1 \
 	-padx 4 \
 	-sticky w
 
-# Grid widget .tabs.manual.mist
-grid .tabs.manual.mist \
+# Grid widget $_tabs_manual.mist
+grid $_tabs_manual.mist \
 	-column 1 \
 	-row 5 \
 	-columnspan 2 \
 	-padx 4 \
 	-sticky w
 
-# Grid widget .tabs.manual.space1
-grid .tabs.manual.space1 \
+# Grid widget $_tabs_manual.space1
+grid $_tabs_manual.space1 \
 	-column 0 \
 	-row 2
 
-# Grid widget .tabs.manual.space2
-grid .tabs.manual.space2 \
+# Grid widget $_tabs_manual.space2
+grid $_tabs_manual.space2 \
 	-column 0 \
 	-row 4
 
-# Grid widget .tabs.manual.spindlef
-grid .tabs.manual.spindlef \
+# Grid widget $_tabs_manual.spindlef
+grid $_tabs_manual.spindlef \
 	-column 1 \
 	-row 3 \
 	-padx 4 \
 	-sticky w
 
-# Grid widget .tabs.manual.spindlel
-grid .tabs.manual.spindlel \
+# Grid widget $_tabs_manual.spindlel
+grid $_tabs_manual.spindlel \
 	-column 0 \
 	-row 3 \
 	-pady 2 \
 	-sticky nw
 
-tab .tabs.mdi
+label $_tabs_mdi.historyl
+setup_widget_accel $_tabs_mdi.historyl [_ History:]
 
-label .tabs.mdi.historyl
-setup_widget_accel .tabs.mdi.historyl [_ History:]
-
-text .tabs.mdi.history \
+text $_tabs_mdi.history \
 	-height 8 \
 	-takefocus 0 \
 	-width 40
-.tabs.mdi.history insert end {}
-.tabs.mdi.history configure -state disabled
-grid rowconfigure .tabs.mdi.history 0 -weight 1
+$_tabs_mdi.history insert end {}
+$_tabs_mdi.history configure -state disabled
+grid rowconfigure $_tabs_mdi.history 0 -weight 1
 
-vspace .tabs.mdi.vs1 \
+vspace $_tabs_mdi.vs1 \
 	-height 12
 
-label .tabs.mdi.commandl
-setup_widget_accel .tabs.mdi.commandl [_ {MDI Command:}]
+label $_tabs_mdi.commandl
+setup_widget_accel $_tabs_mdi.commandl [_ {MDI Command:}]
 
-entry .tabs.mdi.command \
+entry $_tabs_mdi.command \
 	-textvariable mdi_command
-bind .tabs.mdi.command <Key-Return> send_mdi
+bind $_tabs_mdi.command <Key-Return> send_mdi
 
-button .tabs.mdi.go \
+button $_tabs_mdi.go \
 	-command send_mdi \
 	-padx 1m \
 	-pady 0
-setup_widget_accel .tabs.mdi.go [_ Go]
+setup_widget_accel $_tabs_mdi.go [_ Go]
 
-vspace .tabs.mdi.vs2 \
+vspace $_tabs_mdi.vs2 \
 	-height 12
 
-label .tabs.mdi.gcodel
-setup_widget_accel .tabs.mdi.gcodel [_ {Active G-Codes:}]
+label $_tabs_mdi.gcodel
+setup_widget_accel $_tabs_mdi.gcodel [_ {Active G-Codes:}]
 
-text .tabs.mdi.gcodes \
+text $_tabs_mdi.gcodes \
 	-height 2 \
 	-width 20
-.tabs.mdi.gcodes insert end {}
-.tabs.mdi.gcodes configure -state disabled
+$_tabs_mdi.gcodes insert end {}
+$_tabs_mdi.gcodes configure -state disabled
 
-vspace .tabs.mdi.vs3 \
+vspace $_tabs_mdi.vs3 \
 	-height 12
 
-# Grid widget .tabs.mdi.command
-grid .tabs.mdi.command \
+# Grid widget $_tabs_mdi.command
+grid $_tabs_mdi.command \
 	-column 0 \
 	-row 4 \
 	-sticky ew
 
-# Grid widget .tabs.mdi.commandl
-grid .tabs.mdi.commandl \
+# Grid widget $_tabs_mdi.commandl
+grid $_tabs_mdi.commandl \
 	-column 0 \
 	-row 3 \
 	-sticky w
 
-# Grid widget .tabs.mdi.gcodel
-grid .tabs.mdi.gcodel \
+# Grid widget $_tabs_mdi.gcodel
+grid $_tabs_mdi.gcodel \
 	-column 0 \
 	-row 6 \
 	-sticky w
 
-# Grid widget .tabs.mdi.gcodes
-grid .tabs.mdi.gcodes \
+# Grid widget $_tabs_mdi.gcodes
+grid $_tabs_mdi.gcodes \
 	-column 0 \
 	-row 7 \
 	-columnspan 2 \
 	-sticky new
 
-# Grid widget .tabs.mdi.go
-grid .tabs.mdi.go \
+# Grid widget $_tabs_mdi.go
+grid $_tabs_mdi.go \
 	-column 1 \
 	-row 4
 
-# Grid widget .tabs.mdi.history
-grid .tabs.mdi.history \
+# Grid widget $_tabs_mdi.history
+grid $_tabs_mdi.history \
 	-column 0 \
 	-row 1 \
 	-columnspan 2 \
 	-sticky nesw
 
-# Grid widget .tabs.mdi.historyl
-grid .tabs.mdi.historyl \
+# Grid widget $_tabs_mdi.historyl
+grid $_tabs_mdi.historyl \
 	-column 0 \
 	-row 0 \
 	-sticky w
 
-# Grid widget .tabs.mdi.vs1
-grid .tabs.mdi.vs1 \
+# Grid widget $_tabs_mdi.vs1
+grid $_tabs_mdi.vs1 \
 	-column 0 \
 	-row 2
 
-# Grid widget .tabs.mdi.vs2
-grid .tabs.mdi.vs2 \
+# Grid widget $_tabs_mdi.vs2
+grid $_tabs_mdi.vs2 \
 	-column 0 \
 	-row 5
 
-# Grid widget .tabs.mdi.vs3
-grid .tabs.mdi.vs3 \
+# Grid widget $_tabs_mdi.vs3
+grid $_tabs_mdi.vs3 \
 	-column 0 \
 	-row 8
-grid columnconfigure .tabs.mdi 0 -weight 1
-grid rowconfigure .tabs.mdi 1 -weight 1
-
-.tabs insert end manual
-.tabs tab config manual \
-	-anchor nw \
-	-ipadx {0 0} \
-	-ipady {0 0} \
-	-padx {0 0} \
-	-pady {0 0} \
-	-text {Manual Control [F3]} \
-	-window .tabs.manual
-
-
-.tabs insert end mdi
-.tabs tab config mdi \
-	-anchor nw \
-	-fill y \
-	-ipadx {0 0} \
-	-ipady {0 0} \
-	-padx {0 0} \
-	-pady {0 0} \
-	-text {Code Entry [F5]} \
-	-window .tabs.mdi
-
+grid columnconfigure $_tabs_mdi 0 -weight 1
+grid rowconfigure $_tabs_mdi 1 -weight 1
 
 frame .preview \
 	-background black \
@@ -1404,7 +1372,9 @@ grid .t \
 grid .tabs \
 	-column 0 \
 	-row 1 \
-	-sticky nesw
+	-sticky nesw \
+	-padx 2 \
+	-pady 2
 
 # Grid widget .toolbar
 grid .toolbar \

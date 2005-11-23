@@ -32,17 +32,17 @@ set INTERP_READING 2
 set INTERP_PAUSED 3
 set INTERP_WAITING 4
 
-set manual [concat [winfo children .tabs.manual.axes] \
-    .tabs.manual.jogf.zerohome.home \
-    .tabs.manual.jogf.zerohome.zero \
-    .tabs.manual.jogf.override \
-    .tabs.manual.jogf.jogminus \
-    .tabs.manual.jogf.jogplus \
-    .tabs.manual.jogf.jogspeed \
-    .tabs.manual.spindlef.cw .tabs.manual.spindlef.ccw \
-    .tabs.manual.spindlef.stop .tabs.manual.spindlef.brake \
-    .tabs.manual.flood .tabs.manual.mist .tabs.mdi.command \
-    .tabs.mdi.go]
+set manual [concat [winfo children $_tabs_manual.axes] \
+    $_tabs_manual.jogf.zerohome.home \
+    $_tabs_manual.jogf.zerohome.zero \
+    $_tabs_manual.jogf.override \
+    $_tabs_manual.jogf.jogminus \
+    $_tabs_manual.jogf.jogplus \
+    $_tabs_manual.jogf.jogspeed \
+    $_tabs_manual.spindlef.cw $_tabs_manual.spindlef.ccw \
+    $_tabs_manual.spindlef.stop $_tabs_manual.spindlef.brake \
+    $_tabs_manual.flood $_tabs_manual.mist $_tabs_mdi.command \
+    $_tabs_mdi.go]
 
 proc disable_group {ws} { foreach w $ws { $w configure -state disabled } }
 proc enable_group {ws} { foreach w $ws { $w configure -state normal } }
@@ -122,8 +122,9 @@ proc update_state {args} {
                 {.menu.program 0}
 
     state {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE\
-            && $spindledir != 0} .tabs.manual.spindlef.spindleminus \
-        .tabs.manual.spindlef.spindleplus
+            && $spindledir != 0} \
+                $::_tabs_manual.spindlef.spindleminus \
+                $::_tabs_manual.spindlef.spindleplus
 
     set ::position [list Position: [lindex {Machine Relative} $::coord_type] \
                                    [lindex {Actual Commanded} $::display_type]]
@@ -163,11 +164,11 @@ trace variable coord_type w queue_update_state
 trace variable display_type w queue_update_state
 
 bind . <Control-Tab> {
-    set l [llength [.tabs tab names]]
-    set i [.tabs index select]
-    set i [expr {($i+1)%%$l}]
-    .tabs select $i
-    if {$i == 1} { focus .tabs.mdi.command } else { focus . }
+    set page [.tabs raise]
+    switch $page {
+        mdi { .tabs raise manual }
+        default { .tabs raise mdi }
+    }
     break
 }
 
@@ -189,7 +190,7 @@ foreach b { <Key-Left> <Key-Right>
 bind Entry <Key> {+if {[%W cget -state] == "normal" && [string length %A]} break}
 
 proc is_continuous {} {
-    expr {"[.tabs.manual.jogf.jogspeed get]" == "Continuous"}
+    expr {"[$::_tabs_manual.jogf.jogspeed get]" == "Continuous"}
 }
 
 
@@ -200,28 +201,25 @@ bind . <Configure> { if {"%W" == "."} {
 wm withdraw .about
 wm withdraw .keys
 
-DynamicHelp::add .tabs.manual.spindlef.ccw -text {Turn spindle counterclockwise [F10]}
-DynamicHelp::add .tabs.manual.spindlef.cw -text {Turn spindle clockwise [F9]}
-DynamicHelp::add .tabs.manual.spindlef.stop -text {Stop spindle [F9/F10]}
-DynamicHelp::add .tabs.manual.spindlef.spindleplus -text {Turn spindle Faster [F12]}
-DynamicHelp::add .tabs.manual.spindlef.spindleminus -text {Turn spindle Slower [F11]}
-DynamicHelp::add .tabs.manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
-DynamicHelp::add .tabs.manual.flood -text {Turn flood on or off [F8]}
-DynamicHelp::add .tabs.manual.mist -text {Turn mist on or off [F7]}
-DynamicHelp::add .tabs.manual.jogf.zerohome.home -text {Send active axis home [Home]}
-DynamicHelp::add .tabs.manual.jogf.zerohome.zero -text {Set G54 offset for active axis [Shift-Home]}
-DynamicHelp::add .tabs.manual.axes.axisx -text {Activate axis [X]}
-DynamicHelp::add .tabs.manual.axes.axisy -text {Activate axis [Y]}
-DynamicHelp::add .tabs.manual.axes.axisz -text {Activate axis [Z]}
-DynamicHelp::add .tabs.manual.axes.axisa -text {Activate axis [A]}
-DynamicHelp::add .tabs.manual.axes.axisb -text {Activate axis [4]}
-DynamicHelp::add .tabs.manual.axes.axisc -text {Activate axis [5]}
-DynamicHelp::add .tabs.manual.jogf.jogminus -text {Jog selected axis}
-DynamicHelp::add .tabs.manual.jogf.jogplus -text {Jog selected axis}
-DynamicHelp::add .tabs.manual.jogf.jogspeed -text {Select jog ingrement}
-DynamicHelp::add .tabs.manual.jogf.override -text {Temporarily allow jogging outside machine limits [L]}
+DynamicHelp::add $_tabs_manual.spindlef.ccw -text {Turn spindle counterclockwise [F10]}
+DynamicHelp::add $_tabs_manual.spindlef.cw -text {Turn spindle clockwise [F9]}
+DynamicHelp::add $_tabs_manual.spindlef.stop -text {Stop spindle [F9/F10]}
+DynamicHelp::add $_tabs_manual.spindlef.spindleplus -text {Turn spindle Faster [F12]}
+DynamicHelp::add $_tabs_manual.spindlef.spindleminus -text {Turn spindle Slower [F11]}
+DynamicHelp::add $_tabs_manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
+DynamicHelp::add $_tabs_manual.flood -text {Turn flood on or off [F8]}
+DynamicHelp::add $_tabs_manual.mist -text {Turn mist on or off [F7]}
+DynamicHelp::add $_tabs_manual.jogf.zerohome.home -text {Send active axis home [Home]}
+DynamicHelp::add $_tabs_manual.jogf.zerohome.zero -text {Set G54 offset for active axis [Shift-Home]}
+DynamicHelp::add $_tabs_manual.axes.axisx -text {Activate axis [X]}
+DynamicHelp::add $_tabs_manual.axes.axisy -text {Activate axis [Y]}
+DynamicHelp::add $_tabs_manual.axes.axisz -text {Activate axis [Z]}
+DynamicHelp::add $_tabs_manual.axes.axisa -text {Activate axis [A]}
+DynamicHelp::add $_tabs_manual.axes.axisb -text {Activate axis [4]}
+DynamicHelp::add $_tabs_manual.axes.axisc -text {Activate axis [5]}
+DynamicHelp::add $_tabs_manual.jogf.jogminus -text {Jog selected axis}
+DynamicHelp::add $_tabs_manual.jogf.jogplus -text {Jog selected axis}
+DynamicHelp::add $_tabs_manual.jogf.jogspeed -text {Select jog ingrement}
+DynamicHelp::add $_tabs_manual.jogf.override -text {Temporarily allow jogging outside machine limits [L]}
 
-set family_g0 "In this modal group:\nG0: straight traverse\nG1: straight feed\n..."
-DynamicHelp::add .tabs.mdi.gcodes -tag G1 -text "Motion mode: straight feed\n$family_g0"
-DynamicHelp::add .tabs.mdi.gcodes -tag G0 -text "Motion mode: straight traverse\n$family_g0"
 # vim:ts=8:sts=4:et:
