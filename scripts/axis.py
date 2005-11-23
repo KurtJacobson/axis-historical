@@ -68,6 +68,7 @@ except TclError:
 program_start_line = 0
 program_start_line_last = -1
 
+feedrate_blackout = 0
 from math import hypot, atan2, sin, cos, pi, sqrt
 from rs274 import ArcsToSegmentsMixin
 import _tkinter
@@ -647,7 +648,8 @@ class LivePlotter:
         vupdate(vars.flood, self.stat.flood)
         vupdate(vars.brake, self.stat.spindle_brake)
         vupdate(vars.spindledir, self.stat.spindle_direction)
-        vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
+        if time.time() > feedrate_blackout:
+            vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
         vupdate(vars.override_limits, self.stat.axis[0]['override_limits'])
         current_tool = [i for i in self.stat.tool_table 
                             if i[0] == self.stat.tool_in_spindle]
@@ -942,12 +944,13 @@ class TclCommands(nf.TclCommands):
         webbrowser.open("http://axis.unpy.net")
 
     def set_feedrate(newval):
+        global feedrate_blackout
         try:
             value = int(newval)
         except ValueError: return
         value = value / 100.
         c.feedrate(value)
-        c.wait_complete()
+        feedrate_blackout = time.time() + 1
 
     def copy_line(*args):
         line = -1
