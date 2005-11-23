@@ -2,50 +2,61 @@ README file for AXIS, a front-end for EMC
 Copyright (C) 2004, 2005 Jeff Epler <jepler@unpythonic.net> and
     Chris Radek <chris@timeguy.com>
 
-AXIS's home page is
-    http://axis.unpythonic.net/
-The current CVS tree can be viewed at
-    http://unpy.net/cgi-bin/viewcvs.cgi/axis/
-though it may be integrated into the EMC2 tree at some future time.
 
-AXIS is a front-end for EMC with file preview and live plot.  Use it by
-specifing "DISPLAY = axis" in your inifile.
 
-The AXIS user interface is intended to be mostly self-documented by its
-use of familiar controls and plain English tooltips and menus.  A few less
-evident features are documented with basic built-in help screens.
+ABOUT AXIS
+==========
 
-Python 2.2 or newer with Tkinter, BLT, and PyOpenGL are required.  Hardware
+AXIS is a front-end for EMC with file preview and live plot.
+
+The AXIS user interface is intended to be self-documenting by use of
+familiar controls and plain English tooltips and menus.  A few less
+evident features are documented by Help > Quick Reference.
+
+Python 2.2 or newer with Tkinter and BLT are required.  Hardware
 accelerated OpenGL is nice, but not required.
 
+AXIS is believed to be compatible with the "cradek_stable" branch of
+EMC1, the version of EMC1 on BDI-Live and BDI-4.xx, and EMC2.  AXIS is
+not currently compatible with the CVS HEAD of EMC1.
 
-For installation on an RPM-based system such as Red Hat or Fedora, cd to
-the axis source directory and run something like:
-    $ env EMCROOT=xxx python setup.py bdist_rpm
-    $ sudo rpm -ivh dist/axis*.i386.rpm
+AXIS's home page is http://axis.unpythonic.net/
 
-For installation without using RPM or on non-RPM systems, cd to the axis
-source directory and run:
-    $ env EMCROOT=xxx python setup.py install
 
-In the above commands, EMCROOT is absolute path to the directory where the
-"emc" and "rcslib" directories reside.  If you are building for EMC1, you
-may also be required to give the value for PLAT, the non-realtime platform
-that EMC is configured to use.  In this case, the commandline would look like
-    $ env EMCROOT=xxx PLAT=yyy python setup.py install
+INSTALLATION
+============
 
-In some cases (Paul C.'s BDI 4.xx, for instance) there is already an
-installed version of axis, but the necessary environment to rebuild
-the extension modules (emcmodule and gcodemodule in particular) is not
-present or is difficult to set up.  In this case, use the environment
-variable SIMPLEINSTALL to (re)install everything but the extension modules:
-    $ env EMCROOT=xxx PLAT=yyy SIMPLEINSTALL=yes python setup.py install
+In the AXIS source directory, run the installer as root:
+    $ env EMCROOT=/xxx python setup.py install
+
+For EMC1, EMCROOT is the absolute path to the directory where the "emc" and
+"rcslib" directories reside.  For EMC1, you may also be required to give
+the value for PLAT, the non-realtime platform that EMC is configured to
+use.  In this case, the commandline would look like
+    $ env EMCROOT=/xxx PLAT=yyy python setup.py install
+
+For BDI4 and EMC2, EMCROOT is the absolute path to the "emc" directory.
+It should not be necessary to specify PLAT for BDI4 and EMC2.
+
+In some cases there is already an installed version of AXIS, but the
+necessary environment to rebuild the extension modules is not present or
+is difficult to set up.  In this case, use the environment variable
+SIMPLEINSTALL to (re)install everything but the extension modules:
+    $ env EMCROOT=/xxx PLAT=yyy SIMPLEINSTALL=yes python setup.py install
 This doesn't always work, and even if it does you will be deprived
 of any bugfixes or improvements to the extension modules.
 
 For BDI 4.30, the install command is (all on one line)
-    $ sudo env EMCROOT=/usr/local/emc PLAT=nonrealtime SIMPLEINSTALL=yes
-           python setup.py install
+    $ sudo env EMCROOT=/usr/local/emc SIMPLEINSTALL=yes python setup.py install
+However, two serious memory leaks in the extension modules have been
+fixed since the last version of AXIS packaged for BDI 4.xx.
+
+To make EMC actually use AXIS as the front-end, find the "DISPLAY" line
+in your ini file.  Change it to read "DISPLAY = axis".
+
+
+LICENSE
+=======
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
