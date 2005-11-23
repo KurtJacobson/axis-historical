@@ -1383,7 +1383,7 @@ grid .info \
 	-column 0 \
 	-row 4 \
 	-columnspan 2 \
-	-sticky w
+	-sticky ew
 
 # Grid widget .preview
 grid .preview \

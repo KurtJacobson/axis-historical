@@ -705,6 +705,17 @@ def ensure_mode(m):
     return True
 
 class AxisCanon(GLCanon):
+    def __init__(self, text, linecount):
+        GLCanon.__init__(self, text)
+        self.linecount = linecount
+    def next_line(self, st):
+        lineno = st.sequence_number + 1
+        if lineno % 100 == 0:
+            width = int(t.tk.call("winfo", "width", ".info.progress"))
+            height = int(t.tk.call("winfo", "height", ".info.progress"))
+            t.tk.call(".info.progress", "coords", "1", (0, 0, lineno * width / self.linecount, height))
+            t.tk.call("update", "idletasks")
+        GLCanon.next_line(self, st)
     def get_tool(self, tool):
         for t in s.tool_table:
             if t[0] == tool:
@@ -729,18 +740,15 @@ def open_file_guts(f, filtered = False):
 
     set_first_line(0)
     old_focus = root_window.tk.call("focus", "-lastfor", ".")
-    root_window.tk.call("blt::busy", "hold", ".")
-    # blt::busy adds a fake window that keeps mouse events from reaching
-    # widgets.  It does nothing about keys.  To hide key events, I must
-    # first provide a widget that will be given keyboard focus.  It must
-    # break on <Key> events, because most keybindings are on . which
-    # means they are automatically applied to all widgets in the
-    # top-level window.  In order to focus the window, it must be
-    # visible.  I place it in a location that should be offscreen.
-    root_window.tk.call("label", "._busy")
-    root_window.tk.call("bind", "._busy", "<Key>", "break")
-    root_window.tk.call("place", "._busy", "-x", "9999", "-y", "9999")
-    root_window.tk.call("focus", "-force", "._busy")
+    root_window.tk.call("canvas", ".info.progress",
+                "-width", 1, "-height", 1,
+                "-highlightthickness", 0,
+                "-borderwidth", 2, "-relief", "sunken")
+    root_window.tk.call("bind", ".info.progress", "<Key>", "break")
+    root_window.tk.call("pack", ".info.progress", "-side", "left", "-fill", "both", "-expand", "1")
+    root_window.tk.call(".info.progress", "create", "rectangle", (-10, -10, -10, -10), "-fill", "blue", "-outline", "blue")
+    root_window.tk.call("focus", "-force", ".info.progress")
+    root_window.tk.call("grab", ".info.progress")
     root_window.update()
     t0 = time.time()
 
@@ -756,7 +764,7 @@ def open_file_guts(f, filtered = False):
             t.insert("end", "%6d: " % (i+1), "lineno", l)
 
         f = os.path.abspath(f)
-        o.g = canon = AxisCanon(widgets.text)
+        o.g = canon = AxisCanon(widgets.text, i)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         result, seq = gcode.parse(f, canon)
         print "parse result", result
@@ -771,6 +779,19 @@ def open_file_guts(f, filtered = False):
 
         make_main_list(canon)
         make_selection_list(canon)
+
+        if str(widgets.view_x['relief']) == "sunken":
+            commands.set_view_x()
+        elif str(widgets.view_y['relief']) == "sunken":
+            commands.set_view_y()
+        elif str(widgets.view_z['relief']) == "sunken":
+            commands.set_view_z()
+        elif  str(widgets.view_z2['relief']) == "sunken":
+            commands.set_view_z2()
+        else:
+            commands.set_view_p()
+
+
     finally:
         # Before unbusying, I update again, so that any keystroke events
         # that reached the program while it was busy are sent to the
@@ -781,8 +802,8 @@ def open_file_guts(f, filtered = False):
         # R-while-loading bug.
         print "load_time", time.time() - t0
         root_window.update()
-        root_window.tk.call("blt::busy", "release", ".")
-        root_window.tk.call("destroy", "._busy")
+        root_window.tk.call("destroy", ".info.progress")
+        root_window.tk.call("grab", "release", ".info.progress")
         root_window.tk.call("focus", old_focus)
         o.tkRedraw()
 
