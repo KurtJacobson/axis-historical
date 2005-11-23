@@ -74,13 +74,13 @@ class Hershey:
             for stroke in digit:
                 glBegin(GL_LINE_STRIP)
                 for point in stroke:
-                    glVertex3f(point[0], 500-point[1], 0)
+                    glVertex3f(point[0], 440-point[1], 0)
                 glEnd()
             glEndList()
 
     def plot_digit(self, n):
         glPushMatrix()
-        glScalef(1/500.0, 1/500.0, 1/500.0)
+        glScalef(1/440.0, 1/440.0, 1/440.0)
         glCallList(self.lists + n)
         glPopMatrix()
 
@@ -101,7 +101,16 @@ class Hershey:
         if frac:
             len = self.string_len(s)
             glTranslatef(-len*frac, 0, 0)
-        glScalef(1/500.0, 1/500.0, 1/500.0)
+        glScalef(1/440.0, 1/440.0, 1/440.0)
+        bbox = 0
+        if bbox:
+            glBegin(GL_LINE_STRIP)
+            glVertex3f(0, 0, 0)
+            glVertex3f(self.string_len(s)*440.0, 0, 0)
+            glVertex3f(self.string_len(s)*440.0, 440.0, 0)
+            glVertex3f(0, 440.0, 0)
+            glVertex3f(0, 0, 0)
+            glEnd()
         for c in s:
             glCallList(self.lists + translate[c])
             if c == '1':
@@ -122,7 +131,7 @@ class Hershey:
             else:
                 l += 400.0
 
-        return l/500.0
+        return l/440.0
 
     def center_string(self, s):
         len = self.string_len(s)
