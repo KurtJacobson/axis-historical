@@ -764,14 +764,19 @@ def open_file_guts(f, filtered = False):
         c.program_open(f)
             
         t.configure(state="normal")
-        t.delete("0.0", "end")
-        print "delete time", time.time() - t0
+        t.tk.call("delete_all", t)
         code = []
         for i, l in enumerate(open(f)):
             l = l.expandtabs().replace("\r", "")
             #t.insert("end", "%6d: " % (i+1), "lineno", l)
-            code.append("%6d: " % (i+1) + l)
-        t.insert("end", "".join(code))
+            code.extend(["%6d: " % (i+1), "lineno", l, ""])
+            if i % 1000 == 0:
+                width = int(t.tk.call("winfo", "width", ".info.progress"))
+                height = int(t.tk.call("winfo", "height", ".info.progress"))
+                p = i/1000 % (width - 25)
+                t.tk.call(".info.progress", "coords", "1", (p, 0, p+25, height))
+                t.tk.call("update", "idletasks")
+        t.insert("end", *code)
         f = os.path.abspath(f)
         o.g = canon = AxisCanon(widgets.text, i)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
