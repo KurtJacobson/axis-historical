@@ -130,8 +130,8 @@ static PyObject *pyglBitmap(PyObject *s, PyObject *o) {
     int width, height, nbitmap;
     double xorg, yorg, xmove, ymove;
     char *bitmap;
-    if(!PyArg_ParseTuple(o, "iiffffffs#", &width, &height,
-                &xorg, &yorg, &xmove, &ymove, &nbitmap, &bitmap)) {
+    if(!PyArg_ParseTuple(o, "iiffffs#", &width, &height,
+                &xorg, &yorg, &xmove, &ymove, &bitmap, &nbitmap)) {
         return NULL;
     }
     glBitmap(width, height, xorg, yorg, xmove, ymove, bitmap);
@@ -516,6 +516,7 @@ METH(gluNewQuadric, ""),
 METH(gluPickMatrix, ""),
 METH(gluProject, ""),
 METH(gluUnProject, ""),
+METH(glBitmap, ""),
 #undef METH
 {NULL, NULL, 0, 0},
 };

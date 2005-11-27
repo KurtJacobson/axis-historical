@@ -1759,7 +1759,7 @@ def redraw(self):
     for string in positions:
         maxlen = max(maxlen, len(string))
         if s.homed[i]:
-            glRasterPos(6, ypos)
+            glRasterPos2i(6, ypos)
             glBitmap(13, 16, 0, 3, 17, 0, homeicon)
         glRasterPos2i(23, ypos)
         for char in string:
