@@ -107,7 +107,8 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
 
     def highlight(self, lineno):
         glLineWidth(3)
-        glColor3f(0, 255, 255)
+        c = (0, 255, 255)
+        glColor3f(*c)
         glBegin(GL_LINES)
         for line in self.traverse:
             if line[0] != lineno: continue
