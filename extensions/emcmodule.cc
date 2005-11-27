@@ -392,6 +392,7 @@ static PyMemberDef Stat_members[] = {
     {"lube", T_INT, O(io.lube.on), READONLY},
     {"lube_level", T_INT, O(io.lube.level), READONLY},
 
+#ifndef AXIS_USE_EMC2
     {"log_file", T_STRING_INPLACE, O(logFile), READONLY},
     {"log_type", T_INT, O(logType), READONLY},
     {"log_size", T_INT, O(logSize), READONLY},
@@ -399,6 +400,7 @@ static PyMemberDef Stat_members[] = {
     {"log_open", T_INT, O(logOpen), READONLY},
     {"log_started", T_INT, O(logStarted), READONLY},
     {"log_points", T_INT, O(logPoints), READONLY},
+#endif
 
     {"debug", T_INT, O(debug), READONLY},
     {NULL}
