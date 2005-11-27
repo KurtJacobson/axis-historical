@@ -775,8 +775,11 @@ def open_file_guts(f, filtered = False):
                 height = int(t.tk.call("winfo", "height", ".info.progress"))
                 p = i/1000 % (width - 25)
                 t.tk.call(".info.progress", "coords", "1", (p, 0, p+25, height))
+                t.insert("end", *code)
+                code = []
                 t.tk.call("update", "idletasks")
-        t.insert("end", *code)
+        if code:
+            t.insert("end", *code)
         f = os.path.abspath(f)
         o.g = canon = AxisCanon(widgets.text, i)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
