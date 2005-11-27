@@ -128,7 +128,7 @@ GLCALL2V(glPixelStorei, "ii", int, int)
 
 static PyObject *pyglBitmap(PyObject *s, PyObject *o) {
     int width, height, nbitmap;
-    double xorg, yorg, xmove, ymove;
+    float xorg, yorg, xmove, ymove;
     char *bitmap;
     if(!PyArg_ParseTuple(o, "iiffffs#", &width, &height,
                 &xorg, &yorg, &xmove, &ymove, &bitmap, &nbitmap)) {
