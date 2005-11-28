@@ -16,7 +16,7 @@ import math
 import os,sys
 import _togl
 
-def glTranslateScene(s, x, y, mousex, mousey):
+def glTranslateScene(w, s, x, y, mousex, mousey):
     glMatrixMode(GL_MODELVIEW)
     mat = glGetDoublev(GL_MODELVIEW_MATRIX)
     glLoadIdentity()
@@ -24,16 +24,23 @@ def glTranslateScene(s, x, y, mousex, mousey):
     glMultMatrixd(mat)
 
 
-def glRotateScene(s, xcenter, ycenter, zcenter, x, y, mousex, mousey):
-    glMatrixMode(GL_MODELVIEW)
-    mat = glGetDoublev(GL_MODELVIEW_MATRIX)
-    glLoadIdentity()
-    glTranslatef(xcenter, ycenter, zcenter)
-    glRotatef(s * (y - mousey), 1., 0., 0.)
-    glRotatef(s * (x - mousex), 0., 1., 0.)
-    glTranslatef(-xcenter, -ycenter, -zcenter)
-    glMultMatrixd(mat)
+def glRotateScene(w, s, xcenter, ycenter, zcenter, x, y, mousex, mousey):
+    lat = min(0, max(-90, w.lat + (y - mousey) * .25))
+    lon = (w.lon + (x - mousex) * .25) % 360
 
+    glMatrixMode(GL_MODELVIEW)
+
+    glTranslatef(xcenter, ycenter, zcenter)
+    mat = glGetDoublev(GL_MODELVIEW_MATRIX)
+
+    glLoadIdentity()
+    tx, ty, tz = mat[12:15]
+    glTranslatef(tx, ty, tz)
+    glRotatef(lat, 1., 0., 0.)
+    glRotatef(lon, 0., 0., 1.)
+    glTranslatef(-xcenter, -ycenter, -zcenter)
+    w.lat = lat
+    w.lon = lon
 
 def sub(x, y):
     return map(lambda a, b: a-b, x, y)
@@ -246,6 +253,8 @@ http://www.yorvic.york.ac.uk/~mjh/
         self.bind('<Button-3>', self.tkRecordMouse)
         self.bind('<B3-Motion>', self.tkScale)
 
+        self.lat = 0
+        self.lon = 0
 
     def help(self):
         """Help for the widget."""
@@ -392,7 +401,7 @@ http://www.yorvic.york.ac.uk/~mjh/
         s = 0.5
         self.activate()
 
-        glRotateScene(0.5, self.xcenter, self.ycenter, self.zcenter, self.yspin, self.xspin, 0, 0)
+        glRotateScene(self, 0.5, self.xcenter, self.ycenter, self.zcenter, self.yspin, self.xspin, 0, 0)
         self.tkRedraw()
 
         if self.autospin:
@@ -426,7 +435,7 @@ http://www.yorvic.york.ac.uk/~mjh/
         """Perform rotation of scene."""
 
         self.activate()
-        glRotateScene(0.5, self.xcenter, self.ycenter, self.zcenter, event.x, event.y, self.xmouse, self.ymouse)
+        glRotateScene(self, 0.5, self.xcenter, self.ycenter, self.zcenter, event.x, event.y, self.xmouse, self.ymouse)
         self.tkRedraw()
         self.tkRecordMouse(event)
 
@@ -444,7 +453,7 @@ http://www.yorvic.york.ac.uk/~mjh/
         dist       = math.sqrt( v3distsq( obj, obj_c ) )
         scale     = abs( dist / ( 0.5 * win_height ) )
 
-        glTranslateScene(scale, event.x, event.y, self.xmouse, self.ymouse)
+        glTranslateScene(self, scale, event.x, event.y, self.xmouse, self.ymouse)
         self.tkRedraw()
         self.tkRecordMouse(event)
 

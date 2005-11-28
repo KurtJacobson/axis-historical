@@ -309,8 +309,8 @@ class MyOpengl(Opengl):
         glLoadIdentity()
         gluPerspective(self.fovy, float(w)/float(h), self.near, self.far)
 
-        gluLookAt(self.xcenter, self.ycenter, self.zcenter + self.distance,
-            self.xcenter, self.ycenter, self.zcenter,
+        gluLookAt(0, 0, self.distance,
+            0, 0, 0,
             0., 1., 0.)
         glMatrixMode(GL_MODELVIEW)
 
@@ -345,8 +345,8 @@ class MyOpengl(Opengl):
         l = k * h / w
         glOrtho(-k, k, -l, l, -1000, 1000.)
 
-        gluLookAt(self.xcenter, self.ycenter, self.zcenter + self.distance,
-            self.xcenter, self.ycenter, self.zcenter,
+        gluLookAt(0, 0, self.distance,
+            0, 0, 0,
             0., 1., 0.)
         glMatrixMode(GL_MODELVIEW)
 
@@ -376,7 +376,8 @@ class MyOpengl(Opengl):
         w = self.winfo_width()
         h = self.winfo_height()
 
-        ztran = max(e1, e2 * w/h) ** 2
+        print e1, e2 * w/h
+        ztran = max(2.0, e1, e2 * w/h) ** 2
         self.set_eyepoint(ztran - self.zcenter)
 
 
@@ -986,6 +987,8 @@ class TclCommands(nf.TclCommands):
         else:
             o.set_eyepoint(5.)
         o.perspective = False
+        o.lat = -90
+        o.lon = 270
         o.tkRedraw()
 
     def set_view_y(event=None):
@@ -1004,6 +1007,8 @@ class TclCommands(nf.TclCommands):
         else:
             o.set_eyepoint(5.)
         o.perspective = False
+        o.lat = -90
+        o.lon = 180
         o.tkRedraw()
         
     def set_view_z(event=None):
@@ -1021,6 +1026,7 @@ class TclCommands(nf.TclCommands):
         else:
             o.set_eyepoint(5.)
         o.perspective = False
+        o.lat = o.lon = 0
         o.tkRedraw()
 
     def set_view_z2(event=None):
@@ -1039,6 +1045,8 @@ class TclCommands(nf.TclCommands):
         else:
             o.set_eyepoint(5.)
         o.perspective = False
+        o.lat = 0
+        o.lon = 270
         o.tkRedraw()
 
 
@@ -1049,11 +1057,6 @@ class TclCommands(nf.TclCommands):
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="sunken")
         o.reset()
-        glRotatef(35, 1., 0., 0.)
-        glRotatef(105, 0., 1., 0.)
-
-        glRotatef(-90, 0, 1, 0)
-        glRotatef(-90, 1, 0, 0)
         o.perspective = True
         if o.g:
             mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
@@ -1068,6 +1071,9 @@ class TclCommands(nf.TclCommands):
             o.set_eyepoint(size * 1.1 / 2 / sin ( fov * pi / 180 / 2))
         else:
             o.set_eyepoint(5.)
+        o.lat = -60
+        o.lon = 335
+        glRotateScene(o, 1.0, o.xcenter, o.ycenter, o.zcenter, 0, 0, 0, 0)
         o.tkRedraw()
         
     def estop_clicked(event=None):
@@ -1106,7 +1112,10 @@ class TclCommands(nf.TclCommands):
             commands.set_view_z2()
         else:
             commands.set_view_p()
-
+        x = (o.g.min_extents[0] + o.g.max_extents[0])/2
+        y = (o.g.min_extents[1] + o.g.max_extents[1])/2
+        z = (o.g.min_extents[2] + o.g.max_extents[2])/2
+        o.set_centerpoint(x, y, z)
 
 
     def reload_file(*event):
@@ -1806,6 +1815,11 @@ if args:
 elif os.environ.has_key("AXIS_OPEN_FILE"):
     open_file_guts(os.environ["AXIS_OPEN_FILE"])
 commands.set_view_x()
+if o.g:
+    x = (o.g.min_extents[0] + o.g.max_extents[0])/2
+    y = (o.g.min_extents[1] + o.g.max_extents[1])/2
+    z = (o.g.min_extents[2] + o.g.max_extents[2])/2
+    o.set_centerpoint(x, y, z)
 o.mainloop()
 
 # vim:sw=4:sts=4:et:
