@@ -797,18 +797,6 @@ def open_file_guts(f, filtered = False):
         make_main_list(canon)
         make_selection_list(canon)
 
-        if str(widgets.view_x['relief']) == "sunken":
-            commands.set_view_x()
-        elif str(widgets.view_y['relief']) == "sunken":
-            commands.set_view_y()
-        elif str(widgets.view_z['relief']) == "sunken":
-            commands.set_view_z()
-        elif  str(widgets.view_z2['relief']) == "sunken":
-            commands.set_view_z2()
-        else:
-            commands.set_view_p()
-
-
     finally:
         # Before unbusying, I update again, so that any keystroke events
         # that reached the program while it was busy are sent to the
@@ -1108,6 +1096,18 @@ class TclCommands(nf.TclCommands):
         open_directory = os.path.dirname(f)
         print "new open_directory", open_directory
         open_file_guts(f)
+        if str(widgets.view_x['relief']) == "sunken":
+            commands.set_view_x()
+        elif str(widgets.view_y['relief']) == "sunken":
+            commands.set_view_y()
+        elif str(widgets.view_z['relief']) == "sunken":
+            commands.set_view_z()
+        elif  str(widgets.view_z2['relief']) == "sunken":
+            commands.set_view_z2()
+        else:
+            commands.set_view_p()
+
+
 
     def reload_file(*event):
         if running(): return
@@ -1805,7 +1805,7 @@ if args:
     open_file_guts(args[0])
 elif os.environ.has_key("AXIS_OPEN_FILE"):
     open_file_guts(os.environ["AXIS_OPEN_FILE"])
-
+commands.set_view_x()
 o.mainloop()
 
 # vim:sw=4:sts=4:et:
