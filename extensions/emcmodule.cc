@@ -23,8 +23,10 @@
 #ifdef AXIS_USE_EMC2
 #include "config.h"
 #include "inifile.hh"
+#define INIFILE_CHECK_FAILURE(x) (!(x))
 #else
 #include "inifile.h"
+#define INIFILE_CHECK_FAILURE(x) ((x) == -1)
 #endif
 #include <cmath>
 
@@ -125,11 +127,7 @@ static int Ini_init(pyIniFile *self, PyObject *a, PyObject *k) {
     char *inifile;
     if(!PyArg_ParseTuple(a, "s", &inifile)) return -1;
 
-#ifdef AXIS_USE_EMC2
-    if (self->i.open(inifile) == false) {
-#else
-    if (self->i.open(inifile) == -1) {
-#endif
+    if (INIFILE_CHECK_FAILURE(self->i.open(inifile))) {
         PyErr_Format( error, "inifile.open() failed");
         return -1;
     }
