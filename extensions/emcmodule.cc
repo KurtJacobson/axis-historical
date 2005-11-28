@@ -125,7 +125,7 @@ static int Ini_init(pyIniFile *self, PyObject *a, PyObject *k) {
     char *inifile;
     if(!PyArg_ParseTuple(a, "s", &inifile)) return -1;
 
-    if (self->i.open(inifile) == -1) {
+    if (self->i.open(inifile) == false) {
         PyErr_Format( error, "inifile.open() failed");
         return -1;
     }
