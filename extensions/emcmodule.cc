@@ -125,7 +125,11 @@ static int Ini_init(pyIniFile *self, PyObject *a, PyObject *k) {
     char *inifile;
     if(!PyArg_ParseTuple(a, "s", &inifile)) return -1;
 
+#ifdef AXIS_USE_EMC2
     if (self->i.open(inifile) == false) {
+#else
+    if (self->i.open(inifile) == -1) {
+#endif
         PyErr_Format( error, "inifile.open() failed");
         return -1;
     }
