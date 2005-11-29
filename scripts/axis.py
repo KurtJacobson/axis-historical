@@ -376,7 +376,6 @@ class MyOpengl(Opengl):
         w = self.winfo_width()
         h = self.winfo_height()
 
-        print e1, e2 * w/h
         ztran = max(2.0, e1, e2 * w/h) ** 2
         self.set_eyepoint(ztran - self.zcenter)
 
@@ -1814,7 +1813,7 @@ if args:
     open_file_guts(args[0])
 elif os.environ.has_key("AXIS_OPEN_FILE"):
     open_file_guts(os.environ["AXIS_OPEN_FILE"])
-commands.set_view_x()
+commands.set_view_z()
 if o.g:
     x = (o.g.min_extents[0] + o.g.max_extents[0])/2
     y = (o.g.min_extents[1] + o.g.max_extents[1])/2

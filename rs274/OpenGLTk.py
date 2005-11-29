@@ -25,8 +25,17 @@ def glTranslateScene(w, s, x, y, mousex, mousey):
 
 
 def glRotateScene(w, s, xcenter, ycenter, zcenter, x, y, mousex, mousey):
-    lat = min(0, max(-90, w.lat + (y - mousey) * .25))
-    lon = (w.lon + (x - mousex) * .25) % 360
+    def snap(a):
+        m = a%90
+        if m < 3:
+            return a-m
+        elif m > 87:
+            return a-m+90
+        else:
+            return a
+
+    lat = min(0, max(-90, w.lat + (y - mousey) * .5))
+    lon = (w.lon + (x - mousex) * .5) % 360
 
     glMatrixMode(GL_MODELVIEW)
 
@@ -36,8 +45,8 @@ def glRotateScene(w, s, xcenter, ycenter, zcenter, x, y, mousex, mousey):
     glLoadIdentity()
     tx, ty, tz = mat[12:15]
     glTranslatef(tx, ty, tz)
-    glRotatef(lat, 1., 0., 0.)
-    glRotatef(lon, 0., 0., 1.)
+    glRotatef(snap(lat), 1., 0., 0.)
+    glRotatef(snap(lon), 0., 0., 1.)
     glTranslatef(-xcenter, -ycenter, -zcenter)
     w.lat = lat
     w.lon = lon
