@@ -998,6 +998,7 @@ class TclCommands(nf.TclCommands):
         widgets.view_p.configure(relief="link")
         o.reset()
         glRotatef(-90, 1, 0, 0)
+        glRotatef(180, 0, 0, 1)
         if o.g:
             mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
             glTranslatef(-mid[0], -mid[1], -mid[2])
