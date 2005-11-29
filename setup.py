@@ -33,7 +33,7 @@ version="1.1rc2"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
-emcroot = os.getenv("EMCROOT", find_emc_root())
+emcroot = os.path.abspath(os.getenv("EMCROOT", None) or find_emc_root())
 if emcroot is None:
     print """\
 setup.py failed to locate the root directory of your emc installation.
