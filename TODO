@@ -6,7 +6,6 @@ Wishlist items
 * messages when paused (or about to pause) should offer the opportunity to
   unpause in the dialog
 * make step button work from program beginning (if possible?)
-* improve opengl navigation
 * Way to show diameter of drills, width of cuts (poor-man's CSG preview)
 * Way to turn off lines already plotted in live preview
 * context menu on code area, options "copy", "start at this line"
