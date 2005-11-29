@@ -15,4 +15,3 @@ Bugs in segmentqueue that affect AXIS
 * Pressing "s" key (resume) while running leaves interpreter in the wrong state
 
 Feature requests
-* Progress display while loading large files
