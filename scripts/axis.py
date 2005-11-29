@@ -158,10 +158,10 @@ class MyOpengl(Opengl):
         self.motion_after = None
         self.perspective = False
         Opengl.__init__(self, *args, **kw)
-        self.bind('<Button-4>', self.zoomout)
+        self.bind('<Button-4>', self.zoomin)
         root_window.bind('<Key-minus>', self.zoomout)
         root_window.bind('<Key-minus>', "+puts <Key>-")
-        self.bind('<Button-5>', self.zoomin)
+        self.bind('<Button-5>', self.zoomout)
         root_window.bind('<Key-plus>', self.zoomin)
         root_window.bind('<Key-equal>', self.zoomin)
         self.bind('<MouseWheel>', self.zoomwheel)
@@ -275,7 +275,7 @@ class MyOpengl(Opengl):
         self.tkRedraw()
 
     def zoomwheel(self, event):
-        if event.delta < 0: self.zoomin(event)
+        if event.delta > 0: self.zoomin(event)
         else: self.zoomout(event)
 
     def tkRedraw(self, *dummy):
