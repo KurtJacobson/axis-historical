@@ -559,4 +559,6 @@ void initminigl(void) {
     CONST(GL_VIEWPORT);
     CONST(GL_LIGHT0);
     CONST(GL_POSITION);
+    CONST(GL_AMBIENT);
+    CONST(GL_DIFFUSE);
 }

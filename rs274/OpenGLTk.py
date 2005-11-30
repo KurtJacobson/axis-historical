@@ -294,8 +294,9 @@ http://www.yorvic.york.ac.uk/~mjh/
         Also switch on the depth buffer."""
    
         self.activate()
-        light_position = (1, 1, 1, 0)
-        glLightfv(GL_LIGHT0, GL_POSITION, light_position)
+        glLightfv(GL_LIGHT0, GL_POSITION, (1, -1, 1, 0))
+        glLightfv(GL_LIGHT0, GL_AMBIENT, (.1, .1, .1, 1))
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, (.9, .9, .9, 1))
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
         glDepthFunc(GL_LESS)
