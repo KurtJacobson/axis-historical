@@ -130,9 +130,9 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         glEnd()
         glLineWidth(1)
         if coords:
-            x = sum([c[0] for c in coords]) / len(coords)
-            y = sum([c[1] for c in coords]) / len(coords)
-            z = sum([c[2] for c in coords]) / len(coords)
+            x = reduce(lambda x,y:x+y, [c[0] for c in coords]) / len(coords)
+            y = reduce(lambda x,y:x+y, [c[1] for c in coords]) / len(coords)
+            z = reduce(lambda x,y:x+y, [c[2] for c in coords]) / len(coords)
         else:
             x = (self.min_extents[0] + self.max_extents[0])/2
             y = (self.min_extents[1] + self.max_extents[1])/2
