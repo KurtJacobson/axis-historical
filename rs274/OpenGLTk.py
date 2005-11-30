@@ -295,8 +295,8 @@ http://www.yorvic.york.ac.uk/~mjh/
    
         self.activate()
         glLightfv(GL_LIGHT0, GL_POSITION, (1, -1, 1, 0))
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (.1, .1, .1, 1))
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, (.9, .9, .9, 1))
+        glLightfv(GL_LIGHT0, GL_AMBIENT, (.4, .4, .4, 1))
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, (.6, .6, .6, 1))
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
         glDepthFunc(GL_LESS)

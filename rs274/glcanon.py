@@ -110,19 +110,34 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         c = (0, 255, 255)
         glColor3f(*c)
         glBegin(GL_LINES)
+        coords = []
         for line in self.traverse:
             if line[0] != lineno: continue
             glVertex3fv(line[1])
             glVertex3fv(line[2])
+            coords.append(line[1])
+            coords.append(line[2])
         for line in self.feed:
             if line[0] != lineno: continue
             glVertex3fv(line[1])
             glVertex3fv(line[2])
+            coords.append(line[1])
+            coords.append(line[2])
         for line in self.dwells:
             if line[0] != lineno: continue
             self.draw_dwells([(line[0], c) + line[2:]], 2)
+            coords.append(dwells[2:5])
         glEnd()
         glLineWidth(1)
+        if coords:
+            x = sum([c[0] for c in coords]) / len(coords)
+            y = sum([c[1] for c in coords]) / len(coords)
+            z = sum([c[2] for c in coords]) / len(coords)
+        else:
+            x = (self.min_extents[0] + self.max_extents[0])/2
+            y = (self.min_extents[1] + self.max_extents[1])/2
+            z = (self.min_extents[2] + self.max_extents[2])/2
+        return x, y, z
 
     def draw(self, for_selection=0):
         glEnable(GL_LINE_STIPPLE)

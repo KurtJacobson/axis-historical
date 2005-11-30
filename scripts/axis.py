@@ -263,7 +263,13 @@ class MyOpengl(Opengl):
         highlight = glGenLists(1)
         glNewList(highlight, GL_COMPILE)
         if line is not None and self.g is not None:
-            self.g.highlight(line)
+            x, y, z = self.g.highlight(line)
+            self.set_centerpoint(x, y, z)
+        elif self.g is not None:
+            x = (self.g.min_extents[0] + self.g.max_extents[0])/2
+            y = (self.g.min_extents[1] + self.g.max_extents[1])/2
+            z = (self.g.min_extents[2] + self.g.max_extents[2])/2
+            self.set_centerpoint(x, y, z)
         glEndList()
  
     def zoomin(self, event):
