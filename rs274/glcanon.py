@@ -73,6 +73,10 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.lo = l
         self.calc_extents(l)
 
+    def user_defined_function(self, i, p, q):
+        color = (.5, .5, 1)
+        self.dwells_append((self.lineno, color, self.lo[0], self.lo[1], self.lo[2], self.state.plane/10-17))
+        
     def dwell(self, arg):
         if self.state.feed_mode <= 30:
             color = (1,1,1)
@@ -126,7 +130,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         for line in self.dwells:
             if line[0] != lineno: continue
             self.draw_dwells([(line[0], c) + line[2:]], 2)
-            coords.append(dwells[2:5])
+            coords.append(line[2:5])
         glEnd()
         glLineWidth(1)
         if coords:

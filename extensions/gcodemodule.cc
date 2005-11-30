@@ -392,6 +392,16 @@ CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int tool) {
     Py_XDECREF(result);
     return t;
 }
+void user_defined_function(int num, double arg1, double arg2) {
+    if(interp_error) return;
+    maybe_new_line();
+    PyObject *result =
+        PyObject_CallMethod(callback, "user_defined_function",
+                            "idd", num, arg1, arg2);
+    if(result == NULL) interp_error++;
+    Py_XDECREF(result);
+}
+
 void SET_FEED_REFERENCE(int ref) {}
 int GET_EXTERNAL_QUEUE_EMPTY() { return true; }
 CANON_DIRECTION GET_EXTERNAL_SPINDLE() { return 0; }
@@ -413,6 +423,9 @@ CANON_MOTION_MODE GET_EXTERNAL_MOTION_CONTROL_MODE() { return motion_mode; }
 PyObject *parse_file(PyObject *self, PyObject *args) {
     char *f;
     if(!PyArg_ParseTuple(args, "sO", &f, &callback)) return NULL;
+
+    for(int i=0; i<USER_DEFINED_FUNCTION_NUM; i++) 
+        USER_DEFINED_FUNCTION[i] = user_defined_function;
 
     metric=false;
     interp_error = 0;
