@@ -484,12 +484,11 @@ def draw_axes():
 
     if view != z:
         glPushMatrix()
-        glTranslatef(0, -0.1, 1.2)
+        glTranslatef(0, 0, 1.2)
         if view == x:
-            glTranslatef(0, 0.1, 0)
             glRotatef(90, 0, 1, 0)
             glRotatef(90, 0, 0, 1)
-        if view == y:
+        elif view == y or view == p:
             glRotatef(90, 1, 0, 0)
         glScalef(0.2, 0.2, 0.2)
         hershey.plot_string("Z", 0.5)
@@ -1033,7 +1032,6 @@ class TclCommands(nf.TclCommands):
         widgets.view_p.configure(relief="link")
         o.reset()
         glRotatef(-90, 1, 0, 0)
-        glRotatef(180, 0, 0, 1)
         if o.g:
             mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
             glTranslatef(-mid[0], -mid[1], -mid[2])
@@ -1043,7 +1041,7 @@ class TclCommands(nf.TclCommands):
             o.set_eyepoint(5.)
         o.perspective = False
         o.lat = -90
-        o.lon = 180
+        o.lon = 0
         o.tkRedraw()
         
     def set_view_z(event=None):
