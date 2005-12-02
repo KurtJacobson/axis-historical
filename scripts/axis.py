@@ -395,7 +395,7 @@ def init():
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 
 def draw_small_origin():
-    r = 2.0;
+    r = 2.0/25.4;
     glColor3f(0.0,1.0,1.0)
 
     glBegin(GL_LINE_STRIP)
@@ -432,40 +432,69 @@ def draw_small_origin():
     glEnd()
 
 def draw_axes():
-    glBegin(GL_LINES);
+    x,y,z,p = 0,1,2,3
+    if str(widgets.view_x['relief']) == "sunken":
+        view = x
+    elif str(widgets.view_y['relief']) == "sunken":
+        view = y
+    elif (str(widgets.view_z['relief']) == "sunken" or
+          str(widgets.view_z2['relief']) == "sunken"):
+        view = z
+    else:
+        view = p
 
     glColor3f(0.2,1.0,0.2)
-    glVertex3f(25.4,0.0,0.0)
+    glBegin(GL_LINES);
+    glVertex3f(1.0,0.0,0.0)
     glVertex3f(0.0,0.0,0.0)
+    glEnd();
 
-    glVertex3f(29.5,-1.5,0)
-    glVertex3f(26.5,1.5,0)
-    glVertex3f(29.5,1.5,0)
-    glVertex3f(26.5,-1.5,0)
+    if view != x:
+        glPushMatrix()
+        glTranslatef(1.2, -0.1, 0)
+        if view == y:
+            glTranslatef(0, 0, -0.1)
+            glRotatef(90, 1, 0, 0)
+        glScalef(0.2, 0.2, 0.2)
+        hershey.plot_string("X", 0.5)
+        glPopMatrix()
 
     glColor3f(1.0,0.2,0.2)
+    glBegin(GL_LINES);
     glVertex3f(0.0,0.0,0.0)
-    glVertex3f(0.0,25.4,0.0)
+    glVertex3f(0.0,1.0,0.0)
+    glEnd();
 
-    glVertex3f(-1.5,29.5,0)
-    glVertex3f(0.0,28,0)
-    glVertex3f(1.5,29.5,0)
-    glVertex3f(0.0,28,0)
-    glVertex3f(0.0,28,0)
-    glVertex3f(0.0,26.5,0)
+    if view != y:
+        glPushMatrix()
+        glTranslatef(0, 1.2, 0)
+        if view == x:
+            glTranslatef(0, 0, -0.1)
+            glRotatef(90, 0, 1, 0)
+            glRotatef(90, 0, 0, 1)
+        glScalef(0.2, 0.2, 0.2)
+        hershey.plot_string("Y", 0.5)
+        glPopMatrix()
 
     glColor3f(0.2,0.2,1.0)
+    glBegin(GL_LINES);
     glVertex3f(0.0,0.0,0.0)
-    glVertex3f(0.0,0.0,25.4)
-
-    glVertex3f(-1.5,0.0,29.5)
-    glVertex3f(1.5,0.0,29.5)
-    glVertex3f(-1.5,0.0,26.5)
-    glVertex3f(1.5,0.0,26.5)
-    glVertex3f(1.5,0.0,29.5)
-    glVertex3f(-1.5,0.0,26.5)
-
+    glVertex3f(0.0,0.0,1.0)
     glEnd();
+
+    if view != z:
+        glPushMatrix()
+        glTranslatef(0, -0.1, 1.2)
+        if view == x:
+            glTranslatef(0, 0.1, 0)
+            glRotatef(90, 0, 1, 0)
+            glRotatef(90, 0, 0, 1)
+        if view == y:
+            glRotatef(90, 1, 0, 0)
+        glScalef(0.2, 0.2, 0.2)
+        hershey.plot_string("Z", 0.5)
+        glPopMatrix()
+
 
 def toggle_perspective(e):
     o.perspective = not o.perspective
@@ -1715,9 +1744,9 @@ def redraw(self):
         s.poll()
         glPushMatrix()
 
-        glScalef(1/25.4, 1/25.4, 1/25.4)
-        lu = s.linear_units or 1
-        if vars.coord_type.get() and (s.origin[0] or s.origin[1] or s.origin[2]):
+        lu = (s.linear_units or 1)*25.4
+        if vars.coord_type.get() and (s.origin[0] or s.origin[1] or 
+                                      s.origin[2]):
             draw_small_origin()
             glTranslatef(s.origin[0]/lu, s.origin[1]/lu, s.origin[2]/lu)
             draw_axes()
