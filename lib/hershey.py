@@ -107,13 +107,13 @@ class Hershey:
     def plot_string(self, s, frac=0):
         glPushMatrix()
         mat = glGetDoublev(GL_MODELVIEW_MATRIX)
-        if mat[10] <= 0:
+        if mat[10] < -.001:
             glTranslatef(0, .5, 0)
             glRotatef(180, 0, 1, 0)
             glTranslatef(0, -.5, 0)
             frac = 1 - frac
             mat = glGetDoublev(GL_MODELVIEW_MATRIX)
-        if mat[5] <= 0:
+        if mat[5] < -.001:
             glTranslatef(0, .5, 0)
             glRotatef(180, 0, 0, 1)
             glTranslatef(0, -.5, 0)
