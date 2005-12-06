@@ -89,15 +89,19 @@ GLCALL1V(glDepthMask, "i", int)
 GLCALL1V(glDisable, "i", int)
 GLCALL1V(glEnable, "i", int)
 GLCALL0V(glEndList)
+GLCALL1V(glFrontFace, "i", int)
 GLCALL0V(glInitNames)
 GLCALL3V(glLightf, "iif", int, int, float)
 GLCALL0V(glLoadIdentity)
 GLCALL1V(glLoadName, "i", int)
 GLCALL2V(glNewList, "ii", int, int)
+GLCALL3V(glNormal3f, "fff", float, float, float)
+GLCALL2V(glPolygonOffset, "ff", float, float)
 GLCALL0V(glPopMatrix)
 GLCALL0V(glPushMatrix)
 GLCALL1V(glPushName, "i", int)
 GLCALL2V(glRasterPos2i, "ii", int, int)
+GLCALL4V(glRectf, "ffff", float, float, float, float)
 GLCALL4V(glRotatef, "ffff", float, float, float, float)
 GLCALL3V(glScalef, "fff", float, float, float)
 GLCALL1V(glDrawBuffer, "i", int)
@@ -171,6 +175,11 @@ static PyObject *pyglGetIntegerv(PyObject *s, PyObject *o) {
     int what;
     if(!PyArg_ParseTuple(o, "i", &what)) return NULL;
     switch(what) {
+        case GL_LIST_INDEX: {
+            int r;
+            glGetIntegerv(what, &r);
+            return PyInt_FromLong(r);
+        }
         case GL_VIEWPORT: {
             int d[4];
             PyObject *r = PyList_New(4);
@@ -213,6 +222,29 @@ static PyObject *pyglInterleavedArrays(PyObject *s, PyObject *o) {
     return Py_None;
 }
 
+static PyObject *pyglLightModeli(PyObject *s, PyObject *o) {
+    int pname, param;
+    if(!PyArg_ParseTuple(o, "ii", &pname, &param))
+        return NULL;
+    glLightModeli(pname, param);
+
+    CHECK_ERROR;
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *pyglLightModelfv(PyObject *s, PyObject *o) {
+    int pname;
+    float param[4];
+    if(!PyArg_ParseTuple(o, "i(ffff)", &pname, param, param+1, param+2, param+3))
+        return NULL;
+    glLightModelfv(pname, param);
+
+    CHECK_ERROR;
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 static PyObject *pyglLightfv(PyObject *s, PyObject *o) {
     int light, pname;
     float param[4];
@@ -240,28 +272,106 @@ static PyObject *pyglMultMatrixd(PyObject *s, PyObject *o) {
     return Py_None;
 }
 
-static PyObject *pygluNewQuadric(PyObject *s, PyObject *o) {
+static PyObject *pyglPolygonStipple(PyObject *s, PyObject *o) {
+    char *buf;
+    int sz;
+    if(!PyArg_ParseTuple(o, "s#", &buf, &sz)) return NULL;
+    if(sz != 128) {
+        PyErr_SetString(PyExc_ValueError, "Buffer must be 128 bytes long");
+        return NULL;
+    }
+    glPolygonStipple(buf);
+    CHECK_ERROR;
     Py_INCREF(Py_None);
     return Py_None;
 }
 
+typedef struct {
+    PyObject_HEAD
+    GLUquadric *q;
+} Quadric;
+static void Quadric_dealloc(Quadric *q);
+// static PyObject *Quadric_repr(Quadric *q);
+
+static PyTypeObject Quadric_Type = {
+    PyObject_HEAD_INIT(NULL)
+    0,                      /* ob_size */
+    "minigl.quadric",       /* ob_name */
+    sizeof(Quadric), /* ob_basicsize */
+    0,                      /* ob_itemsize */
+    /* methods */
+    (destructor)Quadric_dealloc,/*tp_dealloc*/
+    0,                      /*tp_print*/
+    0,                      /*tp_getattr*/
+    0,                      /*tp_setattr*/
+    0,                      /*tp_compare*/
+    0,                      /*tp_repr*/
+    0,                      /*tp_as_number*/
+    0,                      /*tp_as_sequence*/
+    0,                      /*tp_as_mapping*/
+    0,                      /*tp_hash*/
+    0,                      /*tp_call*/
+    0,                      /*tp_str*/
+    0,                      /*tp_getattro*/
+    0,                      /*tp_setattro*/
+    0,                      /*tp_as_buffer*/
+    Py_TPFLAGS_DEFAULT,     /*tp_flags*/
+    0,                      /*tp_doc*/
+    0,                      /*tp_traverse*/
+    0,                      /*tp_clear*/
+    0,                      /*tp_richcompare*/
+    0,                      /*tp_weaklistoffset*/
+    0,                      /*tp_iter*/
+    0,                      /*tp_iternext*/
+    0,                      /*tp_methods*/
+    0,                      /*tp_members*/
+    0,                      /*tp_getset*/
+    0,                      /*tp_base*/
+    0,                      /*tp_dict*/
+    0,                      /*tp_descr_get*/
+    0,                      /*tp_descr_set*/
+    0,                      /*tp_dictoffset*/
+    0,                      /*tp_init*/
+    PyType_GenericAlloc,    /*tp_alloc*/
+    PyType_GenericNew,      /*tp_new*/
+    0,                      /*tp_free*/
+    0,                      /*tp_is_gc*/
+};
+
+static void Quadric_dealloc(Quadric *q) {
+    if(q->q) { gluDeleteQuadric(q->q); }
+    PyMem_DEL(q);
+}
+
+static Quadric *pygluNewQuadric(PyObject *s, PyObject *o) {
+    Quadric *q = PyObject_New(Quadric, &Quadric_Type);
+    if(q) q->q = gluNewQuadric();
+    return q;
+}
+
 static PyObject *pygluDeleteQuadric(PyObject *s, PyObject *o) {
+    Quadric *q;
+    if(!PyArg_ParseTuple(o, "O!", &Quadric_Type, &q)) return NULL;
+    if(q->q) { gluDeleteQuadric(q->q); q->q = NULL; }
     Py_INCREF(Py_None);
     return Py_None;
 }
 
 static PyObject *pygluCylinder(PyObject *s, PyObject *o) {
-    GLUquadric *q = gluNewQuadric();
+    Quadric *q;
     double base, top, height;
     int slices, stacks;
-    PyObject *ignore;
 
-    if(!PyArg_ParseTuple(o, "Odddii", &ignore, &base, &top,
+    if(!PyArg_ParseTuple(o, "O!dddii", &Quadric_Type, &q, &base, &top,
                 &height, &slices, &stacks))
         return NULL;
 
-    gluCylinder(q, base, top, height, slices, stacks);
-    gluDeleteQuadric(q);
+    if(!q->q) {
+        PyErr_SetString(PyExc_TypeError, "Operation on deleted quadric");
+        return NULL;
+    }
+
+    gluCylinder(q->q, base, top, height, slices, stacks);
 
     CHECK_ERROR;
 
@@ -270,17 +380,36 @@ static PyObject *pygluCylinder(PyObject *s, PyObject *o) {
 }
 
 static PyObject *pygluDisk(PyObject *s, PyObject *o) {
-    GLUquadric *q = gluNewQuadric();
+    Quadric *q;
     double inner, outer;
     int slices, loops;
-    PyObject *ignore;
 
-    if(!PyArg_ParseTuple(o, "Oddii", &ignore, &inner, &outer,
+    if(!PyArg_ParseTuple(o, "O!ddii", &Quadric_Type, &q, &inner, &outer,
                 &slices, &loops))
         return NULL;
 
-    gluDisk(q, inner, outer, slices, loops);
-    gluDeleteQuadric(q);
+    if(!q->q) {
+        PyErr_SetString(PyExc_TypeError, "Operation on deleted quadric");
+        return NULL;
+    }
+
+    gluDisk(q->q, inner, outer, slices, loops);
+
+    CHECK_ERROR;
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *pygluQuadricOrientation(PyObject *s, PyObject *o) {
+    Quadric *q;
+    int orient;
+    if(!PyArg_ParseTuple(o, "O!i", &Quadric_Type, &q, &orient)) return NULL;
+    if(!q->q) {
+        PyErr_SetString(PyExc_TypeError, "Operation on deleted quadric");
+        return NULL;
+    }
+    gluQuadricOrientation(q->q, orient);
 
     CHECK_ERROR;
 
@@ -473,6 +602,7 @@ METH(glEnable, ""),
 METH(glEnd, ""),
 METH(glEndList, ""),
 METH(glFlush, ""),
+METH(glFrontFace, ""),
 METH(glInitNames, ""),
 METH(glLightf, ""),
 METH(glLineStipple, ""),
@@ -481,11 +611,15 @@ METH(glLoadIdentity, ""),
 METH(glLoadName, ""),
 METH(glMatrixMode, ""),
 METH(glNewList, ""),
+METH(glNormal3f, ""),
+METH(glPolygonOffset, ""),
+METH(glPolygonStipple, ""),
 METH(glPopMatrix, ""),
 METH(glPushMatrix, ""),
 METH(glPushName, ""),
 METH(glRenderMode, ""),
 METH(glRasterPos2i, ""),
+METH(glRectf, ""),
 METH(glRotatef, ""),
 METH(glScalef, ""),
 METH(glFlush, ""),
@@ -503,6 +637,8 @@ METH(glGetDoublev, ""),
 METH(glGetIntegerv, ""),
 METH(glInterleavedArrays, ""),
 METH(glLightfv, ""),
+METH(glLightModelfv, ""),
+METH(glLightModeli, ""),
 METH(glMultMatrixd, ""),
 METH(glPixelStorei, ""),
 
@@ -515,6 +651,7 @@ METH(gluLookAt, ""),
 METH(gluNewQuadric, ""),
 METH(gluPickMatrix, ""),
 METH(gluProject, ""),
+METH(gluQuadricOrientation, ""),
 METH(gluUnProject, ""),
 METH(glBitmap, ""),
 #undef METH
@@ -540,6 +677,8 @@ void initminigl(void) {
     CONST(GL_LESS);
     CONST(GL_LIGHTING);
     CONST(GL_LIGHTING);
+    CONST(GL_LIGHT_MODEL_AMBIENT);
+    CONST(GL_LIGHT_MODEL_LOCAL_VIEWER);
     CONST(GL_LINES);
     CONST(GL_LINE_STIPPLE);
     CONST(GL_LINE_STRIP);
@@ -561,4 +700,15 @@ void initminigl(void) {
     CONST(GL_POSITION);
     CONST(GL_AMBIENT);
     CONST(GL_DIFFUSE);
+    CONST(GL_CCW);
+    CONST(GL_DITHER);
+    CONST(GL_AUTO_NORMAL);
+    CONST(GL_NORMALIZE);
+    CONST(GL_POLYGON_OFFSET_FILL);
+    CONST(GL_POLYGON_STIPPLE);
+    CONST(GL_GREATER);
+    CONST(GL_LIST_INDEX);
+    CONST(GL_TRIANGLES);
+    CONST(GLU_INSIDE);
+    CONST(GLU_OUTSIDE);
 }
