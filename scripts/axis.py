@@ -169,6 +169,9 @@ class MyOpengl(Opengl):
         self.bind('<Button-1>', self.select_prime, add=True)
         self.bind('<ButtonRelease-1>', self.select_fire, add=True)
         self.bind('<Button1-Motion>', self.select_cancel, add=True)
+        self.bind("<Shift-Button-1>", self.StartRotate)
+        self.bind("<Shift-Button-1>", self.mouse_rotate_view, add=True)
+        self.bind("<Shift-B1-Motion>", self.tkRotate)
         self.bind('<Button-2>', self.mouse_rotate_view, add=True)
         self.highlight_line = None
         self.select_event = None
