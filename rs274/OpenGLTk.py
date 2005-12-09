@@ -262,6 +262,9 @@ http://www.yorvic.york.ac.uk/~mjh/
         self.bind('<Button-3>', self.tkRecordMouse)
         self.bind('<B3-Motion>', self.tkScale)
 
+        self.bind("<Shift-Button-1>", self.StartRotate)
+        self.bind("<Shift-B1-Motion>", self.tkRotate)
+
         self.lat = 0
         self.lon = 0
 
