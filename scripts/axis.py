@@ -108,6 +108,7 @@ def install_help(app):
         ("[, ]", "Jog fourth axis"),
         ("", ""),
         ("Left Button", "Pan view or select line"),
+        ("Shift+Left Button", "Rotate view"),
         ("Right Button", "Zoom view"),
         ("Wheel Button", "Rotate view"),
         ("Rotate Wheel", "Zoom view"),
