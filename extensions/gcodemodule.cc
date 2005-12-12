@@ -415,8 +415,33 @@ double GET_EXTERNAL_SPEED() { return 0; }
 int GET_EXTERNAL_TOOL_MAX() { return CANON_TOOL_MAX; }
 
 /* XXX */
-double GET_EXTERNAL_ANGLE_UNITS() { return 1.0; }
-double GET_EXTERNAL_LENGTH_UNITS() { return 0.03937007874016; }
+double GET_EXTERNAL_ANGLE_UNITS() {
+    PyObject *result =
+        PyObject_CallMethod(callback, "get_external_angular_units", "");
+    if(result == NULL) interp_error++;
+
+    double dresult = 1.0;
+    if(!PyFloat_Check(result)) {
+        interp_error++;
+    } else {
+        dresult = PyFloat_AsDouble(result);
+    }
+    return dresult;
+}
+
+double GET_EXTERNAL_LENGTH_UNITS() {
+    PyObject *result =
+        PyObject_CallMethod(callback, "get_external_length_units", "");
+    if(result == NULL) interp_error++;
+
+    double dresult = 0.03937007874016;
+    if(!PyFloat_Check(result)) {
+        interp_error++;
+    } else {
+        dresult = PyFloat_AsDouble(result);
+    }
+    return dresult;
+}
 
 USER_DEFINED_FUNCTION_TYPE USER_DEFINED_FUNCTION[USER_DEFINED_FUNCTION_NUM];
 
