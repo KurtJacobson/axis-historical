@@ -1317,7 +1317,8 @@ class TclCommands(nf.TclCommands):
         o.tkRedraw()
 
     def toggle_override_limits(*args):
-        if not manual_ok(): return
+        s.poll()
+        if s.interp_state != emc.INTERP_IDLE: return
         if s.axis[0]['override_limits']:
             ensure_mode(emc.MODE_AUTO)
         else:

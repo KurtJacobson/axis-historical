@@ -35,7 +35,6 @@ set INTERP_WAITING 4
 set manual [concat [winfo children $_tabs_manual.axes] \
     $_tabs_manual.jogf.zerohome.home \
     $_tabs_manual.jogf.zerohome.zero \
-    $_tabs_manual.jogf.override \
     $_tabs_manual.jogf.jogminus \
     $_tabs_manual.jogf.jogplus \
     $_tabs_manual.jogf.jogspeed \
