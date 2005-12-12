@@ -1,6 +1,3 @@
-Bugs
-* the file with the lines "M101 P1 Q2" "M2" won't load, but it should
-
 Wishlist items
 * pick better Z-buffer extents using machine limits from inifile
 * messages when paused (or about to pause) should offer the opportunity to
