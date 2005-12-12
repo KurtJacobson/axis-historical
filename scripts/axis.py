@@ -762,10 +762,10 @@ class AxisCanon(GLCanon):
                 return t
         return tool,0.,0.
 
-    def get_external_angle_units(self):
+    def get_external_angular_units(self):
         return s.angular_units or 1
 
-    def get_external_linear_units(self):
+    def get_external_length_units(self):
         return s.linear_units or 1
 
 loaded_file = None
