@@ -170,9 +170,7 @@ class MyOpengl(Opengl):
         self.bind('<ButtonRelease-1>', self.select_fire, add=True)
         self.bind('<Button1-Motion>', self.select_cancel, add=True)
         self.bind("<Shift-Button-1>", self.StartRotate)
-        self.bind("<Shift-Button-1>", self.mouse_rotate_view, add=True)
         self.bind("<Shift-B1-Motion>", self.tkRotate)
-        self.bind('<Button-2>', self.mouse_rotate_view, add=True)
         self.highlight_line = None
         self.select_event = None
         self.select_buffer_size = 100
@@ -367,14 +365,15 @@ class MyOpengl(Opengl):
 
         self.tk.call(self._w, 'swapbuffers')
 
-    def mouse_rotate_view(self, event):
+    def tkRotate(self, event):
+        Opengl.tkRotate(self, event)
         self.perspective = True
         widgets.view_z.configure(relief="link")
         widgets.view_z2.configure(relief="link")
         widgets.view_x.configure(relief="link")
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
-
+        
     def actual_tkRedraw(self, *dummy):
         self.after_id = None
         if self.perspective:
