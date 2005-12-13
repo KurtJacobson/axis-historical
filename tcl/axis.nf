@@ -103,35 +103,40 @@ setup_menu_accel .menu.edit end [_ _Copy]
 .menu.edit add command \
 	-command set_view_z \
 	-label {Top view} \
-	-underline 0
+	-underline 0 \
+	-accelerator V
 
 setup_menu_accel .menu.edit end [_ {_Top view}]
 
 .menu.edit add command \
 	-command set_view_z2 \
 	-label {Rotated Top view} \
-	-underline 0
+	-underline 0 \
+	-accelerator V
 
 setup_menu_accel .menu.edit end [_ {_Rotated Top view}]
 
 .menu.edit add command \
 	-command set_view_x \
 	-label {Side view} \
-	-underline 0
+	-underline 0 \
+	-accelerator V
 
 setup_menu_accel .menu.edit end [_ {_Side view}]
 
 .menu.edit add command \
 	-command set_view_y \
 	-label {Front view} \
-	-underline 0
+	-underline 0 \
+	-accelerator V
 
 setup_menu_accel .menu.edit end [_ {_Front view}]
 
 .menu.edit add command \
 	-command set_view_p \
 	-label {Perspective view} \
-	-underline 0
+	-underline 0 \
+	-accelerator V
 
 setup_menu_accel .menu.edit end [_ {_Perspective view}]
 
@@ -360,18 +365,18 @@ setup_menu_accel .menu end [_ _Edit]
 setup_menu_accel .menu end [_ _Program]
 
 .menu add cascade \
-	-menu .menu.help \
-	-label Help \
-	-underline 0
-
-setup_menu_accel .menu end [_ _Help]
-
-.menu add cascade \
 	-menu .menu.view \
 	-label View \
 	-underline 0
 
 setup_menu_accel .menu end [_ _View]
+
+.menu add cascade \
+	-menu .menu.help \
+	-label Help \
+	-underline 0
+
+setup_menu_accel .menu end [_ _Help]
 
 # Configure widget .menu
 wm title .menu menu

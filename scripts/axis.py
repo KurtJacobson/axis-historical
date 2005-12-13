@@ -136,6 +136,7 @@ def install_help(app):
         ("F12", "Turn spindle more quickly"),
         ("", ""),
         ("Control-K", "Clear live plot"),
+        ("V", "Cycle among preset views"),
     ]
 
     assert len(help1) >= len(help2)
@@ -161,7 +162,6 @@ class MyOpengl(Opengl):
         Opengl.__init__(self, *args, **kw)
         self.bind('<Button-4>', self.zoomin)
         root_window.bind('<Key-minus>', self.zoomout)
-        root_window.bind('<Key-minus>', "+puts <Key>-")
         self.bind('<Button-5>', self.zoomout)
         root_window.bind('<Key-plus>', self.zoomin)
         root_window.bind('<Key-equal>', self.zoomin)
@@ -1325,6 +1325,18 @@ class TclCommands(nf.TclCommands):
             c.override_limits()
             c.wait_complete()
 
+    def cycle_view(*args):
+        if str(widgets.view_x['relief']) == "sunken":
+            commands.set_view_y()
+        elif str(widgets.view_y['relief']) == "sunken":
+            commands.set_view_p()
+        elif str(widgets.view_z['relief']) == "sunken":
+            commands.set_view_z2()
+        elif str(widgets.view_z2['relief']) == "sunken":
+            commands.set_view_x()
+        else:
+            commands.set_view_z()
+
 commands = TclCommands(root_window)
 root_window.bind("<Escape>", commands.task_stop)
 root_window.bind("l", commands.toggle_override_limits)
@@ -1332,6 +1344,7 @@ root_window.bind("o", commands.open_file)
 root_window.bind("s", commands.task_resume)
 root_window.bind("t", commands.task_step)
 root_window.bind("p", commands.task_pause)
+root_window.bind("v", commands.cycle_view)
 root_window.bind("<Alt-p>", "#nothing")
 root_window.bind("r", commands.task_run)
 root_window.bind("<Control-r>", commands.reload_file)
