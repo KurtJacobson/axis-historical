@@ -1,4 +1,4 @@
-//    This is a component of rs274py, a set of rs274 tools for Python
+//    This is a component of AXIS, a front-end for emc
 //    Copyright 2004, 2005 Jeff Epler <jepler@unpythonic.net> and 
 //    Chris Radek <chris@timeguy.com>
 //
