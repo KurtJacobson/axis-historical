@@ -348,7 +348,7 @@ class MyOpengl(Opengl):
 
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        ztran = self.distance - self.zcenter
+        ztran = self.distance
         k = sqrt(abs(ztran or 1))
         l = k * h / w
         glOrtho(-k, k, -l, l, -1000, 1000.)
