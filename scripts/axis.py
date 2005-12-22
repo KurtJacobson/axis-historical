@@ -1556,6 +1556,7 @@ def color_limit(cond):
         glColor3f(1.0, 0.21, 0.23)
     else:
         glColor3f(1.0, 0.51, 0.53)
+    return cond
 
 def redraw(self):
     if self.select_event:
@@ -1658,7 +1659,7 @@ def redraw(self):
                     x_pos = g.min_extents[x] - 6.0*dashwidth;
                     y_pos = g.min_extents[y] - pullback;
 
-                color_limit(g.min_extents[z] < machine_limit_min[z])
+                bbox = color_limit(g.min_extents[z] < machine_limit_min[z])
                 glPushMatrix()
                 f = fmt % ((g.min_extents[z]-offset[z]) * dimscale)
                 glTranslatef(x_pos, y_pos, g.min_extents[z] - halfchar)
@@ -1667,10 +1668,10 @@ def redraw(self):
                 glRotatef(-90, 0, 0, 1)
                 if view != x:
                     glRotatef(-90, 0, 1, 0)
-                hershey.plot_string(f, 0)
+                hershey.plot_string(f, 0, bbox)
                 glPopMatrix()
 
-                color_limit(g.max_extents[z] > machine_limit_max[z])
+                bbox = color_limit(g.max_extents[z] > machine_limit_max[z])
                 glPushMatrix()
                 f = fmt % ((g.max_extents[z]-offset[z]) * dimscale)
                 glTranslatef(x_pos, y_pos, g.max_extents[z] - halfchar)
@@ -1679,7 +1680,7 @@ def redraw(self):
                 glRotatef(-90, 0, 0, 1)
                 if view != x:
                     glRotatef(-90, 0, 1, 0)
-                hershey.plot_string(f, 0)
+                hershey.plot_string(f, 0, bbox)
                 glPopMatrix()
 
                 color_limit(0)
@@ -1690,13 +1691,13 @@ def redraw(self):
                 if view != x:
                     glRotatef(-90, 0, 0, 1)
                 glRotatef(-90, 0, 1, 0)
-                hershey.plot_string(f, .5)
+                hershey.plot_string(f, .5, bbox)
                 glPopMatrix()
 
             if view != y and g.max_extents[y] > g.min_extents[y]:
                 x_pos = g.min_extents[x] - 6.0*dashwidth;
 
-                color_limit(g.min_extents[y] < machine_limit_min[y])
+                bbox = color_limit(g.min_extents[y] < machine_limit_min[y])
                 glPushMatrix()
                 f = fmt % ((g.min_extents[y] - offset[y]) * dimscale)
                 glTranslatef(x_pos, g.min_extents[y] + halfchar, z_pos)
@@ -1706,10 +1707,10 @@ def redraw(self):
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
                 glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0)
+                hershey.plot_string(f, 0, bbox)
                 glPopMatrix()
 
-                color_limit(g.max_extents[y] > machine_limit_max[y])
+                bbox = color_limit(g.max_extents[y] > machine_limit_max[y])
                 glPushMatrix()
                 f = fmt % ((g.max_extents[y] - offset[y]) * dimscale)
                 glTranslatef(x_pos, g.max_extents[y] + halfchar, z_pos)
@@ -1719,7 +1720,7 @@ def redraw(self):
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
                 glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0)
+                hershey.plot_string(f, 0, bbox)
                 glPopMatrix()
 
                 color_limit(0)
@@ -1739,7 +1740,7 @@ def redraw(self):
             if view != x and g.max_extents[x] > g.min_extents[x]:
                 y_pos = g.min_extents[y] - 6.0*dashwidth;
 
-                color_limit(g.min_extents[x] < machine_limit_min[x])
+                bbox = color_limit(g.min_extents[x] < machine_limit_min[x])
                 glPushMatrix()
                 f = fmt % ((g.min_extents[x] - offset[x]) * dimscale)
                 glTranslatef(g.min_extents[x] - halfchar, y_pos, z_pos)
@@ -1748,10 +1749,10 @@ def redraw(self):
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
                 glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0)
+                hershey.plot_string(f, 0, bbox)
                 glPopMatrix()
 
-                color_limit(g.max_extents[x] > machine_limit_max[x])
+                bbox = color_limit(g.max_extents[x] > machine_limit_max[x])
                 glPushMatrix()
                 f = fmt % ((g.max_extents[x] - offset[x]) * dimscale)
                 glTranslatef(g.max_extents[x] - halfchar, y_pos, z_pos)
@@ -1760,7 +1761,7 @@ def redraw(self):
                     glRotatef(90, 0, 1, 0)
                     glTranslatef(dashwidth*1.5, 0, 0)
                 glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0)
+                hershey.plot_string(f, 0, bbox)
                 glPopMatrix()
 
                 color_limit(0)

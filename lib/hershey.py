@@ -104,7 +104,7 @@ class Hershey:
         glCallList(self.lists + n)
         glPopMatrix()
 
-    def plot_string(self, s, frac=0):
+    def plot_string(self, s, frac=0, bbox=0):
         glPushMatrix()
         mat = glGetDoublev(GL_MODELVIEW_MATRIX)
         if mat[10] < -.001:
@@ -122,14 +122,13 @@ class Hershey:
             len = self.string_len(s)
             glTranslatef(-len*frac, 0, 0)
         glScalef(1/440.0, 1/440.0, 1/440.0)
-        bbox = 0
         if bbox:
             glBegin(GL_LINE_STRIP)
-            glVertex3f(0, 0, 0)
-            glVertex3f(self.string_len(s)*440.0, 0, 0)
-            glVertex3f(self.string_len(s)*440.0, 440.0, 0)
-            glVertex3f(0, 440.0, 0)
-            glVertex3f(0, 0, 0)
+            glVertex3f(-140, -140, 0)
+            glVertex3f(self.string_len(s)*440.0 + 140, -140, 0)
+            glVertex3f(self.string_len(s)*440.0 + 140, 580.0, 0)
+            glVertex3f(-140, 580.0, 0)
+            glVertex3f(-140, -140, 0)
             glEnd()
         for c in s:
             glCallList(self.lists + translate[c])
