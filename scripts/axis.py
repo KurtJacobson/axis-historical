@@ -1181,7 +1181,6 @@ class TclCommands(nf.TclCommands):
                 text,
                 "warning",
                 1, "Run Anyway", "Cancel"))
-            print "task_run warning ->", r
             if r: return
         global program_start_line, program_start_line_last
         global program_start_line, program_start_line_last
