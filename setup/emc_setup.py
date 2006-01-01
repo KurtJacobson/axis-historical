@@ -1,5 +1,5 @@
 #    This is a component of AXIS, a front-end for emc
-#    Copyright 2004, 2005 Jeff Epler <jepler@unpythonic.net>
+#    Copyright 2004, 2005, 2006 Jeff Epler <jepler@unpythonic.net>
 #                         and Chris Radek <chris@timeguy.com>
 #
 #    This program is free software; you can redistribute it and/or modify

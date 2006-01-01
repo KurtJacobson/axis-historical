@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #    This is a component of AXIS, a front-end for emc
-#    Copyright 2004, 2005 Jeff Epler <jepler@unpythonic.net>
+#    Copyright 2004, 2005, 2006 Jeff Epler <jepler@unpythonic.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by

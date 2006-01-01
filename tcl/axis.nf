@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #    This is a component of AXIS, a front-end for emc
-#    Copyright 2004, 2005 Jeff Epler <jepler@unpythonic.net> and
+#    Copyright 2004, 2005, 2006 Jeff Epler <jepler@unpythonic.net> and
 #    Chris Radek <chris@timeguy.com>
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -1269,7 +1269,7 @@ text .about.message \
 .about.message tag bind link <ButtonPress-1><ButtonRelease-1> {launch_website}
 .about.message insert end {AXIS version 1.1rc2
 
-Copyright (C) 2004, 2005 Jeff Epler and Chris Radek.
+Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.
 
 This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.
 
