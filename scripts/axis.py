@@ -1169,11 +1169,12 @@ class TclCommands(nf.TclCommands):
 
     def task_run(*event):
         warnings = []
-        for i in range(3):
-            if o.g.min_extents[i] < machine_limit_min[i]:
-                warnings.append("Program exceeds machine minimum on axis %s" % axisnames[i])
-            if o.g.max_extents[i] > machine_limit_max[i]:
-                warnings.append("Program exceeds machine maximum on axis %s" % axisnames[i])
+        if o.g:
+            for i in range(3):
+                if o.g.min_extents[i] < machine_limit_min[i]:
+                    warnings.append("Program exceeds machine minimum on axis %s" % axisnames[i])
+                if o.g.max_extents[i] > machine_limit_max[i]:
+                    warnings.append("Program exceeds machine maximum on axis %s" % axisnames[i])
         if warnings:
             text = "\n".join(warnings)
             r = int(root_window.tk.call("nf_dialog", ".error",
