@@ -897,10 +897,12 @@ vars.show_extents.set(1)
 
 tabs_mdi = str(root_window.tk.call("set", "_tabs_mdi"))
 tabs_manual = str(root_window.tk.call("set", "_tabs_manual"))
+pane_top = str(root_window.tk.call("set", "pane_top"))
+pane_bottom = str(root_window.tk.call("set", "pane_bottom"))
 widgets = nf.Widgets(root_window, 
     ("menu_view", Menu, ".menu.view"),
-    ("text", Text, ".t.text"),
-    ("preview_frame", Frame, ".preview"),
+    ("text", Text, pane_bottom + ".t.text"),
+    ("preview_frame", Frame, pane_top + ".preview"),
     ("mdi_history", Text, tabs_mdi + ".history"),
     ("code_text", Text, tabs_mdi + ".gcodes"),
 
@@ -928,7 +930,7 @@ widgets = nf.Widgets(root_window,
     ("view_y", Button, ".toolbar.view_y"),
     ("view_p", Button, ".toolbar.view_p"),
 
-    ("feedoverride", Scale, ".feedoverride.foscale"),
+    ("feedoverride", Scale, pane_top + ".feedoverride.foscale"),
 )
 
 def activate_axis(i, force=0):

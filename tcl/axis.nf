@@ -619,18 +619,23 @@ pack .toolbar.rule12 \
 pack .toolbar.clear_plot \
 	-side left
 
-NoteBook .tabs \
+PanedWindow .pane -side left
+
+set pane_top [.pane add -weight 3]
+set pane_bottom [.pane add -weight 1]
+
+NoteBook ${pane_top}.tabs \
 	-borderwidth 2 \
 	-arcradius 3
 
-set _tabs_manual [.tabs insert end manual -text {Manual Control [F3]} -raisecmd {focus .}]
-set _tabs_mdi [.tabs insert end mdi -text {Code Entry [F5]}]
+set _tabs_manual [${pane_top}.tabs insert end manual -text {Manual Control [F3]} -raisecmd {focus .}]
+set _tabs_mdi [${pane_top}.tabs insert end mdi -text {Code Entry [F5]}]
 $_tabs_manual configure -borderwidth 2
 $_tabs_mdi configure -borderwidth 2
 
-.tabs itemconfigure mdi -raisecmd [list focus ${_tabs_mdi}.command]
-.tabs raise manual
-after idle .tabs compute_size
+${pane_top}.tabs itemconfigure mdi -raisecmd [list focus ${_tabs_mdi}.command]
+${pane_top}.tabs raise manual
+after idle ${pane_top}.tabs compute_size
 
 label $_tabs_manual.axis
 setup_widget_accel $_tabs_manual.axis [_ Axis:]
@@ -1129,7 +1134,7 @@ grid $_tabs_mdi.vs3 \
 grid columnconfigure $_tabs_mdi 0 -weight 1
 grid rowconfigure $_tabs_mdi 1 -weight 1
 
-frame .preview \
+frame ${pane_top}.preview \
 	-background black \
 	-height 300 \
 	-width 400
@@ -1180,45 +1185,45 @@ pack .info.tool \
 pack .info.position \
 	-side left
 
-frame .t \
+frame ${pane_bottom}.t \
 	-borderwidth 2 \
 	-relief sunken \
 	-highlightthickness 1
 
-text .t.text \
+text ${pane_bottom}.t.text \
 	-borderwidth 0 \
 	-exportselection 0 \
 	-height 9 \
 	-highlightthickness 0 \
 	-relief flat \
 	-takefocus 0 \
-	-yscrollcommand {.t.sb set}
-.t.text insert end {}
+	-yscrollcommand [list ${pane_bottom}.t.sb set]
+${pane_bottom}.t.text insert end {}
 
-scrollbar .t.sb \
+scrollbar ${pane_bottom}.t.sb \
 	-borderwidth 0 \
-	-command {.t.text yview} \
+	-command [list ${pane_bottom}.t.text yview] \
 	-highlightthickness 0
 
-# Pack widget .t.text
-pack .t.text \
+# Pack widget ${pane_bottom}.t.text
+pack ${pane_bottom}.t.text \
 	-expand 1 \
 	-fill both \
 	-side left
 
-# Pack widget .t.sb
-pack .t.sb \
+# Pack widget ${pane_bottom}.t.sb
+pack ${pane_bottom}.t.sb \
 	-fill y \
 	-side left
 
-frame .feedoverride
+frame ${pane_top}.feedoverride
 
-label .feedoverride.foentry \
+label ${pane_top}.feedoverride.foentry \
 	-textvariable feedrate \
 	-width 3
-setup_widget_accel .feedoverride.foentry [_ 0]
+setup_widget_accel ${pane_top}.feedoverride.foentry [_ 0]
 
-scale .feedoverride.foscale \
+scale ${pane_top}.feedoverride.foscale \
 	-command set_feedrate \
 	-orient horizontal \
 	-resolution 5.0 \
@@ -1227,19 +1232,19 @@ scale .feedoverride.foscale \
 	-to 120.0 \
 	-variable feedrate
 
-label .feedoverride.l
-setup_widget_accel .feedoverride.l [_ {Feed Override (%):}]
+label ${pane_top}.feedoverride.l
+setup_widget_accel ${pane_top}.feedoverride.l [_ {Feed Override (%):}]
 
-# Pack widget .feedoverride.l
-pack .feedoverride.l \
+# Pack widget ${pane_top}.feedoverride.l
+pack ${pane_top}.feedoverride.l \
 	-side left
 
-# Pack widget .feedoverride.foentry
-pack .feedoverride.foentry \
+# Pack widget ${pane_top}.feedoverride.foentry
+pack ${pane_top}.feedoverride.foentry \
 	-side left
 
-# Pack widget .feedoverride.foscale
-pack .feedoverride.foscale \
+# Pack widget ${pane_top}.feedoverride.foscale
+pack ${pane_top}.feedoverride.foscale \
 	-expand 1 \
 	-fill x \
 	-side left
@@ -1350,12 +1355,13 @@ wm resiz .keys 0 0
 wm minsize .keys 1 1
 wm protocol .keys WM_DELETE_WINDOW {wm wi .keys}
 
-# Grid widget .feedoverride
-grid .feedoverride \
+# Grid widget ${pane_top}.feedoverride
+grid ${pane_top}.feedoverride \
 	-column 0 \
 	-row 2 \
 	-sticky nw
 
+grid .pane -column 0 -row 1 -columnspan 2 -sticky nsew
 # Grid widget .info
 grid .info \
 	-column 0 \
@@ -1363,28 +1369,33 @@ grid .info \
 	-columnspan 2 \
 	-sticky ew
 
-# Grid widget .preview
-grid .preview \
+# Grid widget ${pane_top}.preview
+grid ${pane_top}.preview \
 	-column 1 \
 	-row 1 \
 	-columnspan 2 \
 	-rowspan 2 \
 	-sticky nesw
 
-# Grid widget .t
-grid .t \
-	-column 0 \
-	-row 3 \
-	-columnspan 2 \
-	-sticky nesw
-
-# Grid widget .tabs
-grid .tabs \
+grid ${pane_top}.tabs \
 	-column 0 \
 	-row 1 \
 	-sticky nesw \
 	-padx 2 \
 	-pady 2
+grid rowconfigure ${pane_top} 1 -weight 1
+grid columnconfigure ${pane_top} 1 -weight 1
+grid ${pane_bottom}.t \
+	-column 1 \
+	-row 1 \
+	-sticky nesw
+grid rowconfigure ${pane_bottom} 1 -weight 1
+grid columnconfigure ${pane_bottom} 1 -weight 1
+
+after idle {
+	Widget::setoption [winfo parent ${pane_top}] -minsize [winfo reqheight $pane_top]
+	Widget::setoption [winfo parent ${pane_bottom}] -minsize [winfo reqheight $pane_bottom]
+}
 
 # Grid widget .toolbar
 grid .toolbar \
