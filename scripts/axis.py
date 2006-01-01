@@ -1519,8 +1519,8 @@ o = MyOpengl(widgets.preview_frame, width=400, height=300, double=1, depth=1)
 o.last_line = 1
 o.pack(fill="both", expand=1)
 
-root_window.bind("<Key-F3>", ".tabs raise manual")
-root_window.bind("<Key-F5>", ".tabs raise mdi")
+root_window.bind("<Key-F3>", pane_top + ".tabs raise manual")
+root_window.bind("<Key-F5>", pane_top + ".tabs raise mdi")
 
 init()
 
