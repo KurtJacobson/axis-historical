@@ -32,6 +32,7 @@ name="axis"
 version="1.1"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
+LOCALEDIR="share/locale"
 
 emcroot = os.path.abspath(os.getenv("EMCROOT", None) or find_emc_root())
 if emcroot is None:
@@ -219,6 +220,12 @@ if simple_install:
 else:
     ext_modules = [emc, togl, gcode, minigl]
 
+
+def lang(f): return os.path.splitext(os.path.basename(f))[0]
+i18n = [(os.path.join(LOCALEDIR,lang(f),"LC_MESSAGES","axis.mo"), [f])
+            for f in glob("i18n/??.mo") + glob("i18n/??_??.mo")]
+print i18n
+
 setup(name=name, version=version,
     description="AXIS front-end for emc",
     author="Jeff Epler", author_email="jepler@unpythonic.net",
@@ -229,7 +236,6 @@ setup(name=name, version=version,
              TERMINAL('mdi'): 'scripts/mdi.py'},
     cmdclass = {'build_scripts': build_scripts},
     data_files = [(os.path.join(SHAREDIR, "tcl"), glob("tcl/*.tcl")),
-                  (os.path.join(SHAREDIR, "tcl"), glob("tcl/axis.nf")),
                   (os.path.join(SHAREDIR, "tcl"), glob("thirdparty/*.tcl")),
                   (os.path.join(SHAREDIR, "tcl/bwidget"),
                                        glob("thirdparty/bwidget/*.tcl")),
@@ -243,7 +249,7 @@ setup(name=name, version=version,
                   (os.path.join(SHAREDIR, "images"), glob("images/*.xbm")),
                   (DOCDIR, ["COPYING", "README", "BUGS",
                         "thirdparty/bwidget/LICENSE.txt",
-                        "thirdparty/LICENSE-Togl"])],
+                        "thirdparty/LICENSE-Togl"])] + i18n,
     ext_modules = ext_modules,
     url="http://axis.unpythonic.net/",
     license="GPL",

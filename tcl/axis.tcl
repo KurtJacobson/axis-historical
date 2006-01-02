@@ -31,7 +31,7 @@ menu .menu.file \
 	-label Open \
 	-underline 0
 
-setup_menu_accel .menu.file end [_ _Open]
+setup_menu_accel .menu.file end [_ "_Open"]
 
 .menu.file add command \
 	-accelerator Ctrl-R \
@@ -39,7 +39,7 @@ setup_menu_accel .menu.file end [_ _Open]
 	-label Reload \
 	-underline 0
 
-setup_menu_accel .menu.file end [_ _Reload]
+setup_menu_accel .menu.file end [_ {_Reload}]
 
 .menu.file add separator
 
@@ -326,6 +326,7 @@ setup_menu_accel .menu.view end [_ {Show relative position}]
 .menu.view add command \
 	-label {Show EMC Status} \
 	-command {exec $emctop_command -ini $emcini &}
+setup_menu_accel .menu.view end [_ {Show _EMC Status}]
 
 # Configure widget .menu.view
 wm title .menu.view view
@@ -1262,13 +1263,7 @@ text .about.message \
 	.about.message configure -cursor hand2
 	.about.message tag configure link -foreground red}
 .about.message tag bind link <ButtonPress-1><ButtonRelease-1> {launch_website}
-.about.message insert end {AXIS version 1.1
-
-Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.
-
-This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.
-
-Visit the AXIS web site at } {} {http://axis.unpy.net} link
+.about.message insert end [_ "AXIS version 1.1\n\nCopyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n\nThis is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.\n\nVisit the AXIS web site: "] {} {http://axis.unpy.net} link
 .about.message configure -state disabled
 
 button .about.ok \
@@ -1296,7 +1291,7 @@ pack .about.message \
 pack .about.ok
 
 # Configure widget .about
-wm title .about {About AXIS}
+wm title .about [_ {About AXIS}]
 wm iconname .about {}
 wm resiz .about 0 0
 wm minsize .about 1 1
@@ -1339,7 +1334,7 @@ pack .keys.text \
 pack .keys.ok
 
 # Configure widget .keys
-wm title .keys {AXIS Quick Reference}
+wm title .keys [_ {AXIS Quick Reference}]
 wm iconname .keys {}
 wm resiz .keys 0 0
 wm minsize .keys 1 1
@@ -1395,11 +1390,6 @@ grid .toolbar \
 	-sticky nesw
 grid columnconfigure . 1 -weight 1
 grid rowconfigure . 1 -weight 1
-
-# Configure widget .
-wm title . {AXIS (no file)}
-wm iconname . {}
-wm resiz . 1 1
 
 # vim:ts=8:sts=8:noet:sw=8
 
@@ -1457,7 +1447,7 @@ proc relief {e args} {
 
 proc update_title {args} {
     if {$::taskfile == ""} {
-        wm ti . "AXIS (No file)"
+        wm ti . [_ "AXIS (No file)"]
         wm iconname . "AXIS"
     } else {
         wm ti . "[lindex [file split $::taskfile] end] - AXIS"
@@ -1594,25 +1584,25 @@ bind . <Configure> { if {"%W" == "."} {
 wm withdraw .about
 wm withdraw .keys
 
-DynamicHelp::add $_tabs_manual.spindlef.ccw -text {Turn spindle counterclockwise [F10]}
-DynamicHelp::add $_tabs_manual.spindlef.cw -text {Turn spindle clockwise [F9]}
-DynamicHelp::add $_tabs_manual.spindlef.stop -text {Stop spindle [F9/F10]}
-DynamicHelp::add $_tabs_manual.spindlef.spindleplus -text {Turn spindle Faster [F12]}
-DynamicHelp::add $_tabs_manual.spindlef.spindleminus -text {Turn spindle Slower [F11]}
-DynamicHelp::add $_tabs_manual.spindlef.brake -text {Turn spindle brake on [Shift-B] or off [B]}
-DynamicHelp::add $_tabs_manual.flood -text {Turn flood on or off [F8]}
-DynamicHelp::add $_tabs_manual.mist -text {Turn mist on or off [F7]}
-DynamicHelp::add $_tabs_manual.jogf.zerohome.home -text {Send active axis home [Home]}
-DynamicHelp::add $_tabs_manual.jogf.zerohome.zero -text {Set G54 offset for active axis [Shift-Home]}
-DynamicHelp::add $_tabs_manual.axes.axisx -text {Activate axis [X]}
-DynamicHelp::add $_tabs_manual.axes.axisy -text {Activate axis [Y]}
-DynamicHelp::add $_tabs_manual.axes.axisz -text {Activate axis [Z]}
-DynamicHelp::add $_tabs_manual.axes.axisa -text {Activate axis [A]}
-DynamicHelp::add $_tabs_manual.axes.axisb -text {Activate axis [4]}
-DynamicHelp::add $_tabs_manual.axes.axisc -text {Activate axis [5]}
-DynamicHelp::add $_tabs_manual.jogf.jogminus -text {Jog selected axis}
-DynamicHelp::add $_tabs_manual.jogf.jogplus -text {Jog selected axis}
-DynamicHelp::add $_tabs_manual.jogf.jogspeed -text {Select jog ingrement}
-DynamicHelp::add $_tabs_manual.jogf.override -text {Temporarily allow jogging outside machine limits [L]}
+DynamicHelp::add $_tabs_manual.spindlef.ccw -text [_ {Turn spindle counterclockwise [F10]}]
+DynamicHelp::add $_tabs_manual.spindlef.cw -text [_ {Turn spindle clockwise [F9]}]
+DynamicHelp::add $_tabs_manual.spindlef.stop -text [_ {Stop spindle [F9/F10]}]
+DynamicHelp::add $_tabs_manual.spindlef.spindleplus -text [_ {Turn spindle Faster [F12]}]
+DynamicHelp::add $_tabs_manual.spindlef.spindleminus -text [_ {Turn spindle Slower [F11]}]
+DynamicHelp::add $_tabs_manual.spindlef.brake -text [_ {Turn spindle brake on [Shift-B] or off [B]}]
+DynamicHelp::add $_tabs_manual.flood -text [_ {Turn flood on or off [F8]}]
+DynamicHelp::add $_tabs_manual.mist -text [_ {Turn mist on or off [F7]}]
+DynamicHelp::add $_tabs_manual.jogf.zerohome.home -text [_ {Send active axis home [Home]}]
+DynamicHelp::add $_tabs_manual.jogf.zerohome.zero -text [_ {Set G54 offset for active axis [Shift-Home]}]
+DynamicHelp::add $_tabs_manual.axes.axisx -text [_ {Activate axis [X]}]
+DynamicHelp::add $_tabs_manual.axes.axisy -text [_ {Activate axis [Y]}]
+DynamicHelp::add $_tabs_manual.axes.axisz -text [_ {Activate axis [Z]}]
+DynamicHelp::add $_tabs_manual.axes.axisa -text [_ {Activate axis [A]}]
+DynamicHelp::add $_tabs_manual.axes.axisb -text [_ {Activate axis [4]}]
+DynamicHelp::add $_tabs_manual.axes.axisc -text [_ {Activate axis [5]}]
+DynamicHelp::add $_tabs_manual.jogf.jogminus -text [_ {Jog selected axis}]
+DynamicHelp::add $_tabs_manual.jogf.jogplus -text [_ {Jog selected axis}]
+DynamicHelp::add $_tabs_manual.jogf.jogspeed -text [_ {Select jog ingrement}]
+DynamicHelp::add $_tabs_manual.jogf.override -text [_ {Temporarily allow jogging outside machine limits [L]}]
 
 # vim:ts=8:sts=4:et:

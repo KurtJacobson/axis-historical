@@ -20,6 +20,8 @@
 
 from __future__ import generators
 
+import gettext; gettext.install("axis")
+
 import string
 __version__ = string.split('$Revision$')[1]
 __date__ = string.join(string.split('$Date$')[1:3], ' ')
@@ -55,11 +57,12 @@ from hershey import Hershey
 import rs274.options
 root_window = Tkinter.Tk(className="Axis")
 rs274.options.install(root_window)
-import nf; nf.start(root_window)
+import nf; nf.start(root_window); nf.makecommand(root_window, "_", _)
 import gcode
 
+
+
 try:
-    root_window.tk.call("proc", "_", "s", "set s")
     nf.source_lib_tcl(root_window,"axis.tcl")
 except TclError:
     print root_window.tk.call("set", "errorInfo")
@@ -88,54 +91,54 @@ if sys.version_info <= (2,3):
 
 def install_help(app):
     help1 = [
-        ("F1", "Emergency stop"),
-        ("F2", "Turn machine on"),
+        ("F1", _("Emergency stop")),
+        ("F2", _("Turn machine on")),
         ("", ""),
-        ("X, `", "Activate first axis"),
-        ("Y, 1", "Activate second axis"),
-        ("Z, 2", "Activate third axis"),
-        ("A, 3", "Activate fourth axis"),
-        ("   4", "Activate fifth axis"),
-        ("   5", "Activate sixth axis"),
-        ("I", "Select jog increment"),
-        ("C", "Continuous jog"),
-        ("Home", "Send active axis home"),
-        ("Shift-Home", "Set G54 offset for active axis"),
-        ("Left, Right", "Jog first axis"),
-        ("Up, Down", "Jog second axis"),
-        ("Pg Up, Pg Dn", "Jog third axis"),
-        ("[, ]", "Jog fourth axis"),
+        ("X, `", _("Activate first axis")),
+        ("Y, 1", _("Activate second axis")),
+        ("Z, 2", _("Activate third axis")),
+        ("A, 3", _("Activate fourth axis")),
+        ("   4", _("Activate fifth axis")),
+        ("   5", _("Activate sixth axis")),
+        ("I", _("Select jog increment")),
+        ("C", _("Continuous jog")),
+        ("Home", _("Send active axis home")),
+        ("Shift-Home", _("Set G54 offset for active axis")),
+        ("Left, Right", _("Jog first axis")),
+        ("Up, Down", _("Jog second axis")),
+        ("Pg Up, Pg Dn", _("Jog third axis")),
+        ("[, ]", _("Jog fourth axis")),
         ("", ""),
-        ("Left Button", "Pan view or select line"),
-        ("Shift+Left Button", "Rotate view"),
-        ("Right Button", "Zoom view"),
-        ("Wheel Button", "Rotate view"),
-        ("Rotate Wheel", "Zoom view"),
+        (_("Left Button"), _("Pan view or select line")),
+        (_("Shift+Left Button"), _("Rotate view")),
+        (_("Right Button"), _("Zoom view")),
+        (_("Wheel Button"), _("Rotate view")),
+        (_("Rotate Wheel"), _("Zoom view")),
     ]
     help2 = [
-        ("F3", "Manual control"),
-        ("F5", "Code entry (MDI)"),
-        ("L", "Override Limits"),
+        ("F3", _("Manual control")),
+        ("F5", _("Code entry (MDI)")),
+        ("L", _("Override Limits")),
         ("", ""),
-        ("O", "Open program"),
-        ("R", "Run program"),
-        ("T", "Step program"),
-        ("P", "Pause program"),
-        ("S", "Resume program"),
-        ("ESC", "Stop program"),
+        ("O", _("Open program")),
+        ("R", _("Run program")),
+        ("T", _("Step program")),
+        ("P", _("Pause program")),
+        ("S", _("Resume program")),
+        ("ESC", _("Stop program")),
         ("", ""),
-        ("F7", "Toggle mist"),
-        ("F8", "Toggle flood"),
+        ("F7", _("Toggle mist")),
+        ("F8", _("Toggle flood")),
         ("", ""),
-        ("B", "Spindle brake off"),
-        ("Shift-B", "Spindle brake on"),
-        ("F9", "Turn spindle clockwise"),
-        ("F10", "Turn spindle counterclockwise"),
-        ("F11", "Turn spindle more slowly"),
-        ("F12", "Turn spindle more quickly"),
+        ("B", _("Spindle brake off")),
+        ("Shift-B", _("Spindle brake on")),
+        ("F9", _("Turn spindle clockwise")),
+        ("F10", _("Turn spindle counterclockwise")),
+        ("F11", _("Turn spindle more slowly")),
+        ("F12", _("Turn spindle more quickly")),
         ("", ""),
-        ("Control-K", "Clear live plot"),
-        ("V", "Cycle among preset views"),
+        ("Control-K", _("Clear live plot")),
+        ("V", _("Cycle among preset views")),
     ]
 
     assert len(help1) >= len(help2)
@@ -628,7 +631,7 @@ class LivePlotter:
             kind, text = error
             if kind in (emc.NML_ERROR, emc.OPERATOR_ERROR):
                 root_window.tk.call("nf_dialog", ".error",
-                                    "AXIS error", text, "error",0,"OK")
+                                    _("AXIS error"), text, "error",0,_("OK"))
             else: # TEXT, DISPLAY
                 # This gives time for the "interpreter is paused" state to
                 # reach us.  Typically a message is followed by a pause
@@ -636,7 +639,7 @@ class LivePlotter:
                 for i in range(4):
                     self.stat.poll()
                 result = root_window.tk.call("nf_dialog", ".error",
-                                    "AXIS error", text, "info", 0, "OK")
+                                    _("AXIS error"), text, "info", 0, _("OK"))
         self.after = self.win.after(20, self.update)
 
         if program_start_line_last == -1 or \
@@ -690,12 +693,12 @@ class LivePlotter:
         current_tool = [i for i in self.stat.tool_table 
                             if i[0] == self.stat.tool_in_spindle]
         if self.stat.tool_in_spindle == 0:
-            vupdate(vars.tool, "No tool")
+            vupdate(vars.tool, _("No tool"))
         elif current_tool == []:
-            vupdate(vars.tool, "Unknown tool %d" % self.stat.tool_in_spindle)
+            vupdate(vars.tool, _("Unknown tool %d") % self.stat.tool_in_spindle)
         else:
             vupdate(vars.tool,
-                 "Tool %d, offset %g, radius %g" % current_tool[0])
+                 _("Tool %d, offset %g, radius %g") % current_tool[0])
         active_codes = []
         for i in self.stat.gcodes[1:]:
             if i == -1: continue
@@ -776,9 +779,9 @@ def open_file_guts(f, filtered = False):
         result = os.system("%s < %s > %s" % (program_filter, f, tempfile))
         if result:
             root_window.tk.call("nf_dialog", ".error",
-                    "Program_filter %r failed" % program_filter,
-                    "Exit code %d" % result,
-                    "error",0,"OK")
+                    _("Program_filter %r failed") % program_filter,
+                    _("Exit code %d") % result,
+                    "error",0,_("OK"))
             return
         return open_file_guts(tempfile, True)
 
@@ -828,11 +831,11 @@ def open_file_guts(f, filtered = False):
         result, seq = gcode.parse(f, canon)
         print "parse result", result
         if result >= rs274.RS274NGC_MIN_ERROR:
-            error_str = rs274.errorlist.get(result, "Unknown error %s" % result)
+            error_str = rs274.errorlist.get(result, _("Unknown error %s") % result)
             root_window.tk.call("nf_dialog", ".error",
                     "G-Code error in %s" % os.path.basename(f),
                     "On line %d of %s:\n%s" % (seq+1, f, error_str),
-                    "error",0,"OK")
+                    "error",0,_("OK"))
 
         t.configure(state="disabled")
 
@@ -946,12 +949,12 @@ def set_first_line(lineno):
 def jogspeed_continuous():
     widgets.jogspeed.configure(editable=1)
     widgets.jogspeed.delete(0, "end")
-    widgets.jogspeed.insert("end", "Continuous")
+    widgets.jogspeed.insert("end", _("Continuous"))
     widgets.jogspeed.configure(editable=0)
 
 def jogspeed_incremental():
     jogspeed = widgets.jogspeed.get()
-    if jogspeed == "Continuous" or jogspeed == "0.0001":
+    if jogspeed == _("Continuous") or jogspeed == "0.0001":
         newjogspeed = 0.1
     else:
         newjogspeed = float(jogspeed) / 10
@@ -1138,7 +1141,7 @@ class TclCommands(nf.TclCommands):
         global open_directory
         f = root_window.tk.call("tk_getOpenFile", "-initialdir", open_directory,
             "-defaultextension", ".ngc",
-            "-filetypes", "{{rs274ngc files} {.ngc}} {{All files} *}")
+            "-filetypes", _("{{rs274ngc files} {.ngc}} {{All files} *}"))
         if not f: return
         o.set_highlight_line(None)
         f = str(f)
@@ -1173,16 +1176,16 @@ class TclCommands(nf.TclCommands):
         if o.g:
             for i in range(3):
                 if o.g.min_extents[i] < machine_limit_min[i]:
-                    warnings.append("Program exceeds machine minimum on axis %s" % axisnames[i])
+                    warnings.append(_("Program exceeds machine minimum on axis %s") % axisnames[i])
                 if o.g.max_extents[i] > machine_limit_max[i]:
-                    warnings.append("Program exceeds machine maximum on axis %s" % axisnames[i])
+                    warnings.append(_("Program exceeds machine maximum on axis %s") % axisnames[i])
         if warnings:
             text = "\n".join(warnings)
             r = int(root_window.tk.call("nf_dialog", ".error",
-                "Program exceeds machine limits",
+                _("Program exceeds machine limits"),
                 text,
                 "warning",
-                1, "Run Anyway", "Cancel"))
+                1, _("Run Anyway"), _("Cancel")))
             if r: return
         global program_start_line, program_start_line_last
         global program_start_line, program_start_line_last
@@ -1416,7 +1419,7 @@ def jog_on(a, b):
         jog_after[a] = None
         return
     jogspeed = widgets.jogspeed.get()
-    if jogspeed != "Continuous":
+    if jogspeed != _("Continuous"):
         s.poll()
         if s.state != 1: return
         jogspeed = float(jogspeed)
@@ -1503,7 +1506,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
         machine_limit_max[a] = float(inifile.find(section, "MAX_LIMIT")) / unit
     del sys.argv[1:3]
 else:
-    widgets.menu_view.entryconfigure("Show EMC Status", state="disabled")
+    widgets.menu_view.entryconfigure(_("Show EMC Status"), state="disabled")
 
 opts, args = getopt.getopt(sys.argv[1:], 'd:')
 for i in range(len(axisnames), 6):
