@@ -2,6 +2,6 @@ include MANIFEST COPYING README BUGS
 recursive-include extensions *.c *.cc
 global-include *.py
 recursive-include images *.xbm *.gif
-recursive-include tcl *.tcl *.nf
+recursive-include tcl *.tcl
 recursive-include thirdparty *.tcl *.gif *.xbm *.rc LICENSE* togl.c togl.h
 global-exclude CVS
