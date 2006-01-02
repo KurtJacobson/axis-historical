@@ -4,4 +4,5 @@ global-include *.py
 recursive-include images *.xbm *.gif
 recursive-include tcl *.tcl
 recursive-include thirdparty *.tcl *.gif *.xbm *.rc LICENSE* togl.c togl.h
+recursive-include i18n Makefile *.po *.mo *.pot
 global-exclude CVS
