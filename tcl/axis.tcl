@@ -609,7 +609,7 @@ pack .toolbar.rule12 \
 pack .toolbar.clear_plot \
 	-side left
 
-PanedWindow .pane -side left
+PanedWindow .pane -side left -pad 1 -width 7
 
 set pane_top [.pane add -weight 3]
 set pane_bottom [.pane add -weight 1]
