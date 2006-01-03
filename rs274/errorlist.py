@@ -188,7 +188,7 @@ errorlist = {
     169: _("Two M codes from same modal group"),
     170: _("Unable to open file"),
     171: _("Unclosed comment"),
-    172: _("Unclosed expresson"),
+    172: _("Unclosed expression"),
     173: _("Unknown G code"),
     174: _("Unknown M code"),
     175: _("Unknown operation"),
