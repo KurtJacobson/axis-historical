@@ -1603,6 +1603,6 @@ DynamicHelp::add $_tabs_manual.axes.axisc -text [_ "Activate axis \[5\]"]
 DynamicHelp::add $_tabs_manual.jogf.jogminus -text [_ {Jog selected axis}]
 DynamicHelp::add $_tabs_manual.jogf.jogplus -text [_ {Jog selected axis}]
 DynamicHelp::add $_tabs_manual.jogf.jogspeed -text [_ {Select jog ingrement}]
-DynamicHelp::add $_tabs_manual.jogf.override -text [_ "Temporarily allow jogging outside machine limits \[L\]}]
+DynamicHelp::add $_tabs_manual.jogf.override -text [_ "Temporarily allow jogging outside machine limits \[L\]"]
 
 # vim:ts=8:sts=4:et:
