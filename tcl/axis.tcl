@@ -382,7 +382,7 @@ frame .toolbar \
 vrule .toolbar.rule16
 
 Button .toolbar.machine_estop \
-	-helptext {Toggle Emergency Stop [F1]} \
+	-helptext [_ "Toggle Emergency Stop \[F1\]"] \
 	-image [load_image tool_estop] \
 	-relief sunken \
 	-takefocus 0
@@ -391,7 +391,7 @@ setup_widget_accel .toolbar.machine_estop {}
 
 Button .toolbar.machine_power \
 	-command onoff_clicked \
-	-helptext {Toggle machine power [F2]} \
+	-helptext [_ "Toggle machine power \[F2\]"] \
 	-image [load_image tool_power] \
 	-relief link \
 	-state disabled \
@@ -402,7 +402,7 @@ vrule .toolbar.rule0
 
 Button .toolbar.file_open \
 	-command { open_file } \
-	-helptext {Open G-Code file [O]} \
+	-helptext [_ "Open G-Code file \[O\]"] \
 	-image [load_image tool_open] \
 	-relief link \
 	-takefocus 0
@@ -410,7 +410,7 @@ setup_widget_accel .toolbar.file_open {}
 
 Button .toolbar.reload \
 	-command { reload_file } \
-	-helptext {Reopen current file [Control-R]} \
+	-helptext [_ "Reopen current file \[Control-R\]"] \
 	-image [load_image tool_reload] \
 	-relief link \
 	-takefocus 0
@@ -420,7 +420,7 @@ vrule .toolbar.rule4
 
 Button .toolbar.program_run \
 	-command task_run \
-	-helptext {Begin executing current file} \
+	-helptext [_ "Begin executing current file \[R\]"] \
 	-image [load_image tool_run] \
 	-relief link \
 	-takefocus 0
@@ -428,7 +428,7 @@ setup_widget_accel .toolbar.program_run {}
 
 Button .toolbar.program_step \
 	-command task_step \
-	-helptext {Execute next line [T]} \
+	-helptext [_ "Execute next line \[T\]"] \
 	-image [load_image tool_step] \
 	-relief link \
 	-takefocus 0
@@ -436,7 +436,7 @@ setup_widget_accel .toolbar.program_step {}
 
 Button .toolbar.program_pause \
 	-command task_pauseresume \
-	-helptext {Pause [P] / resume [S] execution} \
+	-helptext [_ "Pause \[P\] / resume \[S\] execution"] \
 	-image [load_image tool_pause] \
 	-relief link \
 	-takefocus 0
@@ -444,7 +444,7 @@ setup_widget_accel .toolbar.program_pause {}
 
 Button .toolbar.program_stop \
 	-command task_stop \
-	-helptext {Stop program execution [ESC]} \
+	-helptext [_ "Stop program execution \[ESC\]"] \
 	-image [load_image tool_stop] \
 	-relief link \
 	-takefocus 0
@@ -454,7 +454,7 @@ vrule .toolbar.rule8
 
 Button .toolbar.view_zoomin \
 	-command zoomin \
-	-helptext {Zoom in [+]} \
+	-helptext [_ "Zoom in \[+\]"] \
 	-image [load_image tool_zoomin] \
 	-relief link \
 	-takefocus 0
@@ -462,7 +462,7 @@ setup_widget_accel .toolbar.view_zoomin {}
 
 Button .toolbar.view_zoomout \
 	-command zoomout \
-	-helptext {Zoom out [-]} \
+	-helptext [_ "Zoom out \[-\]"] \
 	-image [load_image tool_zoomout] \
 	-relief link \
 	-takefocus 0
@@ -470,7 +470,7 @@ setup_widget_accel .toolbar.view_zoomout {}
 
 Button .toolbar.view_z \
 	-command set_view_z \
-	-helptext {Top view} \
+	-helptext [_ {Top view}] \
 	-image [load_image tool_axis_z] \
 	-relief sunken \
 	-takefocus 0
@@ -478,7 +478,7 @@ setup_widget_accel .toolbar.view_z {}
 
 Button .toolbar.view_z2 \
 	-command set_view_z2 \
-	-helptext {Rotated top view} \
+	-helptext [_ {Rotated top view}] \
 	-image [load_image tool_axis_z2] \
 	-relief link \
 	-takefocus 0
@@ -486,7 +486,7 @@ setup_widget_accel .toolbar.view_z2 {}
 
 Button .toolbar.view_x \
 	-command set_view_x \
-	-helptext {Side view} \
+	-helptext [_ {Side view}] \
 	-image [load_image tool_axis_x] \
 	-relief link \
 	-takefocus 0
@@ -494,7 +494,7 @@ setup_widget_accel .toolbar.view_x {}
 
 Button .toolbar.view_y \
 	-command set_view_y \
-	-helptext {Front view} \
+	-helptext [_ {Front view}] \
 	-image [load_image tool_axis_y] \
 	-relief link \
 	-takefocus 0
@@ -502,7 +502,7 @@ setup_widget_accel .toolbar.view_y {}
 
 Button .toolbar.view_p \
 	-command set_view_p \
-	-helptext {Perspective view} \
+	-helptext [_ {Perspective view}] \
 	-image [load_image tool_axis_p] \
 	-relief link \
 	-takefocus 0
@@ -512,7 +512,7 @@ vrule .toolbar.rule12
 
 Button .toolbar.clear_plot \
 	-command clear_live_plot \
-	-helptext {Clear live plot [Ctrl-K]} \
+	-helptext [_ "Clear live plot \[Ctrl-K\]"] \
 	-image [load_image tool_clear] \
 	-relief link \
 	-takefocus 0
@@ -619,8 +619,8 @@ NoteBook ${pane_top}.tabs \
 	-borderwidth 2 \
 	-arcradius 3
 
-set _tabs_manual [${pane_top}.tabs insert end manual -text {Manual Control [F3]} -raisecmd {focus .}]
-set _tabs_mdi [${pane_top}.tabs insert end mdi -text {Code Entry [F5]}]
+set _tabs_manual [${pane_top}.tabs insert end manual -text [_ "Manual Control \[F3\]"] -raisecmd {focus .}]
+set _tabs_mdi [${pane_top}.tabs insert end mdi -text [_ "Code Entry \[F5\]"]]
 $_tabs_manual configure -borderwidth 2
 $_tabs_mdi configure -borderwidth 2
 
@@ -1038,7 +1038,7 @@ vspace $_tabs_mdi.vs1 \
 	-height 12
 
 label $_tabs_mdi.commandl
-setup_widget_accel $_tabs_mdi.commandl [_ {MDI Command:}]
+setup_widget_accel $_tabs_mdi.commandl [_ "MDI Command:"]
 
 entry $_tabs_mdi.command \
 	-textvariable mdi_command
@@ -1054,7 +1054,7 @@ vspace $_tabs_mdi.vs2 \
 	-height 12
 
 label $_tabs_mdi.gcodel
-setup_widget_accel $_tabs_mdi.gcodel [_ {Active G-Codes:}]
+setup_widget_accel $_tabs_mdi.gcodel [_ "Active G-Codes:"]
 
 text $_tabs_mdi.gcodes \
 	-height 2 \
@@ -1224,7 +1224,7 @@ scale ${pane_top}.feedoverride.foscale \
 	-variable feedrate
 
 label ${pane_top}.feedoverride.l
-setup_widget_accel ${pane_top}.feedoverride.l [_ {Feed Override (%):}]
+setup_widget_accel ${pane_top}.feedoverride.l [_ "Feed Override (%):"]
 
 # Pack widget ${pane_top}.feedoverride.l
 pack ${pane_top}.feedoverride.l \
@@ -1584,25 +1584,25 @@ bind . <Configure> { if {"%W" == "."} {
 wm withdraw .about
 wm withdraw .keys
 
-DynamicHelp::add $_tabs_manual.spindlef.ccw -text [_ {Turn spindle counterclockwise [F10]}]
-DynamicHelp::add $_tabs_manual.spindlef.cw -text [_ {Turn spindle clockwise [F9]}]
-DynamicHelp::add $_tabs_manual.spindlef.stop -text [_ {Stop spindle [F9/F10]}]
-DynamicHelp::add $_tabs_manual.spindlef.spindleplus -text [_ {Turn spindle Faster [F12]}]
-DynamicHelp::add $_tabs_manual.spindlef.spindleminus -text [_ {Turn spindle Slower [F11]}]
-DynamicHelp::add $_tabs_manual.spindlef.brake -text [_ {Turn spindle brake on [Shift-B] or off [B]}]
-DynamicHelp::add $_tabs_manual.flood -text [_ {Turn flood on or off [F8]}]
-DynamicHelp::add $_tabs_manual.mist -text [_ {Turn mist on or off [F7]}]
-DynamicHelp::add $_tabs_manual.jogf.zerohome.home -text [_ {Send active axis home [Home]}]
-DynamicHelp::add $_tabs_manual.jogf.zerohome.zero -text [_ {Set G54 offset for active axis [Shift-Home]}]
-DynamicHelp::add $_tabs_manual.axes.axisx -text [_ {Activate axis [X]}]
-DynamicHelp::add $_tabs_manual.axes.axisy -text [_ {Activate axis [Y]}]
-DynamicHelp::add $_tabs_manual.axes.axisz -text [_ {Activate axis [Z]}]
-DynamicHelp::add $_tabs_manual.axes.axisa -text [_ {Activate axis [A]}]
-DynamicHelp::add $_tabs_manual.axes.axisb -text [_ {Activate axis [4]}]
-DynamicHelp::add $_tabs_manual.axes.axisc -text [_ {Activate axis [5]}]
+DynamicHelp::add $_tabs_manual.spindlef.ccw -text [_ "Turn spindle counterclockwise \[F10\]"]
+DynamicHelp::add $_tabs_manual.spindlef.cw -text [_ "Turn spindle clockwise \[F9\]"]
+DynamicHelp::add $_tabs_manual.spindlef.stop -text [_ "Stop spindle \[F9/F10\]"]
+DynamicHelp::add $_tabs_manual.spindlef.spindleplus -text [_ "Turn spindle Faster \[F12\]"]
+DynamicHelp::add $_tabs_manual.spindlef.spindleminus -text [_ "Turn spindle Slower \[F11\]"]
+DynamicHelp::add $_tabs_manual.spindlef.brake -text [_ "Turn spindle brake on \[Shift-B\] or off \[B\]"]
+DynamicHelp::add $_tabs_manual.flood -text [_ "Turn flood on or off \[F8\]"]
+DynamicHelp::add $_tabs_manual.mist -text [_ "Turn mist on or off \[F7\]"]
+DynamicHelp::add $_tabs_manual.jogf.zerohome.home -text [_ "Send active axis home \[Home\]"]
+DynamicHelp::add $_tabs_manual.jogf.zerohome.zero -text [_ "Set G54 offset for active axis \[Shift-Home\]"]
+DynamicHelp::add $_tabs_manual.axes.axisx -text [_ "Activate axis \[X\]"]
+DynamicHelp::add $_tabs_manual.axes.axisy -text [_ "Activate axis \[Y\]"]
+DynamicHelp::add $_tabs_manual.axes.axisz -text [_ "Activate axis \[Z\]"]
+DynamicHelp::add $_tabs_manual.axes.axisa -text [_ "Activate axis \[A\]"]
+DynamicHelp::add $_tabs_manual.axes.axisb -text [_ "Activate axis \[4\]"]
+DynamicHelp::add $_tabs_manual.axes.axisc -text [_ "Activate axis \[5\]"]
 DynamicHelp::add $_tabs_manual.jogf.jogminus -text [_ {Jog selected axis}]
 DynamicHelp::add $_tabs_manual.jogf.jogplus -text [_ {Jog selected axis}]
 DynamicHelp::add $_tabs_manual.jogf.jogspeed -text [_ {Select jog ingrement}]
-DynamicHelp::add $_tabs_manual.jogf.override -text [_ {Temporarily allow jogging outside machine limits [L]}]
+DynamicHelp::add $_tabs_manual.jogf.override -text [_ "Temporarily allow jogging outside machine limits \[L\]}]
 
 # vim:ts=8:sts=4:et:
