@@ -1,0 +1,1210 @@
+# This file provides german translations for AXIS. 
+# Check http://axis.unpy.net/ for further details.
+# Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the AXIS package.
+# FIRST AUTHOR <alex_joni@sourceforge.net>, 2005.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: AXIS 1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-01-03 07:28-0600\n"
+"PO-Revision-Date: 2006-01-03 03:17+0200\n"
+"Last-Translator: Alex Joni <alex_joni@sourceforge.net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../scripts/axis.py:94
+msgid "Emergency stop"
+msgstr "Not Aus"
+
+#: ../scripts/axis.py:95
+msgid "Turn machine on"
+msgstr "Maschine an"
+
+#: ../scripts/axis.py:97
+msgid "Activate first axis"
+msgstr "Aktiviere erste Achse"
+
+#: ../scripts/axis.py:98
+msgid "Activate second axis"
+msgstr "Aktiviere zweite Achse"
+
+#: ../scripts/axis.py:99
+msgid "Activate third axis"
+msgstr "Aktiviere dritte Achse"
+
+#: ../scripts/axis.py:100
+msgid "Activate fourth axis"
+msgstr "Aktiviere vierte Achse"
+
+#: ../scripts/axis.py:101
+msgid "Activate fifth axis"
+msgstr "Aktiviere fünfte Achse"
+
+#: ../scripts/axis.py:102
+msgid "Activate sixth axis"
+msgstr "Aktiviere sechste Achse"
+
+#: ../scripts/axis.py:103
+msgid "Select jog increment"
+msgstr "Wähle Jog Inkrement"
+
+#: ../scripts/axis.py:104
+msgid "Continuous jog"
+msgstr "Durchgehend joggen"
+
+#: ../scripts/axis.py:105
+msgid "Send active axis home"
+msgstr "Sende aktive Achse zur Home position"
+
+#: ../scripts/axis.py:106
+msgid "Set G54 offset for active axis"
+msgstr "Setze G54 Offset für die aktive Achse"
+
+#: ../scripts/axis.py:107
+msgid "Jog first axis"
+msgstr "Jogge erste Achse"
+
+#: ../scripts/axis.py:108
+msgid "Jog second axis"
+msgstr "Jogge zweite Achse"
+
+#: ../scripts/axis.py:109
+msgid "Jog third axis"
+msgstr "Jogge dritte Achse"
+
+#: ../scripts/axis.py:110
+msgid "Jog fourth axis"
+msgstr "Jogge vierte Achse"
+
+#: ../scripts/axis.py:112
+msgid "Left Button"
+msgstr "Linke Taste"
+
+#: ../scripts/axis.py:112
+msgid "Pan view or select line"
+msgstr "Ansicht kippen oder Linie auswählen"
+
+#: ../scripts/axis.py:113
+msgid "Shift+Left Button"
+msgstr "Shift+Linke Taste"
+
+#: ../scripts/axis.py:113 ../scripts/axis.py:115
+msgid "Rotate view"
+msgstr "Ansicht rotieren"
+
+#: ../scripts/axis.py:114
+msgid "Right Button"
+msgstr "Rechte Taste"
+
+#: ../scripts/axis.py:114 ../scripts/axis.py:116
+msgid "Zoom view"
+msgstr "Ansicht zoomen"
+
+#: ../scripts/axis.py:115
+msgid "Wheel Button"
+msgstr "Maus Rad Taste"
+
+#: ../scripts/axis.py:116
+msgid "Rotate Wheel"
+msgstr "Maus Rad"
+
+#: ../scripts/axis.py:119
+msgid "Manual control"
+msgstr "Manuelle Kontrolle"
+
+#: ../scripts/axis.py:120
+msgid "Code entry (MDI)"
+msgstr "Kodeingabe (MDI)"
+
+#: ../scripts/axis.py:121
+msgid "Override Limits"
+msgstr "Grenzwerte aufheben"
+
+#: ../scripts/axis.py:123
+msgid "Open program"
+msgstr "Programm öffnen"
+
+#: ../scripts/axis.py:124
+msgid "Run program"
+msgstr "Program ausführen"
+
+#: ../scripts/axis.py:125
+msgid "Step program"
+msgstr "Programmschritt"
+
+#: ../scripts/axis.py:126
+msgid "Pause program"
+msgstr "Programmpause"
+
+#: ../scripts/axis.py:127
+msgid "Resume program"
+msgstr "Programm fortfahren"
+
+#: ../scripts/axis.py:128
+msgid "Stop program"
+msgstr "Programm stoppen"
+
+# this is probably not the best translation, yet toggle is a word I don't know in german
+#: ../scripts/axis.py:130
+msgid "Toggle mist"
+msgstr "Nebel ändern"
+
+#: ../scripts/axis.py:131
+msgid "Toggle flood"
+msgstr "Kühlmittel ändern"
+
+#: ../scripts/axis.py:133
+msgid "Spindle brake off"
+msgstr "Spindelbremse aus"
+
+#: ../scripts/axis.py:134
+msgid "Spindle brake on"
+msgstr "Spindelbremse an"
+
+#: ../scripts/axis.py:135
+msgid "Turn spindle clockwise"
+msgstr "Spindel dreht im Urhzeigersinn"
+
+#: ../scripts/axis.py:136
+msgid "Turn spindle counterclockwise"
+msgstr "Spindel dreht gegen Uhrzeigersinn"
+
+#: ../scripts/axis.py:137
+msgid "Turn spindle more slowly"
+msgstr "Spindel langsamer"
+
+#: ../scripts/axis.py:138
+msgid "Turn spindle more quickly"
+msgstr "Spindel schneller"
+
+#: ../scripts/axis.py:140
+msgid "Clear live plot"
+msgstr "Ansicht löschen"
+
+#: ../scripts/axis.py:141
+msgid "Cycle among preset views"
+msgstr "Zwischen vorgegebenen Ansichten wechseln"
+
+#: ../scripts/axis.py:634 ../scripts/axis.py:642
+msgid "AXIS error"
+msgstr "AXIS fehler"
+
+#: ../scripts/axis.py:634 ../scripts/axis.py:642 ../scripts/axis.py:784
+#: ../scripts/axis.py:838 ../tcl/axis.tcl:1275 ../tcl/axis.tcl:1326
+msgid "OK"
+msgstr "OK"
+
+#: ../scripts/axis.py:696
+msgid "No tool"
+msgstr "Kein Werkzeug"
+
+#: ../scripts/axis.py:698
+#, python-format
+msgid "Unknown tool %d"
+msgstr "Unbekanntes Werkzeug %d"
+
+#: ../scripts/axis.py:701
+#, python-format
+msgid "Tool %d, offset %g, radius %g"
+msgstr "Werkzeug %d, Offset %g, Radius %g"
+
+#: ../scripts/axis.py:782
+#, python-format
+msgid "Program_filter %r failed"
+msgstr "Programmfilter %r nicht erfolgreich"
+
+#: ../scripts/axis.py:783
+#, python-format
+msgid "Exit code %d"
+msgstr "Endcode %d"
+
+#: ../scripts/axis.py:834
+#, python-format
+msgid "Unknown error %s"
+msgstr "Unbekannter fehler %s"
+
+#: ../scripts/axis.py:952 ../scripts/axis.py:957 ../scripts/axis.py:1422
+msgid "Continuous"
+msgstr "Durchgehend"
+
+#: ../scripts/axis.py:1144
+msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
+msgstr "{{rs274ngc Dateien} {.ngc}} {{Alle Dateien} *}"
+
+#: ../scripts/axis.py:1179
+#, python-format
+msgid "Program exceeds machine minimum on axis %s"
+msgstr "Programm überschreitet unteren Grenzwert auf Achse %s"
+
+#: ../scripts/axis.py:1181
+#, python-format
+msgid "Program exceeds machine maximum on axis %s"
+msgstr "Programm überschreitet oberen Grenzwert auf Achse %s"
+
+#: ../scripts/axis.py:1185
+msgid "Program exceeds machine limits"
+msgstr "Programm überschreitet Maschingrenzwerte"
+
+#: ../scripts/axis.py:1188
+msgid "Run Anyway"
+msgstr "Trotzdem ausführen"
+
+#: ../scripts/axis.py:1188
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: ../scripts/axis.py:1509
+msgid "Show EMC Status"
+msgstr "Zeige EMC Status"
+
+#: ../tcl/axis.tcl:34
+msgid "_Open"
+msgstr "Ö_ffnen"
+
+#: ../tcl/axis.tcl:71
+msgid "_Quit"
+msgstr "_Beenden"
+
+#: ../tcl/axis.tcl:88
+msgid "_Copy"
+msgstr "_Kopieren"
+
+#: ../tcl/axis.tcl:227
+msgid "_Step"
+msgstr "_Schritt"
+
+#: ../tcl/axis.tcl:235
+msgid "_Pause"
+msgstr "_Pause"
+
+#: ../tcl/axis.tcl:243
+msgid "Re_sume"
+msgstr "Fort_setzen"
+
+#: ../tcl/axis.tcl:251
+msgid "S_top"
+msgstr "S_top"
+
+#: ../tcl/axis.tcl:342
+msgid "_File"
+msgstr "_Datei"
+
+#: ../tcl/axis.tcl:349
+msgid "_Edit"
+msgstr "_Bearbeiten"
+
+#: ../tcl/axis.tcl:356
+msgid "_Program"
+msgstr "_Programm"
+
+#: ../tcl/axis.tcl:363
+msgid "_View"
+msgstr "_Ansicht"
+
+#: ../tcl/axis.tcl:370
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: ../tcl/axis.tcl:632
+msgid "Axis:"
+msgstr "Achse:"
+
+#: ../tcl/axis.tcl:643
+msgid "_X"
+msgstr "_X"
+
+#: ../tcl/axis.tcl:652
+msgid "_Y"
+msgstr "_Y"
+
+#: ../tcl/axis.tcl:661
+msgid "_Z"
+msgstr "_Z"
+
+#: ../tcl/axis.tcl:670
+msgid "_A"
+msgstr "_A"
+
+#: ../tcl/axis.tcl:679
+msgid "_B"
+msgstr "_B"
+
+#: ../tcl/axis.tcl:688
+msgid "_C"
+msgstr "_C"
+
+#: ../tcl/axis.tcl:739 ../tcl/axis.tcl:879
+msgid "-"
+msgstr ""
+
+#: ../tcl/axis.tcl:752 ../tcl/axis.tcl:893
+msgid "+"
+msgstr ""
+
+#: ../tcl/axis.tcl:767
+msgid "Home"
+msgstr "Home Position"
+
+#: ../tcl/axis.tcl:834
+msgid "Spindle:"
+msgstr "Spindel:"
+
+#: ../tcl/axis.tcl:855
+msgid "Stop"
+msgstr "Stop"
+
+#: ../tcl/axis.tcl:898
+msgid "Brake"
+msgstr "Bremse"
+
+#: ../tcl/axis.tcl:945
+msgid "Coolant:"
+msgstr "Kühlung:"
+
+#: ../tcl/axis.tcl:950
+msgid "Mist"
+msgstr "Nebel"
+
+#: ../tcl/axis.tcl:955
+msgid "Flood"
+msgstr "Kühlmittel"
+
+#: ../tcl/axis.tcl:1027
+msgid "History:"
+msgstr "Geschichte:"
+
+#: ../tcl/axis.tcl:1051
+msgid "Go"
+msgstr ""
+
+#: ../tcl/axis.tcl:1215
+msgid "0"
+msgstr ""
+
+#: ../tcl/axis.tcl:1266
+#, fuzzy
+msgid ""
+"AXIS version 1.2a0\n"
+"\n"
+"Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n"
+"\n"
+"This is free software, and you are welcome to redistribute it under certain "
+"conditions.  See the file COPYING, included with AXIS.\n"
+"\n"
+"Visit the AXIS web site: "
+msgstr ""
+"AXIS Version 1.1\n"
+"\n"
+"Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n"
+"\n"
+"This is free software, and you are welcome to redistribute it under certain "
+"conditions.  See the file COPYING, included with AXIS.\n"
+"\n"
+"Besuchen Sie die AXIS Webseite: "
+
+#: ../tcl/axis.tcl:1450
+msgid "AXIS (No file)"
+msgstr "AXIS (keine Datei)"
+
+#: ../rs274/errorlist.py:22
+msgid "Unexpected end of file"
+msgstr "Unerwartetes Ende der Datei"
+
+# the following errors are already translated in emc2/src/po/de_rs274_err.po
+#: ../rs274/errorlist.py:23
+msgid "Internal error: A file is already open"
+msgstr "Interner fehler: Eine Datei ist schon offen"
+
+#: ../rs274/errorlist.py:24
+msgid "All axes missing with G92"
+msgstr "Keine Koordinaten für g92 angegeben"
+
+#: ../rs274/errorlist.py:25
+msgid "All axes missing with motion code"
+msgstr "Keine Koordinaten für Wegbedingung angegeben"
+
+#: ../rs274/errorlist.py:26
+msgid "Arc radius too small to reach endpoint"
+msgstr "Kreisradius zu klein zum Erreichen des Endpunktes"
+
+#: ../rs274/errorlist.py:27
+msgid "Argument to ACOS out of range"
+msgstr "Argument ACOS außerhalb des gültigen Bereiches"
+
+#: ../rs274/errorlist.py:28
+msgid "Argument to ASIN out of range"
+msgstr "Argument ASIN außerhalb des gültigen Bereiches"
+
+#: ../rs274/errorlist.py:29
+msgid "Division by zero"
+msgstr "Division durch Null"
+
+#: ../rs274/errorlist.py:30
+msgid "Attempt to raise negative number to non-integer power"
+msgstr ""
+"Versuch eine negative Zahl mit einem nicht-ganzzahligem Wert zu potenzieren"
+
+#: ../rs274/errorlist.py:31
+msgid "Bad character"
+msgstr "Ungültiges Zeichen"
+
+#: ../rs274/errorlist.py:32
+msgid "Non-digit found where integer expected"
+msgstr "Falsches Zahlenformat (integer erwartet)"
+
+#: ../rs274/errorlist.py:33
+msgid "Unexpected character found where +, -, . or digit expected"
+msgstr "Ungültiges Zeichen gefunden, da wo +, -, . oder nummer erwartet wurde"
+
+#: ../rs274/errorlist.py:34
+msgid "Internal error: NCE_BUG_BAD_G_CODE_MODAL_GROUP_0"
+msgstr "Fehler: Falscher G-Code in Modal-Gruppe 0"
+
+#: ../rs274/errorlist.py:35
+msgid "Internal error: NCE_BUG_CODE_NOT_G0_OR_G1"
+msgstr "Fehler: Programm-Code ist nicht g0 oder g1"
+
+#: ../rs274/errorlist.py:36
+msgid "Internal error: NCE_BUG_CODE_NOT_G17_G18_OR_G19"
+msgstr "Fehler: Programm-Code ist nicht g17, g18 oder g19"
+
+#: ../rs274/errorlist.py:37
+msgid "Internal error: NCE_BUG_CODE_NOT_G20_OR_G21"
+msgstr "Fehler: Programm-Code ist nicht g20 oder g21"
+
+#: ../rs274/errorlist.py:38
+msgid "Internal error: NCE_BUG_CODE_NOT_G28_OR_G30"
+msgstr "Fehler: Programm-Code ist nicht g28 oder g30"
+
+#: ../rs274/errorlist.py:39
+msgid "Internal error: NCE_BUG_CODE_NOT_G2_OR_G3"
+msgstr "Fehler: Programm-Code ist nicht g2 oder g3"
+
+#: ../rs274/errorlist.py:40
+msgid "Internal error: NCE_BUG_CODE_NOT_G40_G41_OR_G42"
+msgstr "Fehler: Programm-Code ist nicht g40, g41 oder g42"
+
+#: ../rs274/errorlist.py:41
+msgid "Internal error: NCE_BUG_CODE_NOT_G43_OR_G49"
+msgstr "Fehler: Programm-Code ist nicht g43 oder g49"
+
+#: ../rs274/errorlist.py:42
+msgid "Internal error: NCE_BUG_CODE_NOT_G4_G10_G28_G30_G53_OR_G92_SERIES"
+msgstr "Fehler: Programm-Code ist nicht g4, g10, g28, g30, g53 oder g92-Serie"
+
+#: ../rs274/errorlist.py:43
+msgid "Internal error: NCE_BUG_CODE_NOT_G61_G61_1_OR_G64"
+msgstr "Fehler: Programm-Code ist nicht g61, g61.1 oder g64"
+
+#: ../rs274/errorlist.py:44
+msgid "Internal error: NCE_BUG_CODE_NOT_G90_OR_G91"
+msgstr "Fehler: Programm-Code ist nicht g90 oder g91"
+
+#: ../rs274/errorlist.py:45
+msgid "Internal error: NCE_BUG_CODE_NOT_G93_OR_G94"
+msgstr "Fehler: Programm-Code ist nicht g93 oder g94"
+
+#: ../rs274/errorlist.py:46
+msgid "Internal error: NCE_BUG_CODE_NOT_G98_OR_G99"
+msgstr "Fehler: Programm-Code ist nicht g98 oder g99"
+
+#: ../rs274/errorlist.py:47
+msgid "Internal error: NCE_BUG_CODE_NOT_IN_G92_SERIES"
+msgstr "Fehler: Programm-Code ist nicht aus g92-Serie"
+
+#: ../rs274/errorlist.py:48
+msgid "Internal error: NCE_BUG_CODE_NOT_IN_RANGE_G54_TO_G593"
+msgstr "Fehler: Programm-Code ist nicht im Bereich g54 bis g593"
+
+#: ../rs274/errorlist.py:49
+msgid "Internal error: NCE_BUG_CODE_NOT_M0_M1_M2_M30_M60"
+msgstr "Fehler: Programm-Code ist nicht m0, m1, m2, m30 oder m60"
+
+#: ../rs274/errorlist.py:50
+msgid "Internal error: NCE_BUG_DISTANCE_MODE_NOT_G90_OR_G91"
+msgstr "Fehler: Maßangabe-Modus ist nicht g90 oder g91"
+
+#: ../rs274/errorlist.py:51
+msgid "Internal error: NCE_BUG_FUNCTION_SHOULD_NOT_HAVE_BEEN_CALLED"
+msgstr "Fehler: Funktion sollte nicht aufgerufen werden"
+
+#: ../rs274/errorlist.py:52
+msgid "Internal error: NCE_BUG_IN_TOOL_RADIUS_COMP"
+msgstr "Fehler bei Werkzeugbahnkorrektur"
+
+#: ../rs274/errorlist.py:53
+msgid "Internal error: NCE_BUG_PLANE_NOT_XY_YZ_OR_XZ"
+msgstr "Fehler: Fläche nicht in xy-, yz- oder xz-Ebene"
+
+#: ../rs274/errorlist.py:54
+msgid "Internal error: NCE_BUG_SIDE_NOT_RIGHT_OR_LEFT"
+msgstr "Fehler: Seite nicht rechts oder links"
+
+#: ../rs274/errorlist.py:55
+msgid "Internal error: NCE_BUG_UNKNOWN_MOTION_CODE"
+msgstr "Fehler: Unbekannte Wegbedingung"
+
+#: ../rs274/errorlist.py:56
+msgid "Internal error: NCE_BUG_UNKNOWN_OPERATION"
+msgstr "Fehler: Unbekannte Operation"
+
+#: ../rs274/errorlist.py:57
+msgid "Cannot change axis offsets with cutter radius compensation"
+msgstr "Der Offset einer Achse kann nicht geändert werden, wenn Werkzeugbahnkorrektur aktiv ist"
+
+#: ../rs274/errorlist.py:58
+msgid "Cannot change units with cutter radius compensation"
+msgstr "Die aktuelle verwendete Maßeinheit (Inch oder mm) kann nicht bei aktiver Werkzeugbahnkorrektur geändert werden"
+
+#: ../rs274/errorlist.py:59
+msgid "Internal error: NCE_CANNOT_CREATE_BACKUP_FILE"
+msgstr "Fehler: Kann Backup Datei nicht erstellen"
+
+#: ../rs274/errorlist.py:60
+msgid "Cannot do G1 with zero feed rate"
+msgstr "G1 kann nicht mit einer Vorschubgeschwindigkeit von 0 ausgeführt werden"
+
+#: ../rs274/errorlist.py:61
+msgid "Cannot do zero repeats of a cycle"
+msgstr "Null Wiederholungen eines Zyklus"
+
+#: ../rs274/errorlist.py:62
+msgid "Cannot do arc with zero feed rate"
+msgstr "Kreisbogen mit Vorschubgeschwindigkeit von 0 ist nicht möglich"
+
+#: ../rs274/errorlist.py:63
+msgid "Cannot move rotary axes while probing"
+msgstr "Rotations-Achse kann während einer Abtast-Fahrt nicht bewegt werden"
+
+#: ../rs274/errorlist.py:64
+msgid "Internal error: NCE_CANNOT_OPEN_BACKUP_FILE"
+msgstr "Fehler: Kann Backup-Datei nicht öffnen"
+
+#: ../rs274/errorlist.py:65
+msgid "Internal error: NCE_CANNOT_OPEN_VARIABLE_FILE"
+msgstr "Fehler: Kann Variablen-Datei nicht öffnen"
+
+#: ../rs274/errorlist.py:66
+msgid "Cannot probe in inverse time feed mode"
+msgstr "Abtast-Fahrten sind im zeitreziproken Vorschub-Modus nicht möglich"
+
+#: ../rs274/errorlist.py:67
+msgid "Cannot probe with cutter radius compensation"
+msgstr "Abtast-Fahrten sind bei aktiver Werkzeugbahnkorrektur nicht möglich"
+
+#: ../rs274/errorlist.py:68
+msgid "Cannot probe with zero feed rate"
+msgstr "Abtast-Fahrten mit einer Verfahrgeschwindigkeit von 0 sind nicht möglich"
+
+#: ../rs274/errorlist.py:69
+msgid "Cannot put a B in a canned cycle"
+msgstr "Angabe des Koordinaten-Wortes B in Arbeitszyklen ist nicht erlaubt"
+
+#: ../rs274/errorlist.py:70
+msgid "Cannot put a C in a canned cycle"
+msgstr "Angabe des Koordinaten-Wortes C in Arbeitszyklen ist nicht erlaubt"
+
+#: ../rs274/errorlist.py:71
+msgid "Cannot put an A in a canned cycle"
+msgstr "Angabe des Koordinaten-Wortes A in Arbeitszyklen ist nicht erlaubt"
+
+#: ../rs274/errorlist.py:72
+msgid "Cannot turn cutter radius compensation on when out of XY plane (G17)"
+msgstr "Werkzeugbahnkorrektur funktioniert nur innerhalb der XY-Ebene (G17)"
+
+#: ../rs274/errorlist.py:73
+msgid "Cannot turn cutter radius on when it is already on"
+msgstr ""
+"Werkzeugbahnkorrektur kann nicht aktiviert werden wenn sie schon aktiv ist"
+
+#: ../rs274/errorlist.py:74
+msgid "Cannot put an A word here"
+msgstr "Das Koordinaten-Wort A kann hier nicht verwendet werden"
+
+#: ../rs274/errorlist.py:75
+msgid "Cannot use axis values with G80"
+msgstr "Keine Koordinaten-Angabe zusammen mit g80 möglich"
+
+#: ../rs274/errorlist.py:76
+msgid "Cannot use an axis word without a G code that uses them"
+msgstr "Koordinaten-Angaben können nur zusammen mit einem passenden G-Code verwendet werden"
+
+#: ../rs274/errorlist.py:77
+msgid "Cannot put a B word here"
+msgstr "Das Koordinaten-Wort B kann hier nicht verwendet werden"
+
+#: ../rs274/errorlist.py:78
+msgid "Cannot put a C word here"
+msgstr "Das Koordinaten-Wort C kann hier nicht verwendet werden"
+
+#: ../rs274/errorlist.py:79
+msgid "Cannot use G28 or G30 with cutter radius compensation"
+msgstr ""
+"g28 oder g30 kann bei aktiver Werkzeugbahnkorrektur nicht verwendet werden"
+
+#: ../rs274/errorlist.py:80
+msgid "Cannot use G53 with incremental mode"
+msgstr "g53 kann nicht im inkrementalen Maßangabe-Modus benutzt werden"
+
+#: ../rs274/errorlist.py:81
+msgid "Cannot use G53 with cutter compensation"
+msgstr "g53 kann bei aktiver Werkzeugbahnkorrektur nicht verwendet werden"
+
+#: ../rs274/errorlist.py:82
+msgid "Cannot use two G codes that use axis words"
+msgstr "Es können nicht zwei G-codes mit Koordinaten-Angaben pro Zeile verwendet werden"
+
+#: ../rs274/errorlist.py:83
+msgid "Cannot use XZ plane with cutter radius compensation"
+msgstr "XZ-Ebene kann nicht bei aktiver Werkzeugbahnkorrektur benutzt werden"
+
+#: ../rs274/errorlist.py:84
+msgid "Cannot use YZ plane with cutter radius compensation"
+msgstr "YZ-Ebene kann nicht bei aktiver Werkzeugbahnkorrektur benutzt werden"
+
+#: ../rs274/errorlist.py:85
+msgid "Line too long"
+msgstr "Zeile zu lang"
+
+#: ../rs274/errorlist.py:86
+msgid "Cannot have concave corners with cutter radius compensation"
+msgstr "Konkave Ecke mit aktiver Werkzeugbahnkorrektur sind nicht erlaubt"
+
+#: ../rs274/errorlist.py:87
+msgid "Parameter 5220 (work coordinate system index) out of range"
+msgstr "Koordinaten-System Index-Parameter 5220 ausserhalb des gültigen Bereichs"
+
+#: ../rs274/errorlist.py:88
+msgid "Cannot start and end an R-format arc at the same place"
+msgstr ""
+"Bei R-Format Kreise ist es verboten Start und Endpunkt an der selber Stelle "
+"zu haben"
+
+#: ../rs274/errorlist.py:89
+msgid "Arc would result in gouging with cutter radius compensation"
+msgstr "Kreiskonturverletzung bei Werkzeugbahnkorrektur"
+
+#: ../rs274/errorlist.py:90
+msgid "Cannot put a D word here (requires G41 or G42)"
+msgstr "Benutzung eines D-Wortes ohne Angabe von G41 oder G42"
+
+#: ../rs274/errorlist.py:91
+msgid "Dwell time required with G4"
+msgstr "Verweilzeit-Angabe fehlt bei G4"
+
+#: ../rs274/errorlist.py:92
+msgid "Dwell time required with G82"
+msgstr "Verweilzeit-Angabe fehlt bei G82"
+
+#: ../rs274/errorlist.py:93
+msgid "Dwell time required with G86"
+msgstr "Verweilzeit-Angabe fehlt bei G86"
+
+#: ../rs274/errorlist.py:94
+msgid "Dwell time required with G88"
+msgstr "Verweilzeit-Angabe fehlt bei G88"
+
+#: ../rs274/errorlist.py:95
+msgid "Dwell time required with G89"
+msgstr "Verweilzeit-Angabe fehlt bei G89"
+
+#: ../rs274/errorlist.py:96
+msgid "Equal sign missing in parameter setting"
+msgstr "Gleichheitszeichen fehlt beim Setzen eines Parameters"
+
+#: ../rs274/errorlist.py:97
+msgid "F word required with inverse time arc move"
+msgstr ""
+"Angabe eines F-Wortes zum Fahren eines Kreisbogens im zeitreziproken "
+"Vorschub-Modus fehlt"
+
+#: ../rs274/errorlist.py:98
+msgid "F word required with inverse time G1 move"
+msgstr ""
+"Angabe eines F-Wortes zum Verfahren mit g1 im zeitreziproken Vorschub-Modus "
+"fehlt"
+
+#: ../rs274/errorlist.py:99
+msgid "File ended with no percent sign"
+msgstr "Es fehlt ein Prozent-Zeichen am Ende der Datei"
+
+#: ../rs274/errorlist.py:100
+msgid "File ended with no percent sign or program end"
+msgstr "Es fehlt ein Prozent-Zeichen oder Programmende am Ende der Datei"
+
+#: ../rs274/errorlist.py:101
+msgid "Internal error: NCE_FILE_NAME_TOO_LONG"
+msgstr "Fehler: Dateiname zu lang"
+
+#: ../rs274/errorlist.py:102
+msgid "Internal error: NCE_FILE_NOT_OPEN"
+msgstr "Fehlere: Datei nicht geöffnet"
+
+#: ../rs274/errorlist.py:103
+msgid "G code out of range"
+msgstr "Wegbedingung außerhalb des erlaubten Bereiches"
+
+#: ../rs274/errorlist.py:104
+msgid "Cannot put a H word here (requires G43)"
+msgstr "Unerlaubte Benutzung eines H-Wortes (G43 erforderlich)"
+
+#: ../rs274/errorlist.py:105
+msgid "Cannot put an I word here (invalid plane)"
+msgstr "Angabe eines I-Wortes für einen Kreisbogen in der yz-Ebene"
+
+#: ../rs274/errorlist.py:106
+msgid "I word required with G87"
+msgstr "I-Wort notwendig bei G87"
+
+#: ../rs274/errorlist.py:107
+msgid "Cannot put an I word here (Only G2, G3, G87)"
+msgstr "Unerlaubte Benutzung eines I-Wortes (nur bei G2, G3, G87)"
+
+#: ../rs274/errorlist.py:108
+msgid "Cannot put a J word here (invalid plane)"
+msgstr "Angabe eines J-Wortes für einen Kreisbogen in der yz-Ebene"
+
+#: ../rs274/errorlist.py:109
+msgid "J word reqired with G87"
+msgstr "J-Wort notwendig bei G87"
+
+#: ../rs274/errorlist.py:110
+msgid "Cannot put a J word here (Only G2, G3, G87)"
+msgstr "Unerlaubte Benutzung eines J-Wortes (nur bei G2, G3, G87)"
+
+#: ../rs274/errorlist.py:111
+msgid "Cannot put a K word here (invalid plane)"
+msgstr "Angabe eines K-Wortes für einen Kreisbogen in der xy-Ebene"
+
+#: ../rs274/errorlist.py:112
+msgid "K word required with G87"
+msgstr "K-Wort notwendig bei G87"
+
+#: ../rs274/errorlist.py:113
+msgid "Cannot put a K word here (Only G2, G3, G87)"
+msgstr "Unerlaubte Benutzung eines K-Wortes (nur bei G2, G3, G87)"
+
+#: ../rs274/errorlist.py:114
+msgid "L word requires canned cycle or G10"
+msgstr "Angabe eines L-Wortes ohne zugehörigen Arbeitszyklus oder G10"
+
+#: ../rs274/errorlist.py:115
+msgid "Left bracket missing after slash with ATAN"
+msgstr "Fehlende linke Klammer nach Schrägstrich bei atan"
+
+#: ../rs274/errorlist.py:116
+msgid "Left bracket missing after unary operation"
+msgstr "Fehlende linke Klammer nach unare Operation"
+
+#: ../rs274/errorlist.py:117
+msgid "Line number greater than 99999"
+msgstr "Zeilennummer größer als 99999"
+
+#: ../rs274/errorlist.py:118
+msgid "NCE_LINE_WITH_G10_DOES_NOT_HAVE_L2"
+msgstr "Zeile mit G10 enthält kein L2"
+
+#: ../rs274/errorlist.py:119
+msgid "M code out of range (Must not be greater than 199)"
+msgstr "M Kommando ungültig (Darf nicht größer als 199 sein)"
+
+#: ../rs274/errorlist.py:120
+msgid "R word and I/J/K words may not appear together for an arc"
+msgstr "Radius- und IJK-Format dürfen nicht zusammen verwendet werden"
+
+#: ../rs274/errorlist.py:121
+msgid "Multiple A words on line"
+msgstr "Mehrere A-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:122
+msgid "Multiple B words on line"
+msgstr "Mehrere B-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:123
+msgid "Multiple C words on line"
+msgstr "Mehrere C-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:124
+msgid "Multiple D words on line"
+msgstr "Mehrere D-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:125
+msgid "Multiple F words on line"
+msgstr "Mehrere F-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:126
+msgid "Multiple H words on line"
+msgstr "Mehrere H-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:127
+msgid "Multiple I words on line"
+msgstr "Mehrere I-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:128
+msgid "Multiple J words on line"
+msgstr "Mehrere J-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:129
+msgid "Multiple K words on line"
+msgstr "Mehrere K-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:130
+msgid "Multiple L words on line"
+msgstr "Mehrere L-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:131
+msgid "Multiple P words on line"
+msgstr "Mehrere P-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:132
+msgid "Multiple Q words on line"
+msgstr "Mehrere Q-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:133
+msgid "Multiple R words on line"
+msgstr "Mehrere R-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:134
+msgid "Multiple S words on line"
+msgstr "Mehrere S-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:135
+msgid "Multiple T words on line"
+msgstr "Mehrere T-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:136
+msgid "Multiple X words on line"
+msgstr "Mehrere X-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:137
+msgid "Multiple Y words on line"
+msgstr "Mehrere Y-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:138
+msgid "Multiple Z words on line"
+msgstr "Mehrere Z-Worte in einer einzelnen Zeile"
+
+#: ../rs274/errorlist.py:139
+msgid "Must use G0 or G1 with G53"
+msgstr "G53 muß immer zusammen mit G0 oder G1 benutzt werden"
+
+#: ../rs274/errorlist.py:140
+msgid "Negative argument to SQRT"
+msgstr "SQRT mit negativem Argument"
+
+#: ../rs274/errorlist.py:141
+msgid "Negative D word tool radius index used"
+msgstr ""
+"Negative Zahl bei bei D-Wort (Werkzeug-Radius als Index in der Werkzeug-"
+"Tabelle)"
+
+#: ../rs274/errorlist.py:142
+msgid "Negative F word used"
+msgstr "F-Wort mit negativer Zahl"
+
+#: ../rs274/errorlist.py:143
+msgid "Negative G word used"
+msgstr "G-Wort mit negativer Zahl"
+
+#: ../rs274/errorlist.py:144
+msgid "Negative H word tool length offset index used"
+msgstr "Negative Zahl bei bei H-Wort (Werkzeug-Länge als Index in der Werkzeug-Tabelle)"
+
+#: ../rs274/errorlist.py:145
+msgid "Negative L word used"
+msgstr "L-Wort mit negativer Zahl"
+
+#: ../rs274/errorlist.py:146
+msgid "Negative M code used"
+msgstr "M-Wort mit negativer Zahl"
+
+#: ../rs274/errorlist.py:147
+msgid "Negative or zero Q value used"
+msgstr "Q-Wert negativ oder gleich Null"
+
+#: ../rs274/errorlist.py:148
+msgid "Negative P word used"
+msgstr "P-Wort mit negativer Zahl"
+
+#: ../rs274/errorlist.py:149
+msgid "Negative spindle speed used"
+msgstr "Negative Spindelgeschwindigkeit"
+
+#: ../rs274/errorlist.py:150
+msgid "Negative tool ID used"
+msgstr "Negativer Werkzeugtabellen-Id verwendet"
+
+#: ../rs274/errorlist.py:151
+msgid "Nested comment found"
+msgstr "Verschachtelter Kommentar entdeckt"
+
+#: ../rs274/errorlist.py:152
+msgid "No characters found when reading real value"
+msgstr "Reelle Zahl erwartet, aber keinerlei Zeichen gefunden"
+
+#: ../rs274/errorlist.py:153
+msgid "No digits found where real number should be"
+msgstr "Reelle Zahl erwartet, aber keinerlei Ziffern gefunden"
+
+#: ../rs274/errorlist.py:154
+msgid "Non-integer value found where integer required"
+msgstr "Ganze Zahl erwartet, aber Nichtganzzahl gefunden"
+
+#: ../rs274/errorlist.py:155
+msgid "Internal error: NCE_NULL_MISSING_AFTER_NEWLINE"
+msgstr "Fehler: Fehlende Null nach Zeilenschaltung"
+
+#: ../rs274/errorlist.py:156
+msgid "Offset index missing"
+msgstr "Offset Index fehlt"
+
+#: ../rs274/errorlist.py:157
+msgid "P must be an integer with G10 L2"
+msgstr "P muss Ganzzahlig sein mit G10 L2"
+
+#: ../rs274/errorlist.py:158
+msgid "P out of range with G10 L2"
+msgstr "P-Wert ausserhalb des gültigen Bereichs bei G10 L2"
+
+#: ../rs274/errorlist.py:159
+msgid "P word with no G4, G10, G82, G86, G88, or G89"
+msgstr "P-Wort ohne G4, G10, G82, G86, G88 oder G89 benutzt"
+
+#: ../rs274/errorlist.py:160
+msgid "Internal error: NCE_PARAMETER_FILE_OUT_OF_ORDER"
+msgstr "Fehler: Parameter-Datei nicht in Ordnung"
+
+#: ../rs274/errorlist.py:161
+msgid "Parameter number out of range"
+msgstr "Parameternummer auserhalb gültigem Bereich"
+
+#: ../rs274/errorlist.py:162
+msgid "Q word missing with G83"
+msgstr "Q Wort fehlt bei G83"
+
+#: ../rs274/errorlist.py:163
+msgid "Q word without G83"
+msgstr "Q Wort ohne G83"
+
+#: ../rs274/errorlist.py:164
+msgid "Internal error: NCE_QUEUE_IS_NOT_EMPTY_AFTER_PROBING"
+msgstr "Fehler: Warteschlange ist nach Abtast-Fahrt nicht leer"
+
+#: ../rs274/errorlist.py:165
+msgid "R clearance plane unspecified in canned cycle"
+msgstr "Angabe einer R-Abstands-Ebene für den Zklyus fehlt"
+
+#: ../rs274/errorlist.py:166
+msgid "Arc center unspecified (No R, I, J, or K words)"
+msgstr "Angabe von R, I, J oder K fehlt bei einem Kreisbogen"
+
+#: ../rs274/errorlist.py:167
+msgid "R less than X in canned cycle in YZ plane"
+msgstr "R ist kleiner als X während eines Zyklus in der YZ-Ebene"
+
+#: ../rs274/errorlist.py:168
+msgid "R less than Y in canned cycle in XZ plane"
+msgstr "R ist kleiner als Y während eines Zyklus in der YZ-Ebene"
+
+#: ../rs274/errorlist.py:169
+msgid "R less than Z in canned cycle in YX plane"
+msgstr "R ist kleiner als Z während eines Zyklus in der XY-Ebene"
+
+#: ../rs274/errorlist.py:170
+msgid "R word with G-code that does not use it"
+msgstr "Koordinaten-Wort R ohne zugehöriges G-Wort"
+
+#: ../rs274/errorlist.py:171
+msgid "Distance from center of arc to endpoints differs"
+msgstr "Abstände vom Zentrum zu Start- und Endpunkte sind verschieden"
+
+#: ../rs274/errorlist.py:172
+msgid "Arc radius too small to reach end point"
+msgstr "Radius zu klein zum Erreichen des Endpunktes"
+
+#: ../rs274/errorlist.py:173
+msgid "Required parameter missing"
+msgstr "Benötigter Parameter fehlt"
+
+#: ../rs274/errorlist.py:174
+msgid "Tool slot number too large"
+msgstr "Angegebene Werkzeug-Nummer zu groß"
+
+#: ../rs274/errorlist.py:175
+msgid "Slash missing after first ATAN argument"
+msgstr "Fehlender Schrägstrich nach dem ersten Argument in einer ATAN-Funktion"
+
+#: ../rs274/errorlist.py:176
+msgid "Spindle not turning clockwise in G84"
+msgstr "G84, aber Werkzeug-Spindel dreht sich nicht im Uhrzeigersin"
+
+#: ../rs274/errorlist.py:177
+msgid "Spindle not turning in G86"
+msgstr "G86, Spindel dreht nicht"
+
+#: ../rs274/errorlist.py:178
+msgid "Spindle not turning in G87"
+msgstr "G87, Spindel dreht nicht"
+
+#: ../rs274/errorlist.py:179
+msgid "Spindle not turning in G88"
+msgstr "G88, Spindel dreht nicht"
+
+#: ../rs274/errorlist.py:180
+msgid "Non-number found where number expected (\"scanf()\" failed)"
+msgstr ""
+"Zeichen gefunden wo Nummern erwartet wurden (\"scanf()\" nicht erfolgreich "
+"beendet)"
+
+#: ../rs274/errorlist.py:181
+msgid "Start point too close to probe point"
+msgstr "Startpunkt zu dicht am Abtast-Punkt"
+
+#: ../rs274/errorlist.py:182
+msgid "Too many M codes on line"
+msgstr "Zu viele M-Codes auf einer Zeile"
+
+#: ../rs274/errorlist.py:183
+msgid "Too length offset index too big"
+msgstr "Werkzeug-Längen-Index zu groß"
+
+#: ../rs274/errorlist.py:184
+msgid "Index in tool table file too large"
+msgstr "Werkzeug-Datei-Index zu groß"
+
+#: ../rs274/errorlist.py:185
+msgid "Tool radius index too big"
+msgstr "Werkzeug-Radius-Index zu groß"
+
+#: ../rs274/errorlist.py:186
+msgid "Tool radius must be less than arc radius with cutter compensation"
+msgstr ""
+"Werkzeugradius muss kleiner als Kreisradius bei aktiver "
+"Werkzeugbahnkorrektur sein"
+
+#: ../rs274/errorlist.py:187
+msgid "Two G codes from same modal group"
+msgstr ""
+"Gleichzeitige Benutzung von zwei G-Kommandos aus der selben modalen Gruppe"
+
+#: ../rs274/errorlist.py:188
+msgid "Two M codes from same modal group"
+msgstr ""
+"Gleichzeitige Benutzung von zwei M-Kommandos aus der selben modalen Gruppe"
+
+#: ../rs274/errorlist.py:189
+msgid "Unable to open file"
+msgstr "Datei kann nicht geöffnet werden"
+
+#: ../rs274/errorlist.py:190
+msgid "Unclosed comment"
+msgstr "Nicht abgeschlossener Kommentar"
+
+#: ../rs274/errorlist.py:191
+msgid "Unclosed expresson"
+msgstr "Nicht abgeschlossener Ausdruck"
+
+#: ../rs274/errorlist.py:192
+msgid "Unknown G code"
+msgstr "Unbekanntes G-Kommando"
+
+#: ../rs274/errorlist.py:193
+msgid "Unknown M code"
+msgstr "Unbekanntes M-Kommando"
+
+#: ../rs274/errorlist.py:194
+msgid "Unknown operation"
+msgstr "Unbekannte Operation"
+
+#: ../rs274/errorlist.py:195
+msgid "Unknown operation name starting with A"
+msgstr "Unbekannte Operation beginnend mit A"
+
+#: ../rs274/errorlist.py:196
+msgid "Unknown operation name starting with M"
+msgstr "Unbekannte Operation beginnend mit M"
+
+#: ../rs274/errorlist.py:197
+msgid "Unknown operation name starting with O"
+msgstr "Unbekannte Operation beginnend mit O"
+
+#: ../rs274/errorlist.py:198
+msgid "Unknown operation name starting with X"
+msgstr "Unbekannte Operation beginnend mit X"
+
+#: ../rs274/errorlist.py:199
+msgid "Unknown word starting with A"
+msgstr "Unbekanntes Wort beginnend mit A"
+
+#: ../rs274/errorlist.py:200
+msgid "Unknown word starting with C"
+msgstr "Unbekanntes Wort beginnend mit C"
+
+#: ../rs274/errorlist.py:201
+msgid "Unknown word starting with E"
+msgstr "Unbekanntes Wort beginnend mit E"
+
+#: ../rs274/errorlist.py:202
+msgid "Unknown word starting with F"
+msgstr "Unbekanntes Wort beginnend mit F"
+
+#: ../rs274/errorlist.py:203
+msgid "Unknown word starting with L"
+msgstr "Unbekanntes Wort beginnend mit L"
+
+#: ../rs274/errorlist.py:204
+msgid "Unknown word starting with R"
+msgstr "Unbekanntes Wort beginnend mit R"
+
+#: ../rs274/errorlist.py:205
+msgid "Unknown word starting with S"
+msgstr "Unbekanntes Wort beginnend mit S"
+
+#: ../rs274/errorlist.py:206
+msgid "Unknown word starting with T"
+msgstr "Unbekanntes Wort beginnend mit T"
+
+#: ../rs274/errorlist.py:207
+msgid "Unknown word where unary operation could be"
+msgstr "Unbekanntes Wort, wo unäre Operation erwartet"
+
+#: ../rs274/errorlist.py:208
+msgid "X and Y words missing for arc in XY plane"
+msgstr "X- und Y-Worte fehlen für einen Kreisbogen in der XY-Ebene"
+
+#: ../rs274/errorlist.py:209
+msgid "X and Z words missing for arc in XZ plane"
+msgstr "X- und Z-Worte fehlen für einen Kreisbogen in der XZ-Ebene"
+
+#: ../rs274/errorlist.py:210
+msgid "X value unspecified in YZ plane in a canned cycle"
+msgstr "Keine Angabe eines X-Wertes bei Arbeitszyklus in XZ-Ebene"
+
+#: ../rs274/errorlist.py:211
+msgid "X, Y, and Z words all missing with g38.2"
+msgstr "Keine Angabe eines X-, Y- und Z-Wortes bei G38.2"
+
+#: ../rs274/errorlist.py:212
+msgid "Y and Z words missing for arc in YZ plane"
+msgstr "Y- und Z-Worte fehlen für einen Kreisbogen in der YZ-Ebene"
+
+#: ../rs274/errorlist.py:213
+msgid "Y value unspecified in XZ plane in a canned cycle"
+msgstr "Keine Angabe eines Y-Wertes bei Arbeitszyklus in XZ-Ebene"
+
+#: ../rs274/errorlist.py:214
+msgid "Z value unspecified in XY plane in a canned cycle"
+msgstr "Keine Angabe eines Z-Wertes bei Arbeitszyklus in XY-Ebene"
+
+#: ../rs274/errorlist.py:215
+msgid "Zero or negative argument to LN"
+msgstr "Argument der LN-Funktion kleiner oder gleich Null"
+
+#: ../rs274/errorlist.py:216
+msgid "Zero radius arc"
+msgstr "Null Radius"
