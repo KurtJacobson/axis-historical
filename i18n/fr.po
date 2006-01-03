@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AXIS 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-02 13:03-0600\n"
+"POT-Creation-Date: 2006-01-03 07:28-0600\n"
 "PO-Revision-Date: 2006-01-02 12:50-0600\n"
 "Last-Translator: Jeff Epler< jepler@unpythonic.net>\n"
 "MIME-Version: 1.0\n"
@@ -384,8 +384,9 @@ msgid "0"
 msgstr "0"
 
 #: ../tcl/axis.tcl:1266
+#, fuzzy
 msgid ""
-"AXIS version 1.1\n"
+"AXIS version 1.2a0\n"
 "\n"
 "Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n"
 "\n"
@@ -756,7 +757,7 @@ msgid "Cannot put a J word here (invalid plane)"
 msgstr ""
 
 #: ../rs274/errorlist.py:109
-msgid "I word reqired with G87"
+msgid "J word reqired with G87"
 msgstr ""
 
 #: ../rs274/errorlist.py:110
@@ -1044,7 +1045,7 @@ msgid "Non-number found where number expected (\"scanf()\" failed)"
 msgstr ""
 
 #: ../rs274/errorlist.py:181
-msgid "Start pint too close to probe point"
+msgid "Start point too close to probe point"
 msgstr ""
 
 #: ../rs274/errorlist.py:182
