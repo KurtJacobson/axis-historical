@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: AXIS 1.2\n"
-"POT-Creation-Date: 2006-01-03 09:59-0600\n"
+"POT-Creation-Date: 2006-01-03 13:10-0600\n"
 "PO-Revision-Date: 2006-01-02 12:50-0600\n"
 "Last-Translator: Jeff Epler< jepler@unpythonic.net>\n"
 "MIME-Version: 1.0\n"
@@ -191,71 +191,71 @@ msgstr ""
 msgid "AXIS error"
 msgstr "Erreur"
 
-#: ../scripts/axis.py:634 ../scripts/axis.py:642 ../scripts/axis.py:784
-#: ../scripts/axis.py:838 ../tcl/axis.tcl:1275 ../tcl/axis.tcl:1326
+#: ../scripts/axis.py:634 ../scripts/axis.py:642 ../scripts/axis.py:951
+#: ../scripts/axis.py:988 ../tcl/axis.tcl:1275 ../tcl/axis.tcl:1326
 msgid "OK"
 msgstr "OK"
 
-#: ../scripts/axis.py:696
+#: ../scripts/axis.py:710
 msgid "No tool"
 msgstr "Aucun outil"
 
-#: ../scripts/axis.py:698
+#: ../scripts/axis.py:712
 #, fuzzy, python-format
 msgid "Unknown tool %d"
 msgstr "Erreur inconnu %s"
 
-#: ../scripts/axis.py:701
+#: ../scripts/axis.py:715
 #, python-format
 msgid "Tool %d, offset %g, radius %g"
 msgstr ""
 
-#: ../scripts/axis.py:782
+#: ../scripts/axis.py:949
 #, python-format
 msgid "Program_filter %r failed"
 msgstr ""
 
-#: ../scripts/axis.py:783
+#: ../scripts/axis.py:950
 #, python-format
 msgid "Exit code %d"
 msgstr "Code %d"
 
-#: ../scripts/axis.py:834
+#: ../scripts/axis.py:984
 #, python-format
 msgid "Unknown error %s"
 msgstr "Erreur inconnu %s"
 
-#: ../scripts/axis.py:952 ../scripts/axis.py:957 ../scripts/axis.py:1422
+#: ../scripts/axis.py:1100 ../scripts/axis.py:1105 ../scripts/axis.py:1570
 msgid "Continuous"
 msgstr "Continu"
 
-#: ../scripts/axis.py:1144
+#: ../scripts/axis.py:1292
 msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
 msgstr "{{fichier rs274ngc} {.ngc}} {{Toutes fichiers} *}"
 
-#: ../scripts/axis.py:1179
+#: ../scripts/axis.py:1327
 #, python-format
 msgid "Program exceeds machine minimum on axis %s"
 msgstr "Le fichier dépasse la limite infereur sur l'axe %s"
 
-#: ../scripts/axis.py:1181
+#: ../scripts/axis.py:1329
 #, python-format
 msgid "Program exceeds machine maximum on axis %s"
 msgstr "Le fichier dépasse la limite superieur sur l'axe %s"
 
-#: ../scripts/axis.py:1185
+#: ../scripts/axis.py:1333
 msgid "Program exceeds machine limits"
 msgstr "Le fichier dépasse les limites"
 
-#: ../scripts/axis.py:1188
+#: ../scripts/axis.py:1336
 msgid "Run Anyway"
 msgstr "Continuer"
 
-#: ../scripts/axis.py:1188
+#: ../scripts/axis.py:1336
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ../scripts/axis.py:1509
+#: ../scripts/axis.py:1657
 msgid "Show EMC Status"
 msgstr "Montrez l'etat d'EMC"
 
@@ -400,6 +400,14 @@ msgstr "+"
 msgid "Home"
 msgstr "Origine"
 
+#: ../tcl/axis.tcl:773
+msgid "Offset"
+msgstr ""
+
+#: ../tcl/axis.tcl:778
+msgid "Override"
+msgstr ""
+
 #: ../tcl/axis.tcl:834
 msgid "Spindle:"
 msgstr "Fusée"
@@ -473,75 +481,72 @@ msgstr ""
 msgid "AXIS (No file)"
 msgstr "AXIS (Aucun fichier)"
 
-#: ../tcl/axis.tcl:1587
+#: ../tcl/axis.tcl:1588
 msgid "Turn spindle counterclockwise [F10]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1588
+#: ../tcl/axis.tcl:1589
 msgid "Turn spindle clockwise [F9]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1589
+#: ../tcl/axis.tcl:1590
 msgid "Stop spindle [F9/F10]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1590
+#: ../tcl/axis.tcl:1591
 msgid "Turn spindle Faster [F12]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1591
+#: ../tcl/axis.tcl:1592
 msgid "Turn spindle Slower [F11]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1592
+#: ../tcl/axis.tcl:1593
 msgid "Turn spindle brake on [Shift-B] or off [B]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1593
+#: ../tcl/axis.tcl:1594
 msgid "Turn flood on or off [F8]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1594
+#: ../tcl/axis.tcl:1595
 msgid "Turn mist on or off [F7]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1595
+#: ../tcl/axis.tcl:1596
 msgid "Send active axis home [Home]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1596
+#: ../tcl/axis.tcl:1597
 msgid "Set G54 offset for active axis [Shift-Home]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1597
+#: ../tcl/axis.tcl:1598
 msgid "Activate axis [X]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1598
+#: ../tcl/axis.tcl:1599
 msgid "Activate axis [Y]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1599
+#: ../tcl/axis.tcl:1600
 msgid "Activate axis [Z]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1600
+#: ../tcl/axis.tcl:1601
 msgid "Activate axis [A]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1601
+#: ../tcl/axis.tcl:1602
 msgid "Activate axis [4]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1602
+#: ../tcl/axis.tcl:1603
 msgid "Activate axis [5]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1606
-msgid ""
-"Temporarily allow jogging outside machine limits [L]}]\n"
-"\n"
-"# vim:ts=8:sts=4:et:\n"
+#: ../tcl/axis.tcl:1607
+msgid "Temporarily allow jogging outside machine limits [L]"
 msgstr ""
 
 #: ../rs274/errorlist.py:22
