@@ -4,7 +4,6 @@ MANIFEST
 .xvpthumb
 dist
 build
-Makefile
 *.out
 .*.sw?
 *.pyc
