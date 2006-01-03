@@ -112,7 +112,6 @@ def start(r):
     source_lib_tcl(r, "combobox.tcl")
     source_lib_tcl(r, "dialog.tcl")
 
-    source_lib_tcl(r, "sb.tcl"); r.tk.call("sb::install")
     source_lib_tcl(r, "rb.tcl"); r.tk.call("rb::install")
     source_lib_tcl(r, "cb.tcl"); r.tk.call("cb::install")
 
