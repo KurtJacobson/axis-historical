@@ -1569,9 +1569,10 @@ proc is_continuous {} {
 
 proc delete_all text {
     set nl [lindex [split [$text index end] .] 0]
-    while {$nl >= 150} {
-      $text delete 1.0 100.end
-      incr nl -100
+    while {$nl >= 1500} {
+      puts "delete_all $nl"
+      $text delete 1.0 1000.end
+      incr nl -1000
     }
 
     $text delete 1.0 end
