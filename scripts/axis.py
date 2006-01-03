@@ -745,18 +745,168 @@ def ensure_mode(m):
     c.wait_complete()
     return True
 
+class DummyProgress:
+    def update(self, count): pass
+    def nextphase(self, count): pass
+    def done(self): pass
+
+class Progress:
+    def __init__(self, phases, total):
+        self.num_phases = phases
+        self.phase = 0
+        self.total = total
+        self.lastcount = 0
+        self.old_focus = root_window.tk.call("focus", "-lastfor", ".")
+        root_window.tk.call("canvas", ".info.progress",
+                    "-width", 1, "-height", 1,
+                    "-highlightthickness", 0,
+                    "-borderwidth", 2, "-relief", "sunken",
+                    "-cursor", "watch")
+        root_window.configure(cursor="watch")
+        root_window.tk.call(".menu", "configure", "-cursor", "watch")
+        t.configure(cursor="watch")
+        root_window.tk.call("bind", ".info.progress", "<Key>", "break")
+        root_window.tk.call("pack", ".info.progress", "-side", "left",
+                                "-fill", "both", "-expand", "1")
+        root_window.tk.call(".info.progress", "create", "rectangle",
+                                (-10, -10, -10, -10),
+                                "-fill", "blue", "-outline", "blue")
+        root_window.tk.call("focus", "-force", ".info.progress")
+        root_window.tk.call("grab", ".info.progress")
+        root_window.update()
+
+    def update(self, count):
+        if count - self.lastcount > 100:
+            fraction = (self.phase + count * 1. / self.total) / self.num_phases
+            self.lastcount = count
+            try:
+                width = int(t.tk.call("winfo", "width", ".info.progress"))
+            except Tkinter.TclError, detail:
+                print detail
+                return
+            height = int(t.tk.call("winfo", "height", ".info.progress"))
+            t.tk.call(".info.progress", "coords", "1",
+                (0, 0, int(fraction * width), height))
+            t.tk.call("update", "idletasks")
+
+    def nextphase(self, total):
+        self.phase += 1
+        self.total = total
+        self.lastcount = -100
+
+    def done(self):
+        root_window.tk.call("destroy", ".info.progress")
+        root_window.tk.call("grab", "release", ".info.progress")
+        root_window.tk.call("focus", self.old_focus)
+        root_window.configure(cursor="")
+        root_window.tk.call(".menu", "configure", "-cursor", "")
+        t.configure(cursor="xterm")
+
+    def __del__(self):
+        if root_window.tk.call("winfo", "exists", ".info.progress"):
+            self.done()
+
 class AxisCanon(GLCanon):
-    def __init__(self, text, linecount):
+    def __init__(self, text, linecount, progress):
         GLCanon.__init__(self, text)
         self.linecount = linecount
+        self.progress = progress
+
+    def draw_lines(self, lines, for_selection, j0=0):
+        if for_selection:
+            for j, (lineno, l1, l2) in enumerate(lines):
+                self.progress.update(j+j0)
+                glLoadName(lineno)
+                glBegin(GL_LINES)
+                glVertex3f(*l1)
+                glVertex3f(*l2)
+                glEnd()
+        else:
+            first = True
+            for j, (lineno, l1, l2) in enumerate(lines):
+                self.progress.update(j+j0)
+                if first:
+                    glBegin(GL_LINE_STRIP)
+                    first = False
+                    glVertex3f(*l1)
+                elif l1 != ol:
+                    glEnd()
+                    glBegin(GL_LINE_STRIP)
+                    glVertex3f(*l1)
+                glVertex3f(*l2)
+                ol = l2
+            if not first:
+                glEnd()
+
+
+    def draw_dwells(self, dwells, for_selection, j0=0):
+        delta = .015625
+        if for_selection == 0:
+            glBegin(GL_LINES)
+        for j, (l,c,x,y,z,axis) in enumerate(dwells):
+            self.progress.update(j+j0)
+            glColor3f(*c)
+            if for_selection == 1:
+                glLoadName(l)
+                glBegin(GL_LINES)
+            if axis == 0:
+                glVertex3f(x-delta,y-delta,z)
+                glVertex3f(x+delta,y+delta,z)
+                glVertex3f(x-delta,y+delta,z)
+                glVertex3f(x+delta,y-delta,z)
+
+                glVertex3f(x+delta,y+delta,z)
+                glVertex3f(x-delta,y-delta,z)
+                glVertex3f(x+delta,y-delta,z)
+                glVertex3f(x-delta,y+delta,z)
+            elif axis == 1:
+                glVertex3f(x-delta,y,z-delta)
+                glVertex3f(x+delta,y,z+delta)
+                glVertex3f(x-delta,y,z+delta)
+                glVertex3f(x+delta,y,z-delta)
+
+                glVertex3f(x+delta,y,z+delta)
+                glVertex3f(x-delta,y,z-delta)
+                glVertex3f(x+delta,y,z-delta)
+                glVertex3f(x-delta,y,z+delta)
+            else:
+                glVertex3f(x,y-delta,z-delta)
+                glVertex3f(x,y+delta,z+delta)
+                glVertex3f(x,y+delta,z-delta)
+                glVertex3f(x,y-delta,z+delta)
+
+                glVertex3f(x,y+delta,z+delta)
+                glVertex3f(x,y-delta,z-delta)
+                glVertex3f(x,y-delta,z+delta)
+                glVertex3f(x,y+delta,z-delta)
+            if for_selection == 1:
+                glEnd()
+        if for_selection == 0:
+            glEnd()
+
+
+    def draw(self, for_selection=0):
+        self.progress.nextphase(len(self.traverse) + len(self.feed) + len(self.dwells))
+
+        glEnable(GL_LINE_STIPPLE)
+        glColor3f(.3,.5,.5)
+        self.draw_lines(self.traverse, for_selection)
+        glDisable(GL_LINE_STIPPLE)
+
+        glColor3f(1,1,1)
+        self.draw_lines(self.feed, for_selection, len(self.traverse))
+
+        glColor3f(1,.5,.5)
+        glLineWidth(2)
+        self.draw_dwells(self.dwells, for_selection, len(self.traverse) + len(self.feed))
+        glLineWidth(1)
+
+
     def next_line(self, st):
         lineno = st.sequence_number + 1
-        if lineno % 100 == 0:
-            width = int(t.tk.call("winfo", "width", ".info.progress"))
-            height = int(t.tk.call("winfo", "height", ".info.progress"))
-            t.tk.call(".info.progress", "coords", "1", (0, 0, lineno * width / self.linecount, height))
-            t.tk.call("update", "idletasks")
+        self.progress.update(lineno)
         GLCanon.next_line(self, st)
+
     def get_tool(self, tool):
         for t in s.tool_table:
             if t[0] == tool:
@@ -786,47 +936,30 @@ def open_file_guts(f, filtered = False):
         return open_file_guts(tempfile, True)
 
     set_first_line(0)
-    old_focus = root_window.tk.call("focus", "-lastfor", ".")
-    root_window.tk.call("canvas", ".info.progress",
-                "-width", 1, "-height", 1,
-                "-highlightthickness", 0,
-                "-borderwidth", 2, "-relief", "sunken",
-                "-cursor", "watch")
-    root_window.configure(cursor="watch")
-    root_window.tk.call(".menu", "configure", "-cursor", "watch")
-    t.configure(cursor="watch")
-    root_window.tk.call("bind", ".info.progress", "<Key>", "break")
-    root_window.tk.call("pack", ".info.progress", "-side", "left", "-fill", "both", "-expand", "1")
-    root_window.tk.call(".info.progress", "create", "rectangle", (-10, -10, -10, -10), "-fill", "blue", "-outline", "blue")
-    root_window.tk.call("focus", "-force", ".info.progress")
-    root_window.tk.call("grab", ".info.progress")
-    root_window.update()
     t0 = time.time()
 
     try:
         ensure_mode(emc.MODE_AUTO)
         c.reset_interpreter()
         c.program_open(f)
-            
+        lines = open(f).readlines()
+        progress = Progress(4, len(lines)) 
         t.configure(state="normal")
         t.tk.call("delete_all", t)
         code = []
-        for i, l in enumerate(open(f)):
+        for i, l in enumerate(lines):
             l = l.expandtabs().replace("\r", "")
             #t.insert("end", "%6d: " % (i+1), "lineno", l)
             code.extend(["%6d: " % (i+1), "lineno", l, ""])
             if i % 1000 == 0:
-                width = int(t.tk.call("winfo", "width", ".info.progress"))
-                height = int(t.tk.call("winfo", "height", ".info.progress"))
-                p = i/1000 % (width - 25)
-                t.tk.call(".info.progress", "coords", "1", (p, 0, p+25, height))
                 t.insert("end", *code)
-                code = []
-                t.tk.call("update", "idletasks")
+                del code[:]
+                progress.update(i)
         if code:
             t.insert("end", *code)
+        progress.nextphase(len(lines))
         f = os.path.abspath(f)
-        o.g = canon = AxisCanon(widgets.text, i)
+        o.g = canon = AxisCanon(widgets.text, i, progress)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         result, seq = gcode.parse(f, canon)
         print "parse result", result
@@ -854,10 +987,8 @@ def open_file_guts(f, filtered = False):
         root_window.update()
         root_window.tk.call("destroy", ".info.progress")
         root_window.tk.call("grab", "release", ".info.progress")
-        root_window.tk.call("focus", old_focus)
-        root_window.configure(cursor="")
-        root_window.tk.call(".menu", "configure", "-cursor", "")
-        t.configure(cursor="xterm")
+        canon.progress = DummyProgress()
+        progress.done()
         o.tkRedraw()
 
 vars = nf.Variables(root_window, 
