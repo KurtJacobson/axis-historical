@@ -770,12 +770,12 @@ button $_tabs_manual.jogf.zerohome.zero \
 	-command set_axis_offset \
 	-padx 2m \
 	-pady 0
-setup_widget_accel $_tabs_manual.jogf.zerohome.zero {Offset}
+setup_widget_accel $_tabs_manual.jogf.zerohome.zero [_ Offset]
 
 checkbutton $_tabs_manual.jogf.override \
 	-command toggle_override_limits \
 	-variable override_limits
-setup_widget_accel $_tabs_manual.jogf.override {Override Limits}
+setup_widget_accel $_tabs_manual.jogf.override [_ Override Limits]
 
 grid $_tabs_manual.jogf.zerohome \
 	-column 0 \
