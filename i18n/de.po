@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: AXIS 1.2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-03 07:28-0600\n"
+"POT-Creation-Date: 2006-01-03 09:59-0600\n"
 "PO-Revision-Date: 2006-01-03 03:17+0200\n"
 "Last-Translator: Alex Joni <alex_joni@sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: ../scripts/axis.py:94
 msgid "Emergency stop"
@@ -310,6 +310,62 @@ msgstr "_Ansicht"
 msgid "_Help"
 msgstr "_Hilfe"
 
+#: ../tcl/axis.tcl:385
+#, fuzzy
+msgid "Toggle Emergency Stop [F1]"
+msgstr "Not Aus"
+
+#: ../tcl/axis.tcl:394
+msgid "Toggle machine power [F2]"
+msgstr ""
+
+#: ../tcl/axis.tcl:405
+msgid "Open G-Code file [O]"
+msgstr ""
+
+#: ../tcl/axis.tcl:413
+msgid "Reopen current file [Control-R]"
+msgstr ""
+
+#: ../tcl/axis.tcl:423
+msgid "Begin executing current file [R]"
+msgstr ""
+
+#: ../tcl/axis.tcl:431
+msgid "Execute next line [T]"
+msgstr ""
+
+#: ../tcl/axis.tcl:439
+msgid "Pause [P] / resume [S] execution"
+msgstr ""
+
+#: ../tcl/axis.tcl:447
+msgid "Stop program execution [ESC]"
+msgstr ""
+
+#: ../tcl/axis.tcl:457
+msgid "Zoom in [+]"
+msgstr ""
+
+#: ../tcl/axis.tcl:465
+msgid "Zoom out [-]"
+msgstr ""
+
+#: ../tcl/axis.tcl:515
+#, fuzzy
+msgid "Clear live plot [Ctrl-K]"
+msgstr "Ansicht löschen"
+
+#: ../tcl/axis.tcl:622
+#, fuzzy
+msgid "Manual Control [F3]"
+msgstr "Manuelle Kontrolle"
+
+#: ../tcl/axis.tcl:623
+#, fuzzy
+msgid "Code Entry [F5]"
+msgstr "Kodeingabe (MDI)"
+
 #: ../tcl/axis.tcl:632
 msgid "Axis:"
 msgstr "Achse:"
@@ -378,18 +434,30 @@ msgstr "Kühlmittel"
 msgid "History:"
 msgstr "Geschichte:"
 
+#: ../tcl/axis.tcl:1041
+msgid "MDI Command:"
+msgstr ""
+
 #: ../tcl/axis.tcl:1051
 msgid "Go"
+msgstr ""
+
+#: ../tcl/axis.tcl:1057
+msgid "Active G-Codes:"
 msgstr ""
 
 #: ../tcl/axis.tcl:1215
 msgid "0"
 msgstr ""
 
+#: ../tcl/axis.tcl:1227
+msgid "Feed Override (%):"
+msgstr ""
+
 #: ../tcl/axis.tcl:1266
 #, fuzzy
 msgid ""
-"AXIS version 1.2a0\n"
+"AXIS version 1.1\n"
 "\n"
 "Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n"
 "\n"
@@ -410,6 +478,89 @@ msgstr ""
 #: ../tcl/axis.tcl:1450
 msgid "AXIS (No file)"
 msgstr "AXIS (keine Datei)"
+
+#: ../tcl/axis.tcl:1587
+#, fuzzy
+msgid "Turn spindle counterclockwise [F10]"
+msgstr "Spindel dreht gegen Uhrzeigersinn"
+
+#: ../tcl/axis.tcl:1588
+#, fuzzy
+msgid "Turn spindle clockwise [F9]"
+msgstr "Spindel dreht im Urhzeigersinn"
+
+#: ../tcl/axis.tcl:1589
+msgid "Stop spindle [F9/F10]"
+msgstr ""
+
+#: ../tcl/axis.tcl:1590
+#, fuzzy
+msgid "Turn spindle Faster [F12]"
+msgstr "Spindel dreht im Urhzeigersinn"
+
+#: ../tcl/axis.tcl:1591
+#, fuzzy
+msgid "Turn spindle Slower [F11]"
+msgstr "Spindel dreht im Urhzeigersinn"
+
+#: ../tcl/axis.tcl:1592
+msgid "Turn spindle brake on [Shift-B] or off [B]"
+msgstr ""
+
+#: ../tcl/axis.tcl:1593
+msgid "Turn flood on or off [F8]"
+msgstr ""
+
+#: ../tcl/axis.tcl:1594
+msgid "Turn mist on or off [F7]"
+msgstr ""
+
+#: ../tcl/axis.tcl:1595
+#, fuzzy
+msgid "Send active axis home [Home]"
+msgstr "Sende aktive Achse zur Home position"
+
+#: ../tcl/axis.tcl:1596
+#, fuzzy
+msgid "Set G54 offset for active axis [Shift-Home]"
+msgstr "Setze G54 Offset für die aktive Achse"
+
+#: ../tcl/axis.tcl:1597
+#, fuzzy
+msgid "Activate axis [X]"
+msgstr "Aktiviere erste Achse"
+
+#: ../tcl/axis.tcl:1598
+#, fuzzy
+msgid "Activate axis [Y]"
+msgstr "Aktiviere erste Achse"
+
+#: ../tcl/axis.tcl:1599
+#, fuzzy
+msgid "Activate axis [Z]"
+msgstr "Aktiviere erste Achse"
+
+#: ../tcl/axis.tcl:1600
+#, fuzzy
+msgid "Activate axis [A]"
+msgstr "Aktiviere erste Achse"
+
+#: ../tcl/axis.tcl:1601
+#, fuzzy
+msgid "Activate axis [4]"
+msgstr "Aktiviere erste Achse"
+
+#: ../tcl/axis.tcl:1602
+#, fuzzy
+msgid "Activate axis [5]"
+msgstr "Aktiviere erste Achse"
+
+#: ../tcl/axis.tcl:1606
+msgid ""
+"Temporarily allow jogging outside machine limits [L]}]\n"
+"\n"
+"# vim:ts=8:sts=4:et:\n"
+msgstr ""
 
 #: ../rs274/errorlist.py:22
 msgid "Unexpected end of file"
@@ -555,11 +706,15 @@ msgstr "Fehler: Unbekannte Operation"
 
 #: ../rs274/errorlist.py:57
 msgid "Cannot change axis offsets with cutter radius compensation"
-msgstr "Der Offset einer Achse kann nicht geändert werden, wenn Werkzeugbahnkorrektur aktiv ist"
+msgstr ""
+"Der Offset einer Achse kann nicht geändert werden, wenn "
+"Werkzeugbahnkorrektur aktiv ist"
 
 #: ../rs274/errorlist.py:58
 msgid "Cannot change units with cutter radius compensation"
-msgstr "Die aktuelle verwendete Maßeinheit (Inch oder mm) kann nicht bei aktiver Werkzeugbahnkorrektur geändert werden"
+msgstr ""
+"Die aktuelle verwendete Maßeinheit (Inch oder mm) kann nicht bei aktiver "
+"Werkzeugbahnkorrektur geändert werden"
 
 #: ../rs274/errorlist.py:59
 msgid "Internal error: NCE_CANNOT_CREATE_BACKUP_FILE"
@@ -567,7 +722,8 @@ msgstr "Fehler: Kann Backup Datei nicht erstellen"
 
 #: ../rs274/errorlist.py:60
 msgid "Cannot do G1 with zero feed rate"
-msgstr "G1 kann nicht mit einer Vorschubgeschwindigkeit von 0 ausgeführt werden"
+msgstr ""
+"G1 kann nicht mit einer Vorschubgeschwindigkeit von 0 ausgeführt werden"
 
 #: ../rs274/errorlist.py:61
 msgid "Cannot do zero repeats of a cycle"
@@ -599,7 +755,8 @@ msgstr "Abtast-Fahrten sind bei aktiver Werkzeugbahnkorrektur nicht möglich"
 
 #: ../rs274/errorlist.py:68
 msgid "Cannot probe with zero feed rate"
-msgstr "Abtast-Fahrten mit einer Verfahrgeschwindigkeit von 0 sind nicht möglich"
+msgstr ""
+"Abtast-Fahrten mit einer Verfahrgeschwindigkeit von 0 sind nicht möglich"
 
 #: ../rs274/errorlist.py:69
 msgid "Cannot put a B in a canned cycle"
@@ -632,7 +789,9 @@ msgstr "Keine Koordinaten-Angabe zusammen mit g80 möglich"
 
 #: ../rs274/errorlist.py:76
 msgid "Cannot use an axis word without a G code that uses them"
-msgstr "Koordinaten-Angaben können nur zusammen mit einem passenden G-Code verwendet werden"
+msgstr ""
+"Koordinaten-Angaben können nur zusammen mit einem passenden G-Code verwendet "
+"werden"
 
 #: ../rs274/errorlist.py:77
 msgid "Cannot put a B word here"
@@ -657,7 +816,9 @@ msgstr "g53 kann bei aktiver Werkzeugbahnkorrektur nicht verwendet werden"
 
 #: ../rs274/errorlist.py:82
 msgid "Cannot use two G codes that use axis words"
-msgstr "Es können nicht zwei G-codes mit Koordinaten-Angaben pro Zeile verwendet werden"
+msgstr ""
+"Es können nicht zwei G-codes mit Koordinaten-Angaben pro Zeile verwendet "
+"werden"
 
 #: ../rs274/errorlist.py:83
 msgid "Cannot use XZ plane with cutter radius compensation"
@@ -677,7 +838,8 @@ msgstr "Konkave Ecke mit aktiver Werkzeugbahnkorrektur sind nicht erlaubt"
 
 #: ../rs274/errorlist.py:87
 msgid "Parameter 5220 (work coordinate system index) out of range"
-msgstr "Koordinaten-System Index-Parameter 5220 ausserhalb des gültigen Bereichs"
+msgstr ""
+"Koordinaten-System Index-Parameter 5220 ausserhalb des gültigen Bereichs"
 
 #: ../rs274/errorlist.py:88
 msgid "Cannot start and end an R-format arc at the same place"
@@ -913,7 +1075,9 @@ msgstr "G-Wort mit negativer Zahl"
 
 #: ../rs274/errorlist.py:144
 msgid "Negative H word tool length offset index used"
-msgstr "Negative Zahl bei bei H-Wort (Werkzeug-Länge als Index in der Werkzeug-Tabelle)"
+msgstr ""
+"Negative Zahl bei bei H-Wort (Werkzeug-Länge als Index in der Werkzeug-"
+"Tabelle)"
 
 #: ../rs274/errorlist.py:145
 msgid "Negative L word used"
@@ -1106,7 +1270,8 @@ msgid "Unclosed comment"
 msgstr "Nicht abgeschlossener Kommentar"
 
 #: ../rs274/errorlist.py:191
-msgid "Unclosed expresson"
+#, fuzzy
+msgid "Unclosed expression"
 msgstr "Nicht abgeschlossener Ausdruck"
 
 #: ../rs274/errorlist.py:192
