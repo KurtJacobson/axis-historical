@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AXIS 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-03 20:07-0600\n"
+"POT-Creation-Date: 2006-01-03 20:18-0600\n"
 "PO-Revision-Date: 2006-01-04 03:20+0200\n"
 "Last-Translator: Alex Joni <alex_joni@sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -620,6 +620,18 @@ msgstr ""
 #: ../tcl/axis.tcl:1447
 msgid "AXIS (No file)"
 msgstr "AXIS (keine Datei)"
+
+#: ../tcl/axis.tcl:1458
+msgid "ESTOP"
+msgstr ""
+
+#: ../tcl/axis.tcl:1459
+msgid "ESTOP RESET"
+msgstr ""
+
+#: ../tcl/axis.tcl:1460
+msgid "ON"
+msgstr ""
 
 #: ../tcl/axis.tcl:1500
 msgid "Machine"
