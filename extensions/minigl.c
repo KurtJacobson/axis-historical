@@ -695,6 +695,7 @@ void initminigl(void) {
     CONST(GL_TRUE);
     CONST(GL_UNPACK_ALIGNMENT);
     CONST(GL_V3F);
+    CONST(GL_C4UB_V3F);
     CONST(GL_VIEWPORT);
     CONST(GL_LIGHT0);
     CONST(GL_POSITION);
