@@ -4,12 +4,11 @@
 # This file is distributed under the same license as the AXIS package.
 # FIRST AUTHOR <alex_joni@sourceforge.net>, 03.Jan.2005.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: AXIS 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-03 20:18-0600\n"
+"POT-Creation-Date: 2006-01-03 20:07-0600\n"
 "PO-Revision-Date: 2006-01-04 03:20+0200\n"
 "Last-Translator: Alex Joni <alex_joni@sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -269,17 +268,15 @@ msgstr "Ö_ffnen"
 
 #: ../tcl/axis.tcl:42
 msgid "_Reload"
-msgstr ""
+msgstr "_Wieder öffnen"
 
 #: ../tcl/axis.tcl:53
-#, fuzzy
 msgid "Toggle _Emergency Stop"
-msgstr "Not Aus ändern [F1]"
+msgstr "Not _Aus ändern"
 
 #: ../tcl/axis.tcl:61
-#, fuzzy
 msgid "Toggle _Machine Power"
-msgstr "Maschine ein/aus [F2]"
+msgstr "_Maschine ein/aus"
 
 #: ../tcl/axis.tcl:71
 msgid "_Quit"
@@ -290,69 +287,60 @@ msgid "_Copy"
 msgstr "_Kopieren"
 
 #: ../tcl/axis.tcl:99
-#, fuzzy
 msgid "_Top view"
-msgstr "Ansicht zoomen"
+msgstr "Ansicht _Oben"
 
 #: ../tcl/axis.tcl:107
-#, fuzzy
 msgid "_Rotated Top view"
-msgstr "Ansicht rotieren"
+msgstr "Ansicht Oben _Rotiert"
 
 #: ../tcl/axis.tcl:115
 msgid "_Side view"
-msgstr ""
+msgstr "_Seitliche Ansicht"
 
 #: ../tcl/axis.tcl:123
-#, fuzzy
 msgid "_Front view"
-msgstr "Ansicht rotieren"
+msgstr "Ansicht _Vorne"
 
 #: ../tcl/axis.tcl:131
 msgid "_Perspective view"
-msgstr ""
+msgstr "_Perspektive"
 
 #: ../tcl/axis.tcl:143
 msgid "Display _Inches"
-msgstr ""
+msgstr "Ansicht _Inch"
 
 #: ../tcl/axis.tcl:152
 msgid "Display _MM"
-msgstr ""
+msgstr "Ansicht _MM"
 
 #: ../tcl/axis.tcl:163
-#, fuzzy
 msgid "S_how program"
-msgstr "Programm stoppen"
+msgstr "Zeige _Programm"
 
 #: ../tcl/axis.tcl:171
-#, fuzzy
 msgid "Sho_w live plot"
-msgstr "Ansicht löschen"
+msgstr "Zeige _Ansicht"
 
 #: ../tcl/axis.tcl:179
-#, fuzzy
 msgid "Show too_l"
-msgstr "Kein Werkzeug"
+msgstr "Zeige _Werkzeug"
 
 #: ../tcl/axis.tcl:187
 msgid "Show e_xtents"
-msgstr ""
+msgstr "Zeige a_lles"
 
 #: ../tcl/axis.tcl:195
-#, fuzzy
 msgid "C_lear live plot"
-msgstr "Ansicht löschen"
+msgstr "Ansicht lös_chen"
 
 #: ../tcl/axis.tcl:211
-#, fuzzy
 msgid "Set _next line"
-msgstr "Führe nächste Zeile aus [T]"
+msgstr "Setze _nächste Zeile"
 
 #: ../tcl/axis.tcl:219
-#, fuzzy
 msgid "_Run program"
-msgstr "Program ausführen"
+msgstr "P_rogram ausführen"
 
 #: ../tcl/axis.tcl:227
 msgid "_Step"
@@ -372,33 +360,31 @@ msgstr "S_top"
 
 #: ../tcl/axis.tcl:267
 msgid "_About AXIS"
-msgstr ""
+msgstr "Ü_ber AXIS"
 
 #: ../tcl/axis.tcl:274
 msgid "Quick _Reference"
-msgstr ""
+msgstr "Schnelle _Hilfe"
 
 #: ../tcl/axis.tcl:292
 msgid "Show commanded position"
-msgstr ""
+msgstr "Zeige befohlte Position"
 
 #: ../tcl/axis.tcl:301
 msgid "Show actual position"
-msgstr ""
+msgstr "Zeige aktuelle Position"
 
 #: ../tcl/axis.tcl:313
-#, fuzzy
 msgid "Show machine position"
-msgstr "Maschine an"
+msgstr "Zeige Maschinposition"
 
 #: ../tcl/axis.tcl:322
 msgid "Show relative position"
-msgstr ""
+msgstr "Zeige relative Position"
 
 #: ../tcl/axis.tcl:329
-#, fuzzy
 msgid "Show _EMC Status"
-msgstr "Zeige EMC Status"
+msgstr "Zeige _EMC Status"
 
 #: ../tcl/axis.tcl:342
 msgid "_File"
@@ -461,28 +447,24 @@ msgid "Zoom out [-]"
 msgstr "Zoom raus [-]"
 
 #: ../tcl/axis.tcl:473
-#, fuzzy
 msgid "Top view"
-msgstr "Ansicht zoomen"
+msgstr "Ansicht von oben"
 
 #: ../tcl/axis.tcl:481
-#, fuzzy
 msgid "Rotated top view"
-msgstr "Ansicht rotieren"
+msgstr "Ansicht von oben, rotiert"
 
 #: ../tcl/axis.tcl:489
-#, fuzzy
 msgid "Side view"
-msgstr "Ansicht rotieren"
+msgstr "Seitliche Ansicht"
 
 #: ../tcl/axis.tcl:497
-#, fuzzy
 msgid "Front view"
-msgstr "Ansicht rotieren"
+msgstr "Ansicht von vorne"
 
 #: ../tcl/axis.tcl:505
 msgid "Perspective view"
-msgstr ""
+msgstr "Perspektive"
 
 #: ../tcl/axis.tcl:515
 msgid "Clear live plot [Ctrl-K]"
@@ -589,7 +571,6 @@ msgid "Feed Override (%):"
 msgstr "Geschwindigkeits Übersteuerung (%):"
 
 #: ../tcl/axis.tcl:1263
-#, fuzzy
 msgid ""
 "AXIS version 1.2a0\n"
 "\n"
@@ -600,7 +581,7 @@ msgid ""
 "\n"
 "Visit the AXIS web site: "
 msgstr ""
-"AXIS Version 1.1\n"
+"AXIS Version 1.2a0\n"
 "\n"
 "Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n"
 "\n"
@@ -611,11 +592,11 @@ msgstr ""
 
 #: ../tcl/axis.tcl:1291
 msgid "About AXIS"
-msgstr ""
+msgstr "Über AXIS"
 
 #: ../tcl/axis.tcl:1334
 msgid "AXIS Quick Reference"
-msgstr ""
+msgstr "AXIS Schnellhilfe"
 
 #: ../tcl/axis.tcl:1447
 msgid "AXIS (No file)"
@@ -623,15 +604,15 @@ msgstr "AXIS (keine Datei)"
 
 #: ../tcl/axis.tcl:1458
 msgid "ESTOP"
-msgstr ""
+msgstr "NOTAUS"
 
 #: ../tcl/axis.tcl:1459
 msgid "ESTOP RESET"
-msgstr ""
+msgstr "NOTAUS RESET"
 
 #: ../tcl/axis.tcl:1460
 msgid "ON"
-msgstr ""
+msgstr "AN"
 
 #: ../tcl/axis.tcl:1500
 msgid "Machine"
@@ -718,19 +699,16 @@ msgid "Activate axis [5]"
 msgstr "Aktiviere Achse [5]"
 
 #: ../tcl/axis.tcl:1602 ../tcl/axis.tcl:1603
-#, fuzzy
 msgid "Jog selected axis"
-msgstr "Jogge zweite Achse"
+msgstr "Jogge ausgewählte Achse"
 
 #: ../tcl/axis.tcl:1604
-#, fuzzy
 msgid "Select jog ingrement"
 msgstr "Wähle Jog Inkrement"
 
 #: ../tcl/axis.tcl:1605
 msgid "Temporarily allow jogging outside machine limits [L]"
-msgstr ""
-"Momentare Erlaubniss Maschine ausserhalb des erlaubten Bereichs zu joggen [L]"
+msgstr "Momentare Erlaubniss Maschine ausserhalb des erlaubten Bereichs zu joggen [L]"
 
 #: ../rs274/errorlist.py:22
 msgid "Unexpected end of file"
