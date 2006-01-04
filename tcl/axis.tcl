@@ -39,7 +39,7 @@ setup_menu_accel .menu.file end [_ "_Open"]
 	-label Reload \
 	-underline 0
 
-setup_menu_accel .menu.file end [_ {_Reload}]
+setup_menu_accel .menu.file end [_ "_Reload"]
 
 .menu.file add separator
 
@@ -50,7 +50,7 @@ setup_menu_accel .menu.file end [_ {_Reload}]
 	-label {Toggle Emergency Stop} \
 	-underline 7
 
-setup_menu_accel .menu.file end [_ {Toggle _Emergency Stop}]
+setup_menu_accel .menu.file end [_ "Toggle _Emergency Stop"]
 
 .menu.file add command \
 	-accelerator F2 \
@@ -58,7 +58,7 @@ setup_menu_accel .menu.file end [_ {Toggle _Emergency Stop}]
 	-label {Toggle Machine Power} \
 	-underline 7
 
-setup_menu_accel .menu.file end [_ {Toggle _Machine Power}]
+setup_menu_accel .menu.file end [_ "Toggle _Machine Power"]
 
 .menu.file add separator
 
@@ -68,7 +68,7 @@ setup_menu_accel .menu.file end [_ {Toggle _Machine Power}]
 	-label Quit \
 	-underline 0
 
-setup_menu_accel .menu.file end [_ _Quit]
+setup_menu_accel .menu.file end [_ "_Quit"]
 
 # Configure widget .menu.file
 wm title .menu.file file
@@ -85,7 +85,7 @@ menu .menu.edit \
 	-label Copy \
 	-underline 0
 
-setup_menu_accel .menu.edit end [_ _Copy]
+setup_menu_accel .menu.edit end [_ "_Copy"]
 
 .menu.edit add separator
 
@@ -96,7 +96,7 @@ setup_menu_accel .menu.edit end [_ _Copy]
 	-underline 0 \
 	-accelerator V
 
-setup_menu_accel .menu.edit end [_ {_Top view}]
+setup_menu_accel .menu.edit end [_ "_Top view"]
 
 .menu.edit add command \
 	-command set_view_z2 \
@@ -104,7 +104,7 @@ setup_menu_accel .menu.edit end [_ {_Top view}]
 	-underline 0 \
 	-accelerator V
 
-setup_menu_accel .menu.edit end [_ {_Rotated Top view}]
+setup_menu_accel .menu.edit end [_ "_Rotated Top view"]
 
 .menu.edit add command \
 	-command set_view_x \
@@ -112,7 +112,7 @@ setup_menu_accel .menu.edit end [_ {_Rotated Top view}]
 	-underline 0 \
 	-accelerator V
 
-setup_menu_accel .menu.edit end [_ {_Side view}]
+setup_menu_accel .menu.edit end [_ "_Side view"]
 
 .menu.edit add command \
 	-command set_view_y \
@@ -120,7 +120,7 @@ setup_menu_accel .menu.edit end [_ {_Side view}]
 	-underline 0 \
 	-accelerator V
 
-setup_menu_accel .menu.edit end [_ {_Front view}]
+setup_menu_accel .menu.edit end [_ "_Front view"]
 
 .menu.edit add command \
 	-command set_view_p \
@@ -128,7 +128,7 @@ setup_menu_accel .menu.edit end [_ {_Front view}]
 	-underline 0 \
 	-accelerator V
 
-setup_menu_accel .menu.edit end [_ {_Perspective view}]
+setup_menu_accel .menu.edit end [_ "_Perspective view"]
 
 .menu.edit add separator
 
@@ -140,7 +140,7 @@ setup_menu_accel .menu.edit end [_ {_Perspective view}]
 	-label {Display Inches} \
 	-underline 8
 
-setup_menu_accel .menu.edit end [_ {Display _Inches}]
+setup_menu_accel .menu.edit end [_ "Display _Inches"]
 
 .menu.edit add radiobutton \
 	-value 1 \
@@ -149,7 +149,7 @@ setup_menu_accel .menu.edit end [_ {Display _Inches}]
 	-label {Display MM} \
 	-underline 8
 
-setup_menu_accel .menu.edit end [_ {Display _MM}]
+setup_menu_accel .menu.edit end [_ "Display _MM"]
 
 .menu.edit add separator
 
@@ -160,7 +160,7 @@ setup_menu_accel .menu.edit end [_ {Display _MM}]
 	-label {Show program} \
 	-underline 1
 
-setup_menu_accel .menu.edit end [_ {S_how program}]
+setup_menu_accel .menu.edit end [_ "S_how program"]
 
 .menu.edit add checkbutton \
 	-variable show_live_plot \
@@ -168,7 +168,7 @@ setup_menu_accel .menu.edit end [_ {S_how program}]
 	-label {Show live plot} \
 	-underline 3
 
-setup_menu_accel .menu.edit end [_ {Sho_w live plot}]
+setup_menu_accel .menu.edit end [_ "Sho_w live plot"]
 
 .menu.edit add checkbutton \
 	-variable show_tool \
@@ -176,7 +176,7 @@ setup_menu_accel .menu.edit end [_ {Sho_w live plot}]
 	-label {Show tool} \
 	-underline 8
 
-setup_menu_accel .menu.edit end [_ {Show too_l}]
+setup_menu_accel .menu.edit end [_ "Show too_l"]
 
 .menu.edit add checkbutton \
 	-variable show_extents \
@@ -184,7 +184,7 @@ setup_menu_accel .menu.edit end [_ {Show too_l}]
 	-label {Show extents} \
 	-underline 6
 
-setup_menu_accel .menu.edit end [_ {Show e_xtents}]
+setup_menu_accel .menu.edit end [_ "Show e_xtents"]
 
 .menu.edit add command \
 	-accelerator Ctrl-K \
@@ -192,7 +192,7 @@ setup_menu_accel .menu.edit end [_ {Show e_xtents}]
 	-label {Clear live plot} \
 	-underline 1
 
-setup_menu_accel .menu.edit end [_ {C_lear live plot}]
+setup_menu_accel .menu.edit end [_ "C_lear live plot"]
 
 # Configure widget .menu.edit
 wm title .menu.edit edit
@@ -208,7 +208,7 @@ menu .menu.program \
 	-label {Set next line} \
 	-underline 4
 
-setup_menu_accel .menu.program end [_ {Set _next line}]
+setup_menu_accel .menu.program end [_ "Set _next line"]
 
 .menu.program add command \
 	-accelerator R \
@@ -216,7 +216,7 @@ setup_menu_accel .menu.program end [_ {Set _next line}]
 	-label {Run program} \
 	-underline 0
 
-setup_menu_accel .menu.program end [_ {_Run program}]
+setup_menu_accel .menu.program end [_ "_Run program"]
 
 .menu.program add command \
 	-accelerator T \
@@ -224,7 +224,7 @@ setup_menu_accel .menu.program end [_ {_Run program}]
 	-label Step \
 	-underline 0
 
-setup_menu_accel .menu.program end [_ _Step]
+setup_menu_accel .menu.program end [_ "_Step"]
 
 .menu.program add command \
 	-accelerator P \
@@ -232,7 +232,7 @@ setup_menu_accel .menu.program end [_ _Step]
 	-label Pause \
 	-underline 0
 
-setup_menu_accel .menu.program end [_ _Pause]
+setup_menu_accel .menu.program end [_ "_Pause"]
 
 .menu.program add command \
 	-accelerator S \
@@ -240,7 +240,7 @@ setup_menu_accel .menu.program end [_ _Pause]
 	-label Resume \
 	-underline 2
 
-setup_menu_accel .menu.program end [_ Re_sume]
+setup_menu_accel .menu.program end [_ "Re_sume"]
 
 .menu.program add command \
 	-accelerator ESC \
@@ -248,7 +248,7 @@ setup_menu_accel .menu.program end [_ Re_sume]
 	-label Stop \
 	-underline 1
 
-setup_menu_accel .menu.program end [_ S_top]
+setup_menu_accel .menu.program end [_ "S_top"]
 
 # Configure widget .menu.program
 wm title .menu.program program
@@ -264,14 +264,14 @@ menu .menu.help \
 	-label {About AXIS} \
 	-underline 0
 
-setup_menu_accel .menu.help end [_ {_About AXIS}]
+setup_menu_accel .menu.help end [_ "_About AXIS"]
 
 .menu.help add command \
 	-command {wm transient .keys .;wm deiconify .keys; focus .keys.ok} \
 	-label {Quick Reference} \
 	-underline 6
 
-setup_menu_accel .menu.help end [_ {Quick _Reference}]
+setup_menu_accel .menu.help end [_ "Quick _Reference"]
 
 # Configure widget .menu.help
 wm title .menu.help help
@@ -289,7 +289,7 @@ menu .menu.view \
 	-label {Show commanded position} \
 	-command redraw
 
-setup_menu_accel .menu.view end [_ {Show commanded position}]
+setup_menu_accel .menu.view end [_ "Show commanded position"]
 
 .menu.view add radiobutton \
 	-value 0 \
@@ -298,7 +298,7 @@ setup_menu_accel .menu.view end [_ {Show commanded position}]
 	-label {Show actual position} \
 	-command redraw
 
-setup_menu_accel .menu.view end [_ {Show actual position}]
+setup_menu_accel .menu.view end [_ "Show actual position"]
 
 .menu.view add separator
 
@@ -310,7 +310,7 @@ setup_menu_accel .menu.view end [_ {Show actual position}]
 	-label {Show machine position} \
 	-command redraw
 
-setup_menu_accel .menu.view end [_ {Show machine position}]
+setup_menu_accel .menu.view end [_ "Show machine position"]
 
 .menu.view add radiobutton \
 	-value 1 \
@@ -319,14 +319,14 @@ setup_menu_accel .menu.view end [_ {Show machine position}]
 	-label {Show relative position} \
 	-command redraw
 
-setup_menu_accel .menu.view end [_ {Show relative position}]
+setup_menu_accel .menu.view end [_ "Show relative position"]
 
 .menu.view add separator
 
 .menu.view add command \
 	-label {Show EMC Status} \
 	-command {exec $emctop_command -ini $emcini &}
-setup_menu_accel .menu.view end [_ {Show _EMC Status}]
+setup_menu_accel .menu.view end [_ "Show _EMC Status"]
 
 # Configure widget .menu.view
 wm title .menu.view view
@@ -470,7 +470,7 @@ setup_widget_accel .toolbar.view_zoomout {}
 
 Button .toolbar.view_z \
 	-command set_view_z \
-	-helptext [_ {Top view}] \
+	-helptext [_ "Top view"] \
 	-image [load_image tool_axis_z] \
 	-relief sunken \
 	-takefocus 0
@@ -478,7 +478,7 @@ setup_widget_accel .toolbar.view_z {}
 
 Button .toolbar.view_z2 \
 	-command set_view_z2 \
-	-helptext [_ {Rotated top view}] \
+	-helptext [_ "Rotated top view"] \
 	-image [load_image tool_axis_z2] \
 	-relief link \
 	-takefocus 0
@@ -486,7 +486,7 @@ setup_widget_accel .toolbar.view_z2 {}
 
 Button .toolbar.view_x \
 	-command set_view_x \
-	-helptext [_ {Side view}] \
+	-helptext [_ "Side view"] \
 	-image [load_image tool_axis_x] \
 	-relief link \
 	-takefocus 0
@@ -494,7 +494,7 @@ setup_widget_accel .toolbar.view_x {}
 
 Button .toolbar.view_y \
 	-command set_view_y \
-	-helptext [_ {Front view}] \
+	-helptext [_ "Front view"] \
 	-image [load_image tool_axis_y] \
 	-relief link \
 	-takefocus 0
@@ -502,7 +502,7 @@ setup_widget_accel .toolbar.view_y {}
 
 Button .toolbar.view_p \
 	-command set_view_p \
-	-helptext [_ {Perspective view}] \
+	-helptext [_ "Perspective view"] \
 	-image [load_image tool_axis_p] \
 	-relief link \
 	-takefocus 0
@@ -754,9 +754,9 @@ setup_widget_accel $_tabs_manual.jogf.jogplus [_ +]
 combobox $_tabs_manual.jogf.jogspeed \
 	-editable 0 \
 	-textvariable jogincrement \
-	-value Continuous \
+	-value [_ Continuous] \
 	-width 10
-$_tabs_manual.jogf.jogspeed list insert end Continuous 0.1000 0.0100 0.0010 0.0001
+$_tabs_manual.jogf.jogspeed list insert end [_ Continuous] 0.1000 0.0100 0.0010 0.0001
 
 frame $_tabs_manual.jogf.zerohome
 
@@ -775,7 +775,7 @@ setup_widget_accel $_tabs_manual.jogf.zerohome.zero [_ Offset]
 checkbutton $_tabs_manual.jogf.override \
 	-command toggle_override_limits \
 	-variable override_limits
-setup_widget_accel $_tabs_manual.jogf.override [_ Override Limits]
+setup_widget_accel $_tabs_manual.jogf.override [_ "Override Limits"]
 
 grid $_tabs_manual.jogf.zerohome \
 	-column 0 \
@@ -1146,7 +1146,6 @@ label .info.tool \
 	-relief sunken \
 	-textvariable tool \
 	-width 30
-setup_widget_accel .info.tool [_ {Tool 0, offset 0.250, radius 0.03125}]
 
 label .info.offset \
 	-anchor w \
@@ -1154,7 +1153,6 @@ label .info.offset \
 	-relief sunken \
 	-textvariable offset \
 	-width 25
-setup_widget_accel .info.offset [_ {Work offset 0.000 0.000 0.000}]
 
 label .info.position \
 	-anchor w \
@@ -1162,7 +1160,6 @@ label .info.position \
 	-relief sunken \
 	-textvariable position \
 	-width 25
-setup_widget_accel .info.position [_ {Position: Commanded}]
 
 # Pack widget .info.task_state
 pack .info.task_state \
@@ -1263,7 +1260,7 @@ text .about.message \
 	.about.message configure -cursor hand2
 	.about.message tag configure link -foreground red}
 .about.message tag bind link <ButtonPress-1><ButtonRelease-1> {launch_website}
-.about.message insert end [_ "AXIS version 1.1\n\nCopyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n\nThis is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.\n\nVisit the AXIS web site: "] {} {http://axis.unpy.net} link
+.about.message insert end [_ "AXIS version 1.2a0\n\nCopyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n\nThis is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.\n\nVisit the AXIS web site: "] {} {http://axis.unpy.net} link
 .about.message configure -state disabled
 
 button .about.ok \
@@ -1291,7 +1288,7 @@ pack .about.message \
 pack .about.ok
 
 # Configure widget .about
-wm title .about [_ {About AXIS}]
+wm title .about [_ "About AXIS"]
 wm iconname .about {}
 wm resiz .about 0 0
 wm minsize .about 1 1
@@ -1334,7 +1331,7 @@ pack .keys.text \
 pack .keys.ok
 
 # Configure widget .keys
-wm title .keys [_ {AXIS Quick Reference}]
+wm title .keys [_ "AXIS Quick Reference"]
 wm iconname .keys {}
 wm resiz .keys 0 0
 wm minsize .keys 1 1
@@ -1500,8 +1497,9 @@ proc update_state {args} {
                 $::_tabs_manual.spindlef.spindleminus \
                 $::_tabs_manual.spindlef.spindleplus
 
-    set ::position [list Position: [lindex {Machine Relative} $::coord_type] \
-                                   [lindex {Actual Commanded} $::display_type]]
+    set coord_str [lindex [list [_ Machine] [_ Relative]] $::coord_type]
+    set display_str [lindex [list [_ Actual] [_ Commanded]] $::display_type]
+    set ::position [list [_ "Position:"] $coord_str $display_str]
 
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
         enable_group $::manual
@@ -1564,7 +1562,7 @@ foreach b { <Key-Left> <Key-Right>
 bind Entry <Key> {+if {[%W cget -state] == "normal" && [string length %A]} break}
 
 proc is_continuous {} {
-    expr {"[$::_tabs_manual.jogf.jogspeed get]" == "Continuous"}
+    expr {"[$::_tabs_manual.jogf.jogspeed get]" == [_ "Continuous"]}
 }
 
 proc delete_all text {
@@ -1601,9 +1599,9 @@ DynamicHelp::add $_tabs_manual.axes.axisz -text [_ "Activate axis \[Z\]"]
 DynamicHelp::add $_tabs_manual.axes.axisa -text [_ "Activate axis \[A\]"]
 DynamicHelp::add $_tabs_manual.axes.axisb -text [_ "Activate axis \[4\]"]
 DynamicHelp::add $_tabs_manual.axes.axisc -text [_ "Activate axis \[5\]"]
-DynamicHelp::add $_tabs_manual.jogf.jogminus -text [_ {Jog selected axis}]
-DynamicHelp::add $_tabs_manual.jogf.jogplus -text [_ {Jog selected axis}]
-DynamicHelp::add $_tabs_manual.jogf.jogspeed -text [_ {Select jog ingrement}]
+DynamicHelp::add $_tabs_manual.jogf.jogminus -text [_ "Jog selected axis"]
+DynamicHelp::add $_tabs_manual.jogf.jogplus -text [_ "Jog selected axis"]
+DynamicHelp::add $_tabs_manual.jogf.jogspeed -text [_ "Select jog ingrement"]
 DynamicHelp::add $_tabs_manual.jogf.override -text [_ "Temporarily allow jogging outside machine limits \[L\]"]
 
 # vim:ts=8:sts=4:et:
