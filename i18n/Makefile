@@ -4,7 +4,7 @@ axis.pot: ../scripts/axis.py ../tcl/axis.tcl ../rs274/errorlist.py
 	xgettext -k_ -o $@ $^
 
 %.po: axis.pot
-	[ -f $@ ] && msgmerge -U $@ $< || cp $< $@
+	[ -f $@ ] && msgmerge -N --no-wrap -U $@ $< || cp $< $@
 
 %.mo: %.po
 	msgfmt -o $@ $<
