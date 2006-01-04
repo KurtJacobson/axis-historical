@@ -477,8 +477,30 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
     return retval;
 }
 
+extern char * _rs274ngc_errors[];
+
+static int maxerror = -1;
+
+static int find_maxerror(void) {
+    int i=0;
+    for(;;i++) {
+        if(!_rs274ngc_errors[i] || !strcmp(_rs274ngc_errors[i], "The End"))
+            return i;
+    }
+}
+
+static PyObject *rs274_strerror(PyObject *s, PyObject *o) {
+    int err;
+    if(!PyArg_ParseTuple(o, "i", &err)) return NULL;
+    if(err < 0 || err >= maxerror) {
+        return PyString_FromString("Error number out of range");
+    }
+    return PyString_FromString(_rs274ngc_errors[err]);
+}
+
 PyMethodDef gcode_methods[] = {
     {"parse", (PyCFunction)parse_file, METH_VARARGS, "Parse a G-Code file"},
+    {"strerror", (PyCFunction)rs274_strerror, METH_VARARGS, "Convert a numeric error to a string"},
     {NULL}
 };
 
@@ -488,4 +510,6 @@ initgcode(void) {
                 "Interface to EMC rs274ngc interpreter");
     PyType_Ready(&LineCodeType);
     PyModule_AddObject(m, "linecode", (PyObject*)&LineCodeType);
+    maxerror = find_maxerror();
+    PyObject_SetAttrString(m, "RS274NGC_MAX_ERROR", PyInt_FromLong(maxerror));
 }
