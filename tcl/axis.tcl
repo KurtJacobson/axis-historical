@@ -1455,9 +1455,9 @@ proc update_title {args} {
 
 proc update_state {args} {
     switch $::task_state \
-        $::STATE_ESTOP { set ::task_state_string ESTOP } \
-        $::STATE_ESTOP_RESET { set ::task_state_string {ESTOP RESET} } \
-        $::STATE_ON { set ::task_state_string ON } \
+        $::STATE_ESTOP { set ::task_state_string [_ ESTOP] } \
+        $::STATE_ESTOP_RESET { set ::task_state_string [_ "ESTOP RESET"] } \
+        $::STATE_ON { set ::task_state_string [_ ON] } \
 
     relief {$task_state == $STATE_ESTOP} .toolbar.machine_estop
     state  {$task_state != $STATE_ESTOP} .toolbar.machine_power 
