@@ -512,4 +512,5 @@ initgcode(void) {
     PyModule_AddObject(m, "linecode", (PyObject*)&LineCodeType);
     maxerror = find_maxerror();
     PyObject_SetAttrString(m, "RS274NGC_MAX_ERROR", PyInt_FromLong(maxerror));
+    PyObject_SetAttrString(m, "RS274NGC_MIN_ERROR", PyInt_FromLong(3)); // XXX
 }

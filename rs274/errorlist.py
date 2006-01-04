@@ -15,6 +15,6 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from gcode import strerror, RS274NGC_MAX_ERROR
+from gcode import strerror, RS274NGC_MAX_ERROR, RS274NGC_MIN_ERROR
 errorlist = dict([(i, strerror(i)) for i in range(RS274NGC_MAX_ERROR)])
 del strerror
