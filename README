@@ -10,15 +10,15 @@ ABOUT AXIS
 AXIS is a front-end for EMC with file preview and live plot.
 
 The AXIS user interface is intended to be self-documenting by use of
-familiar controls and plain English tooltips and menus.  A few less
+familiar controls and plain language on tooltips and menus.  A few less
 evident features are documented by Help > Quick Reference.
 
 Python 2.2 or newer with Tkinter is required.  Hardware accelerated
 OpenGL is nice, but not required.
 
 AXIS is believed to be compatible with the "cradek_stable" branch of
-EMC1, the version of EMC1 on BDI-Live and BDI-4.xx, and EMC2.  AXIS is
-not currently compatible with the CVS HEAD of EMC1.
+EMC1, the version of EMC1 on BDI-Live and BDI-4.xx, the CVS HEAD of EMC1,
+and EMC2.
 
 AXIS's home page is http://axis.unpythonic.net/
 
