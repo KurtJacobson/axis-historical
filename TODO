@@ -1,4 +1,8 @@
 Wishlist items
+* Larger Buttons for "+" and "-"
+* Display spindle speed in RPM
+* Better "About AXIS" window.  (Example: in KWrite, there are tabs for
+  "About", "Licence", "Translators" and other things)
 * pick better Z-buffer extents using machine limits from inifile
 * messages when paused (or about to pause) should offer the opportunity to
   unpause in the dialog
