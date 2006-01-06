@@ -649,11 +649,13 @@ class LivePlotter:
             if len(self.data) >= 6:
                 glDrawBuffer(GL_FRONT)
                 glLineWidth(3)
-                glColor3f(1,0,0)
+                glColor4f(1,0,0,.5)
+                glEnable(GL_BLEND)
                 glBegin(GL_LINES)
                 glVertex3f(*self.data[-6:-3])
                 glVertex3f(*self.data[-3:])
                 glEnd()
+                glDisable(GL_BLEND)
                 glLineWidth(1)
                 glDrawBuffer(GL_BACK)
         if (self.stat.actual_position != o.last_position
@@ -1900,10 +1902,12 @@ def redraw(self):
                 glPopMatrix()
 
     if vars.show_live_plot.get():
-        glColor3f(1,0,0)
+        glColor4f(1,0,0,.5)
         glDepthFunc(GL_ALWAYS)
         glLineWidth(3)
+        glEnable(GL_BLEND)
         glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
+        glDisable(GL_BLEND)
         glLineWidth(1)
         glDepthFunc(GL_LESS);
         if live_plotter.running.get() and live_plotter.data and vars.show_tool.get():
