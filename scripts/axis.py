@@ -21,19 +21,9 @@
 from __future__ import generators
 
 import gettext; gettext.install("axis")
-
-import string
-__version__ = string.split('$Revision$')[1]
-__date__ = string.join(string.split('$Date$')[1:3], ' ')
-__author__ = 'Jeff Epler <jepler@unpythonic.net>'
+version="1.2a0"
 
 import sys, array, time, atexit, tempfile, shutil, os, errno
-
-# This works around a bug in some BLT installations by exporting symbols
-# from _tkinter.so's copy of libtcl and libtk to libblt
-ldflags = sys.getdlopenflags(); sys.setdlopenflags(0x102)
-import _tkinter
-sys.setdlopenflags(ldflags)
 
 # Print Tk errors to stdout. python.org/sf/639266
 import Tkinter 
@@ -60,7 +50,7 @@ rs274.options.install(root_window)
 import nf; nf.start(root_window); nf.makecommand(root_window, "_", _)
 import gcode
 
-
+root_window.tk.call("set", "version", version)
 
 try:
     nf.source_lib_tcl(root_window,"axis.tcl")
@@ -73,7 +63,6 @@ program_start_line_last = -1
 feedrate_blackout = 0
 from math import hypot, atan2, sin, cos, pi, sqrt
 from rs274 import ArcsToSegmentsMixin
-import _tkinter
 import emc
 
 homeicon = array.array('B', 
@@ -1596,7 +1585,7 @@ bind_axis("bracketleft", "bracketright", 3)
 def set_tabs(e):
     t.configure(tabs="%d right" % (e.width - 2))
 
-import sys, getopt, _tkinter
+import sys, getopt
 axiscount = 3
 axisnames = "X Y Z".split()
 machine_limit_min = [-10] * 6

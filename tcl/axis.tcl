@@ -260,7 +260,12 @@ menu .menu.help \
 	-tearoff 0
 
 .menu.help add command \
-	-command {wm transient .about .;wm deiconify .about; focus .about.ok} \
+	-command {
+            wm transient .about .;
+            wm deiconify .about;
+            show_all .about.message;
+            focus .about.ok
+        } \
 	-label {About AXIS} \
 	-underline 0
 
@@ -1260,7 +1265,7 @@ text .about.message \
 	.about.message configure -cursor hand2
 	.about.message tag configure link -foreground red}
 .about.message tag bind link <ButtonPress-1><ButtonRelease-1> {launch_website}
-.about.message insert end [_ "AXIS version 1.2a0\n\nCopyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n\nThis is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.\n\nVisit the AXIS web site: "] {} {http://axis.unpy.net} link
+.about.message insert end [subst [_ "AXIS version \$version\n\nCopyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.\n\nThis is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.\n\nVisit the AXIS web site: "]] {} {http://axis.unpy.net} link
 .about.message configure -state disabled
 
 button .about.ok \
@@ -1549,6 +1554,14 @@ bind Entry <Key> {+if {[%W cget -state] == "normal" && [string length %A]} break
 
 proc is_continuous {} {
     expr {"[$::_tabs_manual.jogf.jogspeed get]" == [_ "Continuous"]}
+}
+
+proc show_all text {
+    $text yview moveto 0.0
+    update
+    set fy [lindex [$text yview] 1]
+    set ch [$text cget -height]
+    $text configure -height [expr {ceil($ch/$fy)}]
 }
 
 proc delete_all text {

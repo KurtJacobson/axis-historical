@@ -31,7 +31,7 @@ from distutils.command.install_data import install_data
 from distutils.util import convert_path
 
 name="axis"
-version="1.1"
+version="1.2a0"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 LOCALEDIR="share/locale"
