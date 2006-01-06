@@ -1298,21 +1298,7 @@ toplevel .keys
 bind .keys <Key-Return> { wm withdraw .keys }
 bind .keys <Key-Escape> { wm withdraw .keys }
 
-text .keys.text \
-	-background [systembuttonface] \
-	-font {Helvetica -12} \
-	-height 22 \
-	-relief flat \
-	-tabs {100 300 400} \
-	-width 88 \
-	-cursor {}
-
-.keys.text tag configure key \
-	-borderwidth {} \
-	-elide {} \
-	-font fixed
-
-.keys.text configure -state disabled
+frame .keys.text \
 
 button .keys.ok \
 	-command {wm wi .keys} \

@@ -141,19 +141,17 @@ def install_help(app):
         ("V", _("Cycle among preset views")),
     ]
 
-    assert len(help1) >= len(help2)
-    app.tk.call(".keys.text", "configure", "-state", "normal")
-    app.tk.call(".keys.text", "delete", "0.0", "end")
+    keys = nf.makewidget(app, Frame, '.keys.text')
     for i in range(len(help1)):
-        app.tk.call(".keys.text", "insert", "end",
-                    help1[i][0], "key", "\t", "", help1[i][1], "normal")
-        if i < len(help2):
-            app.tk.call(".keys.text", "insert", "end", "\t")
-            app.tk.call(".keys.text", "insert", "end",
-                    help2[i][0], "key", "\t", "", help2[i][1], "normal")
-        app.tk.call(".keys.text", "insert", "end", "\n")
-    app.tk.call(".keys.text", "configure", "-state", "disabled")
-    app.tk.call(".keys.text", "configure", "-height", len(help1))
+        a, b = help1[i]
+        Label(keys, text=a, font="fixed", padx=4, pady=0, highlightthickness=0).grid(row=i, column=0, sticky="w")
+        Label(keys, text=b, padx=4, pady=0, highlightthickness=0).grid(row=i, column=1, sticky="w")
+    for i in range(len(help2)):
+        a, b = help2[i]
+        Label(keys, text=a, font="fixed", padx=4, pady=0, highlightthickness=0).grid(row=i, column=3, sticky="w")
+        Label(keys, text=b, padx=4, pady=0, highlightthickness=0).grid(row=i, column=4, sticky="w")
+    Label(keys, text="    ").grid(row=0, column=2)
+
 install_help(root_window)
 
 class MyOpengl(Opengl):
@@ -698,7 +696,7 @@ class LivePlotter:
             vupdate(vars.tool, _("Unknown tool %d") % self.stat.tool_in_spindle)
         else:
             vupdate(vars.tool,
-                 _("Tool %d, offset %g, radius %g") % current_tool[0])
+                 _("Tool %d, offset %g, diameter %g") % current_tool[0])
         active_codes = []
         for i in self.stat.gcodes[1:]:
             if i == -1: continue
