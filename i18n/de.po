@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AXIS 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-05 20:26-0600\n"
+"POT-Creation-Date: 2006-01-09 20:35-0600\n"
 "PO-Revision-Date: 2006-01-04 03:20+0200\n"
 "Last-Translator: Alex Joni <alex_joni@sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,72 +193,84 @@ msgstr "Perspektive wechseln"
 msgid "AXIS error"
 msgstr "AXIS Fehler"
 
-#: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:921
-#: ../scripts/axis.py:958 ../tcl/axis.tcl:1277 ../tcl/axis.tcl:1314
+#: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:923
+#: ../scripts/axis.py:960 ../tcl/axis.tcl:1277 ../tcl/axis.tcl:1314
 msgid "OK"
 msgstr "OK"
 
-#: ../scripts/axis.py:683
+#: ../scripts/axis.py:685
 msgid "No tool"
 msgstr "Kein Werkzeug"
 
-#: ../scripts/axis.py:685
+#: ../scripts/axis.py:687
 #, python-format
 msgid "Unknown tool %d"
 msgstr "Unbekanntes Werkzeug %d"
 
-#: ../scripts/axis.py:688
+#: ../scripts/axis.py:690
 #, python-format
 msgid "Tool %d, offset %g, diameter %g"
 msgstr "Werkzeug %d, Werkzeugverschiebung %g, Durchmesser %g"
 
-#: ../scripts/axis.py:919
+#: ../scripts/axis.py:921
 #, python-format
 msgid "Program_filter %r failed"
 msgstr "Programmfilter %r nicht erfolgreich"
 
-#: ../scripts/axis.py:920
+#: ../scripts/axis.py:922
 #, python-format
 msgid "Exit code %d"
 msgstr "Ende-Befehl %d"
 
-#: ../scripts/axis.py:954
+#: ../scripts/axis.py:956
 #, python-format
 msgid "Unknown error %s"
 msgstr "Unbekannter Fehler %s"
 
-#: ../scripts/axis.py:1070 ../scripts/axis.py:1075 ../scripts/axis.py:1540
+#: ../scripts/axis.py:958
+#, python-format
+msgid "G-Code error in %s"
+msgstr ""
+
+#: ../scripts/axis.py:959
+#, python-format
+msgid ""
+"Near line %d of %s:\n"
+"%s"
+msgstr ""
+
+#: ../scripts/axis.py:1072 ../scripts/axis.py:1077 ../scripts/axis.py:1542
 #: ../tcl/axis.tcl:762 ../tcl/axis.tcl:764 ../tcl/axis.tcl:1556
 msgid "Continuous"
 msgstr "Durchgehend"
 
-#: ../scripts/axis.py:1262
+#: ../scripts/axis.py:1264
 msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
 msgstr "{{rs274ngc Dateien} {.ngc}} {{Alle Dateien} *}"
 
-#: ../scripts/axis.py:1297
+#: ../scripts/axis.py:1299
 #, python-format
 msgid "Program exceeds machine minimum on axis %s"
 msgstr "Programm überschreitet unteren Grenzwert der Achse %s"
 
-#: ../scripts/axis.py:1299
+#: ../scripts/axis.py:1301
 #, python-format
 msgid "Program exceeds machine maximum on axis %s"
 msgstr "Programm überschreitet oberen Grenzwert der Achse %s"
 
-#: ../scripts/axis.py:1303
+#: ../scripts/axis.py:1305
 msgid "Program exceeds machine limits"
 msgstr "Programm überberschreitet Maschinengrenzwerte"
 
-#: ../scripts/axis.py:1306
+#: ../scripts/axis.py:1308
 msgid "Run Anyway"
 msgstr "Trotzdem ausführen"
 
-#: ../scripts/axis.py:1306
+#: ../scripts/axis.py:1308
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../scripts/axis.py:1627
+#: ../scripts/axis.py:1629
 msgid "Show EMC Status"
 msgstr "EMC Status"
 
@@ -589,7 +601,6 @@ msgstr ""
 "Deutsche Übersetzung: Alex Joni, Florian Hahn, Ingrid Kirst\n"
 "\n"
 "Besuchen Sie die AXIS Webseite: "
-
 
 #: ../tcl/axis.tcl:1296
 msgid "About AXIS"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-05 20:26-0600\n"
+"POT-Creation-Date: 2006-01-09 20:35-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -192,72 +192,84 @@ msgstr ""
 msgid "AXIS error"
 msgstr ""
 
-#: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:921
-#: ../scripts/axis.py:958 ../tcl/axis.tcl:1277 ../tcl/axis.tcl:1314
+#: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:923
+#: ../scripts/axis.py:960 ../tcl/axis.tcl:1277 ../tcl/axis.tcl:1314
 msgid "OK"
 msgstr ""
 
-#: ../scripts/axis.py:683
+#: ../scripts/axis.py:685
 msgid "No tool"
 msgstr ""
 
-#: ../scripts/axis.py:685
+#: ../scripts/axis.py:687
 #, python-format
 msgid "Unknown tool %d"
 msgstr ""
 
-#: ../scripts/axis.py:688
+#: ../scripts/axis.py:690
 #, python-format
 msgid "Tool %d, offset %g, diameter %g"
 msgstr ""
 
-#: ../scripts/axis.py:919
+#: ../scripts/axis.py:921
 #, python-format
 msgid "Program_filter %r failed"
 msgstr ""
 
-#: ../scripts/axis.py:920
+#: ../scripts/axis.py:922
 #, python-format
 msgid "Exit code %d"
 msgstr ""
 
-#: ../scripts/axis.py:954
+#: ../scripts/axis.py:956
 #, python-format
 msgid "Unknown error %s"
 msgstr ""
 
-#: ../scripts/axis.py:1070 ../scripts/axis.py:1075 ../scripts/axis.py:1540
+#: ../scripts/axis.py:958
+#, python-format
+msgid "G-Code error in %s"
+msgstr ""
+
+#: ../scripts/axis.py:959
+#, python-format
+msgid ""
+"Near line %d of %s:\n"
+"%s"
+msgstr ""
+
+#: ../scripts/axis.py:1072 ../scripts/axis.py:1077 ../scripts/axis.py:1542
 #: ../tcl/axis.tcl:762 ../tcl/axis.tcl:764 ../tcl/axis.tcl:1556
 msgid "Continuous"
 msgstr ""
 
-#: ../scripts/axis.py:1262
+#: ../scripts/axis.py:1264
 msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
-msgstr ""
-
-#: ../scripts/axis.py:1297
-#, python-format
-msgid "Program exceeds machine minimum on axis %s"
 msgstr ""
 
 #: ../scripts/axis.py:1299
 #, python-format
+msgid "Program exceeds machine minimum on axis %s"
+msgstr ""
+
+#: ../scripts/axis.py:1301
+#, python-format
 msgid "Program exceeds machine maximum on axis %s"
 msgstr ""
 
-#: ../scripts/axis.py:1303
+#: ../scripts/axis.py:1305
 msgid "Program exceeds machine limits"
 msgstr ""
 
-#: ../scripts/axis.py:1306
+#: ../scripts/axis.py:1308
 msgid "Run Anyway"
 msgstr ""
 
-#: ../scripts/axis.py:1306
+#: ../scripts/axis.py:1308
 msgid "Cancel"
 msgstr ""
 
-#: ../scripts/axis.py:1627
+#: ../scripts/axis.py:1629
 msgid "Show EMC Status"
 msgstr ""
 
