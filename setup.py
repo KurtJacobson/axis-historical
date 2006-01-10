@@ -27,14 +27,11 @@ from build_scripts import *
 from togl_setup import get_togl_flags
 from emc_setup import *
 import distutils.command.install
-from distutils.command.install_data import install_data
-from distutils.util import convert_path
 
 name="axis"
-version="1.1"
+version="1.1.1rc1"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
-LOCALEDIR="share/locale"
 
 emcroot = os.path.abspath(os.getenv("EMCROOT", None) or find_emc_root())
 if emcroot is None:
@@ -222,39 +219,6 @@ if simple_install:
 else:
     ext_modules = [emc, togl, gcode, minigl]
 
-class install_data(install_data):
-    def run(self):
-        self.mkpath(self.install_dir)
-        for f in self.data_files:
-            dir = convert_path(f[0])
-            if not os.path.isabs(dir):
-                dir = os.path.join(self.install_dir, dir)
-            elif self.root:
-                dir = change_root(self.root, dir)
-            self.mkpath(dir)
-
-            if f[1] == []:
-                # If there are no files listed, the user must be
-                # trying to create an empty directory, so add the
-                # directory to the list of output files.
-                self.outfiles.append(dir)
-            else:
-                # Copy files, adding them to the list of output files.
-                for data in f[1]:
-                    if isinstance(data, str):
-                        dest = dir
-                    else:
-                        dest = os.path.join(dir, data[1])
-                        data = data[0]
-                    dest = convert_path(dest)
-                    (out, _) = self.copy_file(data, dest)
-                    self.outfiles.append(out)
-
-def lang(f): return os.path.splitext(os.path.basename(f))[0]
-i18n = [(os.path.join(LOCALEDIR,lang(f),"LC_MESSAGES"), [(f, "axis.mo")])
-            for f in glob("i18n/??.mo") + glob("i18n/??_??.mo")]
-print i18n
-
 setup(name=name, version=version,
     description="AXIS front-end for emc",
     author="Jeff Epler", author_email="jepler@unpythonic.net",
@@ -263,10 +227,9 @@ setup(name=name, version=version,
     scripts={WINDOWED('axis'): 'scripts/axis.py',
              TERMINAL('emctop'): 'scripts/emctop.py',
              TERMINAL('mdi'): 'scripts/mdi.py'},
-    cmdclass = {
-        'build_scripts': build_scripts,
-        'install_data': install_data},
+    cmdclass = {'build_scripts': build_scripts},
     data_files = [(os.path.join(SHAREDIR, "tcl"), glob("tcl/*.tcl")),
+                  (os.path.join(SHAREDIR, "tcl"), glob("tcl/axis.nf")),
                   (os.path.join(SHAREDIR, "tcl"), glob("thirdparty/*.tcl")),
                   (os.path.join(SHAREDIR, "tcl/bwidget"),
                                        glob("thirdparty/bwidget/*.tcl")),
@@ -280,7 +243,7 @@ setup(name=name, version=version,
                   (os.path.join(SHAREDIR, "images"), glob("images/*.xbm")),
                   (DOCDIR, ["COPYING", "README", "BUGS",
                         "thirdparty/bwidget/LICENSE.txt",
-                        "thirdparty/LICENSE-Togl"])] + i18n,
+                        "thirdparty/LICENSE-Togl"])],
     ext_modules = ext_modules,
     url="http://axis.unpythonic.net/",
     license="GPL",
