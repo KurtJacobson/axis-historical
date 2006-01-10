@@ -955,8 +955,8 @@ def open_file_guts(f, filtered = False):
         if result >= rs274.RS274NGC_MIN_ERROR:
             error_str = rs274.errorlist.get(result, _("Unknown error %s") % result)
             root_window.tk.call("nf_dialog", ".error",
-                    "G-Code error in %s" % os.path.basename(f),
-                    "On line %d of %s:\n%s" % (seq+1, f, error_str),
+                    _("G-Code error in %s") % os.path.basename(f),
+                    _("Near line %d of %s:\n%s") % (seq+1, f, error_str),
                     "error",0,_("OK"))
 
         t.configure(state="disabled")
