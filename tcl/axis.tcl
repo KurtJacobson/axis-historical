@@ -1421,9 +1421,15 @@ proc state {e args} {
             # the X resources database.  This next line is supposed to
             # properly adjust the numbers for that case.
             if {[$w cget -tearoff]} { incr $idx }
-            $w entryconfigure $idx -state $newstate
+            set oldstate [$w entrycget $idx -state]
+            if {$oldstate != $newstate} {
+                $w entryconfigure $idx -state $newstate
+            }
         } else {
-            $w configure -state $newstate
+            set oldstate [$w cget -state]
+            if {$oldstate != $newstate} {
+                $w configure -state $newstate
+            }
         }
     }
 }
