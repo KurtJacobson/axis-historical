@@ -29,7 +29,6 @@ from emc_setup import *
 import distutils.command.install
 from distutils.command.install_data import install_data
 from distutils.util import convert_path
-from distutils import log
 import distutils.file_util
 
 def copy_file (src, dst,
@@ -90,9 +89,9 @@ def copy_file (src, dst,
         raise ValueError, \
               "invalid value '%s' for 'link' argument" % link
     if os.path.basename(dst) == os.path.basename(src):
-        log.info("%s %s -> %s", action, src, dir)
+        print "%s %s -> %s" % (action, src, dir)
     else:
-        log.info("%s %s -> %s", action, src, dst)
+        print "%s %s -> %s" % (action, src, dst)
 
     if dry_run:
         return (dst, 1)
