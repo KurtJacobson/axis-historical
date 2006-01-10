@@ -213,24 +213,24 @@ errorlist = {
  194: 'Y value unspecified in xz plane canned cycle',
  195: 'Z value unspecified in xy plane canned cycle',
  196: 'Zero or negative argument to ln',
- 197: 'Zero radius arc'
- 198: "K word missing with g33"
- 199: "F word used with a g33"
- 200: "G33 not supported"
- 201: "Canned cycles not supported"
- 202: "Unknown operation name starting with e"
- 203: "Unknown operation name starting with n"
- 204: "Unknown operation name starting with g"
- 205: "Unknown operation name starting with l"
- 206: "Too many subroutine parameters"
- 207: "Too many subroutine levels"
- 208: "Unknown control command in o word"
- 209: "Too many oword labels"
- 210: "Unknown oword number"
- 211: "Nested subroutine definition"
- 212: "Not in subroutine definition"
- 213: "Return outside of subroutine"
- 214: "File not open"
+ 197: 'Zero radius arc',
+ 198: "K word missing with g33",
+ 199: "F word used with a g33",
+ 200: "G33 not supported",
+ 201: "Canned cycles not supported",
+ 202: "Unknown operation name starting with e",
+ 203: "Unknown operation name starting with n",
+ 204: "Unknown operation name starting with g",
+ 205: "Unknown operation name starting with l",
+ 206: "Too many subroutine parameters",
+ 207: "Too many subroutine levels",
+ 208: "Unknown control command in o word",
+ 209: "Too many oword labels",
+ 210: "Unknown oword number",
+ 211: "Nested subroutine definition",
+ 212: "Not in subroutine definition",
+ 213: "Return outside of subroutine",
+ 214: "File not open",
  215: "Unknown error"
 }
  
