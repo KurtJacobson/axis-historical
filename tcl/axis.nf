@@ -1267,7 +1267,7 @@ text .about.message \
 	.about.message configure -cursor hand2
 	.about.message tag configure link -foreground red}
 .about.message tag bind link <ButtonPress-1><ButtonRelease-1> {launch_website}
-.about.message insert end {AXIS version 1.1.1rc3
+.about.message insert end {AXIS version 1.1.1rc4
 
 Copyright (C) 2004, 2005, 2006 Jeff Epler and Chris Radek.
 
