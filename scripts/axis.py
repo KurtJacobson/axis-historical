@@ -304,7 +304,7 @@ class MyOpengl(Opengl):
 
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(self.fovy, float(w)/float(h), self.near, self.far)
+        gluPerspective(self.fovy, float(w)/float(h), self.near, self.far + self.distance)
 
         gluLookAt(0, 0, self.distance,
             0, 0, 0,
@@ -342,7 +342,7 @@ class MyOpengl(Opengl):
         l = k * h / w
         glOrtho(-k, k, -l, l, -1000, 1000.)
 
-        gluLookAt(0, 0, self.distance,
+        gluLookAt(0, 0, 1,
             0, 0, 0,
             0., 1., 0.)
         glMatrixMode(GL_MODELVIEW)
