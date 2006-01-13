@@ -43,7 +43,7 @@ msgstr "Vierte Achse aktivieren"
 
 #: ../scripts/axis.py:90
 msgid "Activate fifth axis"
-msgstr "FÃ¼nfte Achse aktivieren"
+msgstr "Fünfte Achse aktivieren"
 
 #: ../scripts/axis.py:91
 msgid "Activate sixth axis"
@@ -51,7 +51,7 @@ msgstr "Sechste Achse aktivieren"
 
 #: ../scripts/axis.py:92
 msgid "Select jog increment"
-msgstr "Schrittweite auswÃ¤hlen"
+msgstr "Schrittweite auswählen"
 
 #: ../scripts/axis.py:93
 msgid "Continuous jog"
@@ -63,7 +63,7 @@ msgstr "Referenzpunkt mit der aktiven Achse anfahren"
 
 #: ../scripts/axis.py:95
 msgid "Set G54 offset for active axis"
-msgstr "Absolute Nullpunktverschiebung fÃ¼r die aktive Achse eingeben"
+msgstr "Absolute Nullpunktverschiebung für die aktive Achse eingeben"
 
 #: ../scripts/axis.py:96
 msgid "Jog first axis"
@@ -87,7 +87,7 @@ msgstr "Linke Maustaste"
 
 #: ../scripts/axis.py:101
 msgid "Pan view or select line"
-msgstr "Ansicht bew. oder Linie auswÃ¤hlen"
+msgstr "Ansicht bew. oder Linie auswählen"
 
 #: ../scripts/axis.py:102
 msgid "Shift+Left Button"
@@ -127,15 +127,15 @@ msgstr "Grenzwerte aufheben"
 
 #: ../scripts/axis.py:112
 msgid "Open program"
-msgstr "Programm Ã¶ffnen"
+msgstr "Programm öffnen"
 
 #: ../scripts/axis.py:113
 msgid "Run program"
-msgstr "Programm ausfÃ¼hren"
+msgstr "Programm ausführen"
 
 #: ../scripts/axis.py:114
 msgid "Step program"
-msgstr "Programm schrittweise ausfÃ¼hren"
+msgstr "Programm schrittweise ausführen"
 
 #: ../scripts/axis.py:115
 msgid "Pause program"
@@ -155,7 +155,7 @@ msgstr "Nebel an/aus"
 
 #: ../scripts/axis.py:120
 msgid "Toggle flood"
-msgstr "KÃ¼hlmittel an/aus"
+msgstr "Kühlmittel an/aus"
 
 #: ../scripts/axis.py:122
 msgid "Spindle brake off"
@@ -183,7 +183,7 @@ msgstr "Spindel schneller"
 
 #: ../scripts/axis.py:129
 msgid "Clear live plot"
-msgstr "Werkzeugpfad lÃ¶schen"
+msgstr "Werkzeugpfad löschen"
 
 #: ../scripts/axis.py:130
 msgid "Cycle among preset views"
@@ -251,20 +251,20 @@ msgstr "{{rs274ngc Dateien} {.ngc}} {{Alle Dateien} *}"
 #: ../scripts/axis.py:1299
 #, python-format
 msgid "Program exceeds machine minimum on axis %s"
-msgstr "Programm Ã¼berschreitet unteren Grenzwert der Achse %s"
+msgstr "Programm überschreitet unteren Grenzwert der Achse %s"
 
 #: ../scripts/axis.py:1301
 #, python-format
 msgid "Program exceeds machine maximum on axis %s"
-msgstr "Programm Ã¼berschreitet oberen Grenzwert der Achse %s"
+msgstr "Programm überschreitet oberen Grenzwert der Achse %s"
 
 #: ../scripts/axis.py:1305
 msgid "Program exceeds machine limits"
-msgstr "Programm Ã¼berberschreitet Maschinengrenzwerte"
+msgstr "Programm überberschreitet Maschinengrenzwerte"
 
 #: ../scripts/axis.py:1308
 msgid "Run Anyway"
-msgstr "Trotzdem ausfÃ¼hren"
+msgstr "Trotzdem ausführen"
 
 #: ../scripts/axis.py:1308
 msgid "Cancel"
@@ -276,7 +276,7 @@ msgstr "EMC Status"
 
 #: ../tcl/axis.tcl:34
 msgid "_Open"
-msgstr "Ã–_ffnen"
+msgstr "Ö_ffnen"
 
 #: ../tcl/axis.tcl:42
 msgid "_Reload"
@@ -340,19 +340,19 @@ msgstr "_Werkzeug anzeigen"
 
 #: ../tcl/axis.tcl:187
 msgid "Show e_xtents"
-msgstr "_BemaÃŸung anzeigen"
+msgstr "_Bemaßung anzeigen"
 
 #: ../tcl/axis.tcl:195
 msgid "C_lear live plot"
-msgstr "Werkzeugpfad _lÃ¶schen"
+msgstr "Werkzeugpfad _löschen"
 
 #: ../tcl/axis.tcl:211
 msgid "Set _next line"
-msgstr "_NÃ¤chste Zeile setzen"
+msgstr "_Nächste Zeile setzen"
 
 #: ../tcl/axis.tcl:219
 msgid "_Run program"
-msgstr "P_rogram ausfÃ¼hren"
+msgstr "P_rogram ausführen"
 
 #: ../tcl/axis.tcl:227
 msgid "_Step"
@@ -372,7 +372,7 @@ msgstr "_Abbrechen"
 
 #: ../tcl/axis.tcl:272
 msgid "_About AXIS"
-msgstr "Ãœ_ber AXIS"
+msgstr "Ü_ber AXIS"
 
 #: ../tcl/axis.tcl:279
 msgid "Quick _Reference"
@@ -428,7 +428,7 @@ msgstr "Maschine an/aus [F2]"
 
 #: ../tcl/axis.tcl:410
 msgid "Open G-Code file [O]"
-msgstr "G-Code Datei Ã¶ffnen [O]"
+msgstr "G-Code Datei öffnen [O]"
 
 #: ../tcl/axis.tcl:418
 msgid "Reopen current file [Control-R]"
@@ -436,11 +436,11 @@ msgstr "Aktuelle Datei nochmals laden [Strg-R]"
 
 #: ../tcl/axis.tcl:428
 msgid "Begin executing current file [R]"
-msgstr "Aktuelle Datei ausfÃ¼hren [R]"
+msgstr "Aktuelle Datei ausführen [R]"
 
 #: ../tcl/axis.tcl:436
 msgid "Execute next line [T]"
-msgstr "NÃ¤chste Zeile ausfÃ¼hren [T]"
+msgstr "Nächste Zeile ausführen [T]"
 
 #: ../tcl/axis.tcl:444
 msgid "Pause [P] / resume [S] execution"
@@ -448,11 +448,11 @@ msgstr "Pause [P] / Fortsetzen [S]"
 
 #: ../tcl/axis.tcl:452
 msgid "Stop program execution [ESC]"
-msgstr "ProgrammausfÃ¼hrung abbrechen [ESC]"
+msgstr "Programmausführung abbrechen [ESC]"
 
 #: ../tcl/axis.tcl:462
 msgid "Zoom in [+]"
-msgstr "VergrÃ¶ÃŸern [+]"
+msgstr "Vergrößern [+]"
 
 #: ../tcl/axis.tcl:470
 msgid "Zoom out [-]"
@@ -480,7 +480,7 @@ msgstr "Perspektivische Ansicht"
 
 #: ../tcl/axis.tcl:520
 msgid "Clear live plot [Ctrl-K]"
-msgstr "Werkzeugpfad lÃ¶schen [Strg-K]"
+msgstr "Werkzeugpfad löschen [Strg-K]"
 
 #: ../tcl/axis.tcl:627
 msgid "Manual Control [F3]"
@@ -548,7 +548,7 @@ msgstr "Bremse"
 
 #: ../tcl/axis.tcl:950
 msgid "Coolant:"
-msgstr "KÃ¼hlung:"
+msgstr "Kühlung:"
 
 #: ../tcl/axis.tcl:955
 msgid "Mist"
@@ -556,7 +556,7 @@ msgstr "Nebel"
 
 #: ../tcl/axis.tcl:960
 msgid "Flood"
-msgstr "KÃ¼hlmittel"
+msgstr "Kühlmittel"
 
 #: ../tcl/axis.tcl:1032
 msgid "History:"
@@ -568,7 +568,7 @@ msgstr "MDI Befehl:"
 
 #: ../tcl/axis.tcl:1056
 msgid "Go"
-msgstr "AusfÃ¼hren"
+msgstr "Ausführen"
 
 #: ../tcl/axis.tcl:1062
 msgid "Active G-Codes:"
@@ -580,7 +580,7 @@ msgstr ""
 
 #: ../tcl/axis.tcl:1229
 msgid "Feed Override (%):"
-msgstr "GeschwindigkeitsÃ¼bersteuerung (%):"
+msgstr "Geschwindigkeitsübersteuerung (%):"
 
 #: ../tcl/axis.tcl:1268
 msgid ""
@@ -598,13 +598,13 @@ msgstr ""
 "\n"
 "This is free software, and you are welcome to redistribute it under certain conditions.  See the file COPYING, included with AXIS.\n"
 "\n"
-"Deutsche Ãœbersetzung: Alex Joni, Florian Hahn, Ingrid Kirst\n"
+"Deutsche Übersetzung: Alex Joni, Florian Hahn, Ingrid Kirst\n"
 "\n"
 "Besuchen Sie die AXIS Webseite: "
 
 #: ../tcl/axis.tcl:1296
 msgid "About AXIS"
-msgstr "Ãœber AXIS"
+msgstr "Über AXIS"
 
 #: ../tcl/axis.tcl:1325
 msgid "AXIS Quick Reference"
@@ -672,7 +672,7 @@ msgstr "Spindelbremse an [Shift-B] oder aus [B]"
 
 #: ../tcl/axis.tcl:1597
 msgid "Turn flood on or off [F8]"
-msgstr "KÃ¼hlmittel an/aus [F8]"
+msgstr "Kühlmittel an/aus [F8]"
 
 #: ../tcl/axis.tcl:1598
 msgid "Turn mist on or off [F7]"
@@ -684,7 +684,7 @@ msgstr "Referenzpunkt mit der aktiven Achse anfahren [Pos1]"
 
 #: ../tcl/axis.tcl:1600
 msgid "Set G54 offset for active axis [Shift-Home]"
-msgstr "Absolute Nullpunktverschiebung (G54) fÃ¼r die aktive Achse eingeben [Shift-Pos1]"
+msgstr "Absolute Nullpunktverschiebung (G54) für die aktive Achse eingeben [Shift-Pos1]"
 
 #: ../tcl/axis.tcl:1601
 msgid "Activate axis [X]"
@@ -716,7 +716,7 @@ msgstr "Aktive Achse bewegen"
 
 #: ../tcl/axis.tcl:1609
 msgid "Select jog ingrement"
-msgstr "Schrittweite auswÃ¤hlen"
+msgstr "Schrittweite auswählen"
 
 #: ../tcl/axis.tcl:1610
 msgid "Temporarily allow jogging outside machine limits [L]"
