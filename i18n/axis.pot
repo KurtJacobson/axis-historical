@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-09 20:35-0600\n"
+"POT-Creation-Date: 2006-01-12 21:50-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -239,7 +239,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/axis.py:1072 ../scripts/axis.py:1077 ../scripts/axis.py:1542
-#: ../tcl/axis.tcl:762 ../tcl/axis.tcl:764 ../tcl/axis.tcl:1556
+#: ../tcl/axis.tcl:762 ../tcl/axis.tcl:764 ../tcl/axis.tcl:1562
 msgid "Continuous"
 msgstr ""
 
@@ -601,114 +601,114 @@ msgstr ""
 msgid "AXIS Quick Reference"
 msgstr ""
 
-#: ../tcl/axis.tcl:1438
+#: ../tcl/axis.tcl:1444
 msgid "AXIS (No file)"
 msgstr ""
 
-#: ../tcl/axis.tcl:1449
+#: ../tcl/axis.tcl:1455
 msgid "ESTOP"
 msgstr ""
 
-#: ../tcl/axis.tcl:1450
+#: ../tcl/axis.tcl:1456
 msgid "ESTOP RESET"
 msgstr ""
 
-#: ../tcl/axis.tcl:1451
+#: ../tcl/axis.tcl:1457
 msgid "ON"
 msgstr ""
 
-#: ../tcl/axis.tcl:1491
+#: ../tcl/axis.tcl:1497
 msgid "Machine"
 msgstr ""
 
-#: ../tcl/axis.tcl:1491
+#: ../tcl/axis.tcl:1497
 msgid "Relative"
 msgstr ""
 
-#: ../tcl/axis.tcl:1492
+#: ../tcl/axis.tcl:1498
 msgid "Actual"
 msgstr ""
 
-#: ../tcl/axis.tcl:1492
+#: ../tcl/axis.tcl:1498
 msgid "Commanded"
 msgstr ""
 
-#: ../tcl/axis.tcl:1493
+#: ../tcl/axis.tcl:1499
 msgid "Position:"
 msgstr ""
 
-#: ../tcl/axis.tcl:1585
+#: ../tcl/axis.tcl:1591
 msgid "Turn spindle counterclockwise [F10]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1586
+#: ../tcl/axis.tcl:1592
 msgid "Turn spindle clockwise [F9]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1587
+#: ../tcl/axis.tcl:1593
 msgid "Stop spindle [F9/F10]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1588
+#: ../tcl/axis.tcl:1594
 msgid "Turn spindle Faster [F12]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1589
+#: ../tcl/axis.tcl:1595
 msgid "Turn spindle Slower [F11]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1590
+#: ../tcl/axis.tcl:1596
 msgid "Turn spindle brake on [Shift-B] or off [B]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1591
+#: ../tcl/axis.tcl:1597
 msgid "Turn flood on or off [F8]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1592
+#: ../tcl/axis.tcl:1598
 msgid "Turn mist on or off [F7]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1593
+#: ../tcl/axis.tcl:1599
 msgid "Send active axis home [Home]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1594
+#: ../tcl/axis.tcl:1600
 msgid "Set G54 offset for active axis [Shift-Home]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1595
+#: ../tcl/axis.tcl:1601
 msgid "Activate axis [X]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1596
+#: ../tcl/axis.tcl:1602
 msgid "Activate axis [Y]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1597
+#: ../tcl/axis.tcl:1603
 msgid "Activate axis [Z]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1598
+#: ../tcl/axis.tcl:1604
 msgid "Activate axis [A]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1599
+#: ../tcl/axis.tcl:1605
 msgid "Activate axis [4]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1600
+#: ../tcl/axis.tcl:1606
 msgid "Activate axis [5]"
 msgstr ""
 
-#: ../tcl/axis.tcl:1601 ../tcl/axis.tcl:1602
+#: ../tcl/axis.tcl:1607 ../tcl/axis.tcl:1608
 msgid "Jog selected axis"
 msgstr ""
 
-#: ../tcl/axis.tcl:1603
+#: ../tcl/axis.tcl:1609
 msgid "Select jog ingrement"
 msgstr ""
 
-#: ../tcl/axis.tcl:1604
+#: ../tcl/axis.tcl:1610
 msgid "Temporarily allow jogging outside machine limits [L]"
 msgstr ""
