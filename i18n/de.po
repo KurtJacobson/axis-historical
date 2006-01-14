@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AXIS 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-13 16:03+0100\n"
+"POT-Creation-Date: 2006-01-12 21:50-0600\n"
 "PO-Revision-Date: 2006-01-13 15:46+0100\n"
 "Last-Translator: Florian Hahn <Florian-Hahn@web.de>\n"
 "Language-Team: German <emc-developers@lists.sourceforge.net>\n"
@@ -194,7 +194,7 @@ msgid "AXIS error"
 msgstr "AXIS Fehler"
 
 #: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:923
-#: ../scripts/axis.py:960 ../tcl/axis.tcl:1276 ../tcl/axis.tcl:1313
+#: ../scripts/axis.py:960 ../tcl/axis.tcl:1277 ../tcl/axis.tcl:1314
 msgid "OK"
 msgstr "OK"
 
@@ -242,7 +242,7 @@ msgstr ""
 "%s"
 
 #: ../scripts/axis.py:1072 ../scripts/axis.py:1077 ../scripts/axis.py:1542
-#: ../tcl/axis.tcl:762 ../tcl/axis.tcl:764 ../tcl/axis.tcl:1561
+#: ../tcl/axis.tcl:762 ../tcl/axis.tcl:764 ../tcl/axis.tcl:1562
 msgid "Continuous"
 msgstr "Durchgehend"
 
