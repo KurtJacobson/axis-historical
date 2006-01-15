@@ -16,9 +16,7 @@ evident features are documented by Help > Quick Reference.
 Python 2.2 or newer with Tkinter is required.  Hardware accelerated
 OpenGL is nice, but not required.
 
-AXIS is believed to be compatible with the "cradek_stable" branch of
-EMC1, the version of EMC1 on BDI-Live and BDI-4.xx, the CVS HEAD of EMC1,
-and EMC2.
+AXIS is compatible with emc1 and emc2.
 
 AXIS's home page is http://axis.unpythonic.net/
 
@@ -35,21 +33,8 @@ the value for PLAT, the non-realtime platform that EMC is configured to
 use.  In this case, the commandline would look like
     $ env EMCROOT=/xxx PLAT=yyy python setup.py install
 
-For BDI4 and EMC2, EMCROOT is the absolute path to the "emc" directory.
-It should not be necessary to specify PLAT for BDI4 and EMC2.
-
-In some cases there is already an installed version of AXIS, but the
-necessary environment to rebuild the extension modules is not present or
-is difficult to set up.  In this case, use the environment variable
-SIMPLEINSTALL to (re)install everything but the extension modules:
-    $ env EMCROOT=/xxx PLAT=yyy SIMPLEINSTALL=yes python setup.py install
-This doesn't always work, and even if it does you will be deprived
-of any bugfixes or improvements to the extension modules.
-
-For BDI 4.30, the install command is (all on one line)
-    $ sudo env EMCROOT=/usr/local/emc SIMPLEINSTALL=yes python setup.py install
-However, two serious memory leaks in the extension modules have been
-fixed since the last version of AXIS packaged for BDI 4.xx.
+For EMC2, EMCROOT is the absolute path to the "emc" directory.
+It is not necessary to specify PLAT for EMC2.
 
 To make EMC actually use AXIS as the front-end, find the "DISPLAY" line
 in your ini file.  Change it to read "DISPLAY = axis".
