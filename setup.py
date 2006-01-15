@@ -357,7 +357,6 @@ class install_data(install_data):
 def lang(f): return os.path.splitext(os.path.basename(f))[0]
 i18n = [(os.path.join(LOCALEDIR,lang(f),"LC_MESSAGES"), [(f, "axis.mo")])
             for f in glob("i18n/??.mo") + glob("i18n/??_??.mo")]
-print i18n
 
 setup(name=name, version=version,
     description="AXIS front-end for emc",
