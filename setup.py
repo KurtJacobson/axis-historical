@@ -139,7 +139,7 @@ DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 LOCALEDIR="share/locale"
 
-emcroot = os.path.abspath(os.getenv("EMCROOT", None) or find_emc_root())
+emcroot = os.getenv("EMCROOT", None) or find_emc_root()
 if emcroot is None:
     print """\
 setup.py failed to locate the root directory of your emc installation.
@@ -149,6 +149,7 @@ commandline like this:
 
 See the README file for more information."""
     raise SystemExit, 1
+emcroot = os.path.abspath(emcroot)
 
 simple_install = os.getenv("SIMPLEINSTALL", False)
 
