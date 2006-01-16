@@ -639,6 +639,8 @@ class LivePlotter:
         position = [pi / (25.4 * lu) for pi in self.stat.position[:3]]
         p = array.array('f', position)
         if not self.data or p != self.data[-3:]:
+            if self.data:
+                start_point = self.data[-3:]
             if len(self.data) > 6 and \
                     colinear(self.data[-6:-3], self.data[-3:], p):
                 self.data[-3:] = p
@@ -652,7 +654,7 @@ class LivePlotter:
                 glColor4f(1,0,0,.5)
                 glEnable(GL_BLEND)
                 glBegin(GL_LINES)
-                glVertex3f(*self.data[-6:-3])
+                glVertex3f(*start_point)
                 glVertex3f(*self.data[-3:])
                 glEnd()
                 glDisable(GL_BLEND)
