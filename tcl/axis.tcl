@@ -615,10 +615,8 @@ pack .toolbar.rule12 \
 pack .toolbar.clear_plot \
 	-side left
 
-PanedWindow .pane -side left -pad 1 -width 7
-
-set pane_top [.pane add -weight 3]
-set pane_bottom [.pane add -weight 1]
+set pane_top [frame .top]
+set pane_bottom [frame .bottom]
 
 NoteBook ${pane_top}.tabs \
 	-borderwidth 2 \
@@ -1334,7 +1332,6 @@ grid ${pane_top}.feedoverride \
 	-row 2 \
 	-sticky nw
 
-grid .pane -column 0 -row 1 -columnspan 2 -sticky nsew
 # Grid widget .info
 grid .info \
 	-column 0 \
@@ -1370,13 +1367,17 @@ after idle {
 	Widget::setoption [winfo parent ${pane_bottom}] -minsize [winfo reqheight $pane_bottom]
 }
 
+grid .top -column 0 -row 1 -sticky nsew
+grid .bottom -column 0 -row 2 -sticky nsew
+
+
 # Grid widget .toolbar
 grid .toolbar \
 	-column 0 \
 	-row 0 \
 	-columnspan 3 \
 	-sticky nesw
-grid columnconfigure . 1 -weight 1
+grid columnconfigure . 0 -weight 1
 grid rowconfigure . 1 -weight 1
 
 # vim:ts=8:sts=8:noet:sw=8
