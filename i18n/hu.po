@@ -1,16 +1,18 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# FIRST AUTHOR <dzsolt@gmail.com>, 2006.
 # 
-#  Beta. Needs to be tested. And corrected... !
+#  Beta. 
+#  Now 100% translation.
+#  Now refinement a few word.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: AXIS Hungarian Translation 0.1\n"
+"Project-Id-Version: AXIS Hungarian Translation 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-12 21:50-0600\n"
-"PO-Revision-Date: 2006-01-14 01:44-0000\n"
+"POT-Creation-Date: 2006-01-19 07:03-0600\n"
+"PO-Revision-Date: 2006-01-18 21:22-0000\n"
 "Last-Translator: Dani Zsolt <dzsolt@gmail.com>\n"
 "Language-Team: Hungarian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -95,8 +97,7 @@ msgstr "Nézet mozgatás vagy sor kijelölés"
 msgid "Shift+Left Button"
 msgstr "Shift+Bal egér gomb"
 
-#: ../scripts/axis.py:102
-#: ../scripts/axis.py:104
+#: ../scripts/axis.py:102 ../scripts/axis.py:104
 msgid "Rotate view"
 msgstr "Forgatott nézet"
 
@@ -104,8 +105,7 @@ msgstr "Forgatott nézet"
 msgid "Right Button"
 msgstr "Jobb egérgomb"
 
-#: ../scripts/axis.py:103
-#: ../scripts/axis.py:105
+#: ../scripts/axis.py:103 ../scripts/axis.py:105
 msgid "Zoom view"
 msgstr "Nagyitás"
 
@@ -125,8 +125,7 @@ msgstr "Kézi vezérlés"
 msgid "Code entry (MDI)"
 msgstr "Kód mező (MDI)"
 
-#: ../scripts/axis.py:110
-#: ../tcl/axis.tcl:783
+#: ../scripts/axis.py:110 ../tcl/axis.tcl:781
 msgid "Override Limits"
 msgstr "Határok módosítása"
 
@@ -164,27 +163,27 @@ msgstr "Hűtés Ki/Be"
 
 #: ../scripts/axis.py:122
 msgid "Spindle brake off"
-msgstr "Orsó fék kikapcsolva"
+msgstr "Fő orsó fék kikapcsolva"
 
 #: ../scripts/axis.py:123
 msgid "Spindle brake on"
-msgstr "Orsó fék bekapcsolva"
+msgstr "Fő orsó fék bekapcsolva"
 
 #: ../scripts/axis.py:124
 msgid "Turn spindle clockwise"
-msgstr "Orsó jobbra fordul"
+msgstr "Fő orsó jobbra fordul"
 
 #: ../scripts/axis.py:125
 msgid "Turn spindle counterclockwise"
-msgstr "Orsó balra fordul"
+msgstr "Fő orsó balra fordul"
 
 #: ../scripts/axis.py:126
 msgid "Turn spindle more slowly"
-msgstr "Orsó lassítás"
+msgstr "Fő orsó lassítás"
 
 #: ../scripts/axis.py:127
 msgid "Turn spindle more quickly"
-msgstr "Orsó gyorsítás"
+msgstr "Fő orsó gyorsítás"
 
 #: ../scripts/axis.py:129
 msgid "Clear live plot"
@@ -194,55 +193,50 @@ msgstr "Grafikus szimuláció törlése"
 msgid "Cycle among preset views"
 msgstr "Ciklus előre beállított nézetek között"
 
-#: ../scripts/axis.py:621
-#: ../scripts/axis.py:629
+#: ../scripts/axis.py:621 ../scripts/axis.py:629
 msgid "AXIS error"
 msgstr "AXIS hiba"
 
-#: ../scripts/axis.py:621
-#: ../scripts/axis.py:629
-#: ../scripts/axis.py:923
-#: ../scripts/axis.py:960
-#: ../tcl/axis.tcl:1277
-#: ../tcl/axis.tcl:1314
+#: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:925
+#: ../scripts/axis.py:962 ../tcl/axis.tcl:1275 ../tcl/axis.tcl:1312
 msgid "OK"
 msgstr "OK"
 
-#: ../scripts/axis.py:685
+#: ../scripts/axis.py:687
 msgid "No tool"
 msgstr "Nincs szerszám"
 
-#: ../scripts/axis.py:687
+#: ../scripts/axis.py:689
 #, python-format
 msgid "Unknown tool %d"
 msgstr "Szerszám %d ismeretlen"
 
-#: ../scripts/axis.py:690
+#: ../scripts/axis.py:692
 #, python-format
 msgid "Tool %d, offset %g, diameter %g"
 msgstr "Szerszám %d, eltolás %g, atmerő %g"
 
-#: ../scripts/axis.py:921
+#: ../scripts/axis.py:923
 #, python-format
 msgid "Program_filter %r failed"
 msgstr "Program_szűrő %r sikertelen"
 
-#: ../scripts/axis.py:922
+#: ../scripts/axis.py:924
 #, python-format
 msgid "Exit code %d"
 msgstr "Kilépő kód: %d"
 
-#: ../scripts/axis.py:956
+#: ../scripts/axis.py:958
 #, python-format
 msgid "Unknown error %s"
 msgstr "Ismeretlen hiba %s"
 
-#: ../scripts/axis.py:958
+#: ../scripts/axis.py:960
 #, python-format
 msgid "G-Code error in %s"
 msgstr "G-kód hiba %s -ben"
 
-#: ../scripts/axis.py:959
+#: ../scripts/axis.py:961
 #, python-format
 msgid ""
 "Near line %d of %s:\n"
@@ -251,42 +245,38 @@ msgstr ""
 "Közel a %d sorhoz, %s -ból:\n"
 "%s"
 
-#: ../scripts/axis.py:1072
-#: ../scripts/axis.py:1077
-#: ../scripts/axis.py:1542
-#: ../tcl/axis.tcl:762
-#: ../tcl/axis.tcl:764
-#: ../tcl/axis.tcl:1562
+#: ../scripts/axis.py:1074 ../scripts/axis.py:1079 ../scripts/axis.py:1544
+#: ../tcl/axis.tcl:760 ../tcl/axis.tcl:762 ../tcl/axis.tcl:1563
 msgid "Continuous"
 msgstr "Folytonos"
 
-#: ../scripts/axis.py:1264
+#: ../scripts/axis.py:1266
 msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
 msgstr "{{rs274ngc files} {.ngc}} {{All files} *}"
 
-#: ../scripts/axis.py:1299
+#: ../scripts/axis.py:1301
 #, python-format
 msgid "Program exceeds machine minimum on axis %s"
-msgstr "A program meghaladja a gep minimumat: %s tengelyen"
+msgstr "A program meghaladja a gép minimumat: %s tengelyen"
 
-#: ../scripts/axis.py:1301
+#: ../scripts/axis.py:1303
 #, python-format
 msgid "Program exceeds machine maximum on axis %s"
 msgstr "A program meghaladja a gép maximumat: %s tengelyen"
 
-#: ../scripts/axis.py:1305
+#: ../scripts/axis.py:1307
 msgid "Program exceeds machine limits"
 msgstr "A program túllép a gép korlátain"
 
-#: ../scripts/axis.py:1308
+#: ../scripts/axis.py:1310
 msgid "Run Anyway"
 msgstr "Program folytatás"
 
-#: ../scripts/axis.py:1308
+#: ../scripts/axis.py:1310
 msgid "Cancel"
 msgstr "Mégsem"
 
-#: ../scripts/axis.py:1629
+#: ../scripts/axis.py:1631
 msgid "Show EMC Status"
 msgstr "EMC állapot mutatása"
 
@@ -498,109 +488,107 @@ msgstr "Perspektíva nézet"
 msgid "Clear live plot [Ctrl-K]"
 msgstr "Grafikus szimuláció törlése [Ctrl-K]"
 
-#: ../tcl/axis.tcl:627
+#: ../tcl/axis.tcl:625
 msgid "Manual Control [F3]"
 msgstr "Kézi vezérlés [F3]"
 
-#: ../tcl/axis.tcl:628
+#: ../tcl/axis.tcl:626
 msgid "Code Entry [F5]"
 msgstr "Kód mező [F5]"
 
-#: ../tcl/axis.tcl:637
+#: ../tcl/axis.tcl:635
 msgid "Axis:"
 msgstr "Tengely:"
 
-#: ../tcl/axis.tcl:648
+#: ../tcl/axis.tcl:646
 msgid "_X"
 msgstr "_X"
 
-#: ../tcl/axis.tcl:657
+#: ../tcl/axis.tcl:655
 msgid "_Y"
 msgstr "_Y"
 
-#: ../tcl/axis.tcl:666
+#: ../tcl/axis.tcl:664
 msgid "_Z"
 msgstr "_Z"
 
-#: ../tcl/axis.tcl:675
+#: ../tcl/axis.tcl:673
 msgid "_A"
 msgstr "_A"
 
-#: ../tcl/axis.tcl:684
+#: ../tcl/axis.tcl:682
 msgid "_B"
 msgstr "_B"
 
-#: ../tcl/axis.tcl:693
+#: ../tcl/axis.tcl:691
 msgid "_C"
 msgstr "_C"
 
-#: ../tcl/axis.tcl:744
-#: ../tcl/axis.tcl:884
+#: ../tcl/axis.tcl:742 ../tcl/axis.tcl:882
 msgid "-"
 msgstr "-"
 
-#: ../tcl/axis.tcl:757
-#: ../tcl/axis.tcl:898
+#: ../tcl/axis.tcl:755 ../tcl/axis.tcl:896
 msgid "+"
 msgstr "+"
 
-#: ../tcl/axis.tcl:772
+#: ../tcl/axis.tcl:770
 msgid "Home"
 msgstr "Nullpont"
 
-#: ../tcl/axis.tcl:778
+#: ../tcl/axis.tcl:776
 msgid "Offset"
 msgstr "Eltolás"
 
-#: ../tcl/axis.tcl:839
+#: ../tcl/axis.tcl:837
 msgid "Spindle:"
-msgstr "Orsó:"
+msgstr "Fő orsó:"
 
-#: ../tcl/axis.tcl:860
+#: ../tcl/axis.tcl:858
 msgid "Stop"
 msgstr "Stop"
 
-#: ../tcl/axis.tcl:903
+#: ../tcl/axis.tcl:901
 msgid "Brake"
 msgstr "Fék"
 
-#: ../tcl/axis.tcl:950
+#: ../tcl/axis.tcl:948
 msgid "Coolant:"
-msgstr "Hűtő folyadék:"
+msgstr "Hűtés:"
 
-#: ../tcl/axis.tcl:955
+#: ../tcl/axis.tcl:953
 msgid "Mist"
 msgstr "Elszívás"
 
-#: ../tcl/axis.tcl:960
+#: ../tcl/axis.tcl:958
 msgid "Flood"
 msgstr "Folyadék"
 
-#: ../tcl/axis.tcl:1032
+#: ../tcl/axis.tcl:1030
 msgid "History:"
 msgstr "Előzmények:"
 
-#: ../tcl/axis.tcl:1046
+#: ../tcl/axis.tcl:1044
 msgid "MDI Command:"
 msgstr "MDI parancs:"
 
-#: ../tcl/axis.tcl:1056
+#: ../tcl/axis.tcl:1054
 msgid "Go"
 msgstr "Indulj"
 
-#: ../tcl/axis.tcl:1062
+#: ../tcl/axis.tcl:1060
 msgid "Active G-Codes:"
 msgstr "Aktuális G-kódok:"
 
-#: ../tcl/axis.tcl:1217
+#: ../tcl/axis.tcl:1215
 msgid "0"
 msgstr "0"
 
-#: ../tcl/axis.tcl:1229
+#: ../tcl/axis.tcl:1227
 msgid "Feed Override (%):"
-msgstr "Feed Override (%):"
+msgstr "Túlhajtás (%):"
 
-#: ../tcl/axis.tcl:1268
+#: ../tcl/axis.tcl:1266
 msgid ""
 "AXIS version $version\n"
 "\n"
@@ -618,124 +606,122 @@ msgstr ""
 "\n"
 "Szívesen látunk az AXIS web oldalán: "
 
-#: ../tcl/axis.tcl:1296
+#: ../tcl/axis.tcl:1294
 msgid "About AXIS"
 msgstr "Az AXIS névjegye"
 
-#: ../tcl/axis.tcl:1325
+#: ../tcl/axis.tcl:1323
 msgid "AXIS Quick Reference"
 msgstr "AXIS gyors referencia"
 
-#: ../tcl/axis.tcl:1444
+#: ../tcl/axis.tcl:1445
 msgid "AXIS (No file)"
-msgstr "AXIS (No file)"
+msgstr "AXIS (Nincs fájl)"
 
-#: ../tcl/axis.tcl:1455
+#: ../tcl/axis.tcl:1456
 msgid "ESTOP"
 msgstr "ESTOP"
 
-#: ../tcl/axis.tcl:1456
+#: ../tcl/axis.tcl:1457
 msgid "ESTOP RESET"
 msgstr "ESTOP RESET"
 
-#: ../tcl/axis.tcl:1457
+#: ../tcl/axis.tcl:1458
 msgid "ON"
 msgstr "ON"
 
-#: ../tcl/axis.tcl:1497
+#: ../tcl/axis.tcl:1498
 msgid "Machine"
 msgstr "Gép"
 
-#: ../tcl/axis.tcl:1497
+#: ../tcl/axis.tcl:1498
 msgid "Relative"
 msgstr "Relatív"
 
-#: ../tcl/axis.tcl:1498
+#: ../tcl/axis.tcl:1499
 msgid "Actual"
 msgstr "Aktuális"
 
-#: ../tcl/axis.tcl:1498
+#: ../tcl/axis.tcl:1499
 msgid "Commanded"
 msgstr "Irányított"
 
-#: ../tcl/axis.tcl:1499
+#: ../tcl/axis.tcl:1500
 msgid "Position:"
 msgstr "Pozíció:"
 
-#: ../tcl/axis.tcl:1591
-msgid "Turn spindle counterclockwise [F10]"
-msgstr "Orsó balra forgatása [F10]"
-
 #: ../tcl/axis.tcl:1592
-msgid "Turn spindle clockwise [F9]"
-msgstr "Orsó jobbra forgatása [F9]"
+msgid "Turn spindle counterclockwise [F10]"
+msgstr "Fő orsó balra forgatása [F10]"
 
 #: ../tcl/axis.tcl:1593
-msgid "Stop spindle [F9/F10]"
-msgstr "Orsó leállítása [F9/F10]"
+msgid "Turn spindle clockwise [F9]"
+msgstr "Fő orsó jobbra forgatása [F9]"
 
 #: ../tcl/axis.tcl:1594
-msgid "Turn spindle Faster [F12]"
-msgstr "Orsó gyorsítása [F12]"
+msgid "Stop spindle [F9/F10]"
+msgstr "Fő orsó leállítása [F9/F10]"
 
 #: ../tcl/axis.tcl:1595
-msgid "Turn spindle Slower [F11]"
-msgstr "Orsó lassítása [F11]"
+msgid "Turn spindle Faster [F12]"
+msgstr "Fő orsó gyorsítása [F12]"
 
 #: ../tcl/axis.tcl:1596
-msgid "Turn spindle brake on [Shift-B] or off [B]"
-msgstr "Orsó fék be- [Shift-B] vagy ki- [B] kapcsolása"
+msgid "Turn spindle Slower [F11]"
+msgstr "Fő orsó lassítása [F11]"
 
 #: ../tcl/axis.tcl:1597
+msgid "Turn spindle brake on [Shift-B] or off [B]"
+msgstr "Fő orsó fék be- [Shift-B] vagy ki- [B] kapcsolása"
+
+#: ../tcl/axis.tcl:1598
 msgid "Turn flood on or off [F8]"
 msgstr "Hűtőfolyadék Ki/Be [F8]"
 
-#: ../tcl/axis.tcl:1598
+#: ../tcl/axis.tcl:1599
 msgid "Turn mist on or off [F7]"
 msgstr "Elszívás Ki/Be [F7]"
 
-#: ../tcl/axis.tcl:1599
+#: ../tcl/axis.tcl:1600
 msgid "Send active axis home [Home]"
 msgstr "Aktív tengely nullpontra [Home]"
 
-#: ../tcl/axis.tcl:1600
+#: ../tcl/axis.tcl:1601
 msgid "Set G54 offset for active axis [Shift-Home]"
 msgstr "A G54 eltolás rögzítése az aktív tengelyen [Shift-Home]"
 
-#: ../tcl/axis.tcl:1601
+#: ../tcl/axis.tcl:1602
 msgid "Activate axis [X]"
 msgstr "[X] engely aktiválása"
 
-#: ../tcl/axis.tcl:1602
+#: ../tcl/axis.tcl:1603
 msgid "Activate axis [Y]"
 msgstr "[Y] Tengely aktiválása"
 
-#: ../tcl/axis.tcl:1603
+#: ../tcl/axis.tcl:1604
 msgid "Activate axis [Z]"
 msgstr "[Z] Tengely aktiválása"
 
-#: ../tcl/axis.tcl:1604
+#: ../tcl/axis.tcl:1605
 msgid "Activate axis [A]"
 msgstr "[A] Tengely aktiválása"
 
-#: ../tcl/axis.tcl:1605
+#: ../tcl/axis.tcl:1606
 msgid "Activate axis [4]"
 msgstr "[4] Tengely aktiválása"
 
-#: ../tcl/axis.tcl:1606
+#: ../tcl/axis.tcl:1607
 msgid "Activate axis [5]"
 msgstr "[5] Tengely aktiválása"
 
-#: ../tcl/axis.tcl:1607
-#: ../tcl/axis.tcl:1608
+#: ../tcl/axis.tcl:1608 ../tcl/axis.tcl:1609
 msgid "Jog selected axis"
-msgstr "Lepés a kiválasztott tengelyen"
+msgstr "Lépés a kiválasztott tengelyen"
 
-#: ../tcl/axis.tcl:1609
+#: ../tcl/axis.tcl:1610
 msgid "Select jog ingrement"
 msgstr "Lépés növelés"
 
-#: ../tcl/axis.tcl:1610
+#: ../tcl/axis.tcl:1611
 msgid "Temporarily allow jogging outside machine limits [L]"
 msgstr "Átmenetileg túl léphető határok [L]"
-
