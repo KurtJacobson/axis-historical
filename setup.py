@@ -29,7 +29,7 @@ from emc_setup import *
 import distutils.command.install
 
 name="axis"
-version="1.1.1rc4"
+version="1.1.1"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 
