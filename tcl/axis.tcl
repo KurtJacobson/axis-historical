@@ -1362,11 +1362,6 @@ grid ${pane_bottom}.t \
 grid rowconfigure ${pane_bottom} 1 -weight 1
 grid columnconfigure ${pane_bottom} 1 -weight 1
 
-after idle {
-	Widget::setoption [winfo parent ${pane_top}] -minsize [winfo reqheight $pane_top]
-	Widget::setoption [winfo parent ${pane_bottom}] -minsize [winfo reqheight $pane_bottom]
-}
-
 grid .top -column 0 -row 1 -sticky nsew
 grid .bottom -column 0 -row 2 -sticky nsew
 
