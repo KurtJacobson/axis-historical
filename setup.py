@@ -134,7 +134,7 @@ distutils.file_util.copy_file = copy_file
 
 
 name="axis"
-version="1.2a0"
+version="1.2a1"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 LOCALEDIR="share/locale"
