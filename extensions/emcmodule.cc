@@ -367,6 +367,7 @@ static PyMemberDef Stat_members[] = {
     {"probing", T_INT, O(motion.traj.probing), READONLY},
     {"probe_val", T_INT, O(motion.traj.probeval), READONLY},
     {"kinematics_type", T_INT, O(motion.traj.kinematics_type), READONLY},
+    {"motion_type", T_INT, O(motion.traj.motion_type), READONLY},
 
 // io
 // EMC_TOOL_STAT io.tool
