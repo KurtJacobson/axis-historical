@@ -191,19 +191,17 @@ elif is_emc2:
     gcode = Extension("gcode", [
             "extensions/gcodemodule.cc"
         ],
-        define_macros = [('AXIS_USE_EMC2', 1)],
+        define_macros = [('AXIS_USE_EMC2', 1), ('NEW_INTERPRETER', 1)],
         include_dirs=[
             os.path.join(emcroot, "include"),
         ],
         library_dirs = [
             os.path.join(emcroot, "lib")
         ],
+        libraries = ['nml', 'm', 'stdc++'],
         extra_link_args = [
-            '-DNEW_INTERPRETER', 
-            '-Wl,-rpath,%s' % 
-            os.path.join(emcroot, "lib"),
+            '-Wl,-rpath,%s' % os.path.join(emcroot, "lib"),
             os.path.join(emcroot, "src", ".tmp", "rs274.o"),
-            '-lnml', '-lm', '-lstdc++',
         ]
     )
 
