@@ -198,10 +198,9 @@ elif is_emc2:
         library_dirs = [
             os.path.join(emcroot, "lib")
         ],
-        libraries = ['nml', 'm', 'stdc++'],
+        libraries = ['rs274', 'nml', 'm', 'stdc++'],
         extra_link_args = [
             '-Wl,-rpath,%s' % os.path.join(emcroot, "lib"),
-            os.path.join(emcroot, "src", ".tmp", "rs274.o"),
         ]
     )
 
