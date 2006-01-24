@@ -29,12 +29,15 @@ def is_emc_root(f):
 
 builtin_candidates = [
         os.path.abspath(".."), os.path.abspath("../.."),
+        os.path.abspath("../emc2"), os.path.abspath("../../emc2"),
 	'/usr/local/emc2', '/usr/emc2', '/usr/src/emc2', '/usr/local/src/emc2',
 	'/usr/local/emc', '/usr/emc', '/usr/src', '/usr/local/src',
 	'/usr/local', '/usr']
 
 if os.environ.has_key('HOME'):
-    builtin_candidates.insert(0, os.path.abspath(os.environ['HOME']))
+    h = os.path.abspath(os.environ['HOME'])
+    builtin_candidates.insert(0, h)
+    builtin_candidates.insert(0, os.path.join(h, "emc2"))
 
 def find_emc_root(candidates = []):
     for c in candidates + builtin_candidates:
