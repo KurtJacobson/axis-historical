@@ -227,19 +227,17 @@ elif is_bdi4:
     gcode = Extension("gcode", [
             "extensions/gcodemodule.cc"
         ],
-        define_macros = [('AXIS_USE_EMC2', 1)],
+        define_macros = [('AXIS_USE_EMC2', 1), ('NEW_INTERPRETER', 1)],
         include_dirs=[
             os.path.join(emcroot, "src/include"),
         ],
         library_dirs = [
             os.path.join(emcroot, "plat/linux_rtai/lib")
         ],
+        libraries = ['nml', 'm', 'stdc++'],
         extra_link_args = [
-            '-DNEW_INTERPRETER', 
-            '-Wl,-rpath,%s' % 
-            os.path.join(emcroot, "plat/linux_rtai/lib"),
+            '-Wl,-rpath,%s' % os.path.join(emcroot, "plat/linux_rtai/lib"),
             os.path.join(emcroot, "src", ".tmp", "rs274.o"),
-            '-lnml', '-lm', '-lstdc++',
         ]
     )
 
@@ -278,6 +276,7 @@ else:
     gcode = Extension("gcode", [
             "extensions/gcodemodule.cc"
         ],
+        define_macros = [('NEW_INTERPRETER', 1)],
         include_dirs=[
             os.path.join(emcroot, "emc", "plat", emcplat, "include",
                  "rs274ngc_new"),
@@ -288,12 +287,11 @@ else:
             os.path.join(emcroot, "emc", "plat", emcplat, "lib"),
             os.path.join(emcroot, "rcslib", "plat", emcplat, "lib")
         ],
+        libraries = ['rcs', 'm', 'stdc++'],
         extra_link_args = [
-            '-DNEW_INTERPRETER', 
             '-Wl,-rpath,%s' % 
                 os.path.join(emcroot, "rcslib", "plat", emcplat, "lib"),
             os.path.join(emcroot, "emc", "plat", emcplat, "lib", "rs274abc.o"),
-            '-lrcs', '-lm', '-lstdc++',
         ]
     )
 
