@@ -13,6 +13,7 @@ Wishlist items
 * make the view follow the cone around
 * more built-in help
 * for live plot, G0 vs G1 should be different colors
+* Perhaps cone size could be related to tool size
 
 Missing dialogs/subwindows from xemc:
 * tool list editor (at least display?)
