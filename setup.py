@@ -23,115 +23,10 @@ sys.path.insert(0, "setup")
 from glob import glob
 from distutils import sysconfig
 from distutils.core import setup, Extension
-from build_scripts import *
 from togl_setup import get_togl_flags
 from emc_setup import *
 import distutils.command.install
-from distutils.command.install_data import install_data
-from distutils.util import convert_path
-import distutils.file_util
-
-def copy_file (src, dst,
-               preserve_mode=1,
-               preserve_times=1,
-               update=0,
-               link=None,
-               verbose=0,
-               dry_run=0):
-
-    """Copy a file 'src' to 'dst'.  If 'dst' is a directory, then 'src' is
-    copied there with the same name; otherwise, it must be a filename.  (If
-    the file exists, it will be ruthlessly clobbered.)  If 'preserve_mode'
-    is true (the default), the file's mode (type and permission bits, or
-    whatever is analogous on the current platform) is copied.  If
-    'preserve_times' is true (the default), the last-modified and
-    last-access times are copied as well.  If 'update' is true, 'src' will
-    only be copied if 'dst' does not exist, or if 'dst' does exist but is
-    older than 'src'.
-
-    'link' allows you to make hard links (os.link) or symbolic links
-    (os.symlink) instead of copying: set it to "hard" or "sym"; if it is
-    None (the default), files are copied.  Don't set 'link' on systems that
-    don't support it: 'copy_file()' doesn't check if hard or symbolic
-    linking is available.
-
-    Under Mac OS, uses the native file copy function in macostools; on
-    other systems, uses 'distutils.file_util._copy_file_contents()' to copy
-    file contents.
-
-    Return a tuple (dest_name, copied): 'dest_name' is the actual name of
-    the output file, and 'copied' is true if the file was copied (or would
-    have been copied, if 'dry_run' true).
-    """
-    # XXX if the destination file already exists, we clobber it if
-    # copying, but blow up if linking.  Hmmm.  And I don't know what
-    # macostools.copyfile() does.  Should definitely be consistent, and
-    # should probably blow up if destination exists and we would be
-    # changing it (ie. it's not already a hard/soft link to src OR
-    # (not update) and (src newer than dst).
-
-    from distutils.dep_util import newer
-    from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
-
-    if not os.path.isfile(src):
-        raise DistutilsFileError, \
-              "can't copy '%s': doesn't exist or not a regular file" % src
-
-    if os.path.isdir(dst):
-        dir = dst
-        dst = os.path.join(dst, os.path.basename(src))
-    else:
-        dir = os.path.dirname(dst)
-
-    try:
-        action = distutils.file_util._copy_action[link]
-    except KeyError:
-        raise ValueError, \
-              "invalid value '%s' for 'link' argument" % link
-    if os.path.basename(dst) == os.path.basename(src):
-        print "%s %s -> %s" % (action, src, dir)
-    else:
-        print "%s %s -> %s" % (action, src, dst)
-
-    if dry_run:
-        return (dst, 1)
-
-    # On Mac OS, use the native file copy routine
-    if os.name == 'mac':
-        import macostools
-        try:
-            macostools.copy(src, dst, 0, preserve_times)
-        except os.error, exc:
-            raise DistutilsFileError, \
-                  "could not copy '%s' to '%s': %s" % (src, dst, exc[-1])
-
-    # If linking (hard or symbolic), use the appropriate system call
-    # (Unix only, of course, but that's the caller's responsibility)
-    elif link == 'hard':
-        if not (os.path.exists(dst) and os.path.samefile(src, dst)):
-            os.link(src, dst)
-    elif link == 'sym':
-        if not (os.path.exists(dst) and os.path.samefile(src, dst)):
-            os.symlink(src, dst)
-
-    # Otherwise (non-Mac, not linking), copy the file contents and
-    # (optionally) copy the times and mode.
-    else:
-        distutils.file_util._copy_file_contents(src, dst)
-        if preserve_mode or preserve_times:
-            st = os.stat(src)
-
-            # According to David Ascher <da@ski.org>, utime() should be done
-            # before chmod() (at least under NT).
-            if preserve_times:
-                os.utime(dst, (st[ST_ATIME], st[ST_MTIME]))
-            if preserve_mode:
-                os.chmod(dst, S_IMODE(st[ST_MODE]))
-
-    return (dst, 1)
-distutils.file_util.copy_file = copy_file
-# copy_file ()
-
+from monkeypatch import *
 
 name="axis"
 version="1.2a1"
@@ -293,34 +188,6 @@ togl = Extension("_togl", ["extensions/_toglmodule.c"], **get_togl_flags())
 
 ext_modules = [emc, togl, gcode, minigl]
 
-class install_data(install_data):
-    def run(self):
-        self.mkpath(self.install_dir)
-        for f in self.data_files:
-            dir = convert_path(f[0])
-            if not os.path.isabs(dir):
-                dir = os.path.join(self.install_dir, dir)
-            elif self.root:
-                dir = change_root(self.root, dir)
-            self.mkpath(dir)
-
-            if f[1] == []:
-                # If there are no files listed, the user must be
-                # trying to create an empty directory, so add the
-                # directory to the list of output files.
-                self.outfiles.append(dir)
-            else:
-                # Copy files, adding them to the list of output files.
-                for data in f[1]:
-                    if isinstance(data, str):
-                        dest = dir
-                    else:
-                        dest = os.path.join(dir, data[1])
-                        data = data[0]
-                    dest = convert_path(dest)
-                    (out, _) = self.copy_file(data, dest)
-                    self.outfiles.append(out)
-
 def lang(f): return os.path.splitext(os.path.basename(f))[0]
 i18n = [(os.path.join(LOCALEDIR,lang(f),"LC_MESSAGES"), [(f, "axis.mo")])
             for f in glob("i18n/??.mo") + glob("i18n/??_??.mo")]
@@ -333,9 +200,7 @@ setup(name=name, version=version,
     scripts={WINDOWED('axis'): 'scripts/axis.py',
              TERMINAL('emctop'): 'scripts/emctop.py',
              TERMINAL('mdi'): 'scripts/mdi.py'},
-    cmdclass = {
-        'build_scripts': build_scripts,
-        'install_data': install_data},
+    cmdclass = { 'build_scripts': build_scripts, 'install_data': install_data},
     data_files = [(os.path.join(SHAREDIR, "tcl"), glob("tcl/*.tcl")),
                   (os.path.join(SHAREDIR, "tcl"), glob("thirdparty/*.tcl")),
                   (os.path.join(SHAREDIR, "tcl/bwidget"),
