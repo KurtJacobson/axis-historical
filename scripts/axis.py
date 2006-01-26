@@ -1024,6 +1024,8 @@ tabs_manual = str(root_window.tk.call("set", "_tabs_manual"))
 pane_top = str(root_window.tk.call("set", "pane_top"))
 pane_bottom = str(root_window.tk.call("set", "pane_bottom"))
 widgets = nf.Widgets(root_window, 
+    ("help_window", Toplevel, ".keys"),
+    ("about_window", Toplevel, ".about"),
     ("menu_view", Menu, ".menu.view"),
     ("text", Text, pane_bottom + ".t.text"),
     ("preview_frame", Frame, pane_top + ".preview"),
@@ -1296,7 +1298,7 @@ class TclCommands(nf.TclCommands):
     def task_run(*event):
         warnings = []
         if o.g:
-            for i in range(3):
+            for i in range(min(axiscount, 3)): # Does not enforce angle limits
                 if o.g.min_extents[i] < machine_limit_min[i]:
                     warnings.append(_("Program exceeds machine minimum on axis %s") % axisnames[i])
                 if o.g.max_extents[i] > machine_limit_max[i]:
@@ -2043,6 +2045,16 @@ if o.g:
     y = (o.g.min_extents[1] + o.g.max_extents[1])/2
     z = (o.g.min_extents[2] + o.g.max_extents[2])/2
     o.set_centerpoint(x, y, z)
+o.update_idletasks()
+try:
+    import _tk_seticon
+except ImportError:
+    print "seticon not available"
+else:
+    from rs274.icon import icon
+    _tk_seticon.seticon(root_window, icon)
+    _tk_seticon.seticon(widgets.about_window, icon)
+    _tk_seticon.seticon(widgets.help_window, icon)
 o.mainloop()
 
 # vim:sw=4:sts=4:et:

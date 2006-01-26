@@ -184,9 +184,11 @@ else:
             os.path.join(emcroot, "rcslib", "plat", emcplat, "lib")]
     )
 
-togl = Extension("_togl", ["extensions/_toglmodule.c"], **get_togl_flags())
+flags = get_togl_flags()
+togl = Extension("_togl", ["extensions/_toglmodule.c"], **flags)
+seticon = Extension("_tk_seticon", ["extensions/seticon.c"], **flags)
 
-ext_modules = [emc, togl, gcode, minigl]
+ext_modules = [emc, togl, gcode, minigl, seticon]
 
 def lang(f): return os.path.splitext(os.path.basename(f))[0]
 i18n = [(os.path.join(LOCALEDIR,lang(f),"LC_MESSAGES"), [(f, "axis.mo")])
