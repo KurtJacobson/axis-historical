@@ -14,6 +14,8 @@ Wishlist items
 * more built-in help
 * for live plot, G0 vs G1 should be different colors
 * Perhaps cone size could be related to tool size
+* control + left drag = zoom, which is the final thing needed for 
+  left-button-only navigation (SWP's touchscreen).
 
 Missing dialogs/subwindows from xemc:
 * tool list editor (at least display?)
