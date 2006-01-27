@@ -95,8 +95,7 @@ elif is_emc2:
             '-DNEW_INTERPRETER', 
             '-Wl,-rpath,%s' % 
             os.path.join(emcroot, "lib"),
-            os.path.join(emcroot, "src", ".tmp", "rs274.o"),
-            '-lnml', '-lm', '-lstdc++',
+            '-lrs274', '-lnml', '-lm', '-lstdc++',
         ]
     )
 
