@@ -2045,6 +2045,7 @@ if o.g:
     y = (o.g.min_extents[1] + o.g.max_extents[1])/2
     z = (o.g.min_extents[2] + o.g.max_extents[2])/2
     o.set_centerpoint(x, y, z)
+root_window.bind("<Visibility>", "after 100 { catch { send popimage exit }}; bind . <Visibility {}")
 o.update_idletasks()
 try:
     import _tk_seticon
