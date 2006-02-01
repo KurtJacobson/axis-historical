@@ -1,0 +1,11 @@
+Source: emc2-axis
+Maintainer: Chris Radek <chris@timeguy.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.6.1
+Build-Depends: debhelper (>= 4.1.67), python2.4-dev, libgl1-mesa-dev, libglu1-mesa-dev, libxmu-dev, tk8.4-dev
+
+Package: emc2-axis
+Architecture: i386
+Depends: python (>= 2.4), python (<< 2.5), emc2, ${python:Depends}, ${shlibs:Depends}
+Description: AXIS front-end for emc2

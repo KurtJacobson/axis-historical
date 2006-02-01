@@ -190,7 +190,9 @@ seticon = Extension("_tk_seticon", ["extensions/seticon.c"], **flags)
 
 ext_modules = [emc, togl, gcode, minigl, seticon]
 
-def lang(f): return os.path.splitext(os.path.basename(f))[0]
+def lang(f):
+    import os
+    return os.path.splitext(os.path.basename(f))[0]
 i18n = [(os.path.join(LOCALEDIR,lang(f),"LC_MESSAGES"), [(f, "axis.mo")])
             for f in glob("i18n/??.mo") + glob("i18n/??_??.mo")]
 

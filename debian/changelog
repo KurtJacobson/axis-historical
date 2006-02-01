@@ -1,0 +1,13 @@
+emc2-axis (1.2a1-0.2) unstable; urgency=low
+  cheese
+
+ -- Jeff Epler <jepler@unpythonic.net>  Wed,  1 Feb 2006 09:41:00 -0600
+
+emc2-axis (1.2a1-0.1) unstable; urgency=low
+
+  [ Unknown ]
+
+  [ Chris Radek ]
+  * Created automatically by dh_make (distutils 2.4.1)
+
+ -- Chris Radek <chris@localhost.localdomain>  Wed,  1 Feb 2006 08:45:43 -0600
