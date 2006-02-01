@@ -10,3 +10,5 @@ Makefile
 *.pyc
 *.o
 *.so
+build-stamp
+configure-stamp
