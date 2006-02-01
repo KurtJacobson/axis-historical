@@ -81,7 +81,9 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 	$(call foreach_python_version, SETUP_INSTALL)
-
+	mkdir -p ${DESTDIR}/usr/share/doc/emc2-axis
+	mv ${DESTDIR}/usr/share/doc/axis-*/* ${DESTDIR}/usr/share/doc/emc2-axis
+	rmdir ${DESTDIR}/usr/share/doc/axis-*
 
 binary-indep: build install dummy-package
 binary-arch: build install
@@ -146,3 +148,4 @@ binary: binary-indep binary-arch
 .PHONY: dummy-package real-packages
 
 export EMC_RUN_INSTALLED := yes
+export EMCROOT := /usr

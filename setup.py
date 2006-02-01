@@ -47,7 +47,9 @@ See the README file for more information."""
 emcroot = os.path.abspath(emcroot)
 
 emc2_marker = os.path.join(emcroot, "include", "config.h")
-is_emc2 = os.path.exists(emc2_marker)
+emc2_marker2 = os.path.join(emcroot, "include", "emc2", "config.h")
+print emc2_marker2
+is_emc2 = os.path.exists(emc2_marker) or os.path.exists(emc2_marker2)
 bdi4_marker = os.path.join(emcroot, "src/include", "config.h")
 is_bdi4 = os.path.exists(bdi4_marker)
 
@@ -57,41 +59,39 @@ minigl = Extension("minigl",
 	library_dirs = ["/usr/X11R6/lib"])
 
 if is_emc2:
-    if not os.environ.has_key("EMC_RUN_INSTALLED"):
-            distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
-                    "%s/bin" % (emcroot)
+    run_installed = (os.environ.has_key("EMC_RUN_INSTALLED") \
+        or os.path.exists(emc2_marker2))
+    if run_installed:
+        print "(run installed)"
+        include_dirs = [os.path.join(emcroot, "include", "emc2")]
+        library_dirs = [os.path.join(emcroot, "lib")]
+    else:
+        distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
+            "%s/bin" % (emcroot)
+        include_dirs = [os.path.join(emcroot, "include")]
+        library_dirs = [os.path.join(emcroot, "lib")]
+    extra_link_args = ['-Wl,-rpath,%s' % library_dirs[0]]
+
     print "Building for EMC2 in", emcroot
-
-
+    print include_dirs, library_dirs, extra_link_args
     gcode = Extension("gcode", [
             "extensions/gcodemodule.cc"
         ],
         define_macros = [('AXIS_USE_EMC2', 1), ('NEW_INTERPRETER', 1)],
-        include_dirs=[
-            os.path.join(emcroot, "include"),
-        ],
-        library_dirs = [
-            os.path.join(emcroot, "lib")
-        ],
+        include_dirs=include_dirs,
+        library_dirs=library_dirs,
+        extra_link_args = extra_link_args,
         libraries = ['rs274', 'nml', 'm', 'stdc++'],
-        extra_link_args = [
-            '-Wl,-rpath,%s' % os.path.join(emcroot, "lib"),
-        ]
     )
 
     emc = Extension("emc", ["extensions/emcmodule.cc"],
         define_macros=[('DEFAULT_NMLFILE',
             '"%s/configs/emc.nml"' % emcroot),
             ('AXIS_USE_EMC2', 1)],
-        include_dirs=[
-            os.path.join(emcroot, "include")
-        ],
-        library_dirs = [
-            os.path.join(emcroot, "lib")
-        ],
         libraries = ["emc", "nml", "m", "stdc++"],
-        extra_link_args = ['-Wl,-rpath,%s' % 
-            os.path.join(emcroot, "lib")]
+        include_dirs=include_dirs,
+        library_dirs=library_dirs,
+        extra_link_args = extra_link_args,
     )
 elif is_bdi4:
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
