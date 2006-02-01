@@ -57,8 +57,9 @@ minigl = Extension("minigl",
 	library_dirs = ["/usr/X11R6/lib"])
 
 if is_emc2:
-    distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
-            "%s/bin" % (emcroot)
+    if not os.environ.has_key("EMC_RUN_INSTALLED"):
+            distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
+                    "%s/bin" % (emcroot)
     print "Building for EMC2 in", emcroot
 
 
