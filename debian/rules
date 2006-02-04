@@ -147,5 +147,6 @@ binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
 .PHONY: dummy-package real-packages
 
+export USE_SYSTEM_BWIDGET := yes
 export EMC_RUN_INSTALLED := yes
 export EMCROOT := /usr

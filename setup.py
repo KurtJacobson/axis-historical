@@ -191,6 +191,19 @@ seticon = Extension("_tk_seticon", ["extensions/seticon.c"], **flags)
 
 ext_modules = [emc, togl, gcode, minigl, seticon]
 
+bwidget = [
+  (os.path.join(SHAREDIR, "tcl/bwidget"),
+    glob("thirdparty/bwidget/*.tcl")),
+  (os.path.join(SHAREDIR, "tcl/bwidget/lang"),
+    glob("thirdparty/bwidget/lang/*.rc")),
+  (os.path.join(SHAREDIR, "tcl/bwidget/images"),
+    glob("thirdparty/bwidget/images/*.gif")),
+  (os.path.join(SHAREDIR, "tcl/bwidget/images"),
+    glob("thirdparty/bwidget/images/*.xbm")),
+]
+if os.getenv("USE_SYSTEM_BWIDGET"):
+    bwidget = []
+
 def lang(f):
     import os
     return os.path.splitext(os.path.basename(f))[0]
@@ -208,19 +221,11 @@ setup(name=name, version=version,
     cmdclass = { 'build_scripts': build_scripts, 'install_data': install_data},
     data_files = [(os.path.join(SHAREDIR, "tcl"), glob("tcl/*.tcl")),
                   (os.path.join(SHAREDIR, "tcl"), glob("thirdparty/*.tcl")),
-                  (os.path.join(SHAREDIR, "tcl/bwidget"),
-                                       glob("thirdparty/bwidget/*.tcl")),
-                  (os.path.join(SHAREDIR, "tcl/bwidget/lang"),
-                                       glob("thirdparty/bwidget/lang/*.rc")),
-                  (os.path.join(SHAREDIR, "tcl/bwidget/images"),
-                                       glob("thirdparty/bwidget/images/*.gif")),
-                  (os.path.join(SHAREDIR, "tcl/bwidget/images"),
-                                       glob("thirdparty/bwidget/images/*.xbm")),
                   (os.path.join(SHAREDIR, "images"), glob("images/*.gif")),
                   (os.path.join(SHAREDIR, "images"), glob("images/*.xbm")),
                   (DOCDIR, ["COPYING", "README", "BUGS",
                         "thirdparty/bwidget/LICENSE.txt",
-                        "thirdparty/LICENSE-Togl"])] + i18n,
+                        "thirdparty/LICENSE-Togl"])] + bwidget + i18n,
     ext_modules = ext_modules,
     url="http://axis.unpythonic.net/",
     license="GPL",

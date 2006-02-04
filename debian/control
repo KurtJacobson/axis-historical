@@ -8,5 +8,5 @@ Build-Depends: debhelper (>= 4.1.67), emc2-dev, python2.4-dev, libgl1-mesa-dev, 
 Package: emc2-axis
 Architecture: i386
 Replaces: python2.4-axis python-axis
-Depends: python (>= 2.4), python (<< 2.5), emc2, ${python:Depends}, ${shlibs:Depends}
+Depends: python (>= 2.4), python (<< 2.5), emc2, ${python:Depends}, ${shlibs:Depends}, bwidget (>= 1.7), bwidget (<<1.8)
 Description: AXIS front-end for emc2
