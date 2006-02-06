@@ -638,28 +638,28 @@ class LivePlotter:
         lu = self.stat.linear_units or 1
         position = [pi / (25.4 * lu) for pi in self.stat.position[:3]]
         p = array.array('f', position)
+        if self.stat.motion_type == 1:
+            color = array.array('f', (0.0,1.0,0.0)) #rapids
+        elif self.stat.motion_type == 2:
+            color = array.array('f', (1.0,0.0,0.0)) #feed
+        else:
+            color = array.array('f', (1.0,0.0,1.0)) #arc
         if not self.data or p != self.data[-3:]:
             if self.data:
                 start_point = self.data[-3:]
-            if len(self.data) > 6 and \
-                    colinear(self.data[-6:-3], self.data[-3:], p):
+            if len(self.data) > 12 and \
+                    colinear(self.data[-9:-6], self.data[-3:], p) and \
+                    self.data[-6:-3] == color:
                 self.data[-3:] = p
             else:
+                if self.data and color != self.data[-6:-3]:
+                    self.data.extend(color)
+                    self.data.extend(start_point)
+                self.data.extend(color)
                 self.data.extend(p)
-            glInterleavedArrays(GL_V3F, 0, self.data.tostring())
-            self.win.live_plot_size = len(self.data)/3
-            if len(self.data) >= 6:
-                glDrawBuffer(GL_FRONT)
-                glLineWidth(3)
-                glColor4f(1,0,0,.5)
-                glEnable(GL_BLEND)
-                glBegin(GL_LINES)
-                glVertex3f(*start_point)
-                glVertex3f(*self.data[-3:])
-                glEnd()
-                glDisable(GL_BLEND)
-                glLineWidth(1)
-                glDrawBuffer(GL_BACK)
+            assert len(self.data) % 6 == 0
+            glInterleavedArrays(GL_C3F_V3F, 0, self.data.tostring())
+            self.win.live_plot_size = len(self.data)/6
         if (self.stat.actual_position != o.last_position
                 or self.stat.homed != o.last_homed
                 or self.stat.origin != o.last_origin):
