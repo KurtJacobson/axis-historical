@@ -665,6 +665,7 @@ void initminigl(void) {
     glerror = PyErr_NewException("minigl.error", PyExc_RuntimeError, NULL);
     PyObject_SetAttrString(m, "error", glerror);
     CONST(GL_ALWAYS);
+    CONST(GL_LEQUAL);
     CONST(GL_BACK);
     CONST(GL_BLEND);
     CONST(GL_COLOR_BUFFER_BIT);

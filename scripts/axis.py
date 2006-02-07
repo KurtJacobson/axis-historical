@@ -1907,10 +1907,15 @@ def redraw(self):
 
     if vars.show_live_plot.get():
         glColor4f(1,0,0,.5)
-        glDepthFunc(GL_ALWAYS)
+        glDepthFunc(GL_LEQUAL)
         glLineWidth(3)
         glEnable(GL_BLEND)
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glTranslatef(0,0,.001)
         glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
         glDisable(GL_BLEND)
         glLineWidth(1)
         glDepthFunc(GL_LESS);
