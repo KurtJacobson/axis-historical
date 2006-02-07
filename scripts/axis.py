@@ -638,9 +638,10 @@ class LivePlotter:
         lu = self.stat.linear_units or 1
         position = [pi / (25.4 * lu) for pi in self.stat.position[:3]]
         p = array.array('f', position)
-        if self.stat.motion_type == 1:
+        motion_type = getattr(self.stat, 'motion_type', 2)
+        if motion_type == 1:
             color = array.array('f', (0.0,1.0,0.0)) #rapids
-        elif self.stat.motion_type == 2:
+        elif motion_type == 2:
             color = array.array('f', (1.0,0.0,0.0)) #feed
         else:
             color = array.array('f', (1.0,0.0,1.0)) #arc
