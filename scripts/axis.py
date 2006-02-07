@@ -1912,7 +1912,7 @@ def redraw(self):
         glEnable(GL_BLEND)
         glMatrixMode(GL_PROJECTION)
         glPushMatrix()
-        glTranslatef(0,0,.001)
+        glTranslatef(0,0,.003)
         glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
         glPopMatrix()
         glMatrixMode(GL_MODELVIEW)
