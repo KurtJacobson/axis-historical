@@ -48,7 +48,6 @@ emcroot = os.path.abspath(emcroot)
 
 emc2_marker = os.path.join(emcroot, "include", "config.h")
 emc2_marker2 = os.path.join(emcroot, "include", "emc2", "config.h")
-print emc2_marker2
 is_emc2 = os.path.exists(emc2_marker) or os.path.exists(emc2_marker2)
 bdi4_marker = os.path.join(emcroot, "src/include", "config.h")
 is_bdi4 = os.path.exists(bdi4_marker)
