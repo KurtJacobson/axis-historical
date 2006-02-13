@@ -194,6 +194,11 @@ setup_menu_accel .menu.edit end [_ "Show e_xtents"]
 
 setup_menu_accel .menu.edit end [_ "C_lear live plot"]
 
+.menu.edit add separator
+.menu.edit add command \
+        -command {exec $env(EMC2_TCL_DIR)/bin/halconfig.tcl -- -ini $emcini &}
+setup_menu_accel .menu.edit end [_ "Hal Confi_guration"]
+
 # Configure widget .menu.edit
 wm title .menu.edit edit
 wm iconname .menu.edit {}
