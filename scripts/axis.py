@@ -955,7 +955,8 @@ def open_file_guts(f, filtered = False):
         f = os.path.abspath(f)
         o.g = canon = AxisCanon(widgets.text, i, progress)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
-        result, seq = gcode.parse(f, canon)
+        initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
+        result, seq = gcode.parse(f, canon, initcode)
         print "parse result", result
         if result >= rs274.RS274NGC_MIN_ERROR:
             error_str = rs274.errorlist.get(result, _("Unknown error %s") % result)
