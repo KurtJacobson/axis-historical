@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-19 07:03-0600\n"
+"POT-Creation-Date: 2006-02-12 21:42-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,7 +120,7 @@ msgstr ""
 msgid "Code entry (MDI)"
 msgstr ""
 
-#: ../scripts/axis.py:110 ../tcl/axis.tcl:781
+#: ../scripts/axis.py:110 ../tcl/axis.tcl:786
 msgid "Override Limits"
 msgstr ""
 
@@ -192,84 +192,84 @@ msgstr ""
 msgid "AXIS error"
 msgstr ""
 
-#: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:925
-#: ../scripts/axis.py:962 ../tcl/axis.tcl:1275 ../tcl/axis.tcl:1312
+#: ../scripts/axis.py:621 ../scripts/axis.py:629 ../scripts/axis.py:926
+#: ../scripts/axis.py:963 ../tcl/axis.tcl:1280 ../tcl/axis.tcl:1317
 msgid "OK"
 msgstr ""
 
-#: ../scripts/axis.py:687
+#: ../scripts/axis.py:688
 msgid "No tool"
 msgstr ""
 
-#: ../scripts/axis.py:689
+#: ../scripts/axis.py:690
 #, python-format
 msgid "Unknown tool %d"
 msgstr ""
 
-#: ../scripts/axis.py:692
+#: ../scripts/axis.py:693
 #, python-format
 msgid "Tool %d, offset %g, diameter %g"
 msgstr ""
 
-#: ../scripts/axis.py:923
+#: ../scripts/axis.py:924
 #, python-format
 msgid "Program_filter %r failed"
 msgstr ""
 
-#: ../scripts/axis.py:924
+#: ../scripts/axis.py:925
 #, python-format
 msgid "Exit code %d"
 msgstr ""
 
-#: ../scripts/axis.py:958
+#: ../scripts/axis.py:959
 #, python-format
 msgid "Unknown error %s"
 msgstr ""
 
-#: ../scripts/axis.py:960
+#: ../scripts/axis.py:961
 #, python-format
 msgid "G-Code error in %s"
 msgstr ""
 
-#: ../scripts/axis.py:961
+#: ../scripts/axis.py:962
 #, python-format
 msgid ""
 "Near line %d of %s:\n"
 "%s"
 msgstr ""
 
-#: ../scripts/axis.py:1074 ../scripts/axis.py:1079 ../scripts/axis.py:1544
-#: ../tcl/axis.tcl:760 ../tcl/axis.tcl:762 ../tcl/axis.tcl:1563
+#: ../scripts/axis.py:1077 ../scripts/axis.py:1082 ../scripts/axis.py:1547
+#: ../tcl/axis.tcl:765 ../tcl/axis.tcl:767 ../tcl/axis.tcl:1563
 msgid "Continuous"
 msgstr ""
 
-#: ../scripts/axis.py:1266
+#: ../scripts/axis.py:1269
 msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
 msgstr ""
 
-#: ../scripts/axis.py:1301
+#: ../scripts/axis.py:1304
 #, python-format
 msgid "Program exceeds machine minimum on axis %s"
 msgstr ""
 
-#: ../scripts/axis.py:1303
+#: ../scripts/axis.py:1306
 #, python-format
 msgid "Program exceeds machine maximum on axis %s"
 msgstr ""
 
-#: ../scripts/axis.py:1307
+#: ../scripts/axis.py:1310
 msgid "Program exceeds machine limits"
 msgstr ""
 
-#: ../scripts/axis.py:1310
+#: ../scripts/axis.py:1313
 msgid "Run Anyway"
 msgstr ""
 
-#: ../scripts/axis.py:1310
+#: ../scripts/axis.py:1313
 msgid "Cancel"
 msgstr ""
 
-#: ../scripts/axis.py:1631
+#: ../scripts/axis.py:1634
 msgid "Show EMC Status"
 msgstr ""
 
@@ -345,243 +345,247 @@ msgstr ""
 msgid "C_lear live plot"
 msgstr ""
 
-#: ../tcl/axis.tcl:211
+#: ../tcl/axis.tcl:200
+msgid "Hal Confi_guration"
+msgstr ""
+
+#: ../tcl/axis.tcl:216
 msgid "Set _next line"
 msgstr ""
 
-#: ../tcl/axis.tcl:219
+#: ../tcl/axis.tcl:224
 msgid "_Run program"
 msgstr ""
 
-#: ../tcl/axis.tcl:227
+#: ../tcl/axis.tcl:232
 msgid "_Step"
 msgstr ""
 
-#: ../tcl/axis.tcl:235
+#: ../tcl/axis.tcl:240
 msgid "_Pause"
 msgstr ""
 
-#: ../tcl/axis.tcl:243
+#: ../tcl/axis.tcl:248
 msgid "Re_sume"
 msgstr ""
 
-#: ../tcl/axis.tcl:251
+#: ../tcl/axis.tcl:256
 msgid "S_top"
 msgstr ""
 
-#: ../tcl/axis.tcl:272
+#: ../tcl/axis.tcl:277
 msgid "_About AXIS"
 msgstr ""
 
-#: ../tcl/axis.tcl:279
+#: ../tcl/axis.tcl:284
 msgid "Quick _Reference"
 msgstr ""
 
-#: ../tcl/axis.tcl:297
+#: ../tcl/axis.tcl:302
 msgid "Show commanded position"
 msgstr ""
 
-#: ../tcl/axis.tcl:306
+#: ../tcl/axis.tcl:311
 msgid "Show actual position"
 msgstr ""
 
-#: ../tcl/axis.tcl:318
+#: ../tcl/axis.tcl:323
 msgid "Show machine position"
 msgstr ""
 
-#: ../tcl/axis.tcl:327
+#: ../tcl/axis.tcl:332
 msgid "Show relative position"
 msgstr ""
 
-#: ../tcl/axis.tcl:334
+#: ../tcl/axis.tcl:339
 msgid "Show _EMC Status"
 msgstr ""
 
-#: ../tcl/axis.tcl:347
+#: ../tcl/axis.tcl:352
 msgid "_File"
 msgstr ""
 
-#: ../tcl/axis.tcl:354
+#: ../tcl/axis.tcl:359
 msgid "_Edit"
 msgstr ""
 
-#: ../tcl/axis.tcl:361
+#: ../tcl/axis.tcl:366
 msgid "_Program"
 msgstr ""
 
-#: ../tcl/axis.tcl:368
+#: ../tcl/axis.tcl:373
 msgid "_View"
 msgstr ""
 
-#: ../tcl/axis.tcl:375
+#: ../tcl/axis.tcl:380
 msgid "_Help"
 msgstr ""
 
-#: ../tcl/axis.tcl:390
+#: ../tcl/axis.tcl:395
 msgid "Toggle Emergency Stop [F1]"
 msgstr ""
 
-#: ../tcl/axis.tcl:399
+#: ../tcl/axis.tcl:404
 msgid "Toggle machine power [F2]"
 msgstr ""
 
-#: ../tcl/axis.tcl:410
+#: ../tcl/axis.tcl:415
 msgid "Open G-Code file [O]"
 msgstr ""
 
-#: ../tcl/axis.tcl:418
+#: ../tcl/axis.tcl:423
 msgid "Reopen current file [Control-R]"
 msgstr ""
 
-#: ../tcl/axis.tcl:428
+#: ../tcl/axis.tcl:433
 msgid "Begin executing current file [R]"
 msgstr ""
 
-#: ../tcl/axis.tcl:436
+#: ../tcl/axis.tcl:441
 msgid "Execute next line [T]"
 msgstr ""
 
-#: ../tcl/axis.tcl:444
+#: ../tcl/axis.tcl:449
 msgid "Pause [P] / resume [S] execution"
 msgstr ""
 
-#: ../tcl/axis.tcl:452
+#: ../tcl/axis.tcl:457
 msgid "Stop program execution [ESC]"
 msgstr ""
 
-#: ../tcl/axis.tcl:462
+#: ../tcl/axis.tcl:467
 msgid "Zoom in [+]"
 msgstr ""
 
-#: ../tcl/axis.tcl:470
+#: ../tcl/axis.tcl:475
 msgid "Zoom out [-]"
 msgstr ""
 
-#: ../tcl/axis.tcl:478
+#: ../tcl/axis.tcl:483
 msgid "Top view"
 msgstr ""
 
-#: ../tcl/axis.tcl:486
+#: ../tcl/axis.tcl:491
 msgid "Rotated top view"
 msgstr ""
 
-#: ../tcl/axis.tcl:494
+#: ../tcl/axis.tcl:499
 msgid "Side view"
 msgstr ""
 
-#: ../tcl/axis.tcl:502
+#: ../tcl/axis.tcl:507
 msgid "Front view"
 msgstr ""
 
-#: ../tcl/axis.tcl:510
+#: ../tcl/axis.tcl:515
 msgid "Perspective view"
 msgstr ""
 
-#: ../tcl/axis.tcl:520
+#: ../tcl/axis.tcl:525
 msgid "Clear live plot [Ctrl-K]"
 msgstr ""
 
-#: ../tcl/axis.tcl:625
+#: ../tcl/axis.tcl:630
 msgid "Manual Control [F3]"
 msgstr ""
 
-#: ../tcl/axis.tcl:626
+#: ../tcl/axis.tcl:631
 msgid "Code Entry [F5]"
 msgstr ""
 
-#: ../tcl/axis.tcl:635
+#: ../tcl/axis.tcl:640
 msgid "Axis:"
 msgstr ""
 
-#: ../tcl/axis.tcl:646
+#: ../tcl/axis.tcl:651
 msgid "_X"
 msgstr ""
 
-#: ../tcl/axis.tcl:655
+#: ../tcl/axis.tcl:660
 msgid "_Y"
 msgstr ""
 
-#: ../tcl/axis.tcl:664
+#: ../tcl/axis.tcl:669
 msgid "_Z"
 msgstr ""
 
-#: ../tcl/axis.tcl:673
+#: ../tcl/axis.tcl:678
 msgid "_A"
 msgstr ""
 
-#: ../tcl/axis.tcl:682
+#: ../tcl/axis.tcl:687
 msgid "_B"
 msgstr ""
 
-#: ../tcl/axis.tcl:691
+#: ../tcl/axis.tcl:696
 msgid "_C"
 msgstr ""
 
-#: ../tcl/axis.tcl:742 ../tcl/axis.tcl:882
+#: ../tcl/axis.tcl:747 ../tcl/axis.tcl:887
 msgid "-"
 msgstr ""
 
-#: ../tcl/axis.tcl:755 ../tcl/axis.tcl:896
+#: ../tcl/axis.tcl:760 ../tcl/axis.tcl:901
 msgid "+"
 msgstr ""
 
-#: ../tcl/axis.tcl:770
+#: ../tcl/axis.tcl:775
 msgid "Home"
 msgstr ""
 
-#: ../tcl/axis.tcl:776
+#: ../tcl/axis.tcl:781
 msgid "Offset"
 msgstr ""
 
-#: ../tcl/axis.tcl:837
+#: ../tcl/axis.tcl:842
 msgid "Spindle:"
 msgstr ""
 
-#: ../tcl/axis.tcl:858
+#: ../tcl/axis.tcl:863
 msgid "Stop"
 msgstr ""
 
-#: ../tcl/axis.tcl:901
+#: ../tcl/axis.tcl:906
 msgid "Brake"
 msgstr ""
 
-#: ../tcl/axis.tcl:948
+#: ../tcl/axis.tcl:953
 msgid "Coolant:"
 msgstr ""
 
-#: ../tcl/axis.tcl:953
+#: ../tcl/axis.tcl:958
 msgid "Mist"
 msgstr ""
 
-#: ../tcl/axis.tcl:958
+#: ../tcl/axis.tcl:963
 msgid "Flood"
 msgstr ""
 
-#: ../tcl/axis.tcl:1030
+#: ../tcl/axis.tcl:1035
 msgid "History:"
 msgstr ""
 
-#: ../tcl/axis.tcl:1044
+#: ../tcl/axis.tcl:1049
 msgid "MDI Command:"
 msgstr ""
 
-#: ../tcl/axis.tcl:1054
+#: ../tcl/axis.tcl:1059
 msgid "Go"
 msgstr ""
 
-#: ../tcl/axis.tcl:1060
+#: ../tcl/axis.tcl:1065
 msgid "Active G-Codes:"
 msgstr ""
 
-#: ../tcl/axis.tcl:1215
+#: ../tcl/axis.tcl:1220
 msgid "0"
 msgstr ""
 
-#: ../tcl/axis.tcl:1227
+#: ../tcl/axis.tcl:1232
 msgid "Feed Override (%):"
 msgstr ""
 
-#: ../tcl/axis.tcl:1266
+#: ../tcl/axis.tcl:1271
 msgid ""
 "AXIS version $version\n"
 "\n"
@@ -593,11 +597,11 @@ msgid ""
 "Visit the AXIS web site: "
 msgstr ""
 
-#: ../tcl/axis.tcl:1294
+#: ../tcl/axis.tcl:1299
 msgid "About AXIS"
 msgstr ""
 
-#: ../tcl/axis.tcl:1323
+#: ../tcl/axis.tcl:1328
 msgid "AXIS Quick Reference"
 msgstr ""
 
