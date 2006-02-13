@@ -1586,6 +1586,9 @@ bind . <Configure> { if {"%W" == "."} {
     wm minsize %W [winfo reqwidth %W] [expr [winfo reqheight %W]+4] }
 }
 
+bind . <Alt-v> [bind all <Alt-Key>]
+bind . <Alt-v> {+break}
+
 wm withdraw .about
 wm withdraw .keys
 
