@@ -25,6 +25,9 @@ version="1.2a2"
 
 import sys, array, time, atexit, tempfile, shutil, os, errno
 
+if os.environ.has_key('EMC2VERSION'):
+    version = version + " / emc2 " + os.environ['EMC2VERSION']
+
 # Print Tk errors to stdout. python.org/sf/639266
 import Tkinter 
 OldTk = Tkinter.Tk
