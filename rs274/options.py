@@ -25,21 +25,21 @@ proc option_nont {args} {
     eval [concat option $args]
 }
 
-option add *Button.borderWidth 1
+option add *Button.borderWidth 2
 option_nont add *Button.font $BASE_FONT
 
 option add *Checkbutton.borderWidth 1
 option_nont add *Checkbutton.font $BASE_FONT
 
 option add *Entry.background white
-option add *Entry.borderWidth 1
+option add *Entry.borderWidth 2
 option_nont add *Entry.font $BASE_FONT
 option add *Entry.selectBackground #08246b
 option add *Entry.selectForeground white
 
 option add *Frame.borderWidth 0
 
-option add *Hierbox.borderWidth 1
+option add *Hierbox.borderWidth 2
 option add *Hierbox.selectBackground #08246b
 option add *Hierbox.selectForeground white
 
@@ -48,7 +48,7 @@ option add *Label.borderWidth 1
 
 option add *Listbox.background white
 option_nont add *Listbox.font $BASE_FONT
-option add *Listbox.borderWidth 1
+option add *Listbox.borderWidth 2
 option add *Listbox.selectBackground #08246b
 option add *Listbox.selectForeground white
 
@@ -69,19 +69,18 @@ option_nont add *Message.font $BASE_FONT
 option add *Radiobutton.borderWidth 1
 option_nont add *Radiobutton.font $BASE_FONT
 
-option add *Scrollbar.width 10
-option add *Scrollbar.borderWidth 1
+option add *Scrollbar.borderWidth 2
 option add *Scrollbar.takeFocus 0
 option add *Scrollbar.troughColor #d9d9d9
-option add *Scrollbar.elementBorderWidth 1
+option add *Scrollbar.elementBorderWidth 2
 
 option add *Text.background white
-option add *Text.borderWidth 1
+option add *Text.borderWidth 2
 option_nont add *Text.font fixed
 option add *Text.selectBackground #08246b
 option add *Text.selectForeground white
 
-option add *Labelframe.borderWidth 1
+option add *Labelframe.borderWidth 2
 option add *Labelframe.relief groove
 option_nont add *Labelframe.font $BASE_FONT
 
@@ -101,11 +100,6 @@ option add *Hrule.borderWidth 1
 option add *Hrule.relief sunken
 option add *Hrule.height 2
 
-option add *Scale.borderWidth 1
-option add *Scale.sliderLength 5
-option add *Scale.width 10
-
-option add *Combobox.borderWidth 1
 '''
 
 def install(root = None):
