@@ -1,13 +1,18 @@
-emc2-axis (1.2a1-0.2) unstable; urgency=low
-  cheese
+emc2-axis (1.2a2-0.2) unstable; urgency=low
 
- -- Jeff Epler <jepler@unpythonic.net>  Wed,  1 Feb 2006 09:41:00 -0600
+  Color jogs a different color, add halconfig to the edit menu
+
+ -- Chris Radek <chris@timeguy.com>  Sun, 12 Feb 2006 22:09:08 -0600
+
+emc2-axis (1.2a2-0.1) unstable; urgency=low
+
+  Colorize backplot according to motion type
+  Portugese translation
+
+ -- Chris Radek <chris@timeguy.com>  Sun, 12 Feb 2006 20:10:05 -0600
 
 emc2-axis (1.2a1-0.1) unstable; urgency=low
 
-  [ Unknown ]
+  Initial public release of AXIS 1.2a1 package built for Ubuntu
 
-  [ Chris Radek ]
-  * Created automatically by dh_make (distutils 2.4.1)
-
- -- Chris Radek <chris@localhost.localdomain>  Wed,  1 Feb 2006 08:45:43 -0600
+ -- Chris Radek <chris@timeguy.com>  Wed,  1 Feb 2006 10:06:20 -0600
