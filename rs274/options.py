@@ -69,10 +69,11 @@ option_nont add *Message.font $BASE_FONT
 option add *Radiobutton.borderWidth 1
 option_nont add *Radiobutton.font $BASE_FONT
 
+option add *Scrollbar.width 10
 option add *Scrollbar.borderWidth 1
 option add *Scrollbar.takeFocus 0
 option add *Scrollbar.troughColor #d9d9d9
-option add *Scrollbar.elementBorderWidth 2
+option add *Scrollbar.elementBorderWidth 1
 
 option add *Text.background white
 option add *Text.borderWidth 1
