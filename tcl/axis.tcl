@@ -624,7 +624,7 @@ set pane_top [frame .top]
 set pane_bottom [frame .bottom]
 
 NoteBook ${pane_top}.tabs \
-	-borderwidth 2 \
+	-borderwidth 1 \
 	-arcradius 3
 
 set _tabs_manual [${pane_top}.tabs insert end manual -text [_ "Manual Control \[F3\]"] -raisecmd {focus .}]
@@ -844,7 +844,6 @@ setup_widget_accel $_tabs_manual.spindlel [_ Spindle:]
 frame $_tabs_manual.spindlef
 
 radiobutton $_tabs_manual.spindlef.ccw \
-	-borderwidth 2 \
 	-command spindle \
 	-image [load_image spindle_ccw] \
 	-indicatoron 0 \
@@ -854,7 +853,6 @@ radiobutton $_tabs_manual.spindlef.ccw \
 setup_widget_accel $_tabs_manual.spindlef.ccw {}
 
 radiobutton $_tabs_manual.spindlef.stop \
-	-borderwidth 2 \
 	-command spindle \
 	-indicatoron 0 \
 	-selectcolor [systembuttonface] \
@@ -863,7 +861,6 @@ radiobutton $_tabs_manual.spindlef.stop \
 setup_widget_accel $_tabs_manual.spindlef.stop [_ Stop]
 
 radiobutton $_tabs_manual.spindlef.cw \
-	-borderwidth 2 \
 	-command spindle \
 	-image [load_image spindle_cw] \
 	-indicatoron 0 \
