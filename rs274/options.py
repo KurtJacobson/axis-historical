@@ -102,6 +102,8 @@ option add *Hrule.relief sunken
 option add *Hrule.height 2
 
 option add *Scale.borderWidth 1
+option add *Scale.sliderLength 5
+option add *Scale.width 10
 
 option add *Combobox.borderWidth 1
 '''
