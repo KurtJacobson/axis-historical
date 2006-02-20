@@ -732,39 +732,40 @@ grid $_tabs_manual.axes.axisz \
 	-padx 4
 
 frame $_tabs_manual.jogf
+frame $_tabs_manual.jogf.jog
 
-button $_tabs_manual.jogf.jogminus \
+button $_tabs_manual.jogf.jog.jogminus \
 	-command {if {![is_continuous]} {jog_minus}} \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind $_tabs_manual.jogf.jogminus <Button-1> {
+bind $_tabs_manual.jogf.jog.jogminus <Button-1> {
     if {[is_continuous]} { jog_minus }
 }
-bind $_tabs_manual.jogf.jogminus <ButtonRelease-1> {
+bind $_tabs_manual.jogf.jog.jogminus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
-setup_widget_accel $_tabs_manual.jogf.jogminus [_ -]
+setup_widget_accel $_tabs_manual.jogf.jog.jogminus [_ -]
 
-button $_tabs_manual.jogf.jogplus \
+button $_tabs_manual.jogf.jog.jogplus \
 	-command {if {![is_continuous]} {jog_plus}} \
 	-padx 0 \
 	-pady 0 \
 	-width 2
-bind $_tabs_manual.jogf.jogplus <Button-1> {
+bind $_tabs_manual.jogf.jog.jogplus <Button-1> {
     if {[is_continuous]} { jog_plus }
 }
-bind $_tabs_manual.jogf.jogplus <ButtonRelease-1> {
+bind $_tabs_manual.jogf.jog.jogplus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
-setup_widget_accel $_tabs_manual.jogf.jogplus [_ +]
+setup_widget_accel $_tabs_manual.jogf.jog.jogplus [_ +]
 
-combobox $_tabs_manual.jogf.jogspeed \
+combobox $_tabs_manual.jogf.jog.jogspeed \
 	-editable 0 \
 	-textvariable jogincrement \
 	-value [_ Continuous] \
 	-width 10
-$_tabs_manual.jogf.jogspeed list insert end [_ Continuous] 0.1000 0.0100 0.0010 0.0001
+$_tabs_manual.jogf.jog.jogspeed list insert end [_ Continuous] 0.1000 0.0100 0.0010 0.0001
 
 frame $_tabs_manual.jogf.zerohome
 
@@ -788,6 +789,12 @@ setup_widget_accel $_tabs_manual.jogf.override [_ "Override Limits"]
 grid $_tabs_manual.jogf.zerohome \
 	-column 0 \
 	-row 1 \
+	-columnspan 3 \
+	-sticky w
+
+grid $_tabs_manual.jogf.jog \
+	-column 0 \
+	-row 0 \
 	-columnspan 3 \
 	-sticky w
 
@@ -815,25 +822,26 @@ grid $_tabs_manual.jogf.override \
 	-pady 2 \
 	-sticky w
 
-# Grid widget $_tabs_manual.jogf.jogminus
-grid $_tabs_manual.jogf.jogminus \
+# Grid widget $_tabs_manual.jogf.jog.jogminus
+grid $_tabs_manual.jogf.jog.jogminus \
 	-column 0 \
 	-row 0 \
 	-pady 2 \
-	-sticky ns
+	-sticky nsw
 
-# Grid widget $_tabs_manual.jogf.jogplus
-grid $_tabs_manual.jogf.jogplus \
+# Grid widget $_tabs_manual.jogf.jog.jogplus
+grid $_tabs_manual.jogf.jog.jogplus \
 	-column 1 \
 	-row 0 \
 	-pady 2 \
-	-sticky ns
+	-sticky nsw
 
-# Grid widget $_tabs_manual.jogf.jogspeed
-grid $_tabs_manual.jogf.jogspeed \
+# Grid widget $_tabs_manual.jogf.jog.jogspeed
+grid $_tabs_manual.jogf.jog.jogspeed \
 	-column 2 \
 	-row 0 \
-	-pady 2
+	-pady 2 \
+        -sticky nsw
 
 vspace $_tabs_manual.space1 \
 	-height 12
@@ -1399,9 +1407,9 @@ set INTERP_WAITING 4
 set manual [concat [winfo children $_tabs_manual.axes] \
     $_tabs_manual.jogf.zerohome.home \
     $_tabs_manual.jogf.zerohome.zero \
-    $_tabs_manual.jogf.jogminus \
-    $_tabs_manual.jogf.jogplus \
-    $_tabs_manual.jogf.jogspeed \
+    $_tabs_manual.jogf.jog.jogminus \
+    $_tabs_manual.jogf.jog.jogplus \
+    $_tabs_manual.jogf.jog.jogspeed \
     $_tabs_manual.spindlef.cw $_tabs_manual.spindlef.ccw \
     $_tabs_manual.spindlef.stop $_tabs_manual.spindlef.brake \
     $_tabs_manual.flood $_tabs_manual.mist $_tabs_mdi.command \
@@ -1560,7 +1568,7 @@ foreach b { <Key-Left> <Key-Right>
 bind Entry <Key> {+if {[%W cget -state] == "normal" && [string length %A]} break}
 
 proc is_continuous {} {
-    expr {"[$::_tabs_manual.jogf.jogspeed get]" == [_ "Continuous"]}
+    expr {"[$::_tabs_manual.jogf.jog.jogspeed get]" == [_ "Continuous"]}
 }
 
 proc show_all text {
@@ -1608,9 +1616,9 @@ DynamicHelp::add $_tabs_manual.axes.axisz -text [_ "Activate axis \[Z\]"]
 DynamicHelp::add $_tabs_manual.axes.axisa -text [_ "Activate axis \[A\]"]
 DynamicHelp::add $_tabs_manual.axes.axisb -text [_ "Activate axis \[4\]"]
 DynamicHelp::add $_tabs_manual.axes.axisc -text [_ "Activate axis \[5\]"]
-DynamicHelp::add $_tabs_manual.jogf.jogminus -text [_ "Jog selected axis"]
-DynamicHelp::add $_tabs_manual.jogf.jogplus -text [_ "Jog selected axis"]
-DynamicHelp::add $_tabs_manual.jogf.jogspeed -text [_ "Select jog ingrement"]
+DynamicHelp::add $_tabs_manual.jogf.jog.jogminus -text [_ "Jog selected axis"]
+DynamicHelp::add $_tabs_manual.jogf.jog.jogplus -text [_ "Jog selected axis"]
+DynamicHelp::add $_tabs_manual.jogf.jog.jogspeed -text [_ "Select jog ingrement"]
 DynamicHelp::add $_tabs_manual.jogf.override -text [_ "Temporarily allow jogging outside machine limits \[L\]"]
 
 # vim:ts=8:sts=4:et:
