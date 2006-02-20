@@ -1046,7 +1046,7 @@ widgets = nf.Widgets(root_window,
     ("axis_b", Radiobutton, tabs_manual + ".axes.axisb"),
     ("axis_c", Radiobutton, tabs_manual + ".axes.axisc"),
 
-    ("jogspeed", Entry, tabs_manual + ".jogf.jogspeed"),
+    ("jogspeed", Entry, tabs_manual + ".jogf.jog.jogspeed"),
 
     ("flood", Checkbutton, tabs_manual + ".flood"),
     ("mist", Checkbutton, tabs_manual + ".mist"),
