@@ -620,19 +620,8 @@ pack .toolbar.rule12 \
 pack .toolbar.clear_plot \
 	-side left
 
-if {[info commands panedwindow] != {}} {
-    panedwindow .pane -orient v
-    set pane_top [frame .pane.top]
-    set pane_bottom [frame .pane.bottom]
-    after idle { after 1 {
-        puts [list paneconfigure [winfo reqheight .pane.top]]
-        .pane paneconfigure .pane.top -minsize [winfo reqheight .pane.top]
-        .pane paneconfigure .pane.bottom -minsize [winfo reqheight .pane.bottom]
-    } }
-} else {
-    set pane_top [frame .top]
-    set pane_bottom [frame .bottom]
-}
+set pane_top [frame .top]
+set pane_bottom [frame .bottom]
 
 NoteBook ${pane_top}.tabs \
 	-borderwidth 2 \
@@ -1386,13 +1375,8 @@ grid ${pane_bottom}.t \
 grid rowconfigure ${pane_bottom} 1 -weight 1
 grid columnconfigure ${pane_bottom} 1 -weight 1
 
-if {[winfo exists .pane]} {
-    .pane add .pane.top .pane.bottom
-    grid .pane -column 0 -row 1 -sticky nsew
-} else {
-    grid .top -column 0 -row 1 -sticky nsew
-    grid .bottom -column 0 -row 2 -sticky nsew
-}
+grid .top -column 0 -row 1 -sticky nsew
+grid .bottom -column 0 -row 2 -sticky nsew
 
 # Grid widget .toolbar
 grid .toolbar \
