@@ -647,8 +647,8 @@ radiobutton $_tabs_manual.axes.axisx \
 	-selectcolor #4864ab \
 	-value x \
 	-variable current_axis \
-	-width 2
-setup_widget_accel $_tabs_manual.axes.axisx [_ _X]
+	-width 2 \
+        -text X
 
 radiobutton $_tabs_manual.axes.axisy \
 	-anchor w \
@@ -656,8 +656,8 @@ radiobutton $_tabs_manual.axes.axisy \
 	-selectcolor #4864ab \
 	-value y \
 	-variable current_axis \
-	-width 2
-setup_widget_accel $_tabs_manual.axes.axisy [_ _Y]
+	-width 2 \
+        -text Y
 
 radiobutton $_tabs_manual.axes.axisz \
 	-anchor w \
@@ -665,8 +665,8 @@ radiobutton $_tabs_manual.axes.axisz \
 	-selectcolor #4864ab \
 	-value z \
 	-variable current_axis \
-	-width 2
-setup_widget_accel $_tabs_manual.axes.axisz [_ _Z]
+	-width 2 \
+        -text Z
 
 radiobutton $_tabs_manual.axes.axisa \
 	-anchor w \
@@ -674,8 +674,8 @@ radiobutton $_tabs_manual.axes.axisa \
 	-selectcolor #4864ab \
 	-value a \
 	-variable current_axis \
-	-width 2
-setup_widget_accel $_tabs_manual.axes.axisa [_ _A]
+	-width 2 \
+        -text A
 
 radiobutton $_tabs_manual.axes.axisb \
 	-anchor w \
@@ -683,8 +683,8 @@ radiobutton $_tabs_manual.axes.axisb \
 	-selectcolor #4864ab \
 	-value b \
 	-variable current_axis \
-	-width 2
-setup_widget_accel $_tabs_manual.axes.axisb [_ _B]
+	-width 2 \
+        -text B
 
 radiobutton $_tabs_manual.axes.axisc \
 	-anchor w \
@@ -692,8 +692,8 @@ radiobutton $_tabs_manual.axes.axisc \
 	-selectcolor #4864ab \
 	-value c \
 	-variable current_axis \
-	-width 2
-setup_widget_accel $_tabs_manual.axes.axisc [_ _C]
+	-width 2 \
+        -text C
 
 # Grid widget $_tabs_manual.axes.axisa
 grid $_tabs_manual.axes.axisa \
