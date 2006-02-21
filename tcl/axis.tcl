@@ -1589,6 +1589,19 @@ proc delete_all text {
     $text delete 1.0 end
 }
 
+proc size_combobox_to_entries c {
+    set fo [$c cget -font]
+    set wi [font measure $fo 0]
+    set sz 4
+    foreach i [$c list get 0 end] {
+        set li [expr ([font measure $fo $i] + $wi - 1)/$wi]
+        if {$li > $sz} { set sz $li }
+    }
+    $c configure -width $sz
+}
+
+size_combobox_to_entries $_tabs_manual.jogf.jog.jogspeed
+
 bind . <Configure> { if {"%W" == "."} {
     wm minsize %W [winfo reqwidth %W] [expr [winfo reqheight %W]+4] }
 }
