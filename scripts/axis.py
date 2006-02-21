@@ -1246,11 +1246,17 @@ class TclCommands(nf.TclCommands):
             fovx = o.fovy * w / h
             fov = min(fovx, o.fovy)
             o.set_eyepoint(size * 1.1 / 2 / sin ( fov * pi / 180 / 2))
+            o.lat = -60
+            o.lon = 335
+            x = (o.g.min_extents[0] + o.g.max_extents[0])/2
+            y = (o.g.min_extents[1] + o.g.max_extents[1])/2
+            z = (o.g.min_extents[2] + o.g.max_extents[2])/2
+            glRotateScene(o, 1.0, x, y, z, 0, 0, 0, 0)
         else:
             o.set_eyepoint(5.)
-        o.lat = -60
-        o.lon = 335
-        glRotateScene(o, 1.0, o.xcenter, o.ycenter, o.zcenter, 0, 0, 0, 0)
+            o.lat = -60
+            o.lon = 335
+            glRotateScene(o, 1.0, o.xcenter, o.ycenter, o.zcenter, 0, 0, 0, 0)
         o.tkRedraw()
         
     def estop_clicked(event=None):
