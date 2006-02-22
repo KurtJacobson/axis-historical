@@ -23,7 +23,7 @@
 #include "emc.hh"
 #include "rs274ngc.hh"
 
-#if AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 #include "interp_return.hh"
 #define active_settings  interp_new.active_settings
 #define active_g_codes   interp_new.active_g_codes
@@ -180,7 +180,7 @@ int last_sequence_number;
 int plane;
 bool metric;
 
-#ifdef AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 Interp interp_new;
 #endif
 

@@ -20,7 +20,7 @@
 #include <structmember.h>
 #include "rcs.hh"
 #include "emc.hh"
-#ifdef AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 #include "config.h"
 #include "inifile.hh"
 #define INIFILE_CHECK_FAILURE(x) (!(x))
@@ -44,7 +44,7 @@
 
 #define NUM_AXES (6)
 
-#ifdef AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 #define EMC_OPERATOR_ERROR_LEN LINELEN
 #define EMC_OPERATOR_TEXT_LEN LINELEN
 #define EMC_OPERATOR_DISPLAY_LEN LINELEN
@@ -96,7 +96,7 @@
 
 struct pyIniFile {
     PyObject_HEAD
-#ifdef AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
     Inifile i;
 #else
     INIFILE i;
@@ -367,7 +367,7 @@ static PyMemberDef Stat_members[] = {
     {"probing", T_INT, O(motion.traj.probing), READONLY},
     {"probe_val", T_INT, O(motion.traj.probeval), READONLY},
     {"kinematics_type", T_INT, O(motion.traj.kinematics_type), READONLY},
-#ifdef AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2)
     {"motion_type", T_INT, O(motion.traj.motion_type), READONLY},
 #endif
 

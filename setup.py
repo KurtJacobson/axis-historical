@@ -101,7 +101,7 @@ elif is_bdi4:
     gcode = Extension("gcode", [
             "extensions/gcodemodule.cc"
         ],
-        define_macros = [('AXIS_USE_EMC2', 1), ('NEW_INTERPRETER', 1)],
+        define_macros = [('AXIS_USE_BDI4', 1), ('NEW_INTERPRETER', 1)],
         include_dirs=[
             os.path.join(emcroot, "src/include"),
         ],
@@ -118,7 +118,7 @@ elif is_bdi4:
     emc = Extension("emc", ["extensions/emcmodule.cc"],
         define_macros=[('DEFAULT_NMLFILE',
             '"%s/emc.nml"' % emcroot),
-            ('AXIS_USE_EMC2', 1)],
+            ('AXIS_USE_BDI4', 1)],
         include_dirs=[
             os.path.join(emcroot, "src/include")
         ],
