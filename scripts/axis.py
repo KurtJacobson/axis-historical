@@ -1284,6 +1284,9 @@ class TclCommands(nf.TclCommands):
         f = str(f)
         open_directory = os.path.dirname(f)
         print "new open_directory", open_directory
+        commands.open_file_name(f)
+
+    def open_file_name(f):
         open_file_guts(f)
         if str(widgets.view_x['relief']) == "sunken":
             commands.set_view_x()
