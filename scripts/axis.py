@@ -643,7 +643,7 @@ class LivePlotter:
         p = array.array('f', position)
         motion_type = getattr(self.stat, 'motion_type', 2)
         if motion_type == 1:
-            color = array.array('f', (0.14,.23,.14)) #rapids
+            color = array.array('f', (0.15,.25,.25)) #rapids
         elif motion_type == 2:
             color = array.array('f', (.75,.25,.25)) #feed
         elif motion_type == 3:
