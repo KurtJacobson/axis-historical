@@ -643,13 +643,13 @@ class LivePlotter:
         p = array.array('f', position)
         motion_type = getattr(self.stat, 'motion_type', 2)
         if motion_type == 1:
-            color = array.array('f', (0.0,1.0,0.0)) #rapids
+            color = array.array('f', (0.14,.23,.14)) #rapids
         elif motion_type == 2:
-            color = array.array('f', (1.0,0.0,0.0)) #feed
+            color = array.array('f', (.75,.25,.25)) #feed
         elif motion_type == 3:
-            color = array.array('f', (1.0,0.0,1.0)) #arc
+            color = array.array('f', (.75,.25,.5)) #arc
         else:
-            color = array.array('f', (1.0,1.0,0.0)) #other (stopped, jogs)
+            color = array.array('f', (.75,.75,.25)) #other (stopped, jogs)
         if not self.data or p != self.data[-3:]:
             if self.data:
                 start_point = self.data[-3:]
