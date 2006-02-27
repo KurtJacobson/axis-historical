@@ -626,6 +626,14 @@ set pane_bottom [frame .bottom]
 NoteBook ${pane_top}.tabs \
 	-borderwidth 2 \
 	-arcradius 3
+proc show_all_tabs w {
+    upvar 0 NoteBook::$w data
+    set a [winfo reqwidth $w]
+    set b [expr $data(wpage) + 3]
+    puts [list show_all_tabs $a $b]
+    if {$a < $b} { $w configure -width $b }
+}
+after 1 after idle show_all_tabs ${pane_top}.tabs
 
 set _tabs_manual [${pane_top}.tabs insert end manual -text [_ "Manual Control \[F3\]"] -raisecmd {focus .}]
 set _tabs_mdi [${pane_top}.tabs insert end mdi -text [_ "Code Entry \[F5\]"]]
