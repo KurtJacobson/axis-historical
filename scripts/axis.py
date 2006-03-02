@@ -21,7 +21,7 @@
 from __future__ import generators
 
 import gettext; gettext.install("axis", unicode=True)
-version="1.2rc2"
+version="1.3a0"
 
 import sys, array, time, atexit, tempfile, shutil, os, errno
 
