@@ -146,12 +146,31 @@ def install_help(app):
 
 install_help(root_window)
 
+color_names = [
+    ('background', 'Background'),
+    'dwell', 'm1xx', 'straight_feed', 'arc_feed', 'traverse',
+    'backplotjog', 'backplotfeed', 'backplotarc', 'backplottraverse',
+    'selected',
+
+    'overlay_foreground', ('overlay_background', 'Background'),
+
+    'label_ok', 'label_limit',
+
+    'small_origin', 'axis_x', 'axis_y', 'axis_z',
+    'cone',
+]   
+
+def parse_color(c):
+    if c == "": return (1,0,0)
+    return tuple([i/65535. for i in root_window.winfo_rgb(c)])
+
 class MyOpengl(Opengl):
     def __init__(self, *args, **kw):
         self.after_id = None
         self.motion_after = None
         self.perspective = False
         Opengl.__init__(self, *args, **kw)
+        print "MyOpengl class", self.winfo_class()
         self.bind('<Button-4>', self.zoomin)
         root_window.bind('<Key-minus>', self.zoomout)
         self.bind('<Button-5>', self.zoomout)
@@ -172,6 +191,19 @@ class MyOpengl(Opengl):
         self.last_origin = None
         self.g = None
         self.set_eyepoint(5.)
+        self.get_resources()
+
+    def get_resources(self):
+        self.colors = {}
+        for c in color_names:
+            if isinstance(c, tuple):
+                c, d = c
+            else:
+                d = "Foreground"
+            self.colors[c] = parse_color(self.option_get(c, d))
+            print c, self.colors[c]
+        self.colors['overlay_alpha'] = \
+            float(self.option_get("overlay_alpha", "Float"))
 
     def select_prime(self, event):
         self.select_primed = event
@@ -302,7 +334,7 @@ class MyOpengl(Opengl):
         glViewport(0, 0, w, h)
 
         # Clear the background and depth buffer.
-        glClearColor(0.,0.,0.,0)
+        glClearColor(*(self.colors['background'] + (0,)))
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         glMatrixMode(GL_PROJECTION)
@@ -335,7 +367,7 @@ class MyOpengl(Opengl):
         glViewport(0, 0, w, h)
 
         # Clear the background and depth buffer.
-        glClearColor(0.,0.,0.,0)
+        glClearColor(*(self.colors['background'] + (0,)))
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         glMatrixMode(GL_PROJECTION)
@@ -391,7 +423,7 @@ def init():
 
 def draw_small_origin():
     r = 2.0/25.4;
-    glColor3f(0.0,1.0,1.0)
+    glColor3f(*o.colors['small_origin'])
 
     glBegin(GL_LINE_STRIP)
     for i in range(37):
@@ -438,7 +470,7 @@ def draw_axes():
     else:
         view = p
 
-    glColor3f(0.2,1.0,0.2)
+    glColor3f(*o.colors['axis_x'])
     glBegin(GL_LINES);
     glVertex3f(1.0,0.0,0.0)
     glVertex3f(0.0,0.0,0.0)
@@ -454,7 +486,7 @@ def draw_axes():
         hershey.plot_string("X", 0.5)
         glPopMatrix()
 
-    glColor3f(1.0,0.2,0.2)
+    glColor3f(*o.colors['axis_y'])
     glBegin(GL_LINES);
     glVertex3f(0.0,0.0,0.0)
     glVertex3f(0.0,1.0,0.0)
@@ -471,7 +503,7 @@ def draw_axes():
         hershey.plot_string("Y", 0.5)
         glPopMatrix()
 
-    glColor3f(0.2,0.2,1.0)
+    glColor3f(*o.colors['axis_z'])
     glBegin(GL_LINES);
     glVertex3f(0.0,0.0,0.0)
     glVertex3f(0.0,0.0,1.0)
@@ -531,7 +563,7 @@ def make_cone():
     q = gluNewQuadric()
     glNewList(cone_program, GL_COMPILE)
     glEnable(GL_LIGHTING)
-    glColor3f(.75,.75,.75)
+    glColor3f(*o.colors['cone'])
     gluCylinder(q, 0, .1, .25, 32, 1)
     glPushMatrix()
     glTranslatef(0,0,.25)
@@ -643,13 +675,14 @@ class LivePlotter:
         p = array.array('f', position)
         motion_type = getattr(self.stat, 'motion_type', 2)
         if motion_type == 1:
-            color = array.array('f', (0.15,.25,.25)) #rapids
+            color = array.array('f', o.colors['backplottraverse'])
         elif motion_type == 2:
-            color = array.array('f', (.75,.25,.25)) #feed
+            color = array.array('f', o.colors['backplotfeed'])
         elif motion_type == 3:
-            color = array.array('f', (.75,.25,.5)) #arc
+            color = array.array('f', o.colors['backplotarc'])
         else:
-            color = array.array('f', (.75,.75,.25)) #other (stopped, jogs)
+            color = array.array('f', o.colors['backplotjog'])
+
         if not self.data or p != self.data[-3:]:
             if self.data:
                 start_point = self.data[-3:]
@@ -804,8 +837,8 @@ class Progress:
             self.done()
 
 class AxisCanon(GLCanon):
-    def __init__(self, text, linecount, progress):
-        GLCanon.__init__(self, text)
+    def __init__(self, widget, text, linecount, progress):
+        GLCanon.__init__(self, widget, text)
         self.linecount = linecount
         self.progress = progress
 
@@ -883,19 +916,21 @@ class AxisCanon(GLCanon):
 
 
     def draw(self, for_selection=0):
-        self.progress.nextphase(len(self.traverse) + len(self.feed) + len(self.dwells))
+        self.progress.nextphase(len(self.traverse) + len(self.feed) + len(self.dwells) + len(self.arcfeed))
 
         glEnable(GL_LINE_STIPPLE)
-        glColor3f(.3,.5,.5)
+        glColor3f(*self.colors['traverse'])
         self.draw_lines(self.traverse, for_selection)
         glDisable(GL_LINE_STIPPLE)
 
-        glColor3f(1,1,1)
+        glColor3f(*self.colors['straight_feed'])
         self.draw_lines(self.feed, for_selection, len(self.traverse))
 
-        glColor3f(1,.5,.5)
+        glColor3f(*self.colors['arc_feed'])
+        self.draw_lines(self.arcfeed, for_selection, len(self.traverse) + len(self.feed))
+
         glLineWidth(2)
-        self.draw_dwells(self.dwells, for_selection, len(self.traverse) + len(self.feed))
+        self.draw_dwells(self.dwells, for_selection, len(self.traverse) + len(self.feed) + len(self.arcfeed))
         glLineWidth(1)
 
 
@@ -935,6 +970,7 @@ def open_file_guts(f, filtered = False):
     set_first_line(0)
     t0 = time.time()
 
+    canon = None
     try:
         ensure_mode(emc.MODE_AUTO)
         c.reset_interpreter()
@@ -956,7 +992,7 @@ def open_file_guts(f, filtered = False):
             t.insert("end", *code)
         progress.nextphase(len(lines))
         f = os.path.abspath(f)
-        o.g = canon = AxisCanon(widgets.text, i, progress)
+        o.g = canon = AxisCanon(o, widgets.text, i, progress)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
         result, seq = gcode.parse(f, canon, initcode)
@@ -987,7 +1023,8 @@ def open_file_guts(f, filtered = False):
         root_window.update()
         root_window.tk.call("destroy", ".info.progress")
         root_window.tk.call("grab", "release", ".info.progress")
-        canon.progress = DummyProgress()
+        if canon:
+            canon.progress = DummyProgress()
         progress.done()
         o.tkRedraw()
 
@@ -1699,9 +1736,9 @@ hershey = Hershey()
 
 def color_limit(cond):
     if cond:
-        glColor3f(1.0, 0.21, 0.23)
+        glColor3f(*o.colors['label_ok'])
     else:
-        glColor3f(1.0, 0.51, 0.53)
+        glColor3f(*o.colors['label_limit'])
     return cond
 
 def redraw(self):
@@ -1924,7 +1961,6 @@ def redraw(self):
                 glPopMatrix()
 
     if vars.show_live_plot.get():
-        glColor4f(1,0,0,.5)
         glDepthFunc(GL_LEQUAL)
         glLineWidth(3)
         glEnable(GL_BLEND)
@@ -2004,7 +2040,7 @@ def redraw(self):
     glDepthMask(GL_FALSE)
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    glColor4f(0,0,0,.7)
+    glColor4f(*(o.colors['overlay_background'] + (o.colors['overlay_alpha'],)))
     glBegin(GL_QUADS)
     glVertex3f(0, ypos, 1)
     glVertex3f(pixel_width+30, ypos, 1)
@@ -2016,7 +2052,7 @@ def redraw(self):
     maxlen = 0
     ypos -= coordinate_linespace+5
     i=0
-    glColor3f(1,1,1)
+    glColor3f(*o.colors['overlay_foreground'])
     for string in positions:
         maxlen = max(maxlen, len(string))
         if s.homed[i]:

@@ -23,9 +23,10 @@ def glVertex3fv(args): glVertex3f(*args)
 from math import sin, cos, pi
 
 class GLCanon(Translated, ArcsToSegmentsMixin):
-    def __init__(self, text=None):
+    def __init__(self, widget, text=None):
         self.traverse = []; self.traverse_append = self.traverse.append
         self.feed = []; self.feed_append = self.feed.append
+        self.arcfeed = []; self.arcfeed_append = self.arcfeed.append
         self.dwells = []; self.dwells_append = self.dwells.append
         self.choice = None
         self.lo = (0,0,0)
@@ -33,6 +34,8 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.text = text
         self.min_extents = [9e99,9e99,9e99]
         self.max_extents = [-9e99,-9e99,-9e99]
+        self.colors = widget.colors
+        self.in_arc = 0
 
     def message(self, message): pass
 
@@ -62,26 +65,35 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.offset_z = offset_z
 
     def straight_traverse(self, x,y,z, a,b,c):
+        print "straight_traverse", self.state.gcodes[1]
         l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
         self.traverse_append((self.lineno, self.lo, l))
         self.lo = l
         self.calc_extents(l)
 
-    def straight_feed(self, x,y,z, a,b,c):
+    def arc_feed(self, *args):
+        self.in_arc = True
+        try:
+            ArcsToSegmentsMixin.arc_feed(self, *args)
+        finally:
+            self.in_arc = False
+
+    def straight_feed(self, x,y,z, a,b,c, is_arc=0):
+        print "straight_feed", self.state.gcodes[1]
         l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
-        self.feed_append((self.lineno, self.lo, l))
+        if self.in_arc:
+            self.arcfeed_append((self.lineno, self.lo, l))
+        else:
+            self.feed_append((self.lineno, self.lo, l))
         self.lo = l
         self.calc_extents(l)
 
     def user_defined_function(self, i, p, q):
-        color = (.5, .5, 1)
+        color = self.colors['m1xx']
         self.dwells_append((self.lineno, color, self.lo[0], self.lo[1], self.lo[2], self.state.plane/10-17))
         
     def dwell(self, arg):
-        if self.state.feed_mode <= 30:
-            color = (1,1,1)
-        else:
-            color = (1,.5,.5)
+        color = self.colors['dwell']
         self.dwells_append((self.lineno, color, self.lo[0], self.lo[1], self.lo[2], self.state.plane/10-17))
 
 
@@ -111,11 +123,17 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
 
     def highlight(self, lineno):
         glLineWidth(3)
-        c = (0, 255, 255)
+        c = self.colors['selected']
         glColor3f(*c)
         glBegin(GL_LINES)
         coords = []
         for line in self.traverse:
+            if line[0] != lineno: continue
+            glVertex3fv(line[1])
+            glVertex3fv(line[2])
+            coords.append(line[1])
+            coords.append(line[2])
+        for line in self.arcfeed:
             if line[0] != lineno: continue
             glVertex3fv(line[1])
             glVertex3fv(line[2])
@@ -145,14 +163,18 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
 
     def draw(self, for_selection=0):
         glEnable(GL_LINE_STIPPLE)
-        glColor3f(.3,.5,.5)
+        glColor3f(*self.colors['traverse'])
         self.draw_lines(self.traverse, for_selection)
         glDisable(GL_LINE_STIPPLE)
 
-        glColor3f(1,1,1)
+        glColor3f(*self.colors['straight_feed'])
+        print "straight_feed", self.colors['straight_feed']
         self.draw_lines(self.feed, for_selection)
 
-        glColor3f(1,.5,.5)
+        glColor3f(*self.colors['arc_feed'])
+        print "arc_feed", self.colors['arc_feed']
+        self.draw_lines(self.arcfeed, for_selection)
+
         glLineWidth(2)
         self.draw_dwells(self.dwells, for_selection)
         glLineWidth(1)

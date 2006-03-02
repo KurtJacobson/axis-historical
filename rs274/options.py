@@ -100,6 +100,34 @@ option add *Hrule.borderWidth 1
 option add *Hrule.relief sunken
 option add *Hrule.height 2
 
+option add *Togl.background #fff
+
+option add *Togl.dwell #7cc
+option add *Togl.m1xx #c77
+
+option add *Togl.straight_feed #000
+option add *Togl.arc_feed #300
+option add *Togl.traverse #7cc
+option add *Togl.backplotjog yellow
+option add *Togl.backplotfeed #444
+option add *Togl.backplotarc #477
+option add *Togl.backplottraverse #7cc
+option add *Togl.selected #00f
+
+option add *Togl.overlay_foreground #000
+option add *Togl.overlay_alpha .75
+option add *Togl.overlay_background #fff
+
+option add *Togl.label_ok #557
+option add *Togl.label_limit #c55
+
+option add *Togl.small_origin #077
+
+option add *Togl.axis_x #333
+option add *Togl.axis_y #333
+option add *Togl.axis_z #333
+
+option add *Togl.cone #ccc
 '''
 
 def install(root = None):
