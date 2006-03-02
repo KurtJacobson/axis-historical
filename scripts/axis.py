@@ -961,8 +961,10 @@ def open_file_guts(f, filtered = False):
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
         result, seq = gcode.parse(f, canon, initcode)
         print "parse result", result
-        if result >= rs274.RS274NGC_MIN_ERROR:
-            error_str = rs274.errorlist.get(result, _("Unknown error %s") % result)
+        # According to the documentation, MIN_ERROR is the largest value that is
+        # not an error.  Crazy though that sounds...
+        if result > gcode.MIN_ERROR:
+            error_str = gcode.strerror(result)
             root_window.tk.call("nf_dialog", ".error",
                     _("G-Code error in %s") % os.path.basename(f),
                     _("Near line %d of %s:\n%s") % (seq+1, f, error_str),

@@ -36,6 +36,7 @@ char _parameter_file_name[LINELEN];
 #else
 #include "rs274ngc_return.hh"
 #define INTERP_OK        RS274NGC_OK
+#define INTERP_MIN_ERROR RS274NGC_MIN_ERROR
 #define ACTIVE_SETTINGS  RS274NGC_ACTIVE_SETTINGS
 #define ACTIVE_G_CODES   RS274NGC_ACTIVE_G_CODES 
 #define ACTIVE_M_CODES   RS274NGC_ACTIVE_M_CODES 
@@ -60,7 +61,9 @@ char _parameter_file_name[LINELEN];
 #undef offsetof
 #define offsetof(T,x) (int)(-1+(char*)&(((T*)1)->x))
 
+extern char *_rs274ngc_errors[];
 
+#define iserror(x) ((x) < 0 || (x) >= RS274NGC_MIN_ERROR)
 
 static PyObject *pose(const EmcPose &p) {
     PyObject *res = PyTuple_New(6);
@@ -415,13 +418,20 @@ CANON_PLANE GET_EXTERNAL_PLANE() { return 1; }
 double GET_EXTERNAL_SPEED() { return 0; }
 int GET_EXTERNAL_TOOL_MAX() { return CANON_TOOL_MAX; }
 
+bool PyFloat_CheckAndError(const char *func, PyObject *p)  {
+    if(PyFloat_Check(p)) return true;
+    PyErr_Format(PyExc_TypeError,
+            "%s: Expected double, got %s", func, p->ob_type->tp_name);
+    return false;
+}
+
 double GET_EXTERNAL_ANGLE_UNITS() {
     PyObject *result =
         PyObject_CallMethod(callback, "get_external_angular_units", "");
     if(result == NULL) interp_error++;
 
     double dresult = 1.0;
-    if(!result || !PyFloat_Check(result)) {
+    if(!result || !PyFloat_CheckAndError("get_external_angle_units", result)) {
         interp_error++;
     } else {
         dresult = PyFloat_AsDouble(result);
@@ -436,7 +446,7 @@ double GET_EXTERNAL_LENGTH_UNITS() {
     if(result == NULL) interp_error++;
 
     double dresult = 0.03937007874016;
-    if(!result || !PyFloat_Check(result)) {
+    if(!result || !PyFloat_CheckAndError("get_external_length_units", result)) {
         interp_error++;
     } else {
         dresult = PyFloat_AsDouble(result);
@@ -465,27 +475,32 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
 
     interp_init();
     interp_open(f);
-    int result = 0;
+    int result = INTERP_OK;
     if(initcode) {
         result = interp_read(initcode);
-        if(result != INTERP_OK) return NULL;
+        if(result != INTERP_OK) goto out_error;
         result = interp_execute();
-        if(result != INTERP_OK) return NULL;
     }
-    while(!interp_error) {
+    while(!interp_error && result == INTERP_OK) {
         result = interp_read();
         if(result != INTERP_OK) break;
         result = interp_execute();
-        if(result != INTERP_OK) break;
     }
-    if(interp_error || !result) return NULL;
+out_error:
+    if(interp_error) {
+        if(!PyErr_Occurred()) {
+            PyErr_Format(PyExc_RuntimeError,
+                    "interp_error > 0 but no Python exception set");
+        }
+        return NULL;
+    }
+    PyErr_Clear();
     PyObject *retval = PyTuple_New(2);
     PyTuple_SetItem(retval, 0, PyInt_FromLong(result));
     PyTuple_SetItem(retval, 1, PyInt_FromLong(last_sequence_number));
     return retval;
 }
 
-extern char * _rs274ngc_errors[];
 
 static int maxerror = -1;
 
@@ -519,6 +534,7 @@ initgcode(void) {
     PyType_Ready(&LineCodeType);
     PyModule_AddObject(m, "linecode", (PyObject*)&LineCodeType);
     maxerror = find_maxerror();
-    PyObject_SetAttrString(m, "RS274NGC_MAX_ERROR", PyInt_FromLong(maxerror));
-    PyObject_SetAttrString(m, "RS274NGC_MIN_ERROR", PyInt_FromLong(3)); // XXX
+    PyObject_SetAttrString(m, "MAX_ERROR", PyInt_FromLong(maxerror));
+    PyObject_SetAttrString(m, "MIN_ERROR",
+            PyInt_FromLong(INTERP_MIN_ERROR));
 }
