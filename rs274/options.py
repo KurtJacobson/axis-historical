@@ -100,34 +100,34 @@ option add *Hrule.borderWidth 1
 option add *Hrule.relief sunken
 option add *Hrule.height 2
 
-option add *Togl.background #fff
+option add *Togl.background #ffffff
 
-option add *Togl.dwell #7cc
-option add *Togl.m1xx #c77
+option add *Togl.dwell #77cccc
+option add *Togl.m1xx #cc7777
 
-option add *Togl.straight_feed #000
-option add *Togl.arc_feed #300
-option add *Togl.traverse #7cc
+option add *Togl.straight_feed #000000
+option add *Togl.arc_feed #330000
+option add *Togl.traverse #77cccc
 option add *Togl.backplotjog yellow
-option add *Togl.backplotfeed #444
-option add *Togl.backplotarc #477
-option add *Togl.backplottraverse #7cc
-option add *Togl.selected #00f
+option add *Togl.backplotfeed #444444
+option add *Togl.backplotarc #447777
+option add *Togl.backplottraverse #77cccc
+option add *Togl.selected #0000ff
 
-option add *Togl.overlay_foreground #000
+option add *Togl.overlay_foreground #000000
 option add *Togl.overlay_alpha .75
-option add *Togl.overlay_background #fff
+option add *Togl.overlay_background #ffffff
 
-option add *Togl.label_ok #557
-option add *Togl.label_limit #c55
+option add *Togl.label_ok #555577
+option add *Togl.label_limit #cc5555
 
-option add *Togl.small_origin #077
+option add *Togl.small_origin #007777
 
-option add *Togl.axis_x #333
-option add *Togl.axis_y #333
-option add *Togl.axis_z #333
+option add *Togl.axis_x #333333
+option add *Togl.axis_y #333333
+option add *Togl.axis_z #333333
 
-option add *Togl.cone #ccc
+option add *Togl.cone #cccccc
 '''
 
 def install(root = None):

@@ -65,7 +65,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.offset_z = offset_z
 
     def straight_traverse(self, x,y,z, a,b,c):
-        print "straight_traverse", self.state.gcodes[1]
         l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
         self.traverse_append((self.lineno, self.lo, l))
         self.lo = l
@@ -79,7 +78,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
             self.in_arc = False
 
     def straight_feed(self, x,y,z, a,b,c, is_arc=0):
-        print "straight_feed", self.state.gcodes[1]
         l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
         if self.in_arc:
             self.arcfeed_append((self.lineno, self.lo, l))
@@ -168,11 +166,9 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         glDisable(GL_LINE_STIPPLE)
 
         glColor3f(*self.colors['straight_feed'])
-        print "straight_feed", self.colors['straight_feed']
         self.draw_lines(self.feed, for_selection)
 
         glColor3f(*self.colors['arc_feed'])
-        print "arc_feed", self.colors['arc_feed']
         self.draw_lines(self.arcfeed, for_selection)
 
         glLineWidth(2)

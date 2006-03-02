@@ -170,7 +170,6 @@ class MyOpengl(Opengl):
         self.motion_after = None
         self.perspective = False
         Opengl.__init__(self, *args, **kw)
-        print "MyOpengl class", self.winfo_class()
         self.bind('<Button-4>', self.zoomin)
         root_window.bind('<Key-minus>', self.zoomout)
         self.bind('<Button-5>', self.zoomout)
@@ -201,7 +200,6 @@ class MyOpengl(Opengl):
             else:
                 d = "Foreground"
             self.colors[c] = parse_color(self.option_get(c, d))
-            print c, self.colors[c]
         self.colors['overlay_alpha'] = \
             float(self.option_get("overlay_alpha", "Float"))
 
