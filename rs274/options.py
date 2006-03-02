@@ -100,32 +100,32 @@ option add *Hrule.borderWidth 1 startupFile
 option add *Hrule.relief sunken startupFile
 option add *Hrule.height 2 startupFile
 
-option add *Togl.background #ffffff startupFile
+option add *Togl.background #000 startupFile
 
-option add *Togl.dwell #77cccc startupFile
-option add *Togl.m1xx #cc7777 startupFile
+option add *Togl.dwell #ff8080 startupFile
+option add *Togl.m1xx #8080ff startupFile
 
-option add *Togl.straight_feed #000000 startupFile
-option add *Togl.arc_feed #330000 startupFile
-option add *Togl.traverse #77cccc startupFile
+option add *Togl.straight_feed #ffffff startupFile
+option add *Togl.arc_feed #ffffff startupFile
+option add *Togl.traverse #4c8080 startupFile
 option add *Togl.backplotjog yellow startupFile
-option add *Togl.backplotfeed #444444 startupFile
-option add *Togl.backplotarc #447777 startupFile
-option add *Togl.backplottraverse #77cccc startupFile
-option add *Togl.selected #0000ff startupFile
+option add *Togl.backplotfeed #c0c040 startupFile
+option add *Togl.backplotarc #c04080 startupFile
+option add *Togl.backplottraverse #4c8080 startupFile
+option add *Togl.selected #00ffff startupFile
 
-option add *Togl.overlay_foreground #000000 startupFile
+option add *Togl.overlay_foreground #ffffff startupFile
 option add *Togl.overlay_alpha .75 startupFile
-option add *Togl.overlay_background #ffffff startupFile
+option add *Togl.overlay_background #000000 startupFile
 
-option add *Togl.label_ok #555577 startupFile
-option add *Togl.label_limit #cc5555 startupFile
+option add *Togl.label_ok #ff353a startupFile
+option add *Togl.label_limit #ff8287 startupFile
 
-option add *Togl.small_origin #007777 startupFile
+option add *Togl.small_origin #00ffff startupFile
 
-option add *Togl.axis_x #333333 startupFile
-option add *Togl.axis_y #333333 startupFile
-option add *Togl.axis_z #333333 startupFile
+option add *Togl.axis_x #33ff33 startupFile
+option add *Togl.axis_y #ff3333 startupFile
+option add *Togl.axis_z #3333ff startupFile
 
 option add *Togl.cone #cccccc startupFile
 '''
