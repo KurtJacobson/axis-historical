@@ -25,109 +25,109 @@ proc option_nont {args} {
     eval [concat option $args]
 }
 
-option add *Button.borderWidth 2
+option add *Button.borderWidth 2 startupFile
 option_nont add *Button.font $BASE_FONT
 
-option add *Checkbutton.borderWidth 1
+option add *Checkbutton.borderWidth 1 startupFile
 option_nont add *Checkbutton.font $BASE_FONT
 
-option add *Entry.background white
-option add *Entry.borderWidth 2
+option add *Entry.background white startupFile
+option add *Entry.borderWidth 2 startupFile
 option_nont add *Entry.font $BASE_FONT
-option add *Entry.selectBackground #08246b
-option add *Entry.selectForeground white
+option add *Entry.selectBackground #08246b startupFile
+option add *Entry.selectForeground white startupFile
 
-option add *Frame.borderWidth 0
+option add *Frame.borderWidth 0 startupFile
 
-option add *Hierbox.borderWidth 2
-option add *Hierbox.selectBackground #08246b
-option add *Hierbox.selectForeground white
+option add *Hierbox.borderWidth 2 startupFile
+option add *Hierbox.selectBackground #08246b startupFile
+option add *Hierbox.selectForeground white startupFile
 
 option_nont add *Label.font $BASE_FONT
-option add *Label.borderWidth 1
+option add *Label.borderWidth 1 startupFile
 
-option add *Listbox.background white
+option add *Listbox.background white startupFile
 option_nont add *Listbox.font $BASE_FONT
-option add *Listbox.borderWidth 2
-option add *Listbox.selectBackground #08246b
-option add *Listbox.selectForeground white
+option add *Listbox.borderWidth 2 startupFile
+option add *Listbox.selectBackground #08246b startupFile
+option add *Listbox.selectForeground white startupFile
 
-option add *Menu.activeBorderWidth 0
-option add *Menu.borderWidth 1
+option add *Menu.activeBorderWidth 0 startupFile
+option add *Menu.borderWidth 1 startupFile
 option_nont add *Menu.font $BASE_FONT
-option add *Menu.activeBackground #08246b
-option add *Menu.activeForeground white
+option add *Menu.activeBackground #08246b startupFile
+option add *Menu.activeForeground white startupFile
 
-option add *Menubutton.borderWidth 1
+option add *Menubutton.borderWidth 1 startupFile
 option_nont add *Menubutton.font $BASE_FONT
-option add *Menubutton.indicatorOn 1
-option add *Menubutton.relief raised
+option add *Menubutton.indicatorOn 1 startupFile
+option add *Menubutton.relief raised startupFile
 
-option add *Message.borderWidth 1
+option add *Message.borderWidth 1 startupFile
 option_nont add *Message.font $BASE_FONT
 
-option add *Radiobutton.borderWidth 1
+option add *Radiobutton.borderWidth 1 startupFile
 option_nont add *Radiobutton.font $BASE_FONT
 
-option add *Scrollbar.borderWidth 2
-option add *Scrollbar.takeFocus 0
-option add *Scrollbar.troughColor #d9d9d9
-option add *Scrollbar.elementBorderWidth 2
+option add *Scrollbar.borderWidth 2 startupFile
+option add *Scrollbar.takeFocus 0 startupFile
+option add *Scrollbar.troughColor #d9d9d9 startupFile
+option add *Scrollbar.elementBorderWidth 2 startupFile
 
-option add *Text.background white
-option add *Text.borderWidth 2
+option add *Text.background white startupFile
+option add *Text.borderWidth 2 startupFile
 option_nont add *Text.font fixed
-option add *Text.selectBackground #08246b
-option add *Text.selectForeground white
+option add *Text.selectBackground #08246b startupFile
+option add *Text.selectForeground white startupFile
 
-option add *Labelframe.borderWidth 2
-option add *Labelframe.relief groove
+option add *Labelframe.borderWidth 2 startupFile
+option add *Labelframe.relief groove startupFile
 option_nont add *Labelframe.font $BASE_FONT
 
-option add *work.borderWidth 3
+option add *work.borderWidth 3 startupFile
 
-option add *buttons*Button.default normal
+option add *buttons*Button.default normal startupFile
 
-option add *Vspace.height 6
+option add *Vspace.height 6 startupFile
 
-option add *Hspace.width 20
+option add *Hspace.width 20 startupFile
 
-option add *Vrule.borderWidth 1
-option add *Vrule.relief sunken
-option add *Vrule.width 2
+option add *Vrule.borderWidth 1 startupFile
+option add *Vrule.relief sunken startupFile
+option add *Vrule.width 2 startupFile
 
-option add *Hrule.borderWidth 1
-option add *Hrule.relief sunken
-option add *Hrule.height 2
+option add *Hrule.borderWidth 1 startupFile
+option add *Hrule.relief sunken startupFile
+option add *Hrule.height 2 startupFile
 
-option add *Togl.background #ffffff
+option add *Togl.background #ffffff startupFile
 
-option add *Togl.dwell #77cccc
-option add *Togl.m1xx #cc7777
+option add *Togl.dwell #77cccc startupFile
+option add *Togl.m1xx #cc7777 startupFile
 
-option add *Togl.straight_feed #000000
-option add *Togl.arc_feed #330000
-option add *Togl.traverse #77cccc
-option add *Togl.backplotjog yellow
-option add *Togl.backplotfeed #444444
-option add *Togl.backplotarc #447777
-option add *Togl.backplottraverse #77cccc
-option add *Togl.selected #0000ff
+option add *Togl.straight_feed #000000 startupFile
+option add *Togl.arc_feed #330000 startupFile
+option add *Togl.traverse #77cccc startupFile
+option add *Togl.backplotjog yellow startupFile
+option add *Togl.backplotfeed #444444 startupFile
+option add *Togl.backplotarc #447777 startupFile
+option add *Togl.backplottraverse #77cccc startupFile
+option add *Togl.selected #0000ff startupFile
 
-option add *Togl.overlay_foreground #000000
-option add *Togl.overlay_alpha .75
-option add *Togl.overlay_background #ffffff
+option add *Togl.overlay_foreground #000000 startupFile
+option add *Togl.overlay_alpha .75 startupFile
+option add *Togl.overlay_background #ffffff startupFile
 
-option add *Togl.label_ok #555577
-option add *Togl.label_limit #cc5555
+option add *Togl.label_ok #555577 startupFile
+option add *Togl.label_limit #cc5555 startupFile
 
-option add *Togl.small_origin #007777
+option add *Togl.small_origin #007777 startupFile
 
-option add *Togl.axis_x #333333
-option add *Togl.axis_y #333333
-option add *Togl.axis_z #333333
+option add *Togl.axis_x #333333 startupFile
+option add *Togl.axis_y #333333 startupFile
+option add *Togl.axis_z #333333 startupFile
 
-option add *Togl.cone #cccccc
+option add *Togl.cone #cccccc startupFile
 '''
 
 def install(root = None):
