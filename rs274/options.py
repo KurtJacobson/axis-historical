@@ -109,7 +109,7 @@ option add *Togl.straight_feed #ffffff startupFile
 option add *Togl.arc_feed #ffffff startupFile
 option add *Togl.traverse #4c8080 startupFile
 option add *Togl.backplotjog yellow startupFile
-option add *Togl.backplotfeed #c0c040 startupFile
+option add *Togl.backplotfeed #c04040 startupFile
 option add *Togl.backplotarc #c04080 startupFile
 option add *Togl.backplottraverse #4c8080 startupFile
 option add *Togl.selected #00ffff startupFile
