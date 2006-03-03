@@ -944,10 +944,11 @@ class AxisCanon(GLCanon):
         return tool,0.,0.
 
     def get_external_angular_units(self):
-        return s.angular_units or 1
+        return s.angular_units or 1.0
 
     def get_external_length_units(self):
-        return s.linear_units or 1
+        print "get_external_length_units", s.linear_units
+        return s.linear_units or 1.0
 
 loaded_file = None
 def open_file_guts(f, filtered = False):
