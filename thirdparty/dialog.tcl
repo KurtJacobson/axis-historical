@@ -46,6 +46,16 @@
 # args -	One or more strings to display in buttons across the
 #		bottom of the dialog box.
 
+proc nf_dialog_default {t n i} {
+    for {set j 0} {$j < $n} {incr j} {
+	if {$i == $j} {
+	    $t.button$j configure -default active
+	} else {
+	    $t.button$j configure -default normal
+	}
+    }
+}
+
 proc nf_dialog {w title text image default args} {
     global tkPriv tcl_platform
 
@@ -111,19 +121,22 @@ proc nf_dialog {w title text image default args} {
     # 3. Create a row of buttons at the bottom of the dialog.
 
     set i 0
+    set l [llength $args]
     foreach but $args {
 	button $w.button$i -text $but -command "set tkPriv(button) $i" \
             -width 10 -height 1 -padx 0 -pady .25 
 
         set u [lindex $accel $i]
 
-        if {$u == -2 || $i == $default} {
-            $w.button$i configure -default active     
-            bind $w <Return> "$w.button$i flash; set tkPriv(button) $i"
-        }
+	bind $w.button$i <FocusIn> [list nf_dialog_default $w $l $i]
+
+        if {$u == -2} { set default $u }
+
         if {$u == -3} {
             bind $w <Escape> "$w.button$i flash; set tkPriv(button) $i"
         }
+	bind $w.button$i <Return> {%W flash; %W invoke}
+
         if {$u >= 0} {
             set c [string index $but $u]
             bind $w "[string tolower $c]" \
