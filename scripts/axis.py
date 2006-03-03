@@ -947,7 +947,6 @@ class AxisCanon(GLCanon):
         return s.angular_units or 1.0
 
     def get_external_length_units(self):
-        print "get_external_length_units", s.linear_units
         return s.linear_units or 1.0
 
 loaded_file = None
