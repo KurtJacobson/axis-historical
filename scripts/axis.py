@@ -147,7 +147,7 @@ def install_help(app):
 install_help(root_window)
 
 color_names = [
-    ('background', 'Background'),
+    ('back', 'Background'),
     'dwell', 'm1xx', 'straight_feed', 'arc_feed', 'traverse',
     'backplotjog', 'backplotfeed', 'backplotarc', 'backplottraverse',
     'selected',
@@ -332,7 +332,7 @@ class MyOpengl(Opengl):
         glViewport(0, 0, w, h)
 
         # Clear the background and depth buffer.
-        glClearColor(*(self.colors['background'] + (0,)))
+        glClearColor(*(self.colors['back'] + (0,)))
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         glMatrixMode(GL_PROJECTION)
@@ -365,7 +365,7 @@ class MyOpengl(Opengl):
         glViewport(0, 0, w, h)
 
         # Clear the background and depth buffer.
-        glClearColor(*(self.colors['background'] + (0,)))
+        glClearColor(*(self.colors['back'] + (0,)))
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         glMatrixMode(GL_PROJECTION)

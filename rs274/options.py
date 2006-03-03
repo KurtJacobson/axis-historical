@@ -100,7 +100,7 @@ option add *Hrule.borderWidth 1 startupFile
 option add *Hrule.relief sunken startupFile
 option add *Hrule.height 2 startupFile
 
-option add *Togl.background #000 startupFile
+option add *Togl.back #000 startupFile
 
 option add *Togl.dwell #ff8080 startupFile
 option add *Togl.m1xx #8080ff startupFile
