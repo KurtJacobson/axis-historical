@@ -463,8 +463,9 @@ CANON_MOTION_MODE GET_EXTERNAL_MOTION_CONTROL_MODE() { return motion_mode; }
 
 PyObject *parse_file(PyObject *self, PyObject *args) {
     char *f;
-    char *initcode;
-    if(!PyArg_ParseTuple(args, "sO|s", &f, &callback, &initcode)) return NULL;
+    char *unitcode=0, *initcode=0;
+    if(!PyArg_ParseTuple(args, "sO|ss", &f, &callback, &unitcode, &initcode))
+        return NULL;
 
     for(int i=0; i<USER_DEFINED_FUNCTION_NUM; i++) 
         USER_DEFINED_FUNCTION[i] = user_defined_function;
@@ -476,7 +477,12 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
     interp_init();
     interp_open(f);
     int result = INTERP_OK;
-    if(initcode) {
+    if(unitcode) {
+        result = interp_read(unitcode);
+        if(result != INTERP_OK) goto out_error;
+        result = interp_execute();
+    }
+    if(initcode && result == INTERP_OK) {
         result = interp_read(initcode);
         if(result != INTERP_OK) goto out_error;
         result = interp_execute();

@@ -993,7 +993,10 @@ def open_file_guts(f, filtered = False):
         o.g = canon = AxisCanon(o, widgets.text, i, progress)
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
-        result, seq = gcode.parse(f, canon, initcode)
+        unitcode = "G%d" % (20 + (s.linear_units == 1))
+        print "initcode", initcode
+        print "unitcode", unitcode
+        result, seq = gcode.parse(f, canon, unitcode, initcode)
         print "parse result", result
         # According to the documentation, MIN_ERROR is the largest value that is
         # not an error.  Crazy though that sounds...
