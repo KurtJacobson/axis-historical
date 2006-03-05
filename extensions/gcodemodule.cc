@@ -361,6 +361,7 @@ void SET_MOTION_OUTPUT_VALUE(int index, double value) {}
 void TURN_PROBE_ON() {}
 void TURN_PROBE_OFF() {}
 void STRAIGHT_PROBE(double x, double y, double z, double a, double b, double c) {}
+double GET_EXTERNAL_MOTION_CONTROL_TOLERANCE() { return 0.1; }
 double GET_EXTERNAL_PROBE_POSITION_X() { return 0.0; }
 double GET_EXTERNAL_PROBE_POSITION_Y() { return 0.0; }
 double GET_EXTERNAL_PROBE_POSITION_Z() { return 0.0; }
@@ -458,6 +459,7 @@ double GET_EXTERNAL_LENGTH_UNITS() {
 USER_DEFINED_FUNCTION_TYPE USER_DEFINED_FUNCTION[USER_DEFINED_FUNCTION_NUM];
 
 CANON_MOTION_MODE motion_mode;
+void SET_MOTION_CONTROL_MODE(CANON_MOTION_MODE mode, double tolerance) { motion_mode = mode; }
 void SET_MOTION_CONTROL_MODE(CANON_MOTION_MODE mode) { motion_mode = mode; }
 CANON_MOTION_MODE GET_EXTERNAL_MOTION_CONTROL_MODE() { return motion_mode; }
 
