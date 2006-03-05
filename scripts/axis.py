@@ -1602,7 +1602,11 @@ def jog_on(a, b):
     if jogspeed != _("Continuous"):
         s.poll()
         if s.state != 1: return
-        jogspeed = float(jogspeed)
+        if "/" in jogspeed:
+            p, q = jogspeed.split("/")
+            jogspeed = float(p) / float(q)
+        else:
+            jogspeed = float(jogspeed)
         jog(emc.JOG_INCREMENT, a, b, jogspeed)
         jog_cont[a] = False
     else:
@@ -1684,6 +1688,11 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
         unit = float(inifile.find(section, "UNITS")) * 25.4
         machine_limit_min[a] = float(inifile.find(section, "MIN_LIMIT")) / unit
         machine_limit_max[a] = float(inifile.find(section, "MAX_LIMIT")) / unit
+
+    increments = inifile.find("DISPLAY", "INCREMENTS")
+    if increments:
+        root_window.call(widgets.jogspeed._w, "list", "delete", "1", "end")
+        root_window.call(widgets.jogspeed._w, "list", "insert", "end", *increments.split())
     del sys.argv[1:3]
 else:
     widgets.menu_view.entryconfigure(_("Show EMC Status"), state="disabled")
