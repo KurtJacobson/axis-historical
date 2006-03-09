@@ -676,6 +676,20 @@ class LivePlotter:
 
         lu = self.stat.linear_units or 1
         position = [pi / (25.4 * lu) for pi in self.stat.position[:3]]
+        if len(axisnames) > 3:
+            theta = self.stat.position[3]
+            costheta = cos(theta*math.pi/180)
+            sintheta = sin(theta*math.pi/180)
+            print self.stat.position[3], cos, math.pi, costheta, sintheta,
+            x, y, z = position
+            if axisnames[3] == "A":
+                print position,
+                position = x, y*costheta - z*sintheta, z*costheta + y*sintheta
+                print position
+            elif axisnames[3] == "B":
+                position = x*costheta+z*sintheta, y, z*costheta - x*sintheta
+            elif axisnames[3] == "C":
+                position = x*costheta+y*sintheta, y*costheta-x*sintheta, z
         p = array.array('f', position)
         motion_type = getattr(self.stat, 'motion_type', 2)
         if motion_type == 1:
@@ -2002,6 +2016,13 @@ def redraw(self):
             pos = live_plotter.data[-3:]
             glPushMatrix()
             glTranslatef(*pos)
+            if len(axisnames) > 3:
+                if axisnames[3] == "A":
+                    glRotatef(s.position[3], 1, 0, 0)
+                elif axisnames[3] == "B":
+                    glRotatef(s.position[3], 0, 1, 0)
+                elif axisnames[3] == "C":
+                    glRotatef(s.position[3], 0, 0, 1)
             glScalef(cone_scale, cone_scale, cone_scale)
             glCallList(cone_program)
             glPopMatrix()
