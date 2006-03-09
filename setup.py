@@ -67,6 +67,10 @@ if is_emc2:
     else:
         distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/bin" % (emcroot)
+        distutils.command.install.INSTALL_SCHEMES['unix_prefix']['platlib'] = \
+            "%s/lib/python" % (emcroot)
+        distutils.command.install.INSTALL_SCHEMES['unix_prefix']['data'] = \
+            "%s" % (emcroot)
         include_dirs = [os.path.join(emcroot, "include")]
         library_dirs = [os.path.join(emcroot, "lib")]
     extra_link_args = ['-Wl,-rpath,%s' % library_dirs[0]]

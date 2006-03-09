@@ -20,10 +20,16 @@
 
 from __future__ import generators
 
-import gettext; gettext.install("axis", unicode=True)
+import sys, os
+BASE = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), ".."))
+sys.path.insert(0, os.path.join(BASE, "lib", "python"))
+
+import gettext;
+gettext.install("axis", localedir=os.path.join(BASE, "share"), unicode=True)
+
 version="1.3a0"
 
-import sys, array, time, atexit, tempfile, shutil, os, errno
+import array, time, atexit, tempfile, shutil, errno
 
 if os.environ.has_key('EMC2VERSION'):
     version = version + " / emc2 " + os.environ['EMC2VERSION']
