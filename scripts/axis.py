@@ -682,9 +682,7 @@ class LivePlotter:
             sintheta = sin(theta*math.pi/180)
             x, y, z = position
             if axisnames[3] == "A":
-                print position,
                 position = x, y*costheta - z*sintheta, z*costheta + y*sintheta
-                print position
             elif axisnames[3] == "B":
                 position = x*costheta+z*sintheta, y, z*costheta - x*sintheta
             elif axisnames[3] == "C":
