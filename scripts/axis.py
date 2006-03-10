@@ -680,7 +680,6 @@ class LivePlotter:
             theta = self.stat.position[3]
             costheta = cos(theta*math.pi/180)
             sintheta = sin(theta*math.pi/180)
-            print self.stat.position[3], cos, math.pi, costheta, sintheta,
             x, y, z = position
             if axisnames[3] == "A":
                 print position,
