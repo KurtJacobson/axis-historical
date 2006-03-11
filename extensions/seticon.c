@@ -69,11 +69,13 @@ PyObject *seticon(PyObject *s, PyObject *o) {
     if(!CARDINAL) {
         CARDINAL = XInternAtom(Tk_Display(tkwin), "CARDINAL", True);
     }
-    XChangeProperty(Tk_Display(tkwin), Tk_WindowId(tkwrap), NET_WM_ICON,
-        CARDINAL, 32, PropModeReplace, (unsigned char *)icon, sz/4);
-    XChangeProperty(Tk_Display(tkwin), Tk_WindowId(tkwin), NET_WM_ICON,
-        CARDINAL, 32, PropModeReplace, (unsigned char *)icon, sz/4);
 
+    if(NET_WM_ICON && CARDINAL) {
+	XChangeProperty(Tk_Display(tkwin), Tk_WindowId(tkwrap), NET_WM_ICON,
+	    CARDINAL, 32, PropModeReplace, (unsigned char *)icon, sz/4);
+	XChangeProperty(Tk_Display(tkwin), Tk_WindowId(tkwin), NET_WM_ICON,
+	    CARDINAL, 32, PropModeReplace, (unsigned char *)icon, sz/4);
+    }
     Py_INCREF(Py_None);
     return Py_None;
 }
