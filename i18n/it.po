@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 10:12-0600\n"
+"POT-Creation-Date: 2006-03-11 10:03-0600\n"
 "PO-Revision-Date: 2006-03-10 21:14+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -16,222 +16,217 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10.2\n"
 
-#: ../scripts/axis.py:86
+#: ../scripts/axis.py:92
 msgid "Emergency stop"
 msgstr "Stop di emergenza"
 
-#: ../scripts/axis.py:87
+#: ../scripts/axis.py:93
 msgid "Turn machine on"
 msgstr "Accensione"
 
-#: ../scripts/axis.py:89
+#: ../scripts/axis.py:95
 msgid "Activate first axis"
 msgstr "Attiva asse 1"
 
-#: ../scripts/axis.py:90
+#: ../scripts/axis.py:96
 msgid "Activate second axis"
 msgstr "Attiva asse 2"
 
-#: ../scripts/axis.py:91
+#: ../scripts/axis.py:97
 msgid "Activate third axis"
 msgstr "Attiva asse 3"
 
-#: ../scripts/axis.py:92
+#: ../scripts/axis.py:98
 msgid "Activate fourth axis"
 msgstr "Attiva asse 4"
 
-#: ../scripts/axis.py:93
+#: ../scripts/axis.py:99
 msgid "Activate fifth axis"
 msgstr "Attiva asse 5"
 
-#: ../scripts/axis.py:94
+#: ../scripts/axis.py:100
 msgid "Activate sixth axis"
 msgstr "Attiva asse 6"
 
-#: ../scripts/axis.py:95
+#: ../scripts/axis.py:101
 msgid "Select jog increment"
 msgstr "Seleziona incremento del movimento"
 
-#: ../scripts/axis.py:96
+#: ../scripts/axis.py:102
 msgid "Continuous jog"
 msgstr "Movimento continuo"
 
-#: ../scripts/axis.py:97
+#: ../scripts/axis.py:103
 msgid "Send active axis home"
 msgstr "Invia asse corrente alla posizione Home"
 
-#: ../scripts/axis.py:98
+#: ../scripts/axis.py:104
 msgid "Set G54 offset for active axis"
 msgstr "Attiva nuova origine G54 per asse corrente"
 
-#: ../scripts/axis.py:99
+#: ../scripts/axis.py:105
 msgid "Jog first axis"
 msgstr "Muovi asse 1"
 
-#: ../scripts/axis.py:100
+#: ../scripts/axis.py:106
 msgid "Jog second axis"
 msgstr "Muovi asse 2"
 
-#: ../scripts/axis.py:101
+#: ../scripts/axis.py:107
 msgid "Jog third axis"
 msgstr "Muovi asse 3"
 
-#: ../scripts/axis.py:102
+#: ../scripts/axis.py:108
 msgid "Jog fourth axis"
 msgstr "Muovi asse 4"
 
-#: ../scripts/axis.py:104
+#: ../scripts/axis.py:110
 msgid "Left Button"
 msgstr "Tasto sinistro"
 
-#: ../scripts/axis.py:104
+#: ../scripts/axis.py:110
 msgid "Pan view or select line"
 msgstr "Sposta vista o seleziona linea"
 
-#: ../scripts/axis.py:105
+#: ../scripts/axis.py:111
 msgid "Shift+Left Button"
 msgstr "Maiusc+Tasto sinistro"
 
-#: ../scripts/axis.py:105 ../scripts/axis.py:107
+#: ../scripts/axis.py:111 ../scripts/axis.py:113
 msgid "Rotate view"
 msgstr "Ruota vista"
 
-#: ../scripts/axis.py:106
+#: ../scripts/axis.py:112
 msgid "Right Button"
 msgstr "Tasto destro"
 
-#: ../scripts/axis.py:106 ../scripts/axis.py:108
+#: ../scripts/axis.py:112 ../scripts/axis.py:114
 msgid "Zoom view"
 msgstr "Visualizza zoom"
 
-#: ../scripts/axis.py:107
+#: ../scripts/axis.py:113
 msgid "Wheel Button"
 msgstr "Tasto Rotella mouse"
 
-#: ../scripts/axis.py:108
+#: ../scripts/axis.py:114
 msgid "Rotate Wheel"
 msgstr "Rotella mouse"
 
-#: ../scripts/axis.py:111
+#: ../scripts/axis.py:117
 msgid "Manual control"
 msgstr "Controllo manuale"
 
-#: ../scripts/axis.py:112
+#: ../scripts/axis.py:118
 msgid "Code entry (MDI)"
 msgstr "Inserimento comandi manuali (MDI)"
 
-#: ../scripts/axis.py:113 ../tcl/axis.tcl:786
+#: ../scripts/axis.py:119 ../tcl/axis.tcl:794
 msgid "Override Limits"
 msgstr "Ignora i limiti "
 
-#: ../scripts/axis.py:115
+#: ../scripts/axis.py:121
 msgid "Open program"
 msgstr "Apri programma"
 
-#: ../scripts/axis.py:116
+#: ../scripts/axis.py:122
 msgid "Run program"
 msgstr "Esegui programma"
 
-#: ../scripts/axis.py:117
+#: ../scripts/axis.py:123
 msgid "Step program"
 msgstr "Esegui una riga per volta"
 
-#: ../scripts/axis.py:118
+#: ../scripts/axis.py:124
 msgid "Pause program"
 msgstr "Pausa esecuzione"
 
-#: ../scripts/axis.py:119
+#: ../scripts/axis.py:125
 msgid "Resume program"
 msgstr "Riprendi esecuzione"
 
-#: ../scripts/axis.py:120
+#: ../scripts/axis.py:126
 msgid "Stop program"
 msgstr "Ferma esecuzione"
 
-#: ../scripts/axis.py:122
+#: ../scripts/axis.py:128
 msgid "Toggle mist"
 msgstr "Aria On/Off"
 
-#: ../scripts/axis.py:123
+#: ../scripts/axis.py:129
 msgid "Toggle flood"
 msgstr "Refrigerante On/Off"
 
-#: ../scripts/axis.py:125
+#: ../scripts/axis.py:131
 msgid "Spindle brake off"
 msgstr "Disattiva freno mandrino"
 
-#: ../scripts/axis.py:126
+#: ../scripts/axis.py:132
 msgid "Spindle brake on"
 msgstr "Attiva freno mandrino"
 
-#: ../scripts/axis.py:127
+#: ../scripts/axis.py:133
 msgid "Turn spindle clockwise"
 msgstr "Rotazione mandrino in senso orario"
 
-#: ../scripts/axis.py:128
+#: ../scripts/axis.py:134
 msgid "Turn spindle counterclockwise"
 msgstr "Rotazione mandrino in senso antiorario"
 
-#: ../scripts/axis.py:129
+#: ../scripts/axis.py:135
 msgid "Turn spindle more slowly"
 msgstr "Diminuisci velocità mandrino"
 
-#: ../scripts/axis.py:130
+#: ../scripts/axis.py:136
 msgid "Turn spindle more quickly"
 msgstr "Aumenta velocità mandrino"
 
-#: ../scripts/axis.py:132
+#: ../scripts/axis.py:138
 msgid "Clear live plot"
 msgstr "Cancella plot grafico"
 
-#: ../scripts/axis.py:133
+#: ../scripts/axis.py:139
 msgid "Cycle among preset views"
 msgstr "Commuta tra  le viste preselezionate"
 
-#: ../scripts/axis.py:624 ../scripts/axis.py:632
+#: ../scripts/axis.py:660 ../scripts/axis.py:668
 msgid "AXIS error"
 msgstr "Errore AXIS"
 
-#: ../scripts/axis.py:624 ../scripts/axis.py:632 ../scripts/axis.py:931
-#: ../scripts/axis.py:969 ../tcl/axis.tcl:1280 ../tcl/axis.tcl:1317
+#: ../scripts/axis.py:660 ../scripts/axis.py:668 ../scripts/axis.py:981
+#: ../scripts/axis.py:1025 ../tcl/axis.tcl:1295 ../tcl/axis.tcl:1332
 msgid "OK"
 msgstr "OK"
 
-#: ../scripts/axis.py:693
+#: ../scripts/axis.py:741
 msgid "No tool"
 msgstr "Utensile assente"
 
-#: ../scripts/axis.py:695
+#: ../scripts/axis.py:743
 #, python-format
 msgid "Unknown tool %d"
 msgstr "Utensile %d sconosciuto"
 
-#: ../scripts/axis.py:698
+#: ../scripts/axis.py:746
 #, python-format
 msgid "Tool %d, offset %g, diameter %g"
 msgstr "Utensile %d, offset %g, diametro %g"
 
-#: ../scripts/axis.py:929
+#: ../scripts/axis.py:979
 #, python-format
 msgid "Program_filter %r failed"
 msgstr "Filtro codice %r errato"
 
-#: ../scripts/axis.py:930
+#: ../scripts/axis.py:980
 #, python-format
 msgid "Exit code %d"
 msgstr "Codice uscita %d"
 
-#: ../scripts/axis.py:965
-#, python-format
-msgid "Unknown error %s"
-msgstr "Errore sconosciuto %s"
-
-#: ../scripts/axis.py:967
+#: ../scripts/axis.py:1023
 #, python-format
 msgid "G-Code error in %s"
 msgstr "Errore G-code in %s"
 
-#: ../scripts/axis.py:968
+#: ../scripts/axis.py:1024
 #, python-format
 msgid ""
 "Near line %d of %s:\n"
@@ -240,38 +235,38 @@ msgstr ""
 "nei pressi della linea %d di %s:\n"
 "%s"
 
-#: ../scripts/axis.py:1083 ../scripts/axis.py:1088 ../scripts/axis.py:1553
-#: ../tcl/axis.tcl:765 ../tcl/axis.tcl:767 ../tcl/axis.tcl:1563
+#: ../scripts/axis.py:1140 ../scripts/axis.py:1145 ../scripts/axis.py:1619
+#: ../tcl/axis.tcl:773 ../tcl/axis.tcl:775 ../tcl/axis.tcl:1577
 msgid "Continuous"
 msgstr "Continuo"
 
-#: ../scripts/axis.py:1275
+#: ../scripts/axis.py:1338
 msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
 msgstr "{{files rs274ngc} {.ngc}} {{Tutti i files} *}"
 
-#: ../scripts/axis.py:1310
+#: ../scripts/axis.py:1376
 #, python-format
 msgid "Program exceeds machine minimum on axis %s"
 msgstr "Il programma eccede il limite inferiore sull'asse %s"
 
-#: ../scripts/axis.py:1312
+#: ../scripts/axis.py:1378
 #, python-format
 msgid "Program exceeds machine maximum on axis %s"
 msgstr "Il programma eccede il limite superiore sull'asse %s"
 
-#: ../scripts/axis.py:1316
+#: ../scripts/axis.py:1382
 msgid "Program exceeds machine limits"
 msgstr "Il programma eccede i limiti macchina"
 
-#: ../scripts/axis.py:1319
+#: ../scripts/axis.py:1385
 msgid "Run Anyway"
 msgstr "Esegui comunque"
 
-#: ../scripts/axis.py:1319
+#: ../scripts/axis.py:1385
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../scripts/axis.py:1640
+#: ../scripts/axis.py:1715
 msgid "Show EMC Status"
 msgstr "Visualizza lo stato di EMC"
 
@@ -487,107 +482,83 @@ msgstr "Vista prospettiva"
 msgid "Clear live plot [Ctrl-K]"
 msgstr "Cancella percorso attuale [Ctrl-K]"
 
-#: ../tcl/axis.tcl:630
+#: ../tcl/axis.tcl:637
 msgid "Manual Control [F3]"
 msgstr "Controllo manuale [F3]"
 
-#: ../tcl/axis.tcl:631
+#: ../tcl/axis.tcl:638
 msgid "Code Entry [F5]"
 msgstr "Codice manuale [F5]"
 
-#: ../tcl/axis.tcl:640
+#: ../tcl/axis.tcl:647
 msgid "Axis:"
 msgstr "Asse:"
 
-#: ../tcl/axis.tcl:651
-msgid "_X"
-msgstr "_X"
-
-#: ../tcl/axis.tcl:660
-msgid "_Y"
-msgstr "_Y"
-
-#: ../tcl/axis.tcl:669
-msgid "_Z"
-msgstr "_Z"
-
-#: ../tcl/axis.tcl:678
-msgid "_A"
-msgstr "_A"
-
-#: ../tcl/axis.tcl:687
-msgid "_B"
-msgstr "_B"
-
-#: ../tcl/axis.tcl:696
-msgid "_C"
-msgstr "_C"
-
-#: ../tcl/axis.tcl:747 ../tcl/axis.tcl:887
+#: ../tcl/axis.tcl:755 ../tcl/axis.tcl:902
 msgid "-"
 msgstr ""
 
-#: ../tcl/axis.tcl:760 ../tcl/axis.tcl:901
+#: ../tcl/axis.tcl:768 ../tcl/axis.tcl:916
 msgid "+"
 msgstr ""
 
-#: ../tcl/axis.tcl:775
+#: ../tcl/axis.tcl:783
 msgid "Home"
 msgstr "Posizione Home"
 
-#: ../tcl/axis.tcl:781
+#: ../tcl/axis.tcl:789
 msgid "Offset"
 msgstr "Offset"
 
-#: ../tcl/axis.tcl:842
+#: ../tcl/axis.tcl:857
 msgid "Spindle:"
 msgstr "Mandrino:"
 
-#: ../tcl/axis.tcl:863
+#: ../tcl/axis.tcl:878
 msgid "Stop"
 msgstr "Stop"
 
-#: ../tcl/axis.tcl:906
+#: ../tcl/axis.tcl:921
 msgid "Brake"
 msgstr "Freno"
 
-#: ../tcl/axis.tcl:953
+#: ../tcl/axis.tcl:968
 msgid "Coolant:"
 msgstr "Refrigerante:"
 
-#: ../tcl/axis.tcl:958
+#: ../tcl/axis.tcl:973
 msgid "Mist"
 msgstr "Aria"
 
-#: ../tcl/axis.tcl:963
+#: ../tcl/axis.tcl:978
 msgid "Flood"
 msgstr "Liquido"
 
-#: ../tcl/axis.tcl:1035
+#: ../tcl/axis.tcl:1050
 msgid "History:"
 msgstr "Log comandi:"
 
-#: ../tcl/axis.tcl:1049
+#: ../tcl/axis.tcl:1064
 msgid "MDI Command:"
 msgstr "Comando MDI"
 
-#: ../tcl/axis.tcl:1059
+#: ../tcl/axis.tcl:1074
 msgid "Go"
 msgstr "Esegui"
 
-#: ../tcl/axis.tcl:1065
+#: ../tcl/axis.tcl:1080
 msgid "Active G-Codes:"
 msgstr "Codici G attivi:"
 
-#: ../tcl/axis.tcl:1220
+#: ../tcl/axis.tcl:1235
 msgid "0"
 msgstr "0"
 
-#: ../tcl/axis.tcl:1232
+#: ../tcl/axis.tcl:1247
 msgid "Feed Override (%):"
 msgstr "Velocita' : (%)"
 
-#: ../tcl/axis.tcl:1271
+#: ../tcl/axis.tcl:1286
 msgid ""
 "AXIS version $version\n"
 "\n"
@@ -606,123 +577,143 @@ msgstr ""
 "\n"
 "Visita il sito web di AXIS: "
 
-#: ../tcl/axis.tcl:1299
+#: ../tcl/axis.tcl:1314
 msgid "About AXIS"
 msgstr "Informazioni su AXIS"
 
-#: ../tcl/axis.tcl:1328
+#: ../tcl/axis.tcl:1343
 msgid "AXIS Quick Reference"
 msgstr "Sommario AXIS"
 
-#: ../tcl/axis.tcl:1445
+#: ../tcl/axis.tcl:1459
 msgid "AXIS (No file)"
 msgstr "AXIS (Nessun file)"
 
-#: ../tcl/axis.tcl:1456
+#: ../tcl/axis.tcl:1470
 msgid "ESTOP"
 msgstr "Estop "
 
-#: ../tcl/axis.tcl:1457
+#: ../tcl/axis.tcl:1471
 msgid "ESTOP RESET"
 msgstr "Estop Reset"
 
-#: ../tcl/axis.tcl:1458
+#: ../tcl/axis.tcl:1472
 msgid "ON"
 msgstr "On"
 
-#: ../tcl/axis.tcl:1498
+#: ../tcl/axis.tcl:1512
 msgid "Machine"
 msgstr "Macchina"
 
-#: ../tcl/axis.tcl:1498
+#: ../tcl/axis.tcl:1512
 msgid "Relative"
 msgstr "Relativa"
 
-#: ../tcl/axis.tcl:1499
+#: ../tcl/axis.tcl:1513
 msgid "Actual"
 msgstr "Attuale"
 
-#: ../tcl/axis.tcl:1499
+#: ../tcl/axis.tcl:1513
 msgid "Commanded"
 msgstr "Comandata"
 
-#: ../tcl/axis.tcl:1500
+#: ../tcl/axis.tcl:1514
 msgid "Position:"
 msgstr "Posizione:"
 
-#: ../tcl/axis.tcl:1595
+#: ../tcl/axis.tcl:1622
 msgid "Turn spindle counterclockwise [F10]"
 msgstr "Ruota mandrino in senso antiorario [F10]"
 
-#: ../tcl/axis.tcl:1596
+#: ../tcl/axis.tcl:1623
 msgid "Turn spindle clockwise [F9]"
 msgstr "Ruota mandrino in senso orario [F9]"
 
-#: ../tcl/axis.tcl:1597
+#: ../tcl/axis.tcl:1624
 msgid "Stop spindle [F9/F10]"
 msgstr "Stop mandrino [F9/F10]"
 
-#: ../tcl/axis.tcl:1598
+#: ../tcl/axis.tcl:1625
 msgid "Turn spindle Faster [F12]"
 msgstr "Aumenta velocità mandrino [F12]"
 
-#: ../tcl/axis.tcl:1599
+#: ../tcl/axis.tcl:1626
 msgid "Turn spindle Slower [F11]"
 msgstr "Diminuisci velocità mandrino [F11]"
 
-#: ../tcl/axis.tcl:1600
+#: ../tcl/axis.tcl:1627
 msgid "Turn spindle brake on [Shift-B] or off [B]"
 msgstr "Attiva [Maiusc-B] / Disattiva [B] freno mandrino"
 
-#: ../tcl/axis.tcl:1601
+#: ../tcl/axis.tcl:1628
 msgid "Turn flood on or off [F8]"
 msgstr "Liquido On/Off [F8]"
 
-#: ../tcl/axis.tcl:1602
+#: ../tcl/axis.tcl:1629
 msgid "Turn mist on or off [F7]"
 msgstr "Aria On/Off [F7]"
 
-#: ../tcl/axis.tcl:1603
+#: ../tcl/axis.tcl:1630
 msgid "Send active axis home [Home]"
 msgstr "Muovi asse corrente a Home [Home]"
 
-#: ../tcl/axis.tcl:1604
+#: ../tcl/axis.tcl:1631
 msgid "Set G54 offset for active axis [Shift-Home]"
 msgstr "Imposta offset G54 per asse corrente [Shift-Home]"
 
-#: ../tcl/axis.tcl:1605
+#: ../tcl/axis.tcl:1632
 msgid "Activate axis [X]"
 msgstr "Attiva asse [X]"
 
-#: ../tcl/axis.tcl:1606
+#: ../tcl/axis.tcl:1633
 msgid "Activate axis [Y]"
 msgstr "Attiva asse [Y]"
 
-#: ../tcl/axis.tcl:1607
+#: ../tcl/axis.tcl:1634
 msgid "Activate axis [Z]"
 msgstr "Attiva asse [Z]"
 
-#: ../tcl/axis.tcl:1608
+#: ../tcl/axis.tcl:1635
 msgid "Activate axis [A]"
 msgstr "Attiva asse [A]"
 
-#: ../tcl/axis.tcl:1609
+#: ../tcl/axis.tcl:1636
 msgid "Activate axis [4]"
 msgstr "Attiva asse [4]"
 
-#: ../tcl/axis.tcl:1610
+#: ../tcl/axis.tcl:1637
 msgid "Activate axis [5]"
 msgstr "Attiva asse [5]"
 
-#: ../tcl/axis.tcl:1611 ../tcl/axis.tcl:1612
+#: ../tcl/axis.tcl:1638 ../tcl/axis.tcl:1639
 msgid "Jog selected axis"
 msgstr "Muovi asse selezionato"
 
-#: ../tcl/axis.tcl:1613
+#: ../tcl/axis.tcl:1640
 msgid "Select jog ingrement"
 msgstr "Seleziona incremento Movimento"
 
-#: ../tcl/axis.tcl:1614
+#: ../tcl/axis.tcl:1641
 msgid "Temporarily allow jogging outside machine limits [L]"
 msgstr "Permetti movimento temporaneo oltre i limiti macchina [L]"
 
+#~ msgid "Unknown error %s"
+#~ msgstr "Errore sconosciuto %s"
+
+#~ msgid "_X"
+#~ msgstr "_X"
+
+#~ msgid "_Y"
+#~ msgstr "_Y"
+
+#~ msgid "_Z"
+#~ msgstr "_Z"
+
+#~ msgid "_A"
+#~ msgstr "_A"
+
+#~ msgid "_B"
+#~ msgstr "_B"
+
+#~ msgid "_C"
+#~ msgstr "_C"
