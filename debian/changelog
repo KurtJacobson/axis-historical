@@ -1,3 +1,45 @@
+emc2-axis (1.2rc2-2.0) unstable; urgency=low
+
+  * fix scaling for metric setups running files without g21 specified
+
+ -- Chris Radek <chris@timeguy.com>  Fri,  3 Mar 2006 10:04:46 -0600
+
+emc2-axis (1.2rc2-1.0) unstable; urgency=low
+
+  * allow colors to be specified in X resources
+  * fix for build with EMC2 after interpreter fix
+  * some small cosmetic changes
+
+ -- Chris Radek <chris@timeguy.com>  Thu,  2 Mar 2006 20:21:12 -0600
+
+emc2-axis (1.2rc1-1.0) unstable; urgency=low
+
+  * jepler fixed the "garish" colors
+  * fix for build against bdi4emc
+  * new command allows axis to be instructed remotely to load a file
+  * fix some keyboard shortcuts
+  * fix centering when switching to perspective view
+  * size the jog distance combobox to fit its text (i18n issue)
+  * fix error when the translation for "continuous" contained non-ascii chars
+
+ -- Chris Radek <chris@timeguy.com>  Sun, 26 Feb 2006 21:49:00 -0600
+
+emc2-axis (1.2a2-0.4) unstable; urgency=low
+
+  * Fix a bug in keyboard shortcuts when using Portugese (and maybe other
+    languages)
+  * Make the Manual screen look nicer with languages that have strings longer
+    than English that force the tab to be wider (most languages)
+
+ -- Chris Radek <chris@timeguy.com>  Mon, 20 Feb 2006 15:18:30 -0600
+
+emc2-axis (1.2a2-0.3) unstable; urgency=low
+
+  * Add EMC2 version reporting to the Help/About
+  * Fix portugese language files
+
+ -- Chris Radek <chris@timeguy.com>  Sun, 19 Feb 2006 16:45:46 -0600
+
 emc2-axis (1.2a2-0.2) unstable; urgency=low
 
   Color jogs a different color, add halconfig to the edit menu
