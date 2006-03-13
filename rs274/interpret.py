@@ -32,6 +32,7 @@ class Translated:
         self.offset_z = offset_z #- (self.oz - self.offset_z)
 
 class ArcsToSegmentsMixin:
+    FUZZ = 0.000001
     plane = 1
 
     def set_plane(self, plane):
@@ -54,9 +55,9 @@ class ArcsToSegmentsMixin:
         rad = math.hypot(o[xyz[0]]-cx, o[xyz[1]]-cy)
 
         if rot < 0:
-            if theta2 >= theta1: theta2 -= math.pi * 2
+            if theta2 - theta1 >= -self.FUZZ: theta2 -= math.pi * 2
         else:
-            if theta2 <= theta1: theta2 += math.pi * 2
+            if theta2 - theta1 <= self.FUZZ: theta2 += math.pi * 2
 
         def interp(low, high):
             return low + (high-low) * i / steps
