@@ -3,7 +3,10 @@ Known Bugs in AXIS
 * ctrl-k doesn't work in MDI tab
 * Can't choose "cm" as units (supported by at least TkEmc)
 * Can't set Axis Speed
+* Can't jog in joint space
+* inifile Axis names aren't displayed in the [F3] tab
 
 Bugs in EMC that limit functionality in AXIS
 * Can't step to first line of program
 * Pressing "step" (t) twice quickly may run instead of stepping
+* (emc2) offsets may not show until the machine is out of estop
