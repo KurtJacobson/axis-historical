@@ -631,7 +631,6 @@ class LivePlotter:
             return False
         def C(s):
             s = o.colors[s]
-            print "C", s
             return [int(x * 255) for x in s] + [255]
 
         self.logger = emc.positionlogger(self.stat,
@@ -986,10 +985,10 @@ def open_file_guts(f, filtered = False):
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
         unitcode = "G%d" % (20 + (s.linear_units == 1))
-        print "initcode", initcode
-        print "unitcode", unitcode
+        #print "initcode", initcode
+        #print "unitcode", unitcode
         result, seq = gcode.parse(f, canon, unitcode, initcode)
-        print "parse result", result
+        #print "parse result", result
         # According to the documentation, MIN_ERROR is the largest value that is
         # not an error.  Crazy though that sounds...
         if result > gcode.MIN_ERROR:
@@ -1012,7 +1011,7 @@ def open_file_guts(f, filtered = False):
         # widget is destroyed and focus has passed to some other widget,
         # which will handle the keystrokes instead, leading to the
         # R-while-loading bug.
-        print "load_time", time.time() - t0
+        #print "load_time", time.time() - t0
         root_window.update()
         root_window.tk.call("destroy", ".info.progress")
         root_window.tk.call("grab", "release", ".info.progress")
@@ -1315,7 +1314,7 @@ class TclCommands(nf.TclCommands):
         o.set_highlight_line(None)
         f = str(f)
         open_directory = os.path.dirname(f)
-        print "new open_directory", open_directory
+        #print "new open_directory", open_directory
         commands.open_file_name(f)
 
     def open_file_name(f):
@@ -1985,7 +1984,6 @@ def redraw(self):
         if live_plotter.running.get() and vars.show_tool.get():
             pos = live_plotter.stat.actual_position
             lu = (live_plotter.stat.linear_units or 1) * 25.4
-            print lu
             if program is not None:
                 g = self.g
                 x,y,z = 0,1,2
@@ -2125,15 +2123,13 @@ if o.g:
     o.set_centerpoint(x, y, z)
 root_window.bind("<Visibility>", "after 100 { catch { send popimage exit }}; bind . <Visibility {}")
 o.update_idletasks()
-try:
-    import _tk_seticon
-except ImportError:
-    print "seticon not available"
-else:
-    from rs274.icon import icon
-    _tk_seticon.seticon(root_window, icon)
-    _tk_seticon.seticon(widgets.about_window, icon)
-    _tk_seticon.seticon(widgets.help_window, icon)
+
+import _tk_seticon
+from rs274.icon import icon
+_tk_seticon.seticon(root_window, icon)
+_tk_seticon.seticon(widgets.about_window, icon)
+_tk_seticon.seticon(widgets.help_window, icon)
+
 o.mainloop()
 
 # vim:sw=4:sts=4:et:
