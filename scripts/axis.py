@@ -29,7 +29,7 @@ gettext.install("axis", localedir=os.path.join(BASE, "share", "locale"), unicode
 
 version="1.3a0"
 
-import array, time, atexit, tempfile, shutil, errno
+import array, time, atexit, tempfile, shutil, errno, thread
 
 if os.environ.has_key('EMC2VERSION'):
     version = version + " / emc2 " + os.environ['EMC2VERSION']
@@ -618,9 +618,8 @@ class LivePlotter:
         self.after = None
         self.running = BooleanVar(window)
         self.running.set(False)
-        self.data = array.array('f')
+        self.lastpts = -1
         self.start()
-
 
     def start(self):
         if self.running.get(): return
@@ -630,6 +629,18 @@ class LivePlotter:
             self.stat = emc.stat()
         except emc.error:
             return False
+        def C(s):
+            s = o.colors[s]
+            print "C", s
+            return [int(x * 255) for x in s] + [255]
+
+        self.logger = emc.positionlogger(self.stat,
+            C('backplotjog'),
+            C('backplottraverse'),
+            C('backplotfeed'),
+            C('backplotarc'))
+        o.after_idle(lambda: thread.start_new_thread(self.logger.start, (.01,)))
+
         self.running.set(True)
         if self.after is None:
             self.update()
@@ -641,6 +652,7 @@ class LivePlotter:
             self.win.after_cancel(self.after)
             self.after = None
         self.shutdown()
+        self.logger.stop()
         self.running.set(True)
 
     def update(self):
@@ -675,52 +687,16 @@ class LivePlotter:
             self.win.set_current_line(self.stat.motion_line)
 
         lu = self.stat.linear_units or 1
-        position = [pi / (25.4 * lu) for pi in self.stat.position[:3]]
-        if len(axisnames) > 3:
-            theta = self.stat.position[3]
-            costheta = cos(theta*math.pi/180)
-            sintheta = sin(theta*math.pi/180)
-            x, y, z = position
-            if axisnames[3] == "A":
-                position = x, y*costheta - z*sintheta, z*costheta + y*sintheta
-            elif axisnames[3] == "B":
-                position = x*costheta+z*sintheta, y, z*costheta - x*sintheta
-            elif axisnames[3] == "C":
-                position = x*costheta+y*sintheta, y*costheta-x*sintheta, z
-        p = array.array('f', position)
-        motion_type = getattr(self.stat, 'motion_type', 2)
-        if motion_type == 1:
-            color = array.array('f', o.colors['backplottraverse'])
-        elif motion_type == 2:
-            color = array.array('f', o.colors['backplotfeed'])
-        elif motion_type == 3:
-            color = array.array('f', o.colors['backplotarc'])
-        else:
-            color = array.array('f', o.colors['backplotjog'])
 
-        if not self.data or p != self.data[-3:]:
-            if self.data:
-                start_point = self.data[-3:]
-            if len(self.data) > 12 and \
-                    colinear(self.data[-9:-6], self.data[-3:], p) and \
-                    self.data[-6:-3] == color:
-                self.data[-3:] = p
-            else:
-                if self.data and color != self.data[-6:-3]:
-                    self.data.extend(color)
-                    self.data.extend(start_point)
-                self.data.extend(color)
-                self.data.extend(p)
-            assert len(self.data) % 6 == 0
-            glInterleavedArrays(GL_C3F_V3F, 0, self.data.tostring())
-            self.win.live_plot_size = len(self.data)/6
-        if (self.stat.actual_position != o.last_position
+        if (self.logger.npts != self.lastpts
+                or self.stat.actual_position != o.last_position
                 or self.stat.homed != o.last_homed
                 or self.stat.origin != o.last_origin):
             o.redraw_soon()
             o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
             o.last_origin = self.stat.origin
+            self.lastpts = self.logger.npts
 
         vupdate(vars.exec_state, self.stat.exec_state)
         vupdate(vars.interp_state, self.stat.interp_state)
@@ -768,8 +744,7 @@ class LivePlotter:
         widgets.code_text.configure(state="disabled")
 
     def clear(self):
-        del self.data[:]
-        self.win.live_plot_size = 0
+        self.logger.clear()
         o.redraw_soon()
 
 def running(do_poll=True):
@@ -1991,16 +1966,26 @@ def redraw(self):
         glDepthFunc(GL_LEQUAL)
         glLineWidth(3)
         glEnable(GL_BLEND)
+        glPushMatrix()
+        lu = 1/((s.linear_units or 1)*25.4)
+        glScalef(lu, lu, lu);
         glMatrixMode(GL_PROJECTION)
         glPushMatrix()
         glTranslatef(0,0,.003)
+
+        live_plotter.logger.call()
+
         glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
         glPopMatrix()
         glMatrixMode(GL_MODELVIEW)
+        glPopMatrix();
         glDisable(GL_BLEND)
         glLineWidth(1)
         glDepthFunc(GL_LESS);
-        if live_plotter.running.get() and live_plotter.data and vars.show_tool.get():
+        if live_plotter.running.get() and vars.show_tool.get():
+            pos = live_plotter.stat.actual_position
+            lu = (live_plotter.stat.linear_units or 1) * 25.4
+            print lu
             if program is not None:
                 g = self.g
                 x,y,z = 0,1,2
@@ -2010,7 +1995,7 @@ def redraw(self):
                                2 ) * .5
             else:
                 cone_scale = 1
-            pos = live_plotter.data[-3:]
+            pos = [q * lu for q in pos[:3]]
             glPushMatrix()
             glTranslatef(*pos)
             if len(axisnames) > 3:

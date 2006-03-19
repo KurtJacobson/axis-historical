@@ -17,6 +17,8 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <Python.h>
+#include <pthread.h>
+#include <GL/gl.h>
 #include <structmember.h>
 #include "rcs.hh"
 #include "emc.hh"
@@ -1218,6 +1220,226 @@ static PyTypeObject Error_Type = {
     0,                      /*tp_is_gc*/
 };
 
+struct color {
+    unsigned char r, g, b, a;
+    bool operator==(const color &o) const {
+        return r == o.r && g == o.g && b == o.b && a == o.a;
+    }
+    bool operator!=(const color &o) const {
+        return r != o.r || g != o.g || b != o.b || a != o.a;
+    }
+} color;
+
+struct logger_point {
+    float x, y, z;
+    struct color c;
+};
+
+typedef struct {
+    PyObject_HEAD
+    int npts, mpts;
+    struct logger_point *p;
+    struct color colors[4];
+    bool exit, clear, changed;
+    pyStatChannel *st;
+} pyPositionLogger;
+
+static const double epsilon = 1e-8;
+
+static inline bool colinear(float xa, float ya, float za, float xb, float yb, float zb, float xc, float yc, float zc) {
+    double dx1 = xa-xc, dx2 = xb-xc;
+    double dy1 = ya-yc, dy2 = yb-yc;
+    double dz1 = za-zc, dz2 = zb-zc;
+    double dp = sqrt(dx1*dx1 + dy1*dy1 + dz1*dz1);
+    double dq = sqrt(dx2*dx2 + dy2*dy2 + dz2*dz2);
+    if( fabs(dp) < epsilon || fabs(dq) < epsilon ) return true;
+    double dot = (dx1*dx2 + dy1*dy2 + dz1*dz2) / dp / dq;
+    if( fabs(1-dot) < epsilon) return true;
+    return false;
+}
+
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+static void LOCK() { pthread_mutex_lock(&mutex); }
+static void UNLOCK() { pthread_mutex_unlock(&mutex); }
+
+static int Logger_init(pyPositionLogger *self, PyObject *a, PyObject *k) {
+    struct color *c = self->colors;
+    self->p = (logger_point*)malloc(0);
+    self->npts = self->mpts = 0;
+    self->exit = self->clear = 0;
+    self->changed = 1;
+    if(!PyArg_ParseTuple(a, "O!(BBBB)(BBBB)(BBBB)(BBBB)",
+            &Stat_Type, &self->st,
+            &c[0].r,&c[0].g, &c[0].b, &c[0].a,
+            &c[1].r,&c[1].g, &c[1].b, &c[1].a,
+            &c[2].r,&c[2].g, &c[2].b, &c[2].a,
+            &c[3].r,&c[3].g, &c[3].b, &c[3].a))
+        return -1;
+    return 0;
+}
+
+static void Logger_dealloc(pyPositionLogger *s) {
+    free(s->p);
+    PyObject_Del(s);
+}
+static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
+    double interval;
+    struct timespec ts;
+
+    if(!PyArg_ParseTuple(o, "d:logger.start", &interval)) return NULL;
+    ts.tv_sec = (int)interval;
+    ts.tv_nsec = (long int)(1e9 * (interval - ts.tv_sec));
+
+    s->exit = 0;
+    s->clear = 0;
+    s->npts = 0;
+
+    Py_BEGIN_ALLOW_THREADS
+    while(!s->exit) {
+        if(s->clear) {
+            s->npts = 0;
+            s->clear = 0;
+        }
+        if(s->st->c->valid() && s->st->c->peek() == EMC_STAT_TYPE) {
+            EMC_STAT *status = static_cast<EMC_STAT*>(s->st->c->get_address());
+            int colornum = 0;
+            double x, y, z;
+#ifdef AXIS_USE_EMC2
+            colornum = status->motion.traj.motion_type;
+#endif
+            x = status->motion.traj.position.tran.x;
+            y = status->motion.traj.position.tran.y;
+            z = status->motion.traj.position.tran.z;
+
+            struct color c = s->colors[colornum];
+            struct logger_point &op = s->p[s->npts-1];
+            struct logger_point &oop = s->p[s->npts-2];
+            bool add_point = s->npts < 2 || c != op.c
+                || !colinear(x, y, z, op.x, op.y, op.z, oop.x, oop.y, oop.z);
+
+            if(add_point) {
+                if(s->npts >= s->mpts) {
+                    s->mpts = 2 * s->mpts + 1;
+                    LOCK();
+                    s->changed = 1;
+                    printf("realloc %p %d(%d)\n",
+                            s->p, s->mpts,
+                            sizeof(struct logger_point) * s->mpts);
+                    s->p = (struct logger_point*)
+                        realloc(s->p, sizeof(struct logger_point) * s->mpts);
+                    UNLOCK();
+                }
+                struct logger_point &np = s->p[s->npts];
+                np.x = x; np.y = y; np.z = z;
+                np.c = c;
+                printf("%f %f %f #%02x%02x%02x\n", x, y, z, c.r, c.b, c.g);
+                s->npts++;
+            } else {
+                struct logger_point &np = s->p[s->npts-1];
+                np.x = x; np.y = y; np.z = z;
+            }
+        }
+        nanosleep(&ts, NULL);
+    }
+    Py_END_ALLOW_THREADS
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject* Logger_clear(pyPositionLogger *s, PyObject *o) {
+    s->clear = true;
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject* Logger_stop(pyPositionLogger *s, PyObject *o) {
+    s->exit = true;
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject* Logger_call(pyPositionLogger *s, PyObject *o) {
+    if(!s->clear) {
+        LOCK();
+        if(s->changed) {
+            glVertexPointer(3, GL_FLOAT,
+                    sizeof(struct logger_point), &s->p->x);
+            glColorPointer(4, GL_UNSIGNED_BYTE,
+                    sizeof(struct logger_point), &s->p->c);
+            glEnableClientState(GL_COLOR_ARRAY);
+            glEnableClientState(GL_VERTEX_ARRAY);
+            s->changed = 0;
+        }
+        glDrawArrays(GL_LINE_STRIP, 0, s->npts);
+        UNLOCK();
+    }
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyMemberDef Logger_members[] = {
+    {"npts", T_INT, offsetof(pyPositionLogger, npts), READONLY},
+    {0, 0, 0, 0},
+};
+
+static PyMethodDef Logger_methods[] = {
+    {"start", (PyCFunction)Logger_start, METH_VARARGS,
+        "Start the position logger and run every ARG seconds"},
+    {"clear", (PyCFunction)Logger_clear, METH_NOARGS,
+        "Clear the position logger"},
+    {"stop", (PyCFunction)Logger_stop, METH_NOARGS,
+        "Stop the position logger"},
+    {"call", (PyCFunction)Logger_call, METH_NOARGS,
+        "Plot the backplot now"},
+    {NULL, NULL, 0, NULL},
+};
+
+static PyTypeObject PositionLoggerType = {
+    PyObject_HEAD_INIT(NULL)
+    0,                      /*ob_size*/
+    "emc.positionlogger",   /*tp_name*/
+    sizeof(pyPositionLogger), /*tp_basicsize*/
+    0,                      /*tp_itemsize*/
+    /* methods */
+    (destructor)Logger_dealloc, /*tp_dealloc*/
+    0,                      /*tp_print*/
+    0,                      /*tp_getattr*/
+    0,                      /*tp_setattr*/
+    0,                      /*tp_compare*/
+    0,                      /*tp_repr*/
+    0,                      /*tp_as_number*/
+    0,                      /*tp_as_sequence*/
+    0,                      /*tp_as_mapping*/
+    0,                      /*tp_hash*/
+    0,                      /*tp_call*/
+    0,                      /*tp_str*/
+    0,                      /*tp_getattro*/
+    0,                      /*tp_setattro*/
+    0,                      /*tp_as_buffer*/
+    Py_TPFLAGS_DEFAULT,     /*tp_flags*/
+    0,                      /*tp_doc*/
+    0,                      /*tp_traverse*/
+    0,                      /*tp_clear*/
+    0,                      /*tp_richcompare*/
+    0,                      /*tp_weaklistoffset*/
+    0,                      /*tp_iter*/
+    0,                      /*tp_iternext*/
+    Logger_methods,         /*tp_methods*/
+    Logger_members,         /*tp_members*/
+    0,                      /*tp_getset*/
+    0,                      /*tp_base*/
+    0,                      /*tp_dict*/
+    0,                      /*tp_descr_get*/
+    0,                      /*tp_descr_set*/
+    0,                      /*tp_dictoffset*/
+    (initproc)Logger_init,  /*tp_init*/
+    0,                      /*tp_alloc*/
+    PyType_GenericNew,      /*tp_new*/
+    0,                      /*tp_free*/
+    0,                      /*tp_is_gc*/
+};
+
 static PyMethodDef emc_methods[] = {
     {NULL}
 };
@@ -1242,6 +1464,7 @@ initemc(void) {
     PyType_Ready(&Command_Type);
     PyType_Ready(&Error_Type);
     PyType_Ready(&Ini_Type);
+    PyType_Ready(&PositionLoggerType);
     error = PyErr_NewException("emc.error", PyExc_RuntimeError, NULL);
 
     PyModule_AddObject(m, "stat", (PyObject*)&Stat_Type);
@@ -1249,6 +1472,7 @@ initemc(void) {
     PyModule_AddObject(m, "error_channel", (PyObject*)&Error_Type);
     PyModule_AddObject(m, "ini", (PyObject*)&Ini_Type);
     PyModule_AddObject(m, "error", error);
+    PyModule_AddObject(m, "positionlogger", (PyObject*)&PositionLoggerType);
 
     PyModule_AddStringConstant(m, "nmlfile", DEFAULT_NMLFILE);
 
@@ -1300,6 +1524,8 @@ initemc(void) {
     ENUMX(6, LOCAL_AUTO_PAUSE);
     ENUMX(6, LOCAL_AUTO_RESUME);
     ENUMX(6, LOCAL_AUTO_STEP);
+
+    pthread_mutex_init(&mutex, NULL);
 }
 
 

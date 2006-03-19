@@ -84,14 +84,14 @@ if is_emc2:
         include_dirs=include_dirs,
         library_dirs=library_dirs,
         extra_link_args = extra_link_args,
-        libraries = ['rs274', 'nml', 'm', 'stdc++'],
+        libraries = ['rs274', 'nml', 'm', 'stdc++', 'GL'],
     )
 
     emc = Extension("emc", ["extensions/emcmodule.cc"],
         define_macros=[('DEFAULT_NMLFILE',
             '"%s/configs/emc.nml"' % emcroot),
             ('AXIS_USE_EMC2', 1)],
-        libraries = ["emc", "nml", "m", "stdc++"],
+        libraries = ["emc", "nml", "m", "stdc++", "GL"],
         include_dirs=include_dirs,
         library_dirs=library_dirs,
         extra_link_args = extra_link_args,
@@ -129,7 +129,7 @@ elif is_bdi4:
         library_dirs = [
             os.path.join(emcroot, "plat/linux_rtai/lib")
         ],
-        libraries = ["emc", "nml", "m", "stdc++"]
+        libraries = ["emc", "nml", "m", "stdc++", "GL"]
     )
 
 else:
@@ -183,7 +183,7 @@ else:
             os.path.join(emcroot, "emc", "plat", emcplat, "lib"),
             os.path.join(emcroot, "rcslib", "plat", emcplat, "lib")
         ],
-        libraries = ["emc", "rcs", "m", "stdc++"],
+        libraries = ["emc", "rcs", "m", "stdc++", "GL"],
         extra_link_args = ['-Wl,-rpath,%s' % 
             os.path.join(emcroot, "rcslib", "plat", emcplat, "lib")]
     )
