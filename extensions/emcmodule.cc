@@ -1319,22 +1319,35 @@ static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
                 || !colinear(x, y, z, op.x, op.y, op.z, oop.x, oop.y, oop.z);
 
             if(add_point) {
-                if(s->npts >= s->mpts) {
-                    s->mpts = 2 * s->mpts + 1;
+                // 1 or 2 points may be added, make room whenever
+                // fewer than 2 are left
+                bool changed_color = s->npts && c != op.c;
+                if(s->npts+2 > s->mpts) {
+                    s->mpts = 2 * s->mpts + 2;
                     LOCK();
                     s->changed = 1;
-                    printf("realloc %p %d(%d)\n",
-                            s->p, s->mpts,
-                            sizeof(struct logger_point) * s->mpts);
                     s->p = (struct logger_point*)
                         realloc(s->p, sizeof(struct logger_point) * s->mpts);
                     UNLOCK();
                 }
-                struct logger_point &np = s->p[s->npts];
-                np.x = x; np.y = y; np.z = z;
-                np.c = c;
-                printf("%f %f %f #%02x%02x%02x\n", x, y, z, c.r, c.b, c.g);
-                s->npts++;
+                if(changed_color) {
+                    {
+                    struct logger_point &np = s->p[s->npts];
+                    np.x = op.x; np.y = op.y; np.z = op.z;
+                    np.c = c;
+                    }
+                    {
+                    struct logger_point &np = s->p[s->npts+1];
+                    np.x = x; np.y = y; np.z = z;
+                    np.c = c;
+                    }
+                    s->npts += 2;
+                } else {
+                    struct logger_point &np = s->p[s->npts];
+                    np.x = x; np.y = y; np.z = z;
+                    np.c = c;
+                    s->npts++;
+                }
             } else {
                 struct logger_point &np = s->p[s->npts-1];
                 np.x = x; np.y = y; np.z = z;
