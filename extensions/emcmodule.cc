@@ -1427,7 +1427,7 @@ static PyMethodDef Logger_methods[] = {
         "Stop the position logger"},
     {"call", (PyCFunction)Logger_call, METH_NOARGS,
         "Plot the backplot now"},
-    {"last", (PyCFunction)Logger_call, METH_NOARGS,
+    {"last", (PyCFunction)Logger_last, METH_NOARGS,
         "Return the most recent point on the plot or None"},
     {NULL, NULL, 0, NULL},
 };
