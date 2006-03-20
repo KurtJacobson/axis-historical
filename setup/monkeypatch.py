@@ -122,7 +122,7 @@ def copy_file (src, dst,
                 os.chmod(dst, S_IMODE(st[ST_MODE]))
 
     return (dst, 1)
-distutils.file_util.copy_file = copy_file
+#distutils.file_util.copy_file = copy_file
 # copy_file ()
 
 # Exhibit 2: There doesn't seem to be a way to install files with a different
