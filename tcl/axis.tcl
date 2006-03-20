@@ -745,27 +745,27 @@ button $_tabs_manual.jogf.jog.jogminus \
 	-command {if {![is_continuous]} {jog_minus}} \
 	-padx 0 \
 	-pady 0 \
-	-width 2
+	-width 2 \
+        -text -
 bind $_tabs_manual.jogf.jog.jogminus <Button-1> {
     if {[is_continuous]} { jog_minus }
 }
 bind $_tabs_manual.jogf.jog.jogminus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
-setup_widget_accel $_tabs_manual.jogf.jog.jogminus [_ -]
 
 button $_tabs_manual.jogf.jog.jogplus \
 	-command {if {![is_continuous]} {jog_plus}} \
 	-padx 0 \
 	-pady 0 \
-	-width 2
+	-width 2 \
+        -text +
 bind $_tabs_manual.jogf.jog.jogplus <Button-1> {
     if {[is_continuous]} { jog_plus }
 }
 bind $_tabs_manual.jogf.jog.jogplus <ButtonRelease-1> {
     if {[is_continuous]} { jog_stop }
 }
-setup_widget_accel $_tabs_manual.jogf.jog.jogplus [_ +]
 
 combobox $_tabs_manual.jogf.jog.jogspeed \
 	-editable 0 \
