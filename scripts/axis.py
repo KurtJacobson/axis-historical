@@ -739,10 +739,9 @@ class LivePlotter:
             if i == -1: continue
             active_codes.append("M%d" % i)
 
-        if self.stat.settings[1] % 1:
-            active_codes.append("F%.1f" % self.stat.settings[1])
-        else:
-            active_codes.append("F%.0f" % self.stat.settings[1])
+        feed_str = "F%.1f" % self.stat.settings[1]
+        if feed_str.endswith(".0"): feed_str = feed_str[:-2]
+        active_codes.append(feed_str)
         active_codes.append("S%.0f" % self.stat.settings[2])
 
         mid = len(active_codes)/2
