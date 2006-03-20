@@ -1237,7 +1237,7 @@ struct logger_point {
 
 typedef struct {
     PyObject_HEAD
-    int npts, mpts;
+    int npts, mpts, lpts;
     struct logger_point *p;
     struct color colors[4];
     bool exit, clear, changed;
@@ -1291,6 +1291,8 @@ static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
     ts.tv_sec = (int)interval;
     ts.tv_nsec = (long int)(1e9 * (interval - ts.tv_sec));
 
+    Py_INCREF(s->st);
+
     s->exit = 0;
     s->clear = 0;
     s->npts = 0;
@@ -1299,6 +1301,7 @@ static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
     while(!s->exit) {
         if(s->clear) {
             s->npts = 0;
+            s->lpts = 0;
             s->clear = 0;
         }
         if(s->st->c->valid() && s->st->c->peek() == EMC_STAT_TYPE) {
@@ -1356,6 +1359,7 @@ static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
         nanosleep(&ts, NULL);
     }
     Py_END_ALLOW_THREADS
+    Py_DECREF(s->st);
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1384,11 +1388,29 @@ static PyObject* Logger_call(pyPositionLogger *s, PyObject *o) {
             glEnableClientState(GL_VERTEX_ARRAY);
             s->changed = 0;
         }
+        s->lpts = s->npts;
         glDrawArrays(GL_LINE_STRIP, 0, s->npts);
         UNLOCK();
     }
     Py_INCREF(Py_None);
     return Py_None;
+}
+
+static PyObject *Logger_last(pyPositionLogger *s, PyObject *o) {
+    PyObject *result = NULL;
+    LOCK();
+    if(!s->lpts) {
+        Py_INCREF(Py_None);
+        result = Py_None;
+    } else {
+        result = PyTuple_New(3);
+        struct logger_point &p = s->p[s->lpts-1];
+        PyTuple_SET_ITEM(result, 0, PyFloat_FromDouble(p.x));
+        PyTuple_SET_ITEM(result, 1, PyFloat_FromDouble(p.y));
+        PyTuple_SET_ITEM(result, 2, PyFloat_FromDouble(p.z));
+    }
+    UNLOCK();
+    return result;
 }
 
 static PyMemberDef Logger_members[] = {
@@ -1405,6 +1427,8 @@ static PyMethodDef Logger_methods[] = {
         "Stop the position logger"},
     {"call", (PyCFunction)Logger_call, METH_NOARGS,
         "Plot the backplot now"},
+    {"last", (PyCFunction)Logger_call, METH_NOARGS,
+        "Return the most recent point on the plot or None"},
     {NULL, NULL, 0, NULL},
 };
 

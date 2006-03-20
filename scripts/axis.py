@@ -650,7 +650,6 @@ class LivePlotter:
         if self.after is not None:
             self.win.after_cancel(self.after)
             self.after = None
-        self.shutdown()
         self.logger.stop()
         self.running.set(True)
 
@@ -1982,7 +1981,9 @@ def redraw(self):
         glLineWidth(1)
         glDepthFunc(GL_LESS);
         if live_plotter.running.get() and vars.show_tool.get():
-            pos = live_plotter.stat.actual_position
+            pos = live_plotter.logger.last()
+            if pos is None:
+                pos = live_plotter.stat.actual_position
             lu = (live_plotter.stat.linear_units or 1) * 25.4
             if program is not None:
                 g = self.g
@@ -2131,5 +2132,8 @@ _tk_seticon.seticon(widgets.about_window, icon)
 _tk_seticon.seticon(widgets.help_window, icon)
 
 o.mainloop()
+
+live_plotter.stop()
+
 
 # vim:sw=4:sts=4:et:
