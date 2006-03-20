@@ -206,6 +206,14 @@ class MyOpengl(Opengl):
             else:
                 d = "Foreground"
             self.colors[c] = parse_color(self.option_get(c, d))
+        self.colors['backplotjog_alpha'] = \
+            float(self.option_get("backplotjog_alpha", "Float"))
+        self.colors['backplotfeed_alpha'] = \
+            float(self.option_get("backplotfeed_alpha", "Float"))
+        self.colors['backplotarc_alpha'] = \
+            float(self.option_get("backplotarc_alpha", "Float"))
+        self.colors['backplottraverse_alpha'] = \
+            float(self.option_get("backplottraverse_alpha", "Float"))
         self.colors['overlay_alpha'] = \
             float(self.option_get("overlay_alpha", "Float"))
 
@@ -630,8 +638,9 @@ class LivePlotter:
         except emc.error:
             return False
         def C(s):
+            a = o.colors[s + "_alpha"]
             s = o.colors[s]
-            return [int(x * 255) for x in s] + [255]
+            return [int(x * 255) for x in s + (a,)]
 
         self.logger = emc.positionlogger(self.stat,
             C('backplotjog'),

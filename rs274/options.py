@@ -112,6 +112,10 @@ option add *Togl.backplotjog yellow startupFile
 option add *Togl.backplotfeed #c04040 startupFile
 option add *Togl.backplotarc #c04080 startupFile
 option add *Togl.backplottraverse #4c8080 startupFile
+option add *Togl.backplotjog_alpha .75 startupFile
+option add *Togl.backplotfeed_alpha .75 startupFile
+option add *Togl.backplotarc_alpha .75 startupFile
+option add *Togl.backplottraverse_alpha .25 startupFile
 option add *Togl.selected #00ffff startupFile
 
 option add *Togl.overlay_foreground #ffffff startupFile
