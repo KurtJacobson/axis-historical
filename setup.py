@@ -75,8 +75,7 @@ if is_emc2:
         library_dirs = [os.path.join(emcroot, "lib")]
     extra_link_args = ['-Wl,-rpath,%s' % library_dirs[0]]
 
-    print "Building for EMC2 in", emcroot
-    print include_dirs, library_dirs, extra_link_args
+    print "Building AXIS", version, "for EMC2 in", emcroot
     gcode = Extension("gcode", [
             "extensions/gcodemodule.cc"
         ],
@@ -101,7 +100,7 @@ if is_emc2:
 elif is_bdi4:
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/plat/linux_rtai/bin" % (emcroot)
-    print "Building for BDI-4 in", emcroot
+    print "Building AXIS", version, "for BDI-4 in", emcroot
 
 
     gcode = Extension("gcode", [
@@ -150,7 +149,7 @@ else:
         raise SystemExit, 1
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/emc/plat/%s/bin" % (emcroot, emcplat)
-    print "Building for EMC in", emcroot
+    print "Building AXIS", version, "for EMC in", emcroot
     print "Non-realtime PLAT", emcplat
 
     gcode = Extension("gcode", [
