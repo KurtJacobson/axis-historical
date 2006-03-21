@@ -96,6 +96,8 @@ if is_emc2:
         library_dirs=library_dirs,
         extra_link_args = extra_link_args,
     )
+    os.environ['USE_SYSTEM_BWIDGET']="yes"
+
 elif is_bdi4:
     distutils.command.install.INSTALL_SCHEMES['unix_prefix']['scripts'] = \
             "%s/plat/linux_rtai/bin" % (emcroot)
