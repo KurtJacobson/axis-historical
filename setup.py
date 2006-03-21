@@ -29,7 +29,7 @@ import distutils.command.install
 from monkeypatch import *
 
 name="axis"
-version="1.2"
+version="1.2.1"
 DOCDIR="share/doc/%s-%s" % (name, version)
 SHAREDIR="share/%s" % (name)
 LOCALEDIR="share/locale"
