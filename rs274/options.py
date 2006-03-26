@@ -25,80 +25,83 @@ proc option_nont {args} {
     eval [concat option $args]
 }
 
-option add *Button.borderWidth 2 startupFile
-option_nont add *Button.font $BASE_FONT
+option add *background #d9d9d9 $OPTIONLEVEL
+option add *foreground black $OPTIONLEVEL
 
-option add *Checkbutton.borderWidth 1 startupFile
-option_nont add *Checkbutton.font $BASE_FONT
+option add *Button.borderWidth 2 $OPTIONLEVEL
+option_nont add *Button.font $BASE_FONT $OPTIONLEVEL
 
-option add *Entry.background white startupFile
-option add *Entry.borderWidth 2 startupFile
-option_nont add *Entry.font $BASE_FONT
-option add *Entry.selectBackground #08246b startupFile
-option add *Entry.selectForeground white startupFile
+option add *Checkbutton.borderWidth 1 $OPTIONLEVEL
+option_nont add *Checkbutton.font $BASE_FONT $OPTIONLEVEL
 
-option add *Frame.borderWidth 0 startupFile
+option add *Entry.background white $OPTIONLEVEL
+option add *Entry.borderWidth 2 $OPTIONLEVEL
+option_nont add *Entry.font $BASE_FONT $OPTIONLEVEL
+option add *Entry.selectBackground #08246b $OPTIONLEVEL
+option add *Entry.selectForeground white $OPTIONLEVEL
 
-option add *Hierbox.borderWidth 2 startupFile
-option add *Hierbox.selectBackground #08246b startupFile
-option add *Hierbox.selectForeground white startupFile
+option add *Frame.borderWidth 0 $OPTIONLEVEL
 
-option_nont add *Label.font $BASE_FONT
-option add *Label.borderWidth 1 startupFile
+option add *Hierbox.borderWidth 2 $OPTIONLEVEL
+option add *Hierbox.selectBackground #08246b $OPTIONLEVEL
+option add *Hierbox.selectForeground white $OPTIONLEVEL
 
-option add *Listbox.background white startupFile
-option_nont add *Listbox.font $BASE_FONT
-option add *Listbox.borderWidth 2 startupFile
-option add *Listbox.selectBackground #08246b startupFile
-option add *Listbox.selectForeground white startupFile
+option_nont add *Label.font $BASE_FONT $OPTIONLEVEL
+option add *Label.borderWidth 1 $OPTIONLEVEL
 
-option add *Menu.activeBorderWidth 0 startupFile
-option add *Menu.borderWidth 1 startupFile
-option_nont add *Menu.font $BASE_FONT
-option add *Menu.activeBackground #08246b startupFile
-option add *Menu.activeForeground white startupFile
+option add *Listbox.background white $OPTIONLEVEL
+option_nont add *Listbox.font $BASE_FONT $OPTIONLEVEL
+option add *Listbox.borderWidth 2 $OPTIONLEVEL
+option add *Listbox.selectBackground #08246b $OPTIONLEVEL
+option add *Listbox.selectForeground white $OPTIONLEVEL
 
-option add *Menubutton.borderWidth 1 startupFile
-option_nont add *Menubutton.font $BASE_FONT
-option add *Menubutton.indicatorOn 1 startupFile
-option add *Menubutton.relief raised startupFile
+option add *Menu.activeBorderWidth 0 $OPTIONLEVEL
+option add *Menu.borderWidth 1 $OPTIONLEVEL
+option_nont add *Menu.font $BASE_FONT $OPTIONLEVEL
+option add *Menu.activeBackground #08246b $OPTIONLEVEL
+option add *Menu.activeForeground white $OPTIONLEVEL
 
-option add *Message.borderWidth 1 startupFile
-option_nont add *Message.font $BASE_FONT
+option add *Menubutton.borderWidth 1 $OPTIONLEVEL
+option_nont add *Menubutton.font $BASE_FONT $OPTIONLEVEL
+option add *Menubutton.indicatorOn 1 $OPTIONLEVEL
+option add *Menubutton.relief raised $OPTIONLEVEL
 
-option add *Radiobutton.borderWidth 1 startupFile
-option_nont add *Radiobutton.font $BASE_FONT
+option add *Message.borderWidth 1 $OPTIONLEVEL
+option_nont add *Message.font $BASE_FONT $OPTIONLEVEL
 
-option add *Scrollbar.borderWidth 2 startupFile
-option add *Scrollbar.takeFocus 0 startupFile
-option add *Scrollbar.troughColor #d9d9d9 startupFile
-option add *Scrollbar.elementBorderWidth 2 startupFile
+option add *Radiobutton.borderWidth 1 $OPTIONLEVEL
+option_nont add *Radiobutton.font $BASE_FONT $OPTIONLEVEL
 
-option add *Text.background white startupFile
-option add *Text.borderWidth 2 startupFile
-option_nont add *Text.font fixed
-option add *Text.selectBackground #08246b startupFile
-option add *Text.selectForeground white startupFile
+option add *Scrollbar.borderWidth 2 $OPTIONLEVEL
+option add *Scrollbar.takeFocus 0 $OPTIONLEVEL
+option add *Scrollbar.troughColor #d9d9d9 $OPTIONLEVEL
+option add *Scrollbar.elementBorderWidth 2 $OPTIONLEVEL
 
-option add *Labelframe.borderWidth 2 startupFile
-option add *Labelframe.relief groove startupFile
-option_nont add *Labelframe.font $BASE_FONT
+option add *Text.background white $OPTIONLEVEL
+option add *Text.borderWidth 2 $OPTIONLEVEL
+option_nont add *Text.font fixed $OPTIONLEVEL
+option add *Text.selectBackground #08246b $OPTIONLEVEL
+option add *Text.selectForeground white $OPTIONLEVEL
 
-option add *work.borderWidth 3 startupFile
+option add *Labelframe.borderWidth 2 $OPTIONLEVEL
+option add *Labelframe.relief groove $OPTIONLEVEL
+option_nont add *Labelframe.font $BASE_FONT $OPTIONLEVEL
 
-option add *buttons*Button.default normal startupFile
+option add *work.borderWidth 3 $OPTIONLEVEL
 
-option add *Vspace.height 6 startupFile
+option add *buttons*Button.default normal $OPTIONLEVEL
 
-option add *Hspace.width 20 startupFile
+option add *Vspace.height 6 $OPTIONLEVEL
 
-option add *Vrule.borderWidth 1 startupFile
-option add *Vrule.relief sunken startupFile
-option add *Vrule.width 2 startupFile
+option add *Hspace.width 20 $OPTIONLEVEL
 
-option add *Hrule.borderWidth 1 startupFile
-option add *Hrule.relief sunken startupFile
-option add *Hrule.height 2 startupFile
+option add *Vrule.borderWidth 1 $OPTIONLEVEL
+option add *Vrule.relief sunken $OPTIONLEVEL
+option add *Vrule.width 2 $OPTIONLEVEL
+
+option add *Hrule.borderWidth 1 $OPTIONLEVEL
+option add *Hrule.relief sunken $OPTIONLEVEL
+option add *Hrule.height 2 $OPTIONLEVEL
 
 option add *Togl.back #000 startupFile
 
@@ -136,6 +139,9 @@ option add *Togl.cone #cccccc startupFile
 
 def install(root = None):
     if root is None: root = Tkinter._default_root
+    o = root.option_get("optionLevel", "Level") or "interactive"
+    print "option level", o
     if hasattr(root, 'tk'): root = root.tk
+    root.call('set', 'OPTIONLEVEL', o)
     root.call('eval', options)
 # vim:sw=4:sts=4:et:ts=8:
