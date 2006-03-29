@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.join(BASE, "lib", "python"))
 import emc
 
 if len(sys.argv) > 1:
-    emc.emlfile = sys.argv[1]
+    emc.nmlfile = sys.argv[1]
 c = emc.command()
 c.mode(emc.MODE_MDI)
 s = emc.stat()
