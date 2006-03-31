@@ -1317,9 +1317,15 @@ class TclCommands(nf.TclCommands):
     def open_file(*event):
         if running(): return
         global open_directory
+        all_extensions = \
+            dict([(".ngc", True)] + [(e[1], True) for e in extensions]).keys()
+        types = (
+            (_("All machinable files"), tuple(all_extensions)),
+            (_("rs274ngc files"), ".ngc")) + extensions + \
+            ((_("All files"), "*"),)
         f = root_window.tk.call("tk_getOpenFile", "-initialdir", open_directory,
             "-defaultextension", ".ngc",
-            "-filetypes", _("{{rs274ngc files} {.ngc}} {{All files} *}"))
+            "-filetypes", types)
         if not f: return
         o.set_highlight_line(None)
         f = str(f)
@@ -1668,6 +1674,9 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
     open_directory = inifile.find("DISPLAY", "PROGRAM_PREFIX")
     program_filter = inifile.find("EMC", "PROGRAM_FILTER")
+    extensions = inifile.findall("EMC", "PROGRAM_EXTENSION")
+    extensions = [e.split(None, 1) for e in extensions]
+    extensions = tuple([(v, k) for k, v in extensions])
     max_feed_override = float(inifile.find("DISPLAY", "MAX_FEED_OVERRIDE"))
     max_feed_override = int(max_feed_override * 100 + 0.5)
     jog_speed = float(inifile.find("TRAJ", "DEFAULT_VELOCITY"))
@@ -1747,9 +1756,9 @@ hershey = Hershey()
 
 def color_limit(cond):
     if cond:
-        glColor3f(*o.colors['label_ok'])
-    else:
         glColor3f(*o.colors['label_limit'])
+    else:
+        glColor3f(*o.colors['label_ok'])
     return cond
 
 def redraw(self):
