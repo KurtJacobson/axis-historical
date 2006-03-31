@@ -138,15 +138,32 @@ static int Ini_init(pyIniFile *self, PyObject *a, PyObject *k) {
 
 static PyObject *Ini_find(pyIniFile *self, PyObject *args) {
     const char *s1, *s2, *out;
+    int num = 1; 
+    if(!PyArg_ParseTuple(args, "ss|i:find", &s1, &s2, &num)) return NULL;
     
-    if(!PyArg_ParseTuple(args, "ss", &s1, &s2)) return NULL;
-    
-    out = self->i.find(s2, s1);
+    out = self->i.find(s2, s1, num);
     if(out == NULL) {
         Py_INCREF(Py_None);
         return Py_None;
     }
     return PyString_FromString(const_cast<char*>(out));
+}
+
+static PyObject *Ini_findall(pyIniFile *self, PyObject *args) {
+    const char *s1, *s2, *out;
+    int num = 1; 
+    if(!PyArg_ParseTuple(args, "ss:findall", &s1, &s2)) return NULL;
+    
+    PyObject *result = PyList_New(0);
+    while(1) {
+        out = self->i.find(s2, s1, num);
+        if(out == NULL) {
+            break;
+        }
+        PyList_Append(result, PyString_FromString(const_cast<char*>(out)));
+        num++;
+    }
+    return result;
 }
 
 static void Ini_dealloc(pyIniFile *self) {
@@ -157,6 +174,9 @@ static void Ini_dealloc(pyIniFile *self) {
 static PyMethodDef Ini_methods[] = {
     {"find", (PyCFunction)Ini_find, METH_VARARGS,
         "Find value in inifile as string.  This uses the ConfigParser-style "
+        "(section,option) order, not the emc order."},
+    {"findall", (PyCFunction)Ini_findall, METH_VARARGS,
+        "Find value in inifile as a list.  This uses the ConfigParser-style "
         "(section,option) order, not the emc order."},
     {NULL}
 };
@@ -1247,9 +1267,9 @@ typedef struct {
 static const double epsilon = 1e-8;
 
 static inline bool colinear(float xa, float ya, float za, float xb, float yb, float zb, float xc, float yc, float zc) {
-    double dx1 = xa-xc, dx2 = xb-xc;
-    double dy1 = ya-yc, dy2 = yb-yc;
-    double dz1 = za-zc, dz2 = zb-zc;
+    double dx1 = xa-xb, dx2 = xb-xc;
+    double dy1 = ya-yb, dy2 = yb-yc;
+    double dz1 = za-zb, dz2 = zb-zc;
     double dp = sqrt(dx1*dx1 + dy1*dy1 + dz1*dz1);
     double dq = sqrt(dx2*dx2 + dy2*dy2 + dz2*dz2);
     if( fabs(dp) < epsilon || fabs(dq) < epsilon ) return true;
