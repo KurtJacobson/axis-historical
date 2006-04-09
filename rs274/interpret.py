@@ -62,7 +62,7 @@ class ArcsToSegmentsMixin:
         def interp(low, high):
             return low + (high-low) * i / steps
 
-        steps = 32
+        steps = max(8, int(256 * (theta1 - theta2) / math.pi))
         p = [0] * 6
         for i in range(1, steps):
             theta = interp(theta1, theta2)
