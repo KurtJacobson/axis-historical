@@ -359,7 +359,7 @@ class MyOpengl(Opengl):
         glMatrixMode(GL_MODELVIEW)
 
         # Call objects redraw method.
-        self.redraw(self)
+        self.redraw()
         glFlush()                               # Tidy up
         glPopMatrix()                   # Restore the matrix
 
@@ -395,7 +395,7 @@ class MyOpengl(Opengl):
         glMatrixMode(GL_MODELVIEW)
 
         # Call objects redraw method.
-        self.redraw(self)
+        self.redraw()
         glFlush()                               # Tidy up
         glPopMatrix()                   # Restore the matrix
 
@@ -424,6 +424,353 @@ class MyOpengl(Opengl):
         ztran = max(2.0, e1, e2 * w/h) ** 2
         self.set_eyepoint(ztran - self.zcenter)
 
+
+    def redraw(self):
+        if self.select_event:
+            self.select(self.select_event)
+            self.select_event = None
+
+        glDisable(GL_LIGHTING)
+        glMatrixMode(GL_MODELVIEW)
+
+        if vars.show_program.get() and program is not None:
+            glCallList(program)
+            if highlight is not None: glCallList(highlight)
+
+            if vars.show_extents.get():
+                # Dimensions
+                x,y,z,p = 0,1,2,3
+                if str(widgets.view_x['relief']) == "sunken":
+                    view = x
+                elif str(widgets.view_y['relief']) == "sunken":
+                    view = y
+                elif (str(widgets.view_z['relief']) == "sunken" or
+                      str(widgets.view_z2['relief']) == "sunken"):
+                    view = z
+                else:
+                    view = p
+
+                g = self.g
+
+                dimscale = vars.metric.get() and 25.4 or 1.0
+                fmt = vars.metric.get() and "%.1f" or "%.2f"
+
+                pullback = max(g.max_extents[x] - g.min_extents[x],
+                               g.max_extents[y] - g.min_extents[y],
+                               g.max_extents[z] - g.min_extents[z],
+                               2 ) * .1
+
+                dashwidth = pullback/4
+                charsize = dashwidth * 1.5
+                halfchar = charsize * .5
+
+                if view == z or view == p:
+                    z_pos = g.min_extents[z]
+                    zdashwidth = 0
+                else:
+                    z_pos = g.min_extents[z] - pullback
+                    zdashwidth = dashwidth
+                # x dimension
+
+                color_limit(0)
+                glBegin(GL_LINES)
+                if view != x and g.max_extents[x] > g.min_extents[x]:
+                    y_pos = g.min_extents[y] - pullback;
+                    glVertex3f(g.min_extents[x], y_pos, z_pos)
+                    glVertex3f(g.max_extents[x], y_pos, z_pos)
+
+                    glVertex3f(g.min_extents[x], y_pos - dashwidth, z_pos - zdashwidth)
+                    glVertex3f(g.min_extents[x], y_pos + dashwidth, z_pos + zdashwidth)
+
+                    glVertex3f(g.max_extents[x], y_pos - dashwidth, z_pos - zdashwidth)
+                    glVertex3f(g.max_extents[x], y_pos + dashwidth, z_pos + zdashwidth)
+
+                # y dimension
+                if view != y and g.max_extents[y] > g.min_extents[y]:
+                    x_pos = g.min_extents[x] - pullback;
+                    glVertex3f(x_pos, g.min_extents[y], z_pos)
+                    glVertex3f(x_pos, g.max_extents[y], z_pos)
+
+                    glVertex3f(x_pos - dashwidth, g.min_extents[y], z_pos - zdashwidth)
+                    glVertex3f(x_pos + dashwidth, g.min_extents[y], z_pos + zdashwidth)
+                                                                                      
+                    glVertex3f(x_pos - dashwidth, g.max_extents[y], z_pos - zdashwidth)
+                    glVertex3f(x_pos + dashwidth, g.max_extents[y], z_pos + zdashwidth)
+
+                # z dimension
+                if view != z and g.max_extents[z] > g.min_extents[z]:
+                    x_pos = g.min_extents[x] - pullback;
+                    y_pos = g.min_extents[y] - pullback;
+                    glVertex3f(x_pos, y_pos, g.min_extents[z]);
+                    glVertex3f(x_pos, y_pos, g.max_extents[z]);
+
+                    glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.min_extents[z])
+                    glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.min_extents[z])
+
+                    glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.max_extents[z])
+                    glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.max_extents[z])
+
+                glEnd()
+
+                # Labels
+                if vars.coord_type.get():
+                    offset = s.origin
+                else:
+                    offset = 0, 0, 0
+                if view != z and g.max_extents[z] > g.min_extents[z]:
+                    if view == x:
+                        x_pos = g.min_extents[x] - pullback;
+                        y_pos = g.min_extents[y] - 6.0*dashwidth;
+                    else:
+                        x_pos = g.min_extents[x] - 6.0*dashwidth;
+                        y_pos = g.min_extents[y] - pullback;
+
+                    bbox = color_limit(g.min_extents[z] < machine_limit_min[z])
+                    glPushMatrix()
+                    f = fmt % ((g.min_extents[z]-offset[z]) * dimscale)
+                    glTranslatef(x_pos, y_pos, g.min_extents[z] - halfchar)
+                    glScalef(charsize, charsize, charsize)
+                    glRotatef(-90, 0, 1, 0)
+                    glRotatef(-90, 0, 0, 1)
+                    if view != x:
+                        glRotatef(-90, 0, 1, 0)
+                    hershey.plot_string(f, 0, bbox)
+                    glPopMatrix()
+
+                    bbox = color_limit(g.max_extents[z] > machine_limit_max[z])
+                    glPushMatrix()
+                    f = fmt % ((g.max_extents[z]-offset[z]) * dimscale)
+                    glTranslatef(x_pos, y_pos, g.max_extents[z] - halfchar)
+                    glScalef(charsize, charsize, charsize)
+                    glRotatef(-90, 0, 1, 0)
+                    glRotatef(-90, 0, 0, 1)
+                    if view != x:
+                        glRotatef(-90, 0, 1, 0)
+                    hershey.plot_string(f, 0, bbox)
+                    glPopMatrix()
+
+                    color_limit(0)
+                    glPushMatrix()
+                    f = fmt % ((g.max_extents[z] - g.min_extents[z]) * dimscale)
+                    glTranslatef(x_pos, y_pos, (g.max_extents[z] + g.min_extents[z])/2)
+                    glScalef(charsize, charsize, charsize)
+                    if view != x:
+                        glRotatef(-90, 0, 0, 1)
+                    glRotatef(-90, 0, 1, 0)
+                    hershey.plot_string(f, .5, bbox)
+                    glPopMatrix()
+
+                if view != y and g.max_extents[y] > g.min_extents[y]:
+                    x_pos = g.min_extents[x] - 6.0*dashwidth;
+
+                    bbox = color_limit(g.min_extents[y] < machine_limit_min[y])
+                    glPushMatrix()
+                    f = fmt % ((g.min_extents[y] - offset[y]) * dimscale)
+                    glTranslatef(x_pos, g.min_extents[y] + halfchar, z_pos)
+                    glRotatef(-90, 0, 0, 1)
+                    glRotatef(-90, 0, 0, 1)
+                    if view == x:
+                        glRotatef(90, 0, 1, 0)
+                        glTranslatef(dashwidth*1.5, 0, 0)
+                    glScalef(charsize, charsize, charsize)
+                    hershey.plot_string(f, 0, bbox)
+                    glPopMatrix()
+
+                    bbox = color_limit(g.max_extents[y] > machine_limit_max[y])
+                    glPushMatrix()
+                    f = fmt % ((g.max_extents[y] - offset[y]) * dimscale)
+                    glTranslatef(x_pos, g.max_extents[y] + halfchar, z_pos)
+                    glRotatef(-90, 0, 0, 1)
+                    glRotatef(-90, 0, 0, 1)
+                    if view == x:
+                        glRotatef(90, 0, 1, 0)
+                        glTranslatef(dashwidth*1.5, 0, 0)
+                    glScalef(charsize, charsize, charsize)
+                    hershey.plot_string(f, 0, bbox)
+                    glPopMatrix()
+
+                    color_limit(0)
+                    glPushMatrix()
+                    f = fmt % ((g.max_extents[y] - g.min_extents[y]) * dimscale)
+                    
+                    glTranslatef(x_pos, (g.max_extents[y] + g.min_extents[y])/2,
+                                z_pos)
+                    glRotatef(-90, 0, 0, 1)
+                    if view == x:
+                        glRotatef(-90, 1, 0, 0)
+                        glTranslatef(0, halfchar, 0)
+                    glScalef(charsize, charsize, charsize)
+                    hershey.plot_string(f, .5)
+                    glPopMatrix()
+
+                if view != x and g.max_extents[x] > g.min_extents[x]:
+                    y_pos = g.min_extents[y] - 6.0*dashwidth;
+
+                    bbox = color_limit(g.min_extents[x] < machine_limit_min[x])
+                    glPushMatrix()
+                    f = fmt % ((g.min_extents[x] - offset[x]) * dimscale)
+                    glTranslatef(g.min_extents[x] - halfchar, y_pos, z_pos)
+                    glRotatef(-90, 0, 0, 1)
+                    if view == y:
+                        glRotatef(90, 0, 1, 0)
+                        glTranslatef(dashwidth*1.5, 0, 0)
+                    glScalef(charsize, charsize, charsize)
+                    hershey.plot_string(f, 0, bbox)
+                    glPopMatrix()
+
+                    bbox = color_limit(g.max_extents[x] > machine_limit_max[x])
+                    glPushMatrix()
+                    f = fmt % ((g.max_extents[x] - offset[x]) * dimscale)
+                    glTranslatef(g.max_extents[x] - halfchar, y_pos, z_pos)
+                    glRotatef(-90, 0, 0, 1)
+                    if view == y:
+                        glRotatef(90, 0, 1, 0)
+                        glTranslatef(dashwidth*1.5, 0, 0)
+                    glScalef(charsize, charsize, charsize)
+                    hershey.plot_string(f, 0, bbox)
+                    glPopMatrix()
+
+                    color_limit(0)
+                    glPushMatrix()
+                    f = fmt % ((g.max_extents[x] - g.min_extents[x]) * dimscale)
+                    
+                    glTranslatef((g.max_extents[x] + g.min_extents[x])/2, y_pos,
+                                z_pos)
+                    if view == y:
+                        glRotatef(-90, 1, 0, 0)
+                        glTranslatef(0, halfchar, 0)
+                    glScalef(charsize, charsize, charsize)
+                    hershey.plot_string(f, .5)
+                    glPopMatrix()
+
+        if vars.show_live_plot.get():
+            glDepthFunc(GL_LEQUAL)
+            glLineWidth(3)
+            glEnable(GL_BLEND)
+            glPushMatrix()
+            lu = 1/((s.linear_units or 1)*25.4)
+            glScalef(lu, lu, lu);
+            glMatrixMode(GL_PROJECTION)
+            glPushMatrix()
+            glTranslatef(0,0,.003)
+
+            live_plotter.logger.call()
+
+            glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
+            glPopMatrix()
+            glMatrixMode(GL_MODELVIEW)
+            glPopMatrix();
+            glDisable(GL_BLEND)
+            glLineWidth(1)
+            glDepthFunc(GL_LESS);
+            if live_plotter.running.get() and vars.show_tool.get():
+                pos = live_plotter.logger.last()
+                if pos is None:
+                    pos = live_plotter.stat.actual_position
+                lu = (live_plotter.stat.linear_units or 1) * 25.4
+                if program is not None:
+                    g = self.g
+                    x,y,z = 0,1,2
+                    cone_scale = max(g.max_extents[x] - g.min_extents[x],
+                                   g.max_extents[y] - g.min_extents[y],
+                                   g.max_extents[z] - g.min_extents[z],
+                                   2 ) * .5
+                else:
+                    cone_scale = 1
+                pos = [q * lu for q in pos[:3]]
+                glPushMatrix()
+                glTranslatef(*pos)
+                if len(axisnames) > 3:
+                    if axisnames[3] == "A":
+                        glRotatef(s.position[3], 1, 0, 0)
+                    elif axisnames[3] == "B":
+                        glRotatef(s.position[3], 0, 1, 0)
+                    elif axisnames[3] == "C":
+                        glRotatef(s.position[3], 0, 0, 1)
+                glScalef(cone_scale, cone_scale, cone_scale)
+                glCallList(cone_program)
+                glPopMatrix()
+        if vars.show_live_plot.get() or vars.show_program.get():
+            s.poll()
+            glPushMatrix()
+
+            lu = (s.linear_units or 1)*25.4
+            if vars.coord_type.get() and (s.origin[0] or s.origin[1] or 
+                                          s.origin[2]):
+                draw_small_origin()
+                glTranslatef(s.origin[0]/lu, s.origin[1]/lu, s.origin[2]/lu)
+                draw_axes()
+            else:
+                draw_axes()
+            glPopMatrix()
+
+
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        ypos = self.winfo_height()
+        glOrtho(0.0, self.winfo_width(), 0.0, ypos, -1.0, 1.0)
+        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
+        glLoadIdentity()
+        s.poll()
+
+        if vars.display_type.get():
+            positions = s.position
+        else:
+            positions = s.actual_position
+
+        if vars.coord_type.get():
+            positions = [(i-j) for i, j in zip(positions, s.origin)]
+
+        lu = s.linear_units or 1    
+        # XXX: assumes all axes are linear, which is wrong
+        positions = [pi / (25.4 * lu) for pi in positions]
+
+
+        if vars.metric.get():
+            positions = ["%c:% 9.2f" % i for i in 
+                    zip(axisnames, map(lambda p: p*25.4, positions))]
+        else:
+            positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
+
+        maxlen = max([len(p) for p in positions])
+        pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
+                        for p in positions])
+        glDepthFunc(GL_ALWAYS)
+        glDepthMask(GL_FALSE)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glColor4f(*(o.colors['overlay_background'] + (o.colors['overlay_alpha'],)))
+        glBegin(GL_QUADS)
+        glVertex3f(0, ypos, 1)
+        glVertex3f(pixel_width+30, ypos, 1)
+        glVertex3f(pixel_width+30, ypos - 20 - coordinate_linespace*axiscount, 1)
+        glVertex3f(0, ypos - 20 - coordinate_linespace*axiscount, 1)
+        glEnd()
+        glDisable(GL_BLEND)
+
+        maxlen = 0
+        ypos -= coordinate_linespace+5
+        i=0
+        glColor3f(*o.colors['overlay_foreground'])
+        for string in positions:
+            maxlen = max(maxlen, len(string))
+            if s.homed[i]:
+                glRasterPos2i(6, ypos)
+                glBitmap(13, 16, 0, 3, 17, 0, homeicon)
+            glRasterPos2i(23, ypos)
+            for char in string:
+                glCallList(fontbase + ord(char))
+            ypos -= coordinate_linespace
+            i = i + 1
+        glDepthFunc(GL_LESS)
+        glDepthMask(GL_TRUE)
+
+        glPopMatrix()
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
 
 def init():
     glDrawBuffer(GL_BACK)
@@ -995,10 +1342,7 @@ def open_file_guts(f, filtered = False):
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
         unitcode = "G%d" % (20 + (s.linear_units == 1))
-        #print "initcode", initcode
-        #print "unitcode", unitcode
         result, seq = gcode.parse(f, canon, unitcode, initcode)
-        #print "parse result", result
         # According to the documentation, MIN_ERROR is the largest value that is
         # not an error.  Crazy though that sounds...
         if result > gcode.MIN_ERROR:
@@ -1330,7 +1674,6 @@ class TclCommands(nf.TclCommands):
         o.set_highlight_line(None)
         f = str(f)
         open_directory = os.path.dirname(f)
-        #print "new open_directory", open_directory
         commands.open_file_name(f)
 
     def open_file_name(f):
@@ -1581,9 +1924,6 @@ root_window.bind("i", lambda event: jogspeed_incremental())
 root_window.bind("@", commands.toggle_display_type)
 root_window.bind("#", commands.toggle_coord_type)
 
-
-# c: continuous
-# i: incremental
 root_window.bind("<Home>", commands.home_axis)
 root_window.bind("<Shift-Home>", commands.set_axis_offset)
 widgets.mdi_history.bind("<Configure>", "%W see {end - 1 lines}")
@@ -1761,358 +2101,6 @@ def color_limit(cond):
         glColor3f(*o.colors['label_ok'])
     return cond
 
-def redraw(self):
-    if self.select_event:
-        self.select(self.select_event)
-        self.select_event = None
-
-    glDisable(GL_LIGHTING)
-    glMatrixMode(GL_MODELVIEW)
-
-
-    if vars.show_program.get() and program is not None:
-        glCallList(program)
-        if highlight is not None: glCallList(highlight)
-
-        if vars.show_extents.get():
-            # Dimensions
-            x,y,z,p = 0,1,2,3
-            if str(widgets.view_x['relief']) == "sunken":
-                view = x
-            elif str(widgets.view_y['relief']) == "sunken":
-                view = y
-            elif (str(widgets.view_z['relief']) == "sunken" or
-                  str(widgets.view_z2['relief']) == "sunken"):
-                view = z
-            else:
-                view = p
-
-            g = self.g
-
-            dimscale = vars.metric.get() and 25.4 or 1.0
-            fmt = vars.metric.get() and "%.1f" or "%.2f"
-
-            pullback = max(g.max_extents[x] - g.min_extents[x],
-                           g.max_extents[y] - g.min_extents[y],
-                           g.max_extents[z] - g.min_extents[z],
-                           2 ) * .1
-
-            dashwidth = pullback/4
-            charsize = dashwidth * 1.5
-            halfchar = charsize * .5
-
-            if view == z or view == p:
-                z_pos = g.min_extents[z]
-                zdashwidth = 0
-            else:
-                z_pos = g.min_extents[z] - pullback
-                zdashwidth = dashwidth
-            # x dimension
-
-            color_limit(0)
-            glBegin(GL_LINES)
-            if view != x and g.max_extents[x] > g.min_extents[x]:
-                y_pos = g.min_extents[y] - pullback;
-                glVertex3f(g.min_extents[x], y_pos, z_pos)
-                glVertex3f(g.max_extents[x], y_pos, z_pos)
-
-                glVertex3f(g.min_extents[x], y_pos - dashwidth, z_pos - zdashwidth)
-                glVertex3f(g.min_extents[x], y_pos + dashwidth, z_pos + zdashwidth)
-
-                glVertex3f(g.max_extents[x], y_pos - dashwidth, z_pos - zdashwidth)
-                glVertex3f(g.max_extents[x], y_pos + dashwidth, z_pos + zdashwidth)
-
-            # y dimension
-            if view != y and g.max_extents[y] > g.min_extents[y]:
-                x_pos = g.min_extents[x] - pullback;
-                glVertex3f(x_pos, g.min_extents[y], z_pos)
-                glVertex3f(x_pos, g.max_extents[y], z_pos)
-
-                glVertex3f(x_pos - dashwidth, g.min_extents[y], z_pos - zdashwidth)
-                glVertex3f(x_pos + dashwidth, g.min_extents[y], z_pos + zdashwidth)
-                                                                                  
-                glVertex3f(x_pos - dashwidth, g.max_extents[y], z_pos - zdashwidth)
-                glVertex3f(x_pos + dashwidth, g.max_extents[y], z_pos + zdashwidth)
-
-            # z dimension
-            if view != z and g.max_extents[z] > g.min_extents[z]:
-                x_pos = g.min_extents[x] - pullback;
-                y_pos = g.min_extents[y] - pullback;
-                glVertex3f(x_pos, y_pos, g.min_extents[z]);
-                glVertex3f(x_pos, y_pos, g.max_extents[z]);
-
-                glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.min_extents[z])
-                glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.min_extents[z])
-
-                glVertex3f(x_pos - dashwidth, y_pos - zdashwidth, g.max_extents[z])
-                glVertex3f(x_pos + dashwidth, y_pos + zdashwidth, g.max_extents[z])
-
-            glEnd()
-
-            # Labels
-            if vars.coord_type.get():
-                offset = s.origin
-            else:
-                offset = 0, 0, 0
-            if view != z and g.max_extents[z] > g.min_extents[z]:
-                if view == x:
-                    x_pos = g.min_extents[x] - pullback;
-                    y_pos = g.min_extents[y] - 6.0*dashwidth;
-                else:
-                    x_pos = g.min_extents[x] - 6.0*dashwidth;
-                    y_pos = g.min_extents[y] - pullback;
-
-                bbox = color_limit(g.min_extents[z] < machine_limit_min[z])
-                glPushMatrix()
-                f = fmt % ((g.min_extents[z]-offset[z]) * dimscale)
-                glTranslatef(x_pos, y_pos, g.min_extents[z] - halfchar)
-                glScalef(charsize, charsize, charsize)
-                glRotatef(-90, 0, 1, 0)
-                glRotatef(-90, 0, 0, 1)
-                if view != x:
-                    glRotatef(-90, 0, 1, 0)
-                hershey.plot_string(f, 0, bbox)
-                glPopMatrix()
-
-                bbox = color_limit(g.max_extents[z] > machine_limit_max[z])
-                glPushMatrix()
-                f = fmt % ((g.max_extents[z]-offset[z]) * dimscale)
-                glTranslatef(x_pos, y_pos, g.max_extents[z] - halfchar)
-                glScalef(charsize, charsize, charsize)
-                glRotatef(-90, 0, 1, 0)
-                glRotatef(-90, 0, 0, 1)
-                if view != x:
-                    glRotatef(-90, 0, 1, 0)
-                hershey.plot_string(f, 0, bbox)
-                glPopMatrix()
-
-                color_limit(0)
-                glPushMatrix()
-                f = fmt % ((g.max_extents[z] - g.min_extents[z]) * dimscale)
-                glTranslatef(x_pos, y_pos, (g.max_extents[z] + g.min_extents[z])/2)
-                glScalef(charsize, charsize, charsize)
-                if view != x:
-                    glRotatef(-90, 0, 0, 1)
-                glRotatef(-90, 0, 1, 0)
-                hershey.plot_string(f, .5, bbox)
-                glPopMatrix()
-
-            if view != y and g.max_extents[y] > g.min_extents[y]:
-                x_pos = g.min_extents[x] - 6.0*dashwidth;
-
-                bbox = color_limit(g.min_extents[y] < machine_limit_min[y])
-                glPushMatrix()
-                f = fmt % ((g.min_extents[y] - offset[y]) * dimscale)
-                glTranslatef(x_pos, g.min_extents[y] + halfchar, z_pos)
-                glRotatef(-90, 0, 0, 1)
-                glRotatef(-90, 0, 0, 1)
-                if view == x:
-                    glRotatef(90, 0, 1, 0)
-                    glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0, bbox)
-                glPopMatrix()
-
-                bbox = color_limit(g.max_extents[y] > machine_limit_max[y])
-                glPushMatrix()
-                f = fmt % ((g.max_extents[y] - offset[y]) * dimscale)
-                glTranslatef(x_pos, g.max_extents[y] + halfchar, z_pos)
-                glRotatef(-90, 0, 0, 1)
-                glRotatef(-90, 0, 0, 1)
-                if view == x:
-                    glRotatef(90, 0, 1, 0)
-                    glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0, bbox)
-                glPopMatrix()
-
-                color_limit(0)
-                glPushMatrix()
-                f = fmt % ((g.max_extents[y] - g.min_extents[y]) * dimscale)
-                
-                glTranslatef(x_pos, (g.max_extents[y] + g.min_extents[y])/2,
-                            z_pos)
-                glRotatef(-90, 0, 0, 1)
-                if view == x:
-                    glRotatef(-90, 1, 0, 0)
-                    glTranslatef(0, halfchar, 0)
-                glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, .5)
-                glPopMatrix()
-
-            if view != x and g.max_extents[x] > g.min_extents[x]:
-                y_pos = g.min_extents[y] - 6.0*dashwidth;
-
-                bbox = color_limit(g.min_extents[x] < machine_limit_min[x])
-                glPushMatrix()
-                f = fmt % ((g.min_extents[x] - offset[x]) * dimscale)
-                glTranslatef(g.min_extents[x] - halfchar, y_pos, z_pos)
-                glRotatef(-90, 0, 0, 1)
-                if view == y:
-                    glRotatef(90, 0, 1, 0)
-                    glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0, bbox)
-                glPopMatrix()
-
-                bbox = color_limit(g.max_extents[x] > machine_limit_max[x])
-                glPushMatrix()
-                f = fmt % ((g.max_extents[x] - offset[x]) * dimscale)
-                glTranslatef(g.max_extents[x] - halfchar, y_pos, z_pos)
-                glRotatef(-90, 0, 0, 1)
-                if view == y:
-                    glRotatef(90, 0, 1, 0)
-                    glTranslatef(dashwidth*1.5, 0, 0)
-                glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, 0, bbox)
-                glPopMatrix()
-
-                color_limit(0)
-                glPushMatrix()
-                f = fmt % ((g.max_extents[x] - g.min_extents[x]) * dimscale)
-                
-                glTranslatef((g.max_extents[x] + g.min_extents[x])/2, y_pos,
-                            z_pos)
-                if view == y:
-                    glRotatef(-90, 1, 0, 0)
-                    glTranslatef(0, halfchar, 0)
-                glScalef(charsize, charsize, charsize)
-                hershey.plot_string(f, .5)
-                glPopMatrix()
-
-    if vars.show_live_plot.get():
-        glDepthFunc(GL_LEQUAL)
-        glLineWidth(3)
-        glEnable(GL_BLEND)
-        glPushMatrix()
-        lu = 1/((s.linear_units or 1)*25.4)
-        glScalef(lu, lu, lu);
-        glMatrixMode(GL_PROJECTION)
-        glPushMatrix()
-        glTranslatef(0,0,.003)
-
-        live_plotter.logger.call()
-
-        glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
-        glPopMatrix()
-        glMatrixMode(GL_MODELVIEW)
-        glPopMatrix();
-        glDisable(GL_BLEND)
-        glLineWidth(1)
-        glDepthFunc(GL_LESS);
-        if live_plotter.running.get() and vars.show_tool.get():
-            pos = live_plotter.logger.last()
-            if pos is None:
-                pos = live_plotter.stat.actual_position
-            lu = (live_plotter.stat.linear_units or 1) * 25.4
-            if program is not None:
-                g = self.g
-                x,y,z = 0,1,2
-                cone_scale = max(g.max_extents[x] - g.min_extents[x],
-                               g.max_extents[y] - g.min_extents[y],
-                               g.max_extents[z] - g.min_extents[z],
-                               2 ) * .5
-            else:
-                cone_scale = 1
-            pos = [q * lu for q in pos[:3]]
-            glPushMatrix()
-            glTranslatef(*pos)
-            if len(axisnames) > 3:
-                if axisnames[3] == "A":
-                    glRotatef(s.position[3], 1, 0, 0)
-                elif axisnames[3] == "B":
-                    glRotatef(s.position[3], 0, 1, 0)
-                elif axisnames[3] == "C":
-                    glRotatef(s.position[3], 0, 0, 1)
-            glScalef(cone_scale, cone_scale, cone_scale)
-            glCallList(cone_program)
-            glPopMatrix()
-    if vars.show_live_plot.get() or vars.show_program.get():
-        s.poll()
-        glPushMatrix()
-
-        lu = (s.linear_units or 1)*25.4
-        if vars.coord_type.get() and (s.origin[0] or s.origin[1] or 
-                                      s.origin[2]):
-            draw_small_origin()
-            glTranslatef(s.origin[0]/lu, s.origin[1]/lu, s.origin[2]/lu)
-            draw_axes()
-        else:
-            draw_axes()
-        glPopMatrix()
-
-
-    glMatrixMode(GL_PROJECTION)
-    glPushMatrix()
-    glLoadIdentity()
-    ypos = self.winfo_height()
-    glOrtho(0.0, self.winfo_width(), 0.0, ypos, -1.0, 1.0)
-    glMatrixMode(GL_MODELVIEW)
-    glPushMatrix()
-    glLoadIdentity()
-    s.poll()
-
-    if vars.display_type.get():
-        positions = s.position
-    else:
-        positions = s.actual_position
-
-    if vars.coord_type.get():
-        positions = [(i-j) for i, j in zip(positions, s.origin)]
-
-    lu = s.linear_units or 1    
-    # XXX: assumes all axes are linear, which is wrong
-    positions = [pi / (25.4 * lu) for pi in positions]
-
-
-    if vars.metric.get():
-        positions = ["%c:% 9.2f" % i for i in 
-                zip(axisnames, map(lambda p: p*25.4, positions))]
-    else:
-        positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
-
-    maxlen = max([len(p) for p in positions])
-    pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
-                    for p in positions])
-    glDepthFunc(GL_ALWAYS)
-    glDepthMask(GL_FALSE)
-    glEnable(GL_BLEND)
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    glColor4f(*(o.colors['overlay_background'] + (o.colors['overlay_alpha'],)))
-    glBegin(GL_QUADS)
-    glVertex3f(0, ypos, 1)
-    glVertex3f(pixel_width+30, ypos, 1)
-    glVertex3f(pixel_width+30, ypos - 20 - coordinate_linespace*axiscount, 1)
-    glVertex3f(0, ypos - 20 - coordinate_linespace*axiscount, 1)
-    glEnd()
-    glDisable(GL_BLEND)
-
-    maxlen = 0
-    ypos -= coordinate_linespace+5
-    i=0
-    glColor3f(*o.colors['overlay_foreground'])
-    for string in positions:
-        maxlen = max(maxlen, len(string))
-        if s.homed[i]:
-            glRasterPos2i(6, ypos)
-            glBitmap(13, 16, 0, 3, 17, 0, homeicon)
-        glRasterPos2i(23, ypos)
-        for char in string:
-            glCallList(fontbase + ord(char))
-        ypos -= coordinate_linespace
-        i = i + 1
-    glDepthFunc(GL_LESS)
-    glDepthMask(GL_TRUE)
-
-    glPopMatrix()
-    glMatrixMode(GL_PROJECTION)
-    glPopMatrix()
-    glMatrixMode(GL_MODELVIEW)
-
-
-
-o.redraw = redraw
-
 def mkdtemp():
     try:
         return tempfile.mkdtemp()
@@ -2142,7 +2130,7 @@ if o.g:
     y = (o.g.min_extents[1] + o.g.max_extents[1])/2
     z = (o.g.min_extents[2] + o.g.max_extents[2])/2
     o.set_centerpoint(x, y, z)
-root_window.bind("<Visibility>", "after 100 { catch { send popimage exit }}; bind . <Visibility {}")
+root_window.bind("<Visibility>", "after 100 { catch { send -async popimage exit }}; bind . <Visibility {}")
 o.update_idletasks()
 
 import _tk_seticon
