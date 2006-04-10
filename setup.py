@@ -204,6 +204,7 @@ bwidget = [
     glob("thirdparty/bwidget/images/*.gif")),
   (os.path.join(SHAREDIR, "tcl/bwidget/images"),
     glob("thirdparty/bwidget/images/*.xbm")),
+  (DOCDIR, ["thirdparty/bwidget/LICENSE.txt"]),
 ]
 if os.getenv("USE_SYSTEM_BWIDGET"):
     bwidget = []
@@ -228,7 +229,6 @@ setup(name=name, version=version,
                   (os.path.join(SHAREDIR, "images"), glob("images/*.gif")),
                   (os.path.join(SHAREDIR, "images"), glob("images/*.xbm")),
                   (DOCDIR, ["COPYING", "README", "BUGS",
-                        "thirdparty/bwidget/LICENSE.txt",
                         "thirdparty/LICENSE-Togl"])] + bwidget + i18n,
     ext_modules = ext_modules,
     url="http://axis.unpythonic.net/",
