@@ -1,3 +1,21 @@
+emc2-axis (1.2rc3-1.2) unstable; urgency=low
+
+  * added Calibration (emccalib) to the edit menu
+
+ -- Chris Radek <chris@timeguy.com>  Mon, 10 Apr 2006 20:50:45 -0500
+
+emc2-axis (1.2rc3-1.1) unstable; urgency=low
+
+  * rebuilt for emc2 TESTING-2006-04-09
+
+ -- Chris Radek <chris@timeguy.com>  Sun,  9 Apr 2006 19:48:05 -0500
+
+emc2-axis (1.2rc3-1.0) unstable; urgency=low
+
+  * compatibility change related to emc2 trajectory planner changes
+
+ -- Chris Radek <chris@timeguy.com>  Sat, 11 Mar 2006 22:27:18 -0600
+
 emc2-axis (1.2rc2-2.0) unstable; urgency=low
 
   * fix scaling for metric setups running files without g21 specified
