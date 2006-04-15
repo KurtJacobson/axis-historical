@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-12 15:12-0500\n"
-"PO-Revision-Date: 2006-04-12 21:33+0200\n"
+"POT-Creation-Date: 2006-04-15 09:14-0500\n"
+"PO-Revision-Date: 2006-04-15 11:50+0200\n"
 "Last-Translator: Jonathan Lock <lerneaen.hydra@gmail.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,11 +52,11 @@ msgstr "Aktivera sjätte axeln"
 
 #: ../scripts/axis.py:95
 msgid "Select jog increment"
-msgstr ""
+msgstr "Välj jog inkrement"
 
 #: ../scripts/axis.py:96
 msgid "Continuous jog"
-msgstr ""
+msgstr "Konstant jog"
 
 #: ../scripts/axis.py:97
 msgid "Send active axis home"
@@ -64,61 +64,55 @@ msgstr "Flytta vald axel till hemmaläge"
 
 #: ../scripts/axis.py:98
 msgid "Set G54 offset for active axis"
-msgstr "Använd nuvarande läge som G54 förskutning för vald axel"
+msgstr "Använd nuvarande läge som G54 förskjutning för vald axel"
 
 #: ../scripts/axis.py:99
 msgid "Jog first axis"
-msgstr ""
+msgstr "Jog första axel"
 
 #: ../scripts/axis.py:100
 msgid "Jog second axis"
-msgstr ""
+msgstr "Jog andra axel"
 
 #: ../scripts/axis.py:101
 msgid "Jog third axis"
-msgstr ""
+msgstr "Jog tredje axel"
 
 #: ../scripts/axis.py:102
 msgid "Jog fourth axis"
-msgstr ""
+msgstr "Jog fjärde axel"
 
-# ***
 #: ../scripts/axis.py:104
 msgid "Left Button"
-msgstr ""
+msgstr "Vänster musknapp"
 
-# ***
 #: ../scripts/axis.py:104
 msgid "Pan view or select line"
-msgstr ""
+msgstr "Panna vy eller välj linje"
 
-# ***
 #: ../scripts/axis.py:105
 msgid "Shift+Left Button"
-msgstr ""
+msgstr "Skift+Vänster Musknapp"
 
 #: ../scripts/axis.py:105 ../scripts/axis.py:107
 msgid "Rotate view"
 msgstr "Rotera vy"
 
-# ***
 #: ../scripts/axis.py:106
 msgid "Right Button"
-msgstr ""
+msgstr "Höger Musknapp"
 
 #: ../scripts/axis.py:106 ../scripts/axis.py:108
 msgid "Zoom view"
 msgstr "Zooma vy"
 
-# ***
 #: ../scripts/axis.py:107
 msgid "Wheel Button"
 msgstr "Scrollhjulsknapp"
 
-# ***
 #: ../scripts/axis.py:108
 msgid "Rotate Wheel"
-msgstr ""
+msgstr "Skrollhjul"
 
 #: ../scripts/axis.py:111
 msgid "Manual control"
@@ -158,11 +152,11 @@ msgstr "Avbryt program"
 
 #: ../scripts/axis.py:122
 msgid "Toggle mist"
-msgstr ""
+msgstr "Skärvätska, finfördelat på/av"
 
 #: ../scripts/axis.py:123
 msgid "Toggle flood"
-msgstr ""
+msgstr "Skärvätska, maximal flöde på/av"
 
 #: ../scripts/axis.py:125
 msgid "Spindle brake off"
@@ -184,31 +178,26 @@ msgstr "Spindel på moturs"
 msgid "Turn spindle more slowly"
 msgstr "Spindel på lågt varvtal"
 
-# ***
 #: ../scripts/axis.py:130
 msgid "Turn spindle more quickly"
-msgstr ""
+msgstr "Öka spindelvarvtal"
 
-# ***
 #: ../scripts/axis.py:132
 msgid "Clear live plot"
-msgstr ""
+msgstr "Nollställ grafisk verktygsbana"
 
-# ***
 #: ../scripts/axis.py:133
 msgid "Cycle among preset views"
-msgstr ""
+msgstr "Välj mellan förinlagda vyer"
 
-# ***
 #: ../scripts/axis.py:624 ../scripts/axis.py:632
 msgid "AXIS error"
 msgstr "AXIS fel"
 
-# ***
 #: ../scripts/axis.py:624 ../scripts/axis.py:632 ../scripts/axis.py:931
 #: ../scripts/axis.py:969 ../tcl/axis.tcl:1299 ../tcl/axis.tcl:1336
 msgid "OK"
-msgstr ""
+msgstr "Ja"
 
 #: ../scripts/axis.py:693
 msgid "No tool"
@@ -227,13 +216,12 @@ msgstr "Verktyg %d, förskutning %g, diameter %g"
 #: ../scripts/axis.py:929
 #, python-format
 msgid "Program_filter %r failed"
-msgstr "Program_filer %r misslyckades"
+msgstr "Program_filter %r misslyckades"
 
-# ***
 #: ../scripts/axis.py:930
 #, python-format
 msgid "Exit code %d"
-msgstr ""
+msgstr "Avslutnings meddelande %d"
 
 #: ../scripts/axis.py:965
 #, python-format
@@ -245,7 +233,6 @@ msgstr "Okänt fel %s"
 msgid "G-Code error in %s"
 msgstr "G-Kod fel i %s"
 
-# ***
 #: ../scripts/axis.py:968
 #, python-format
 msgid ""
@@ -253,15 +240,14 @@ msgid ""
 "%s"
 msgstr ""
 
-# ***
 #: ../scripts/axis.py:1083 ../scripts/axis.py:1088 ../scripts/axis.py:1562
 #: ../tcl/axis.tcl:777 ../tcl/axis.tcl:779 ../tcl/axis.tcl:1581
 msgid "Continuous"
-msgstr ""
+msgstr "Konstant"
 
 #: ../scripts/axis.py:1281
 msgid "{{rs274ngc files} {.ngc}} {{All files} *}"
-msgstr ""
+msgstr "{{rs274ngc files} {.ngc}} {{All files} *}"
 
 #: ../scripts/axis.py:1319
 #, python-format
@@ -299,11 +285,11 @@ msgstr "_Ladda om"
 
 #: ../tcl/axis.tcl:53
 msgid "Toggle _Emergency Stop"
-msgstr "Nödstopp på/av"
+msgstr "_Nödstopp på/av"
 
 #: ../tcl/axis.tcl:61
 msgid "Toggle _Machine Power"
-msgstr "Maskin kraft på/av"
+msgstr "_Maskin kraft på/av"
 
 #: ../tcl/axis.tcl:71
 msgid "_Quit"
@@ -315,7 +301,7 @@ msgstr "_Kopiera"
 
 #: ../tcl/axis.tcl:99
 msgid "_Top view"
-msgstr "Vy_ovanifrån"
+msgstr "Vy _ovanifrån"
 
 #: ../tcl/axis.tcl:107
 msgid "_Rotated Top view"
@@ -329,10 +315,9 @@ msgstr "Vy ifrån _sidan"
 msgid "_Front view"
 msgstr "Vy _framifrån"
 
-# ***
 #: ../tcl/axis.tcl:131
 msgid "_Perspective view"
-msgstr ""
+msgstr "_Isometrisk vy"
 
 #: ../tcl/axis.tcl:143
 msgid "Display _Inches"
@@ -346,24 +331,21 @@ msgstr "Använd _MM"
 msgid "S_how program"
 msgstr "Visa _program"
 
-# ***
 #: ../tcl/axis.tcl:171
 msgid "Sho_w live plot"
-msgstr ""
+msgstr "Visa live verktygsbana"
 
 #: ../tcl/axis.tcl:179
 msgid "Show too_l"
 msgstr "Visa v_erktyg"
 
-# ***
 #: ../tcl/axis.tcl:187
 msgid "Show e_xtents"
 msgstr ""
 
-# ***
 #: ../tcl/axis.tcl:195
 msgid "C_lear live plot"
-msgstr ""
+msgstr "_Nollställ grafisk verktygsbana"
 
 #: ../tcl/axis.tcl:200
 msgid "Hal Confi_guration"
@@ -373,7 +355,6 @@ msgstr "Hal _configuration"
 msgid "Cali_bration"
 msgstr ""
 
-# ***
 #: ../tcl/axis.tcl:220
 msgid "Set _next line"
 msgstr ""
@@ -382,10 +363,9 @@ msgstr ""
 msgid "_Run program"
 msgstr "_Kör program"
 
-# ***
 #: ../tcl/axis.tcl:236
 msgid "_Step"
-msgstr ""
+msgstr "_Enkelblockskörning"
 
 #: ../tcl/axis.tcl:244
 msgid "_Pause"
@@ -401,31 +381,27 @@ msgstr "Av_bryt"
 
 #: ../tcl/axis.tcl:281
 msgid "_About AXIS"
-msgstr "_Om AXIS"
+msgstr "Om A_XIS"
 
 #: ../tcl/axis.tcl:288
 msgid "Quick _Reference"
-msgstr "_Snabbguide"
+msgstr "Snabbg_uide"
 
-# ***
 #: ../tcl/axis.tcl:306
 msgid "Show commanded position"
-msgstr ""
+msgstr "Visa bör position"
 
-# ***
 #: ../tcl/axis.tcl:315
 msgid "Show actual position"
-msgstr ""
+msgstr "Visa är position"
 
-# ***
 #: ../tcl/axis.tcl:327
 msgid "Show machine position"
-msgstr ""
+msgstr "Visa utan nollpunktsförflyttning"
 
-# ***
 #: ../tcl/axis.tcl:336
 msgid "Show relative position"
-msgstr ""
+msgstr "Visa med nollpunktsförflyttning"
 
 #: ../tcl/axis.tcl:343
 msgid "Show _EMC Status"
@@ -437,7 +413,7 @@ msgstr "_Fil"
 
 #: ../tcl/axis.tcl:363
 msgid "_Edit"
-msgstr "_Redigera"
+msgstr "Re_digera"
 
 #: ../tcl/axis.tcl:370
 msgid "_Program"
@@ -471,20 +447,17 @@ msgstr "Öppna om nuvarande fil [Control-R]"
 msgid "Begin executing current file [R]"
 msgstr "Kör nuvarande fil [R] #only sort of ok"
 
-# ***
 #: ../tcl/axis.tcl:445
 msgid "Execute next line [T]"
-msgstr ""
+msgstr "Kör nästa rad [T]"
 
-# ***
 #: ../tcl/axis.tcl:453
 msgid "Pause [P] / resume [S] execution"
-msgstr ""
+msgstr "Pausa [P] / Fortsätt [S] körning"
 
-# ***
 #: ../tcl/axis.tcl:461
 msgid "Stop program execution [ESC]"
-msgstr ""
+msgstr "Avbryt programkörning [ESC]"
 
 #: ../tcl/axis.tcl:471
 msgid "Zoom in [+]"
@@ -498,10 +471,9 @@ msgstr "Zooma ut [-]"
 msgid "Top view"
 msgstr "Vy ovanifrån"
 
-# ***
 #: ../tcl/axis.tcl:495
 msgid "Rotated top view"
-msgstr ""
+msgstr "Roterad vy ovanifrån"
 
 #: ../tcl/axis.tcl:503
 msgid "Side view"
@@ -511,15 +483,13 @@ msgstr "Vy ifrån sidan"
 msgid "Front view"
 msgstr "Vy framifrån"
 
-# ***
 #: ../tcl/axis.tcl:519
 msgid "Perspective view"
-msgstr ""
+msgstr "Isometrisk vy"
 
-# ***
 #: ../tcl/axis.tcl:529
 msgid "Clear live plot [Ctrl-K]"
-msgstr ""
+msgstr "Nollställ live verktygsbana [Ctrl-K]"
 
 #: ../tcl/axis.tcl:641
 msgid "Manual Control [F3]"
@@ -527,21 +497,19 @@ msgstr "Manuell Kontroll [F3]"
 
 #: ../tcl/axis.tcl:642
 msgid "Code Entry [F5]"
-msgstr "Kod inmatning [F5] #guessing here"
+msgstr "Kod inmatning [F5]"
 
 #: ../tcl/axis.tcl:651
 msgid "Axis:"
 msgstr "Axel:"
 
-# ***
 #: ../tcl/axis.tcl:759 ../tcl/axis.tcl:906
 msgid "-"
-msgstr ""
+msgstr "-"
 
-# ***
 #: ../tcl/axis.tcl:772 ../tcl/axis.tcl:920
 msgid "+"
-msgstr ""
+msgstr "+"
 
 #: ../tcl/axis.tcl:787
 msgid "Home"
@@ -557,7 +525,7 @@ msgstr "Spindel:"
 
 #: ../tcl/axis.tcl:882
 msgid "Stop"
-msgstr "Stanna #Guessing again"
+msgstr "Avbryt"
 
 #: ../tcl/axis.tcl:925
 msgid "Brake"
@@ -569,13 +537,12 @@ msgstr "Kylvätska:"
 
 #: ../tcl/axis.tcl:977
 msgid "Mist"
-msgstr ""
+msgstr "Finfördelat"
 
 #: ../tcl/axis.tcl:982
 msgid "Flood"
-msgstr ""
+msgstr "Maximalt"
 
-# ***
 #: ../tcl/axis.tcl:1054
 msgid "History:"
 msgstr "Historia"
@@ -584,25 +551,22 @@ msgstr "Historia"
 msgid "MDI Command:"
 msgstr "MDI-Kommando:"
 
-# ***
 #: ../tcl/axis.tcl:1078
 msgid "Go"
-msgstr ""
+msgstr "Kör"
 
 #: ../tcl/axis.tcl:1084
 msgid "Active G-Codes:"
 msgstr "Aktiva G-Koder"
 
-# ***
 #: ../tcl/axis.tcl:1239
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: ../tcl/axis.tcl:1251
 msgid "Feed Override (%):"
-msgstr "Matnings överjusterning (%): #guessing again"
+msgstr "Matnings överstyrning (%)"
 
-# ***
 #: ../tcl/axis.tcl:1290
 msgid ""
 "AXIS version $version\n"
@@ -613,6 +577,13 @@ msgid ""
 "\n"
 "Visit the AXIS web site: "
 msgstr ""
+"AXIS·version·$version\n"
+"\n"
+"Copyright·(C)·2004,·2005,·2006·Jeff·Epler·and·Chris·Radek.\n"
+"\n"
+"This·is·free·software,·and·you·are·welcome·to·redistribute·it·under·certain·conditions.··See·the·file·COPYING,·included·with·AXIS.\n"
+"\n"
+"Visit·the·AXIS·web·site:·"
 
 #: ../tcl/axis.tcl:1318
 msgid "About AXIS"
@@ -626,42 +597,34 @@ msgstr "AXIS Snabbguide"
 msgid "AXIS (No file)"
 msgstr "AXIS (Ingen fil)"
 
-# ***
 #: ../tcl/axis.tcl:1474
 msgid "ESTOP"
-msgstr "#Nödstopp?"
+msgstr "Nödstopp"
 
-# ***
 #: ../tcl/axis.tcl:1475
 msgid "ESTOP RESET"
-msgstr "#Återställ Nödstopp"
+msgstr "Återställ Nödstopp"
 
-# ***
 #: ../tcl/axis.tcl:1476
 msgid "ON"
-msgstr ""
+msgstr "På"
 
-# ***
 #: ../tcl/axis.tcl:1516
 msgid "Machine"
 msgstr "Maskin"
 
-# ***
 #: ../tcl/axis.tcl:1516
 msgid "Relative"
-msgstr ""
+msgstr "Relativ"
 
-# ***
 #: ../tcl/axis.tcl:1517
 msgid "Actual"
-msgstr ""
+msgstr "Är"
 
-# ***
 #: ../tcl/axis.tcl:1517
 msgid "Commanded"
-msgstr ""
+msgstr "Bör"
 
-# ***
 #: ../tcl/axis.tcl:1518
 msgid "Position:"
 msgstr "Position:"
@@ -678,38 +641,33 @@ msgstr "Kör spindel medurs [F9]"
 msgid "Stop spindle [F9/F10]"
 msgstr "Stanna spindel [F9/F10]"
 
-# ***
 #: ../tcl/axis.tcl:1629
 msgid "Turn spindle Faster [F12]"
-msgstr ""
+msgstr "Öka spindelvarvtal [F12]"
 
-# ***
 #: ../tcl/axis.tcl:1630
 msgid "Turn spindle Slower [F11]"
-msgstr ""
+msgstr "Minska spindelvarvtal [F11]"
 
-# ***
 #: ../tcl/axis.tcl:1631
 msgid "Turn spindle brake on [Shift-B] or off [B]"
-msgstr ""
+msgstr "Aktivera [Skift B] eller avaktivera [B] spindelbroms"
 
 #: ../tcl/axis.tcl:1632
 msgid "Turn flood on or off [F8]"
-msgstr ""
+msgstr "Maximal flöde på/av [F8]"
 
 #: ../tcl/axis.tcl:1633
 msgid "Turn mist on or off [F7]"
-msgstr ""
+msgstr "Finfördelad skärvätska på/av [F7]"
 
-# ***
 #: ../tcl/axis.tcl:1634
 msgid "Send active axis home [Home]"
-msgstr ""
+msgstr "Flytta vald axel till hemmaläge"
 
-# ***
 #: ../tcl/axis.tcl:1635
 msgid "Set G54 offset for active axis [Shift-Home]"
-msgstr ""
+msgstr "Använd nuvarande läge som G54 förskjutning för vald axel [Skift-Home]"
 
 #: ../tcl/axis.tcl:1636
 msgid "Activate axis [X]"
@@ -737,12 +695,12 @@ msgstr "Aktivera axel [5]"
 
 #: ../tcl/axis.tcl:1642 ../tcl/axis.tcl:1643
 msgid "Jog selected axis"
-msgstr ""
+msgstr "Jog vald axel"
 
 #: ../tcl/axis.tcl:1644
 msgid "Select jog ingrement"
-msgstr ""
+msgstr "Välj jog inkrement"
 
 #: ../tcl/axis.tcl:1645
 msgid "Temporarily allow jogging outside machine limits [L]"
-msgstr ""
+msgstr "Tillåt tillfällig joggning utanför ändlägen [L]"
