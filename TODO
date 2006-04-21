@@ -1,3 +1,14 @@
+Items to be completed before 1.3a1 release
+* control + left drag = zoom, which is the final thing needed for 
+  left-button-only navigation (SWP's touchscreen).
+* Call for translation updates
+
+Items to be completed before 1.3rc release
+* Release notes
+* Update installation documentation
+* Translation updates
+
+------------------------------------------------------------------------
 Wishlist items
 * Larger Buttons for "+" and "-"
 * Display spindle speed in RPM
@@ -12,23 +23,4 @@ Wishlist items
 * context menu on code area, options "copy", "start at this line"
 * make the view follow the cone around
 * more built-in help
-* for live plot, G0 vs G1 should be different colors
 * Perhaps cone size could be related to tool size
-* control + left drag = zoom, which is the final thing needed for 
-  left-button-only navigation (SWP's touchscreen).
-* "touch off" interface
-
-Missing dialogs/subwindows from xemc:
-* tool list editor (at least display?)
-* axis editor
-* coordinate systems
-* calibration, logging, variables, diagnostics
-
-Missing keys from xemc:
-0..9    Feed override       1..5 select axes in AXIS
-Alt-T   edit tool
-Alt-P / Alt-S Logging
-
-Functions and keys from other frontends that won't be implemented:
-, / .   jog speed           feed override affects jog speed
-V       validate            files are validated at load-time
