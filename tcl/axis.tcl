@@ -1548,10 +1548,10 @@ trace variable coord_type w queue_update_state
 trace variable display_type w queue_update_state
 
 bind . <Control-Tab> {
-    set page [.tabs raise]
+    set page [${pane_top}.tabs raise]
     switch $page {
-        mdi { .tabs raise manual }
-        default { .tabs raise mdi }
+        mdi { ${pane_top}.tabs raise manual }
+        default { ${pane_top}.tabs raise mdi }
     }
     break
 }
