@@ -24,366 +24,215 @@ menu .menu \
 
 menu .menu.file \
 	-tearoff 0
-
-.menu.file add command \
-	-accelerator O \
-	-command open_file \
-	-label Open \
-	-underline 0
-
-setup_menu_accel .menu.file end [_ "_Open"]
-
-.menu.file add command \
-	-accelerator Ctrl-R \
-	-command reload_file \
-	-label Reload \
-	-underline 0
-
-setup_menu_accel .menu.file end [_ "_Reload"]
-
-.menu.file add separator
-
-
-.menu.file add command \
-	-accelerator F1 \
-	-command estop_clicked \
-	-label {Toggle Emergency Stop} \
-	-underline 7
-
-setup_menu_accel .menu.file end [_ "Toggle _Emergency Stop"]
-
-.menu.file add command \
-	-accelerator F2 \
-	-command onoff_clicked \
-	-label {Toggle Machine Power} \
-	-underline 7
-
-setup_menu_accel .menu.file end [_ "Toggle _Machine Power"]
-
-.menu.file add separator
-
-
-.menu.file add command \
-	-command {destroy .} \
-	-label Quit \
-	-underline 0
-
-setup_menu_accel .menu.file end [_ "_Quit"]
-
-# Configure widget .menu.file
-wm title .menu.file file
-wm iconname .menu.file {}
-wm resiz .menu.file 1 1
-wm minsize .menu.file 1 1
-
-menu .menu.edit \
+menu .menu.machine \
 	-tearoff 0
-
-.menu.edit add command \
-	-accelerator Ctrl-C \
-	-command copy_line \
-	-label Copy \
-	-underline 0
-
-setup_menu_accel .menu.edit end [_ "_Copy"]
-
-.menu.edit add separator
-
-
-.menu.edit add command \
-	-command set_view_z \
-	-label {Top view} \
-	-underline 0 \
-	-accelerator V
-
-setup_menu_accel .menu.edit end [_ "_Top view"]
-
-.menu.edit add command \
-	-command set_view_z2 \
-	-label {Rotated Top view} \
-	-underline 0 \
-	-accelerator V
-
-setup_menu_accel .menu.edit end [_ "_Rotated Top view"]
-
-.menu.edit add command \
-	-command set_view_x \
-	-label {Side view} \
-	-underline 0 \
-	-accelerator V
-
-setup_menu_accel .menu.edit end [_ "_Side view"]
-
-.menu.edit add command \
-	-command set_view_y \
-	-label {Front view} \
-	-underline 0 \
-	-accelerator V
-
-setup_menu_accel .menu.edit end [_ "_Front view"]
-
-.menu.edit add command \
-	-command set_view_p \
-	-label {Perspective view} \
-	-underline 0 \
-	-accelerator V
-
-setup_menu_accel .menu.edit end [_ "_Perspective view"]
-
-.menu.edit add separator
-
-
-.menu.edit add radiobutton \
-	-value 0 \
-	-variable metric \
-	-command redraw \
-	-label {Display Inches} \
-	-underline 8
-
-setup_menu_accel .menu.edit end [_ "Display _Inches"]
-
-.menu.edit add radiobutton \
-	-value 1 \
-	-variable metric \
-	-command redraw \
-	-label {Display MM} \
-	-underline 8
-
-setup_menu_accel .menu.edit end [_ "Display _MM"]
-
-.menu.edit add separator
-
-
-.menu.edit add checkbutton \
-	-variable show_program \
-	-command redraw \
-	-label {Show program} \
-	-underline 1
-
-setup_menu_accel .menu.edit end [_ "S_how program"]
-
-.menu.edit add checkbutton \
-	-variable show_live_plot \
-	-command redraw \
-	-label {Show live plot} \
-	-underline 3
-
-setup_menu_accel .menu.edit end [_ "Sho_w live plot"]
-
-.menu.edit add checkbutton \
-	-variable show_tool \
-	-command redraw \
-	-label {Show tool} \
-	-underline 8
-
-setup_menu_accel .menu.edit end [_ "Show too_l"]
-
-.menu.edit add checkbutton \
-	-variable show_extents \
-	-command redraw \
-	-label {Show extents} \
-	-underline 6
-
-setup_menu_accel .menu.edit end [_ "Show e_xtents"]
-
-.menu.edit add command \
-	-accelerator Ctrl-K \
-	-command clear_live_plot \
-	-label {Clear live plot} \
-	-underline 1
-
-setup_menu_accel .menu.edit end [_ "C_lear live plot"]
-
-.menu.edit add separator
-.menu.edit add command \
-        -command {exec $env(EMC2_TCL_DIR)/bin/halconfig.tcl -- -ini $emcini &}
-setup_menu_accel .menu.edit end [_ "Hal Confi_guration"]
-
-# Configure widget .menu.edit
-wm title .menu.edit edit
-wm iconname .menu.edit {}
-wm resiz .menu.edit 1 1
-wm minsize .menu.edit 1 1
-
-menu .menu.program \
+menu .menu.view \
 	-tearoff 0
-
-.menu.program add command \
-	-command set_next_line \
-	-label {Set next line} \
-	-underline 4
-
-setup_menu_accel .menu.program end [_ "Set _next line"]
-
-.menu.program add command \
-	-accelerator R \
-	-command task_run \
-	-label {Run program} \
-	-underline 0
-
-setup_menu_accel .menu.program end [_ "_Run program"]
-
-.menu.program add command \
-	-accelerator T \
-	-command task_step \
-	-label Step \
-	-underline 0
-
-setup_menu_accel .menu.program end [_ "_Step"]
-
-.menu.program add command \
-	-accelerator P \
-	-command task_pause \
-	-label Pause \
-	-underline 0
-
-setup_menu_accel .menu.program end [_ "_Pause"]
-
-.menu.program add command \
-	-accelerator S \
-	-command task_resume \
-	-label Resume \
-	-underline 2
-
-setup_menu_accel .menu.program end [_ "Re_sume"]
-
-.menu.program add command \
-	-accelerator ESC \
-	-command task_stop \
-	-label Stop \
-	-underline 1
-
-setup_menu_accel .menu.program end [_ "S_top"]
-
-# Configure widget .menu.program
-wm title .menu.program program
-wm iconname .menu.program {}
-wm resiz .menu.program 1 1
-wm minsize .menu.program 1 1
-
 menu .menu.help \
 	-tearoff 0
 
-.menu.help add command \
-	-command {
-            wm transient .about .;
-            wm deiconify .about;
-            show_all .about.message;
-            focus .about.ok
-        } \
-	-label {About AXIS} \
-	-underline 0
+.menu.file add command \
+	-accelerator O \
+	-command open_file
+setup_menu_accel .menu.file end [_ "_Open"]
 
-setup_menu_accel .menu.help end [_ "_About AXIS"]
+.menu.file add command \
+	-accelerator [_ "Ctrl-R"] \
+	-command reload_file
+setup_menu_accel .menu.file end [_ "_Reload"]
 
-.menu.help add command \
-	-command {wm transient .keys .;wm deiconify .keys; focus .keys.ok} \
-	-label {Quick Reference} \
-	-underline 6
+.menu.file add command \
+	-command {destroy .}
+setup_menu_accel .menu.file end [_ "_Quit"]
 
-setup_menu_accel .menu.help end [_ "Quick _Reference"]
+# ----------------------------------------------------------------------
+.menu.machine add command \
+	-accelerator F1 \
+	-command estop_clicked
+setup_menu_accel .menu.machine end [_ "Toggle _Emergency Stop"]
 
-# Configure widget .menu.help
-wm title .menu.help help
-wm iconname .menu.help {}
-wm resiz .menu.help 1 1
-wm minsize .menu.help 1 1
+.menu.machine add command \
+	-accelerator F2 \
+	-command onoff_clicked
+setup_menu_accel .menu.machine end [_ "Toggle _Machine Power"]
 
-menu .menu.view \
-	-tearoff 0
+.menu.machine add separator
+
+.menu.machine add command \
+	-command set_next_line
+setup_menu_accel .menu.machine end [_ "Set _next line"]
+
+.menu.machine add command \
+	-accelerator R \
+	-command task_run
+setup_menu_accel .menu.machine end [_ "_Run program"]
+
+.menu.machine add command \
+	-accelerator T \
+	-command task_step
+setup_menu_accel .menu.machine end [_ "_Step"]
+
+.menu.machine add command \
+	-accelerator P \
+	-command task_pause
+setup_menu_accel .menu.machine end [_ "_Pause"]
+
+.menu.machine add command \
+	-accelerator S \
+	-command task_resume
+setup_menu_accel .menu.machine end [_ "Re_sume"]
+
+.menu.machine add command \
+	-accelerator ESC \
+	-command task_stop
+setup_menu_accel .menu.machine end [_ "S_top"]
+
+.menu.machine add separator
+
+.menu.machine add command \
+        -command {exec $env(EMC2_TCL_DIR)/bin/emccalib.tcl -- -ini $emcini &}
+setup_menu_accel .menu.machine end [_ "Cali_bration"]
+
+.menu.machine add command \
+        -command {exec $env(EMC2_TCL_DIR)/bin/halconfig.tcl -- -ini $emcini &}
+setup_menu_accel .menu.machine end [_ "Hal Confi_guration"]
+
+.menu.machine add command \
+	-command {exec $emctop_command -ini $emcini &}
+setup_menu_accel .menu.machine end [_ "Show _EMC Status"]
+
+
+
+# ----------------------------------------------------------------------
+.menu.view add command \
+	-command set_view_z \
+	-accelerator V
+setup_menu_accel .menu.view end [_ "_Top view"]
+
+.menu.view add command \
+	-command set_view_z2 \
+	-accelerator V
+setup_menu_accel .menu.view end [_ "_Rotated Top view"]
+
+.menu.view add command \
+	-command set_view_x \
+	-accelerator V
+setup_menu_accel .menu.view end [_ "_Side view"]
+
+.menu.view add command \
+	-command set_view_y \
+	-accelerator V
+setup_menu_accel .menu.view end [_ "_Front view"]
+
+.menu.view add command \
+	-command set_view_p \
+	-accelerator V
+setup_menu_accel .menu.view end [_ "_Perspective view"]
+
+.menu.view add separator
+
+.menu.view add radiobutton \
+	-value 0 \
+	-variable metric \
+	-command redraw
+setup_menu_accel .menu.view end [_ "Display _Inches"]
+
+.menu.view add radiobutton \
+	-value 1 \
+	-variable metric \
+	-command redraw
+setup_menu_accel .menu.view end [_ "Display _MM"]
+
+.menu.view add separator
+
+.menu.view add checkbutton \
+	-variable show_program \
+	-command redraw
+setup_menu_accel .menu.view end [_ "S_how program"]
+
+.menu.view add checkbutton \
+	-variable show_live_plot \
+	-command redraw
+setup_menu_accel .menu.view end [_ "Sho_w live plot"]
+
+.menu.view add checkbutton \
+	-variable show_tool \
+	-command redraw
+setup_menu_accel .menu.view end [_ "Show too_l"]
+
+.menu.view add checkbutton \
+	-variable show_extents \
+	-command redraw
+setup_menu_accel .menu.view end [_ "Show e_xtents"]
+
+.menu.view add command \
+	-accelerator [_ "Ctrl-K"] \
+	-command clear_live_plot
+setup_menu_accel .menu.view end [_ "C_lear live plot"]
+
+.menu.view add separator
 
 .menu.view add radiobutton \
 	-value 1 \
 	-variable display_type \
 	-accelerator @ \
-	-label {Show commanded position} \
 	-command redraw
-
 setup_menu_accel .menu.view end [_ "Show commanded position"]
 
 .menu.view add radiobutton \
 	-value 0 \
 	-variable display_type \
 	-accelerator @ \
-	-label {Show actual position} \
 	-command redraw
-
 setup_menu_accel .menu.view end [_ "Show actual position"]
 
 .menu.view add separator
-
 
 .menu.view add radiobutton \
 	-value 0 \
 	-variable coord_type \
 	-accelerator # \
-	-label {Show machine position} \
 	-command redraw
-
 setup_menu_accel .menu.view end [_ "Show machine position"]
 
 .menu.view add radiobutton \
 	-value 1 \
 	-variable coord_type \
 	-accelerator # \
-	-label {Show relative position} \
 	-command redraw
-
 setup_menu_accel .menu.view end [_ "Show relative position"]
 
-.menu.view add separator
+# ----------------------------------------------------------------------
+.menu.help add command \
+	-command {
+            wm transient .about .;
+            wm deiconify .about;
+            show_all .about.message;
+            focus .about.ok
+        }
+setup_menu_accel .menu.help end [_ "_About AXIS"]
 
-.menu.view add command \
-	-label {Show EMC Status} \
-	-command {exec $emctop_command -ini $emcini &}
-setup_menu_accel .menu.view end [_ "Show _EMC Status"]
+.menu.help add command \
+	-command {wm transient .keys .;wm deiconify .keys; focus .keys.ok}
+setup_menu_accel .menu.help end [_ "Quick _Reference"]
 
-# Configure widget .menu.view
-wm title .menu.view view
-wm iconname .menu.view {}
-wm resiz .menu.view 1 1
-wm minsize .menu.view 1 1
 
+# ----------------------------------------------------------------------
 .menu add cascade \
-	-menu .menu.file \
-	-label File \
-	-underline 0
-
+	-menu .menu.file
 setup_menu_accel .menu end [_ _File]
 
 .menu add cascade \
-	-menu .menu.edit \
-	-label Edit \
-	-underline 0
-
-setup_menu_accel .menu end [_ _Edit]
+	-menu .menu.machine
+setup_menu_accel .menu end [_ _Machine]
 
 .menu add cascade \
-	-menu .menu.program \
-	-label Program \
-	-underline 0
-
-setup_menu_accel .menu end [_ _Program]
-
-.menu add cascade \
-	-menu .menu.view \
-	-label View \
-	-underline 0
-
+	-menu .menu.view
 setup_menu_accel .menu end [_ _View]
 
 .menu add cascade \
-	-menu .menu.help \
-	-label Help \
-	-underline 0
-
+	-menu .menu.help
 setup_menu_accel .menu end [_ _Help]
-
-# Configure widget .menu
-wm title .menu menu
-wm iconname .menu {}
-wm resiz .menu 1 1
-wm minsize .menu 1 1
 
 frame .toolbar \
 	-borderwidth 1 \
@@ -401,7 +250,7 @@ setup_widget_accel .toolbar.machine_estop {}
 
 Button .toolbar.machine_power \
 	-command onoff_clicked \
-	-helptext [_ "Toggle machine power \[F2\]"] \
+	-helptext [_ "Toggle Machine power \[F2\]"] \
 	-image [load_image tool_power] \
 	-relief link \
 	-state disabled \
@@ -1481,28 +1330,27 @@ proc update_state {args} {
 
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_IDLE \
             && $taskfile != ""} \
-                .toolbar.program_run {.menu.program 1}
+                .toolbar.program_run {.menu.machine 4}
     relief {$interp_state != $INTERP_IDLE} .toolbar.program_run
     state  {$task_state == $STATE_ON && $taskfile != "" && \
       ($interp_state == $INTERP_PAUSED)} \
-                .toolbar.program_step {.menu.program 2}
+                .toolbar.program_step {.menu.machine 5}
     state  {$task_state == $STATE_ON && \
       ($interp_state == $INTERP_READING || $interp_state == $INTERP_WAITING) } \
-                {.menu.program 3}
+                {.menu.machine 6}
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_PAUSED } \
-                {.menu.program 4}
+                {.menu.machine 7}
     state  {$task_state == $STATE_ON && $interp_state != $INTERP_IDLE} \
                 .toolbar.program_pause
     relief {$interp_state == $INTERP_PAUSED} \
                 .toolbar.program_pause
     state  {$task_state == $STATE_ON && $interp_state != $INTERP_IDLE} \
-                .toolbar.program_stop {.menu.program 5}
+                .toolbar.program_stop {.menu.machine 8}
     relief {$interp_state == $INTERP_IDLE} \
                 .toolbar.program_stop
 
-    state {$running_line > 0 || $highlight_line > 0} {.menu.edit 0}
     state {$interp_state == $INTERP_IDLE && $highlight_line != -1} \
-                {.menu.program 0}
+                {.menu.machine 3}
 
     state {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE\
             && $spindledir != 0} \
