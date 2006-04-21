@@ -80,7 +80,7 @@ setup_menu_accel .menu.machine end [_ "_Pause"]
 .menu.machine add command \
 	-accelerator S \
 	-command task_resume
-setup_menu_accel .menu.machine end [_ "Re_sume"]
+setup_menu_accel .menu.machine end [_ "_Resume"]
 
 .menu.machine add command \
 	-accelerator ESC \
@@ -91,41 +91,51 @@ setup_menu_accel .menu.machine end [_ "S_top"]
 
 .menu.machine add command \
         -command {exec $env(EMC2_TCL_DIR)/bin/emccalib.tcl -- -ini $emcini &}
-setup_menu_accel .menu.machine end [_ "Cali_bration"]
+setup_menu_accel .menu.machine end [_ "_Calibration"]
 
 .menu.machine add command \
         -command {exec $env(EMC2_TCL_DIR)/bin/halconfig.tcl -- -ini $emcini &}
-setup_menu_accel .menu.machine end [_ "Hal Confi_guration"]
+setup_menu_accel .menu.machine end [_ "_Hal Configuration"]
 
 .menu.machine add command \
 	-command {exec $emctop_command -ini $emcini &}
-setup_menu_accel .menu.machine end [_ "Show _EMC Status"]
+setup_menu_accel .menu.machine end [_ "Sho_w EMC Status"]
 
 
 
 # ----------------------------------------------------------------------
-.menu.view add command \
+.menu.view add radiobutton \
 	-command set_view_z \
+        -variable view_type \
+        -value 1 \
 	-accelerator V
 setup_menu_accel .menu.view end [_ "_Top view"]
 
-.menu.view add command \
+.menu.view add radiobutton \
 	-command set_view_z2 \
+        -variable view_type \
+        -value 2 \
 	-accelerator V
 setup_menu_accel .menu.view end [_ "_Rotated Top view"]
 
-.menu.view add command \
+.menu.view add radiobutton \
 	-command set_view_x \
+        -variable view_type \
+        -value 3 \
 	-accelerator V
 setup_menu_accel .menu.view end [_ "_Side view"]
 
-.menu.view add command \
+.menu.view add radiobutton \
 	-command set_view_y \
+        -variable view_type \
+        -value 4 \
 	-accelerator V
 setup_menu_accel .menu.view end [_ "_Front view"]
 
-.menu.view add command \
+.menu.view add radiobutton \
 	-command set_view_p \
+        -variable view_type \
+        -value 5 \
 	-accelerator V
 setup_menu_accel .menu.view end [_ "_Perspective view"]
 
@@ -168,7 +178,7 @@ setup_menu_accel .menu.view end [_ "Show e_xtents"]
 .menu.view add command \
 	-accelerator [_ "Ctrl-K"] \
 	-command clear_live_plot
-setup_menu_accel .menu.view end [_ "C_lear live plot"]
+setup_menu_accel .menu.view end [_ "_Clear live plot"]
 
 .menu.view add separator
 

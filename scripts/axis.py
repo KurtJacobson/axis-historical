@@ -409,7 +409,8 @@ class MyOpengl(Opengl):
         widgets.view_x.configure(relief="link")
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
-        
+        vars.view_type.set(0)
+
     def actual_tkRedraw(self, *dummy):
         self.after_id = None
         if self.perspective:
@@ -1402,6 +1403,7 @@ vars = nf.Variables(root_window,
     ("coord_type", IntVar),
     ("display_type", IntVar),
     ("override_limits", BooleanVar),
+    ("view_type", IntVar),
 )
 vars.emctop_command.set(os.path.join(os.path.dirname(sys.argv[0]), "emctop"))
 vars.highlight_line.set(-1)
@@ -1538,6 +1540,7 @@ class TclCommands(nf.TclCommands):
         widgets.view_x.configure(relief="sunken")
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
+        vars.view_type.set(3)
         o.reset()
         glRotatef(-90, 0, 1, 0)
         glRotatef(-90, 1, 0, 0)
@@ -1559,6 +1562,7 @@ class TclCommands(nf.TclCommands):
         widgets.view_x.configure(relief="link")
         widgets.view_y.configure(relief="sunken")
         widgets.view_p.configure(relief="link")
+        vars.view_type.set(4)
         o.reset()
         glRotatef(-90, 1, 0, 0)
         if o.g:
@@ -1579,6 +1583,7 @@ class TclCommands(nf.TclCommands):
         widgets.view_x.configure(relief="link")
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
+        vars.view_type.set(1)
         o.reset()
         if o.g:
             mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
@@ -1597,6 +1602,7 @@ class TclCommands(nf.TclCommands):
         widgets.view_x.configure(relief="link")
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="link")
+        vars.view_type.set(2)
         o.reset()
         glRotatef(-90, 0, 0, 1)
         if o.g:
@@ -1618,6 +1624,7 @@ class TclCommands(nf.TclCommands):
         widgets.view_x.configure(relief="link")
         widgets.view_y.configure(relief="link")
         widgets.view_p.configure(relief="sunken")
+        vars.view_type.set(5)
         o.reset()
         o.perspective = True
         if o.g:
@@ -2069,7 +2076,6 @@ t = widgets.text
 t.bind("<Configure>", set_tabs)
 t.tag_configure("lineno", foreground="#808080")
 t.tag_configure("executing", background="#804040")
-t.tag_configure("state", foreground="#408040")
 if args:
     for i, l in enumerate(open(args[0])):
         l = l.expandtabs().replace("\r", "")
