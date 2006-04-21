@@ -125,8 +125,8 @@ option add *Togl.overlay_foreground #ffffff startupFile
 option add *Togl.overlay_alpha .75 startupFile
 option add *Togl.overlay_background #000000 startupFile
 
-option add *Togl.label_ok #ff353a startupFile
-option add *Togl.label_limit #ff8287 startupFile
+option add *Togl.label_limit #ff353a startupFile
+option add *Togl.label_ok #ff8287 startupFile
 
 option add *Togl.small_origin #00ffff startupFile
 
