@@ -140,7 +140,6 @@ option add *Togl.cone #cccccc startupFile
 def install(root = None):
     if root is None: root = Tkinter._default_root
     o = root.option_get("optionLevel", "Level") or "interactive"
-    print "option level", o
     if hasattr(root, 'tk'): root = root.tk
     root.call('set', 'OPTIONLEVEL', o)
     root.call('eval', options)
