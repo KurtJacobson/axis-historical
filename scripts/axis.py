@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.join(BASE, "lib", "python"))
 import gettext;
 gettext.install("axis", localedir=os.path.join(BASE, "share", "locale"), unicode=True)
 
-version="1.3a1"
+version="1.4a0"
 
 import array, time, atexit, tempfile, shutil, errno, thread
 
