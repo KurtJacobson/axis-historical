@@ -1188,13 +1188,17 @@ class AxisCanon(GLCanon):
         GLCanon.__init__(self, widget, text)
         self.linecount = linecount
         self.progress = progress
+        self.aborted = False
+        root_window.bind_class(".info.progress", "<Escape>", self.do_cancel)
+
+    def do_cancel(self, event):
+        self.aborted = True
 
     def check_abort(self):
-        return root_window.tk.call("nf_dialog", ".error",
-            _("AXIS"), 
-            """This file is taking a long time to execute.  This could be because it is very complex, or it could be because the file contains an infinite loop.
+        root_window.tk.call("focus", "-force", ".info.progress")
+        root_window.update()
+        if self.aborted: raise KeyboardInterrupt
 
-Continue loading file?""", "question", 0, _("OK"), _("Cancel"))
     def draw_lines(self, lines, for_selection, j0=0):
         if for_selection:
             for j, (lineno, l1, l2) in enumerate(lines):

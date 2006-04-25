@@ -481,7 +481,7 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
     char *f;
     char *unitcode=0, *initcode=0;
     struct timeval t0, t1;
-    int wait = 60;
+    int wait = 1;
     if(!PyArg_ParseTuple(args, "sO|ss", &f, &callback, &unitcode, &initcode))
         return NULL;
 
@@ -513,7 +513,6 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
         if(t1.tv_sec > t0.tv_sec + wait) {
             if(check_abort()) return NULL;
             t0 = t1;
-            wait = wait * 2;
         }
         if(result != INTERP_OK) break;
         result = interp_execute();
