@@ -1189,6 +1189,12 @@ class AxisCanon(GLCanon):
         self.linecount = linecount
         self.progress = progress
 
+    def check_abort(self):
+        return root_window.tk.call("nf_dialog", ".error",
+            _("AXIS"), 
+            """This file is taking a long time to execute.  This could be because it is very complex, or it could be because the file contains an infinite loop.
+
+Continue loading file?""", "question", 0, _("OK"), _("Cancel"))
     def draw_lines(self, lines, for_selection, j0=0):
         if for_selection:
             for j, (lineno, l1, l2) in enumerate(lines):
@@ -1343,7 +1349,10 @@ def open_file_guts(f, filtered = False):
         canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
         unitcode = "G%d" % (20 + (s.linear_units == 1))
-        result, seq = gcode.parse(f, canon, unitcode, initcode)
+        try:
+            result, seq = gcode.parse(f, canon, unitcode, initcode)
+        except KeyboardInterrupt:
+            result, seq = 0, 0
         # According to the documentation, MIN_ERROR is the largest value that is
         # not an error.  Crazy though that sounds...
         if result > gcode.MIN_ERROR:
