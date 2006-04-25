@@ -678,7 +678,7 @@ class MyOpengl(Opengl):
                                    2 ) * .5
                 else:
                     cone_scale = 1
-                pos = [q * lu for q in pos[:3]]
+                pos = [q / lu for q in pos[:3]]
                 glPushMatrix()
                 glTranslatef(*pos)
                 if len(axisnames) > 3:
