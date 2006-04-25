@@ -457,6 +457,19 @@ double GET_EXTERNAL_LENGTH_UNITS() {
     return dresult;
 }
 
+bool check_abort() {
+    PyObject *result =
+        PyObject_CallMethod(callback, "check_abort", "");
+    if(!result) return 1;
+    if(PyObject_IsTrue(result)) {
+        Py_DECREF(result);
+        PyErr_Format(PyExc_KeyboardInterrupt, "Load aborted");
+        return 1;
+    }
+    Py_DECREF(result);
+    return 0;
+}
+
 USER_DEFINED_FUNCTION_TYPE USER_DEFINED_FUNCTION[USER_DEFINED_FUNCTION_NUM];
 
 CANON_MOTION_MODE motion_mode;
@@ -467,11 +480,15 @@ CANON_MOTION_MODE GET_EXTERNAL_MOTION_CONTROL_MODE() { return motion_mode; }
 PyObject *parse_file(PyObject *self, PyObject *args) {
     char *f;
     char *unitcode=0, *initcode=0;
+    struct timeval t0, t1;
+    int wait = 60;
     if(!PyArg_ParseTuple(args, "sO|ss", &f, &callback, &unitcode, &initcode))
         return NULL;
 
     for(int i=0; i<USER_DEFINED_FUNCTION_NUM; i++) 
         USER_DEFINED_FUNCTION[i] = user_defined_function;
+
+    gettimeofday(&t0, NULL);
 
     metric=false;
     interp_error = 0;
@@ -492,6 +509,12 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
     }
     while(!interp_error && result == INTERP_OK) {
         result = interp_read();
+        gettimeofday(&t1, NULL);
+        if(t1.tv_sec > t0.tv_sec + wait) {
+            if(check_abort()) return NULL;
+            t0 = t1;
+            wait = wait * 2;
+        }
         if(result != INTERP_OK) break;
         result = interp_execute();
     }
