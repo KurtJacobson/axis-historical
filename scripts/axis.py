@@ -1148,9 +1148,9 @@ class Progress:
         root_window.tk.call(".info.progress", "create", "rectangle",
                                 (-10, -10, -10, -10),
                                 "-fill", "blue", "-outline", "blue")
+        root_window.update_idletasks()
         root_window.tk.call("focus", "-force", ".info.progress")
         root_window.tk.call("grab", ".info.progress")
-        root_window.update()
 
     def update(self, count):
         if count - self.lastcount > 100:
@@ -1195,7 +1195,6 @@ class AxisCanon(GLCanon):
         self.aborted = True
 
     def check_abort(self):
-        root_window.tk.call("focus", "-force", ".info.progress")
         root_window.update()
         if self.aborted: raise KeyboardInterrupt
 
@@ -1385,7 +1384,10 @@ def open_file_guts(f, filtered = False):
         root_window.tk.call("grab", "release", ".info.progress")
         if canon:
             canon.progress = DummyProgress()
-        progress.done()
+        try:
+            progress.done()
+        except UnboundLocalError:
+            pass
         o.tkRedraw()
 
 vars = nf.Variables(root_window, 
