@@ -25,6 +25,7 @@ proc option_nont {args} {
     eval [concat option $args]
 }
 
+option add *highlightBackground #d9d9d9 $OPTIONLEVEL
 option add *background #d9d9d9 $OPTIONLEVEL
 option add *foreground black $OPTIONLEVEL
 
