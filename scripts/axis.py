@@ -69,6 +69,8 @@ except TclError:
 program_start_line = 0
 program_start_line_last = -1
 
+lathe = 0
+
 feedrate_blackout = 0
 from math import hypot, atan2, sin, cos, pi, sqrt
 from rs274 import ArcsToSegmentsMixin
@@ -688,6 +690,8 @@ class MyOpengl(Opengl):
                         glRotatef(s.position[3], 0, 1, 0)
                     elif axisnames[3] == "C":
                         glRotatef(s.position[3], 0, 0, 1)
+                if lathe:
+                    glRotatef(90, 0, 1, 0)
                 glScalef(cone_scale, cone_scale, cone_scale)
                 glCallList(cone_program)
                 glPopMatrix()
@@ -1580,6 +1584,8 @@ class TclCommands(nf.TclCommands):
         vars.view_type.set(4)
         o.reset()
         glRotatef(-90, 1, 0, 0)
+        if lathe:
+            glRotatef(90, 0, 1, 0)
         if o.g:
             mid = [(a+b)/2 for a, b in zip(o.g.max_extents, o.g.min_extents)]
             glTranslatef(-mid[0], -mid[1], -mid[2])
@@ -2009,13 +2015,19 @@ def bind_axis(a, b, d):
     root_window.bind("<KeyRelease-%s>" % b, lambda e: jog_off(d))
 
 root_window.bind("<FocusOut>", lambda e: str(e.widget) == "." and jog_off_all())
-bind_axis("Left", "Right", 0)
-bind_axis("Down", "Up", 1)
-bind_axis("Next", "Prior", 2)
-bind_axis("KP_Left", "KP_Right", 0)
-bind_axis("KP_Down", "KP_Up", 1)
-bind_axis("KP_Next", "KP_Prior", 2)
-bind_axis("bracketleft", "bracketright", 3)
+if lathe:
+    bind_axis("Left", "Right", 2)
+    bind_axis("Up", "Down", 0)
+    bind_axis("KP_Left", "KP_Right", 2)
+    bind_axis("KP_Up", "KP_Down", 0)
+else:
+    bind_axis("Left", "Right", 0)
+    bind_axis("Down", "Up", 1)
+    bind_axis("Next", "Prior", 2)
+    bind_axis("KP_Left", "KP_Right", 0)
+    bind_axis("KP_Down", "KP_Up", 1)
+    bind_axis("KP_Next", "KP_Prior", 2)
+    bind_axis("bracketleft", "bracketright", 3)
 
 def set_tabs(e):
     t.configure(tabs="%d right" % (e.width - 2))
