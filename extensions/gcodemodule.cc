@@ -23,7 +23,7 @@
 #include "emc.hh"
 #include "rs274ngc.hh"
 
-#if AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 #include "interp_return.hh"
 #define active_settings  interp_new.active_settings
 #define active_g_codes   interp_new.active_g_codes
@@ -36,6 +36,7 @@ char _parameter_file_name[LINELEN];
 #else
 #include "rs274ngc_return.hh"
 #define INTERP_OK        RS274NGC_OK
+#define INTERP_MIN_ERROR RS274NGC_MIN_ERROR
 #define ACTIVE_SETTINGS  RS274NGC_ACTIVE_SETTINGS
 #define ACTIVE_G_CODES   RS274NGC_ACTIVE_G_CODES 
 #define ACTIVE_M_CODES   RS274NGC_ACTIVE_M_CODES 
@@ -60,7 +61,9 @@ char _parameter_file_name[LINELEN];
 #undef offsetof
 #define offsetof(T,x) (int)(-1+(char*)&(((T*)1)->x))
 
+extern char *_rs274ngc_errors[];
 
+#define iserror(x) ((x) < 0 || (x) >= RS274NGC_MIN_ERROR)
 
 static PyObject *pose(const EmcPose &p) {
     PyObject *res = PyTuple_New(6);
@@ -180,7 +183,7 @@ int last_sequence_number;
 int plane;
 bool metric;
 
-#ifdef AXIS_USE_EMC2
+#if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 Interp interp_new;
 #endif
 
@@ -328,6 +331,7 @@ void SET_CUTTER_RADIUS_COMPENSATION(double radius) {}
 void START_CUTTER_RADIUS_COMPENSATION(int direction) {}
 void STOP_CUTTER_RADIUS_COMPENSATION(int direction) {}
 void START_SPEED_FEED_SYNCH() {}
+void START_SPEED_FEED_SYNCH(double sync) {}
 void STOP_SPEED_FEED_SYNCH() {}
 void START_SPINDLE_COUNTERCLOCKWISE() {}
 void START_SPINDLE_CLOCKWISE() {}
@@ -358,6 +362,7 @@ void SET_MOTION_OUTPUT_VALUE(int index, double value) {}
 void TURN_PROBE_ON() {}
 void TURN_PROBE_OFF() {}
 void STRAIGHT_PROBE(double x, double y, double z, double a, double b, double c) {}
+double GET_EXTERNAL_MOTION_CONTROL_TOLERANCE() { return 0.1; }
 double GET_EXTERNAL_PROBE_POSITION_X() { return 0.0; }
 double GET_EXTERNAL_PROBE_POSITION_Y() { return 0.0; }
 double GET_EXTERNAL_PROBE_POSITION_Z() { return 0.0; }
@@ -406,6 +411,7 @@ void SET_FEED_REFERENCE(int ref) {}
 int GET_EXTERNAL_QUEUE_EMPTY() { return true; }
 CANON_DIRECTION GET_EXTERNAL_SPINDLE() { return 0; }
 int GET_EXTERNAL_TOOL_SLOT() { return 0; }
+int GET_EXTERNAL_SELECTED_TOOL_SLOT() { return 0; }
 double GET_EXTERNAL_FEED_RATE() { return 0; }
 double GET_EXTERNAL_TRAVERSE_RATE() { return 0; }
 int GET_EXTERNAL_FLOOD() { return 0; }
@@ -413,6 +419,15 @@ int GET_EXTERNAL_MIST() { return 0; }
 CANON_PLANE GET_EXTERNAL_PLANE() { return 1; }
 double GET_EXTERNAL_SPEED() { return 0; }
 int GET_EXTERNAL_TOOL_MAX() { return CANON_TOOL_MAX; }
+void STOP_ADAPTIVE_FEED() {} 
+void START_ADAPTIVE_FEED() {} 
+
+bool PyFloat_CheckAndError(const char *func, PyObject *p)  {
+    if(PyFloat_Check(p)) return true;
+    PyErr_Format(PyExc_TypeError,
+            "%s: Expected double, got %s", func, p->ob_type->tp_name);
+    return false;
+}
 
 double GET_EXTERNAL_ANGLE_UNITS() {
     PyObject *result =
@@ -420,7 +435,7 @@ double GET_EXTERNAL_ANGLE_UNITS() {
     if(result == NULL) interp_error++;
 
     double dresult = 1.0;
-    if(!result || !PyFloat_Check(result)) {
+    if(!result || !PyFloat_CheckAndError("get_external_angle_units", result)) {
         interp_error++;
     } else {
         dresult = PyFloat_AsDouble(result);
@@ -435,7 +450,7 @@ double GET_EXTERNAL_LENGTH_UNITS() {
     if(result == NULL) interp_error++;
 
     double dresult = 0.03937007874016;
-    if(!result || !PyFloat_Check(result)) {
+    if(!result || !PyFloat_CheckAndError("get_external_length_units", result)) {
         interp_error++;
     } else {
         dresult = PyFloat_AsDouble(result);
@@ -444,18 +459,38 @@ double GET_EXTERNAL_LENGTH_UNITS() {
     return dresult;
 }
 
+bool check_abort() {
+    PyObject *result =
+        PyObject_CallMethod(callback, "check_abort", "");
+    if(!result) return 1;
+    if(PyObject_IsTrue(result)) {
+        Py_DECREF(result);
+        PyErr_Format(PyExc_KeyboardInterrupt, "Load aborted");
+        return 1;
+    }
+    Py_DECREF(result);
+    return 0;
+}
+
 USER_DEFINED_FUNCTION_TYPE USER_DEFINED_FUNCTION[USER_DEFINED_FUNCTION_NUM];
 
 CANON_MOTION_MODE motion_mode;
+void SET_MOTION_CONTROL_MODE(CANON_MOTION_MODE mode, double tolerance) { motion_mode = mode; }
 void SET_MOTION_CONTROL_MODE(CANON_MOTION_MODE mode) { motion_mode = mode; }
 CANON_MOTION_MODE GET_EXTERNAL_MOTION_CONTROL_MODE() { return motion_mode; }
 
 PyObject *parse_file(PyObject *self, PyObject *args) {
     char *f;
-    if(!PyArg_ParseTuple(args, "sO", &f, &callback)) return NULL;
+    char *unitcode=0, *initcode=0;
+    struct timeval t0, t1;
+    int wait = 1;
+    if(!PyArg_ParseTuple(args, "sO|ss", &f, &callback, &unitcode, &initcode))
+        return NULL;
 
     for(int i=0; i<USER_DEFINED_FUNCTION_NUM; i++) 
         USER_DEFINED_FUNCTION[i] = user_defined_function;
+
+    gettimeofday(&t0, NULL);
 
     metric=false;
     interp_error = 0;
@@ -463,21 +498,42 @@ PyObject *parse_file(PyObject *self, PyObject *args) {
 
     interp_init();
     interp_open(f);
-    int result = 0;
-    while(!interp_error) {
+    int result = INTERP_OK;
+    if(unitcode) {
+        result = interp_read(unitcode);
+        if(result != INTERP_OK) goto out_error;
+        result = interp_execute();
+    }
+    if(initcode && result == INTERP_OK) {
+        result = interp_read(initcode);
+        if(result != INTERP_OK) goto out_error;
+        result = interp_execute();
+    }
+    while(!interp_error && result == INTERP_OK) {
         result = interp_read();
+        gettimeofday(&t1, NULL);
+        if(t1.tv_sec > t0.tv_sec + wait) {
+            if(check_abort()) return NULL;
+            t0 = t1;
+        }
         if(result != INTERP_OK) break;
         result = interp_execute();
-        if(result != INTERP_OK) break;
     }
-    if(interp_error || !result) return NULL;
+out_error:
+    if(interp_error) {
+        if(!PyErr_Occurred()) {
+            PyErr_Format(PyExc_RuntimeError,
+                    "interp_error > 0 but no Python exception set");
+        }
+        return NULL;
+    }
+    PyErr_Clear();
     PyObject *retval = PyTuple_New(2);
     PyTuple_SetItem(retval, 0, PyInt_FromLong(result));
     PyTuple_SetItem(retval, 1, PyInt_FromLong(last_sequence_number));
     return retval;
 }
 
-extern char * _rs274ngc_errors[];
 
 static int maxerror = -1;
 
@@ -511,6 +567,7 @@ initgcode(void) {
     PyType_Ready(&LineCodeType);
     PyModule_AddObject(m, "linecode", (PyObject*)&LineCodeType);
     maxerror = find_maxerror();
-    PyObject_SetAttrString(m, "RS274NGC_MAX_ERROR", PyInt_FromLong(maxerror));
-    PyObject_SetAttrString(m, "RS274NGC_MIN_ERROR", PyInt_FromLong(3)); // XXX
+    PyObject_SetAttrString(m, "MAX_ERROR", PyInt_FromLong(maxerror));
+    PyObject_SetAttrString(m, "MIN_ERROR",
+            PyInt_FromLong(INTERP_MIN_ERROR));
 }
