@@ -416,6 +416,8 @@ int GET_EXTERNAL_MIST() { return 0; }
 CANON_PLANE GET_EXTERNAL_PLANE() { return 1; }
 double GET_EXTERNAL_SPEED() { return 0; }
 int GET_EXTERNAL_TOOL_MAX() { return CANON_TOOL_MAX; }
+void STOP_ADAPTIVE_FEED() {} 
+void START_ADAPTIVE_FEED() {} 
 
 double GET_EXTERNAL_ANGLE_UNITS() {
     PyObject *result =
