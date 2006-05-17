@@ -1792,7 +1792,7 @@ def redraw(self):
 
             # Labels
             if vars.coord_type.get():
-                offset = s.origin
+                offset = [i/dimscale for i in s.origin]
             else:
                 offset = 0, 0, 0
             if view != z and g.max_extents[z] > g.min_extents[z]:
