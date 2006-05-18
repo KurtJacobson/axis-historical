@@ -121,6 +121,7 @@ def install_help(app):
         ("L", _("Override Limits")),
         ("", ""),
         ("O", _("Open program")),
+        ("Control-R", _("Reload program")),
         ("R", _("Run program")),
         ("T", _("Step program")),
         ("P", _("Pause program")),
@@ -517,7 +518,7 @@ class MyOpengl(Opengl):
 
                 # Labels
                 if vars.coord_type.get():
-                    offset = s.origin
+                    offset = [i/dimscale for i in s.origin]
                 else:
                     offset = 0, 0, 0
                 if view != z and g.max_extents[z] > g.min_extents[z]:
@@ -738,6 +739,7 @@ class MyOpengl(Opengl):
                     zip(axisnames, map(lambda p: p*25.4, positions))]
         else:
             positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
+        positions.append("Speed: % 9.4f" % (live_plotter.logger.average_speed*60))
 
         maxlen = max([len(p) for p in positions])
         pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
@@ -979,6 +981,7 @@ class LivePlotter:
         self.running = BooleanVar(window)
         self.running.set(False)
         self.lastpts = -1
+        self.last_speed = -1
         self.start()
 
     def start(self):
@@ -1047,14 +1050,25 @@ class LivePlotter:
 
         lu = self.stat.linear_units or 1
 
+        try:
+            ddt = abs(live_plotter.logger.average_speed - self.last_speed)
+        except NameError, detail:
+            print detail
+            ddt = 0
+            
         if (self.logger.npts != self.lastpts
                 or self.stat.actual_position != o.last_position
                 or self.stat.homed != o.last_homed
-                or self.stat.origin != o.last_origin):
+                or self.stat.origin != o.last_origin
+                or ddt > .0001):
             o.redraw_soon()
             o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
             o.last_origin = self.stat.origin
+            try:
+                self.last_speed = live_plotter.logger.average_speed
+            except NameError, detail:
+                print detail
             self.lastpts = self.logger.npts
 
         vupdate(vars.exec_state, self.stat.exec_state)
@@ -2015,20 +2029,6 @@ def bind_axis(a, b, d):
     root_window.bind("<KeyRelease-%s>" % b, lambda e: jog_off(d))
 
 root_window.bind("<FocusOut>", lambda e: str(e.widget) == "." and jog_off_all())
-if lathe:
-    bind_axis("Left", "Right", 2)
-    bind_axis("Up", "Down", 0)
-    bind_axis("KP_Left", "KP_Right", 2)
-    bind_axis("KP_Up", "KP_Down", 0)
-else:
-    bind_axis("Left", "Right", 0)
-    bind_axis("Down", "Up", 1)
-    bind_axis("Next", "Prior", 2)
-    bind_axis("KP_Left", "KP_Right", 0)
-    bind_axis("KP_Down", "KP_Up", 1)
-    bind_axis("KP_Next", "KP_Prior", 2)
-    bind_axis("bracketleft", "bracketright", 3)
-
 def set_tabs(e):
     t.configure(tabs="%d right" % (e.width - 2))
 
@@ -2059,6 +2059,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     vars.coord_type.set(inifile.find("DISPLAY", "POSITION_OFFSET") == "RELATIVE")
     vars.display_type.set(inifile.find("DISPLAY", "POSITION_FEEDBACK") == "COMMANDED")
     coordinate_display = inifile.find("DISPLAY", "POSITION_UNITS")
+    lathe = bool(inifile.find("DISPLAY", "LATHE"))
     if coordinate_display:
         if coordinate_display.lower() in ("mm", "metric"): vars.metric.set(1)
         else: vars.metric.set(0)
@@ -2080,6 +2081,21 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     del sys.argv[1:3]
 else:
     widgets.menu_view.entryconfigure(_("Show EMC Status"), state="disabled")
+
+if lathe:
+    bind_axis("Left", "Right", 2)
+    bind_axis("Up", "Down", 0)
+    bind_axis("KP_Left", "KP_Right", 2)
+    bind_axis("KP_Up", "KP_Down", 0)
+else:
+    bind_axis("Left", "Right", 0)
+    bind_axis("Down", "Up", 1)
+    bind_axis("Next", "Prior", 2)
+    bind_axis("KP_Left", "KP_Right", 0)
+    bind_axis("KP_Down", "KP_Up", 1)
+    bind_axis("KP_Next", "KP_Prior", 2)
+    bind_axis("bracketleft", "bracketright", 3)
+
 
 opts, args = getopt.getopt(sys.argv[1:], 'd:')
 for i in range(len(axisnames), 6):
