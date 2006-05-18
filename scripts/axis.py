@@ -404,7 +404,16 @@ class MyOpengl(Opengl):
 
         self.tk.call(self._w, 'swapbuffers')
 
+    def startRotate(self, event):
+        if lathe: return
+        return Opengl.startRotate(self, event)
+
+    def tkAutoSpin(self, event):
+        if lathe: return
+        return Opengl.tkAutoSpin(self, event)
+
     def tkRotate(self, event):
+        if lathe: return
         Opengl.tkRotate(self, event)
         self.perspective = True
         widgets.view_z.configure(relief="link")
@@ -739,6 +748,7 @@ class MyOpengl(Opengl):
                     zip(axisnames, map(lambda p: p*25.4, positions))]
         else:
             positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
+        if lathe: positions = [positions[0]] + positions[2:]
         positions.append("Speed: % 9.4f" % (live_plotter.logger.average_speed*60))
 
         maxlen = max([len(p) for p in positions])
@@ -2192,6 +2202,13 @@ _tk_seticon.seticon(widgets.help_window, icon)
 
 if lathe:
     root_window.after_idle(commands.set_view_y)
+    root_window.bind("v", commands.set_view_y)
+    widgets.view_z.pack_forget()
+    widgets.view_z2.pack_forget()
+    widgets.view_x.pack_forget()
+    widgets.view_y.pack_forget()
+    widgets.view_p.pack_forget()
+    widgets.axis_y.grid_forget()
 o.mainloop()
 
 live_plotter.stop()
