@@ -858,10 +858,17 @@ def draw_axes():
 
     if view != x:
         glPushMatrix()
-        glTranslatef(1.2, -0.1, 0)
-        if view == y:
+        if lathe:
+            glTranslatef(1.3, -0.1, 0)
             glTranslatef(0, 0, -0.1)
+            glRotatef(-90, 0, 1, 0)
             glRotatef(90, 1, 0, 0)
+            glTranslatef(0.1, 0, 0)
+        else:
+            glTranslatef(1.2, -0.1, 0)
+            if view == y:
+                glTranslatef(0, 0, -0.1)
+                glRotatef(90, 1, 0, 0)
         glScalef(0.2, 0.2, 0.2)
         hershey.plot_string("X", 0.5)
         glPopMatrix()
@@ -1501,6 +1508,8 @@ widgets = nf.Widgets(root_window,
     ("view_p", Button, ".toolbar.view_p"),
 
     ("feedoverride", Scale, pane_top + ".feedoverride.foscale"),
+
+    ("menu_view", Menu, ".menu.view"),
 )
 
 def activate_axis(i, force=0):
@@ -2217,6 +2226,7 @@ if lathe:
     widgets.view_y.pack_forget()
     widgets.view_p.pack_forget()
     widgets.axis_y.grid_forget()
+    widgets.menu_view.delete(0, 5)
 o.mainloop()
 
 live_plotter.stop()
