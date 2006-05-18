@@ -748,7 +748,11 @@ class MyOpengl(Opengl):
                     zip(axisnames, map(lambda p: p*25.4, positions))]
         else:
             positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
-        if lathe: positions = [positions[0]] + positions[2:]
+        if lathe:
+            homed = [s.homed[0]] + list(s.homed[2:])
+            positions = [positions[0]] + positions[2:]
+        else:
+            homed = s.homed[:]
         positions.append("Speed: % 9.4f" % (live_plotter.logger.average_speed*60))
 
         maxlen = max([len(p) for p in positions])
@@ -773,7 +777,7 @@ class MyOpengl(Opengl):
         glColor3f(*o.colors['overlay_foreground'])
         for string in positions:
             maxlen = max(maxlen, len(string))
-            if s.homed[i]:
+            if homed[i]:
                 glRasterPos2i(6, ypos)
                 glBitmap(13, 16, 0, 3, 17, 0, homeicon)
             glRasterPos2i(23, ypos)
