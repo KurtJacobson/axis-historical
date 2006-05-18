@@ -1053,7 +1053,6 @@ class LivePlotter:
         try:
             ddt = abs(live_plotter.logger.average_speed - self.last_speed)
         except NameError, detail:
-            print detail
             ddt = 0
             
         if (self.logger.npts != self.lastpts
@@ -1068,7 +1067,7 @@ class LivePlotter:
             try:
                 self.last_speed = live_plotter.logger.average_speed
             except NameError, detail:
-                print detail
+                pass
             self.lastpts = self.logger.npts
 
         vupdate(vars.exec_state, self.stat.exec_state)
@@ -2173,7 +2172,10 @@ if args:
     open_file_guts(args[0])
 elif os.environ.has_key("AXIS_OPEN_FILE"):
     open_file_guts(os.environ["AXIS_OPEN_FILE"])
-commands.set_view_z()
+if lathe:
+    commands.set_view_y()
+else:
+    commands.set_view_z()
 if o.g:
     x = (o.g.min_extents[0] + o.g.max_extents[0])/2
     y = (o.g.min_extents[1] + o.g.max_extents[1])/2
@@ -2188,6 +2190,8 @@ _tk_seticon.seticon(root_window, icon)
 _tk_seticon.seticon(widgets.about_window, icon)
 _tk_seticon.seticon(widgets.help_window, icon)
 
+if lathe:
+    root_window.after_idle(commands.set_view_y)
 o.mainloop()
 
 live_plotter.stop()
