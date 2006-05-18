@@ -753,7 +753,9 @@ class MyOpengl(Opengl):
             positions = [positions[0]] + positions[2:]
         else:
             homed = s.homed[:]
-        positions.append("Speed: % 9.4f" % (live_plotter.logger.average_speed*60))
+
+        if vars.show_machine_speed.get():
+            positions.append("Speed: % 9.4f" % (live_plotter.logger.average_speed*60))
 
         maxlen = max([len(p) for p in positions])
         pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
@@ -1453,6 +1455,7 @@ vars = nf.Variables(root_window,
     ("show_live_plot", IntVar),
     ("show_tool", IntVar),
     ("show_extents", IntVar),
+    ("show_machine_speed", IntVar),
     ("feedrate", IntVar),
     ("tool", IntVar),
     ("active_codes", StringVar),
@@ -1469,6 +1472,7 @@ vars.show_program.set(1)
 vars.show_live_plot.set(1)
 vars.show_tool.set(1)
 vars.show_extents.set(1)
+vars.show_machine_speed.set(0)
 
 tabs_mdi = str(root_window.tk.call("set", "_tabs_mdi"))
 tabs_manual = str(root_window.tk.call("set", "_tabs_manual"))

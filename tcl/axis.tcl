@@ -179,6 +179,11 @@ setup_menu_accel .menu.view end [_ "Show too_l"]
 	-command redraw
 setup_menu_accel .menu.view end [_ "Show e_xtents"]
 
+.menu.view add checkbutton \
+	-variable show_machine_speed \
+	-command redraw
+setup_menu_accel .menu.view end [_ "Show machine sp_eed"]
+
 .menu.view add command \
 	-accelerator [_ "Ctrl-K"] \
 	-command clear_live_plot
