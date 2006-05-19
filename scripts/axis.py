@@ -667,7 +667,10 @@ class MyOpengl(Opengl):
             glPushMatrix()
             glTranslatef(0,0,.003)
 
-            live_plotter.logger.call()
+            try:
+                live_plotter.logger.call()
+            except NameError:
+                pass
 
             glDrawArrays(GL_LINE_STRIP, 0, o.live_plot_size)
             glPopMatrix()
