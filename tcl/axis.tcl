@@ -1095,6 +1095,18 @@ pack ${pane_bottom}.t.sb \
 	-fill y \
 	-side left
 
+frame ${pane_top}.jogspeed
+label ${pane_top}.jogspeed.l0 -text [_ "Jog Speed:"]
+label ${pane_top}.jogspeed.l1
+scale ${pane_top}.jogspeed.s -bigincrement 0 -from .06 -to 1 -resolution .005 -showvalue 0 -variable jog_slider_val -command update_jog_slider_vel -orient h
+label ${pane_top}.jogspeed.l -textv jog_speed -width 6 -anchor e
+pack ${pane_top}.jogspeed.l0 -side left
+pack ${pane_top}.jogspeed.l -side left
+pack ${pane_top}.jogspeed.l1 -side left
+pack ${pane_top}.jogspeed.s -side right
+bind . , [regsub %W [bind Scale <Left>] ${pane_top}.jogspeed.s]
+bind . . [regsub %W [bind Scale <Right>] ${pane_top}.jogspeed.s]
+
 frame ${pane_top}.feedoverride
 
 label ${pane_top}.feedoverride.foentry \
@@ -1112,7 +1124,9 @@ scale ${pane_top}.feedoverride.foscale \
 	-variable feedrate
 
 label ${pane_top}.feedoverride.l
-setup_widget_accel ${pane_top}.feedoverride.l [_ "Feed Override (%):"]
+setup_widget_accel ${pane_top}.feedoverride.l [_ "Feed Override:"]
+label ${pane_top}.feedoverride.m -width 1
+setup_widget_accel ${pane_top}.feedoverride.m [_ "%"]
 
 # Pack widget ${pane_top}.feedoverride.l
 pack ${pane_top}.feedoverride.l \
@@ -1122,11 +1136,12 @@ pack ${pane_top}.feedoverride.l \
 pack ${pane_top}.feedoverride.foentry \
 	-side left
 
+# Pack widget ${pane_top}.feedoverride.foentry
+pack ${pane_top}.feedoverride.m \
+	-side left
 # Pack widget ${pane_top}.feedoverride.foscale
 pack ${pane_top}.feedoverride.foscale \
-	-expand 1 \
-	-fill x \
-	-side left
+	-side right
 
 toplevel .about
 bind .about <Key-Return> { wm wi .about }
@@ -1218,8 +1233,12 @@ wm protocol .keys WM_DELETE_WINDOW {wm wi .keys}
 grid ${pane_top}.feedoverride \
 	-column 0 \
 	-row 2 \
-	-sticky nw
+	-sticky new
 
+grid ${pane_top}.jogspeed \
+	-column 0 \
+	-row 3 \
+	-sticky new
 # Grid widget .info
 grid .info \
 	-column 0 \
@@ -1232,7 +1251,7 @@ grid ${pane_top}.preview \
 	-column 1 \
 	-row 1 \
 	-columnspan 2 \
-	-rowspan 2 \
+	-rowspan 3 \
 	-sticky nesw
 
 grid ${pane_top}.tabs \
@@ -1474,6 +1493,62 @@ proc size_combobox_to_entries c {
 }
 
 size_combobox_to_entries $_tabs_manual.jogf.jog.jogspeed
+
+proc setval {vel} {
+    global max_speed
+    if {$vel == $max_speed} { return 1 }
+    if {$vel == 0} { return 0 }
+    set x [expr {-1/(log($vel/60./$max_speed)-1)}]
+    expr {round($x * 200.) / 200.}
+}
+
+proc val2vel {val} {
+    global max_speed
+    if {$val == 0} { return 0 }
+    if {$val == 1} { return [expr {$max_speed * 60.}] }
+    format "%32.16f" [expr {60 * $max_speed * exp(-1/$val) * exp(1)}]
+    format "%32.16f" [expr {60 * $max_speed * exp(-1/$val + 1)}]
+}
+
+proc places {s1 s2} {
+    if {$s1 > 1 && int($s1) != int($s2)} {
+        return [expr {[string first . $s1]-1}]
+    }
+    set l1 [string length $s1]
+    set l2 [string length $s2]
+    for {set i 15} {$i < $l1 && $i < $l2} {incr i} {
+        set c1 [string index $s1 $i]
+        set c2 [string index $s2 $i]
+        if {$c1 != "0" && $c1 != "." && $c1 != $c2} { return $i } 
+    }
+    return [string length $s1]
+}
+
+proc val2vel_show {val} {
+    set this_vel [val2vel $val]
+    set next_places 0
+    set last_places 0
+    if {$val > .005} {
+        set next_vel [val2vel [expr {$val - .005}]]
+        set next_places [places $this_vel $next_vel]
+    }
+    if {$val < .995} {
+        set prev_vel [val2vel [expr {$val + .005}]]
+        set prev_places [places $this_vel $prev_vel]
+    }
+    if {$next_places > $last_places} {
+        string trim [string range $this_vel 0 $next_places]
+    } {
+        string trim [string range $this_vel 0 $last_places]
+    }
+}
+
+proc update_jog_slider_vel {newval} {
+    global jog_slider_val jog_speed max_speed
+    set jog_speed [val2vel_show $newval];
+}
+
+
 
 bind . <Configure> { if {"%W" == "."} {
     wm minsize %W [winfo reqwidth %W] [expr [winfo reqheight %W]+4] }

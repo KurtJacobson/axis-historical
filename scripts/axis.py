@@ -1467,6 +1467,8 @@ vars = nf.Variables(root_window,
     ("display_type", IntVar),
     ("override_limits", BooleanVar),
     ("view_type", IntVar),
+    ("jog_speed", DoubleVar),
+    ("max_speed", DoubleVar),
 )
 vars.emctop_command.set(os.path.join(os.path.dirname(sys.argv[0]), "emctop"))
 vars.highlight_line.set(-1)
@@ -1842,9 +1844,9 @@ class TclCommands(nf.TclCommands):
     # The next three don't have 'manual_ok' because that's done in jog_on /
     # jog_off
     def jog_plus(event=None):
-        jog_on(vars.current_axis.get(), jog_speed)
+        jog_on(vars.current_axis.get(), vars.jog_speed.get()/60.)
     def jog_minus(event=None):
-        jog_on(vars.current_axis.get(), -jog_speed)
+        jog_on(vars.current_axis.get(), -vars.jog_speed.get()/60.)
     def jog_stop(event=None):
         jog_off(vars.current_axis.get())
 
@@ -2056,8 +2058,8 @@ def jog_off_all():
             jog_off_actual(i)
 
 def bind_axis(a, b, d):
-    root_window.bind("<KeyPress-%s>" % a, lambda e: jog_on(d,-jog_speed))
-    root_window.bind("<KeyPress-%s>" % b, lambda e: jog_on(d, jog_speed))
+    root_window.bind("<KeyPress-%s>" % a, lambda e: jog_on(d,-vars.jog_speed.get()/60.))
+    root_window.bind("<KeyPress-%s>" % b, lambda e: jog_on(d, vars.jog_speed.get()/60.))
     root_window.bind("<KeyRelease-%s>" % a, lambda e: jog_off(d))
     root_window.bind("<KeyRelease-%s>" % b, lambda e: jog_off(d))
 
@@ -2086,20 +2088,26 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     extensions = tuple([(v, k) for k, v in extensions])
     max_feed_override = float(inifile.find("DISPLAY", "MAX_FEED_OVERRIDE"))
     max_feed_override = int(max_feed_override * 100 + 0.5)
-    jog_speed = float(inifile.find("TRAJ", "DEFAULT_VELOCITY"))
+    vars.jog_speed.set(float(inifile.find("TRAJ", "DEFAULT_VELOCITY")))
+    vars.max_speed.set(float(inifile.find("TRAJ", "MAX_VELOCITY")))
+    root_window.tk.eval("set jog_slider_val [setval $jog_speed]")
     widgets.feedoverride.configure(to=max_feed_override)
     emc.nmlfile = inifile.find("EMC", "NML_FILE")
     vars.coord_type.set(inifile.find("DISPLAY", "POSITION_OFFSET") == "RELATIVE")
     vars.display_type.set(inifile.find("DISPLAY", "POSITION_FEEDBACK") == "COMMANDED")
     coordinate_display = inifile.find("DISPLAY", "POSITION_UNITS")
     lathe = bool(inifile.find("DISPLAY", "LATHE"))
+    lu = float(inifile.find("TRAJ", "LINEAR_UNITS"))
     if coordinate_display:
         if coordinate_display.lower() in ("mm", "metric"): vars.metric.set(1)
         else: vars.metric.set(0)
     else:
-        lu = float(inifile.find("TRAJ", "LINEAR_UNITS"))
         if lu in [.001, .01, .1, 1, 10]: vars.metric.set(1)
         else: vars.metric.set(0)
+    if lu == 1:
+        root_window.tk.eval("${pane_top}.jogspeed.l1 configure -text mm/min")
+    else:
+        root_window.tk.eval("${pane_top}.jogspeed.l1 configure -text in/min")
 
     for a in range(axiscount):
         section = "AXIS_%d" % a
