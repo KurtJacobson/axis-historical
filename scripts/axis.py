@@ -82,6 +82,11 @@ homeicon = array.array('B',
         0xff, 0xf8,   0x23, 0xe0,   0x23, 0xe0,   0x23, 0xe0,
         0x13, 0xc0,   0x0f, 0x80,   0x02, 0x00,   0x02, 0x00])
 
+limiticon = array.array('B',
+        [  0,   0,  128, 0,  134, 0,  140, 0,  152, 0,  176, 0,  255, 255,
+         255, 255,  176, 0,  152, 0,  140, 0,  134, 0,  128, 0,    0,   0,
+           0,   0,    0, 0])
+
 if sys.version_info <= (2,3):
     def enumerate(sequence):
         index = 0
@@ -752,9 +757,11 @@ class MyOpengl(Opengl):
         else:
             positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
         if lathe:
+            limit = [s.limit[0]] + list(s.limit[2:])
             homed = [s.homed[0]] + list(s.homed[2:])
             positions = [positions[0]] + positions[2:]
         else:
+            limit = s.limit[:]
             homed = s.homed[:]
 
         if vars.show_machine_speed.get():
@@ -770,8 +777,8 @@ class MyOpengl(Opengl):
         glColor4f(*(o.colors['overlay_background'] + (o.colors['overlay_alpha'],)))
         glBegin(GL_QUADS)
         glVertex3f(0, ypos, 1)
-        glVertex3f(pixel_width+30, ypos, 1)
-        glVertex3f(pixel_width+30, ypos - 20 - coordinate_linespace*axiscount, 1)
+        glVertex3f(pixel_width+48, ypos, 1)
+        glVertex3f(pixel_width+48, ypos - 20 - coordinate_linespace*axiscount, 1)
         glVertex3f(0, ypos - 20 - coordinate_linespace*axiscount, 1)
         glEnd()
         glDisable(GL_BLEND)
@@ -788,6 +795,8 @@ class MyOpengl(Opengl):
             glRasterPos2i(23, ypos)
             for char in string:
                 glCallList(fontbase + ord(char))
+            if limit[i]:
+                glBitmap(13, 16, -5, 3, 17, 0, limiticon)
             ypos -= coordinate_linespace
             i = i + 1
         glDepthFunc(GL_LESS)
@@ -1012,6 +1021,7 @@ class LivePlotter:
         self.running.set(False)
         self.lastpts = -1
         self.last_speed = -1
+        self.last_limit = None
         self.start()
 
     def start(self):
@@ -1089,8 +1099,10 @@ class LivePlotter:
                 or self.stat.actual_position != o.last_position
                 or self.stat.homed != o.last_homed
                 or self.stat.origin != o.last_origin
+                or self.stat.limit != o.last_limit
                 or ddt > .0001):
             o.redraw_soon()
+            o.last_limit = self.stat.limit
             o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
             o.last_origin = self.stat.origin

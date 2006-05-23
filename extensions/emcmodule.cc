@@ -508,6 +508,20 @@ static PyObject *Stat_dout(pyStatChannel *s) {
     return uchar_array(s->status.io.aux.dout, EMC_AUX_MAX_DOUT);
 }
 
+static PyObject *Stat_limit(pyStatChannel *s) {
+    int sz = NUM_AXES;
+    PyObject *res = PyTuple_New(sz);
+    for(int i = 0; i < sz; i++) {
+        int v = 0;
+        if(s->status.motion.axis[i].minHardLimit) v |= 1;
+        if(s->status.motion.axis[i].maxHardLimit) v |= 2;
+        if(s->status.motion.axis[i].minSoftLimit) v |= 4;
+        if(s->status.motion.axis[i].maxSoftLimit) v |= 8;
+        PyTuple_SET_ITEM(res, i, PyInt_FromLong(v));
+    }
+    return res;
+}
+
 static PyObject *Stat_homed(pyStatChannel *s) {
     int sz = NUM_AXES;
     PyObject *res = PyTuple_New(sz);
@@ -636,6 +650,7 @@ static PyGetSetDef Stat_getsetlist[] = {
     {"dout", (getter)Stat_dout},
     {"gcodes", (getter)Stat_activegcodes},
     {"homed", (getter)Stat_homed},
+    {"limit", (getter)Stat_limit},
     {"mcodes", (getter)Stat_activemcodes},
     {"origin", (getter)Stat_origin},
     {"position", (getter)Stat_position},
