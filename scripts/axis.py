@@ -1977,6 +1977,13 @@ class TclCommands(nf.TclCommands):
             commands.set_view_z()
 
 commands = TclCommands(root_window)
+
+def activate_axis_or_set_feedrate(n):
+    if manual_ok() and n < axiscount:
+        activate_axis(n)
+    else:
+        commands.set_feedrate(10*n)
+
 root_window.bind("<Escape>", commands.task_stop)
 root_window.bind("l", commands.toggle_override_limits)
 root_window.bind("o", commands.open_file)
@@ -2002,12 +2009,17 @@ root_window.bind("x", lambda event: activate_axis(0))
 root_window.bind("y", lambda event: activate_axis(1))
 root_window.bind("z", lambda event: activate_axis(2))
 root_window.bind("a", lambda event: activate_axis(3))
-root_window.bind("`", lambda event: activate_axis(0))
-root_window.bind("1", lambda event: activate_axis(1))
-root_window.bind("2", lambda event: activate_axis(2))
-root_window.bind("3", lambda event: activate_axis(3))
-root_window.bind("4", lambda event: activate_axis(4))
-root_window.bind("5", lambda event: activate_axis(5))
+root_window.bind("`", lambda event: activate_axis_or_set_feedrate(0))
+root_window.bind("1", lambda event: activate_axis_or_set_feedrate(1))
+root_window.bind("2", lambda event: activate_axis_or_set_feedrate(2))
+root_window.bind("3", lambda event: activate_axis_or_set_feedrate(3))
+root_window.bind("4", lambda event: activate_axis_or_set_feedrate(4))
+root_window.bind("5", lambda event: activate_axis_or_set_feedrate(5))
+root_window.bind("6", lambda event: commands.set_feedrate(60))
+root_window.bind("7", lambda event: commands.set_feedrate(70))
+root_window.bind("8", lambda event: commands.set_feedrate(80))
+root_window.bind("9", lambda event: commands.set_feedrate(90))
+root_window.bind("0", lambda event: commands.set_feedrate(100))
 root_window.bind("c", lambda event: jogspeed_continuous())
 root_window.bind("i", lambda event: jogspeed_incremental())
 root_window.bind("@", commands.toggle_display_type)
