@@ -105,6 +105,9 @@ def install_help(app):
         ("A, 3", _("Activate fourth axis")),
         ("   4", _("Activate fifth axis")),
         ("   5", _("Activate sixth axis")),
+        ("`, 1..9, 0", _("Set Feed Override from 0% to 100%")),
+        (".", _("Increase jog speed")),
+        (",", _("Decrease jog speed")),
         ("I", _("Select jog increment")),
         ("C", _("Continuous jog")),
         ("Home", _("Send active axis home")),
@@ -1978,11 +1981,14 @@ class TclCommands(nf.TclCommands):
 
 commands = TclCommands(root_window)
 
+def set_feedrate(n):
+    widgets.feedoverride.set(n)
+
 def activate_axis_or_set_feedrate(n):
     if manual_ok() and n < axiscount:
         activate_axis(n)
     else:
-        commands.set_feedrate(10*n)
+        set_feedrate(10*n)
 
 root_window.bind("<Escape>", commands.task_stop)
 root_window.bind("l", commands.toggle_override_limits)
@@ -2015,11 +2021,11 @@ root_window.bind("2", lambda event: activate_axis_or_set_feedrate(2))
 root_window.bind("3", lambda event: activate_axis_or_set_feedrate(3))
 root_window.bind("4", lambda event: activate_axis_or_set_feedrate(4))
 root_window.bind("5", lambda event: activate_axis_or_set_feedrate(5))
-root_window.bind("6", lambda event: commands.set_feedrate(60))
-root_window.bind("7", lambda event: commands.set_feedrate(70))
-root_window.bind("8", lambda event: commands.set_feedrate(80))
-root_window.bind("9", lambda event: commands.set_feedrate(90))
-root_window.bind("0", lambda event: commands.set_feedrate(100))
+root_window.bind("6", lambda event: set_feedrate(60))
+root_window.bind("7", lambda event: set_feedrate(70))
+root_window.bind("8", lambda event: set_feedrate(80))
+root_window.bind("9", lambda event: set_feedrate(90))
+root_window.bind("0", lambda event: set_feedrate(100))
 root_window.bind("c", lambda event: jogspeed_continuous())
 root_window.bind("i", lambda event: jogspeed_incremental())
 root_window.bind("@", commands.toggle_display_type)
