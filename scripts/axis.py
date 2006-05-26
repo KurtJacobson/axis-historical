@@ -1586,19 +1586,19 @@ selection = SelectionHandler(root_window)
 class _prompt_float:
 
     def __init__(self, title, text, default):
-        t = self.t = Toplevel(root_window)
+        t = self.t = Toplevel(root_window, padx=7, pady=7)
         t.wm_title(title)
         t.wm_transient(root_window)
         t.wm_resizable(0, 0)
         m = Message(t, text=text, aspect=500)
         self.v = v = DoubleVar(t)
-        v.trace("w", self.check_valid)
         self.u = u = BooleanVar(t)
         v.set(default)
         self.e = e = Entry(t, textvariable=v)
         f = Tkinter.Frame(t)
-        self.ok = Tkinter.Button(f, text=_("OK"), command=self.ok, width=10,height=1,padx=0,pady=.25, default="active")
-        self.cancel = Tkinter.Button(f, text=_("Cancel"), command=self.cancel, width=10,height=1,padx=0,pady=.25, default="normal")
+        self.ok = Tkinter.Button(f, text=_("OK"), command=self.do_ok, width=10,height=1,padx=0,pady=.25, default="active")
+        self.cancel = Tkinter.Button(f, text=_("Cancel"), command=self.do_cancel, width=10,height=1,padx=0,pady=.25, default="normal")
+        v.trace("w", self.check_valid)
         t.wm_protocol("WM_DELETE_WINDOW", self.cancel.invoke)
         t.bind("<Return>", lambda event: (self.ok.flash(), self.ok.invoke()))
         t.bind("<Escape>", lambda event: (self.cancel.flash(), self.cancel.invoke()))
@@ -1609,11 +1609,11 @@ class _prompt_float:
         self.ok.pack(side="left", padx=3, pady=3)
         self.cancel.pack(side="left", padx=3, pady=3)
 
-    def ok(self):
+    def do_ok(self):
         self.u.set(True)
         self.t.destroy()
 
-    def cancel(self):
+    def do_cancel(self):
         self.u.set(False)
         self.t.destroy()
 
@@ -1627,7 +1627,6 @@ class _prompt_float:
 
     def do_focus(self):
         if not self.e.winfo_viewable():
-            print "..."
             self.t.after(10, self.do_focus)
         else:
             self.e.focus()
@@ -1940,7 +1939,8 @@ class TclCommands(nf.TclCommands):
         ensure_mode(emc.MODE_MDI)
         s.poll()
         lu = s.linear_units or 1
-        position = (s.position[offset_axis] - new_axis_value) / (25.4 * lu)
+        if vars.metric.get(): new_axis_value = new_axis_value / 25.4
+        position = s.position[offset_axis] / (25.4 * lu) - new_axis_value
         if 210 in s.gcodes:
             position *= 25.4
         offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
