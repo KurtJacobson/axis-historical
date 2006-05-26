@@ -111,7 +111,8 @@ def install_help(app):
         ("I", _("Select jog increment")),
         ("C", _("Continuous jog")),
         ("Home", _("Send active axis home")),
-        ("Shift-Home", _("Set G54 offset for active axis")),
+        ("Shift-Home", _("Zero G54 offset for active axis")),
+        ("End", _("Touch-off G54 offset for active axis")),
         ("Left, Right", _("Jog first axis")),
         ("Up, Down", _("Jog second axis")),
         ("Pg Up, Pg Dn", _("Jog third axis")),
@@ -1582,6 +1583,68 @@ class SelectionHandler:
 
 selection = SelectionHandler(root_window)
 
+class _prompt_float:
+
+    def __init__(self, title, text, default):
+        t = self.t = Toplevel(root_window)
+        t.wm_title(title)
+        t.wm_transient(root_window)
+        t.wm_resizable(0, 0)
+        m = Message(t, text=text, aspect=500)
+        self.v = v = DoubleVar(t)
+        v.trace("w", self.check_valid)
+        self.u = u = BooleanVar(t)
+        v.set(default)
+        self.e = e = Entry(t, textvariable=v)
+        f = Tkinter.Frame(t)
+        self.ok = Tkinter.Button(f, text=_("OK"), command=self.ok, width=10,height=1,padx=0,pady=.25, default="active")
+        self.cancel = Tkinter.Button(f, text=_("Cancel"), command=self.cancel, width=10,height=1,padx=0,pady=.25, default="normal")
+        t.wm_protocol("WM_DELETE_WINDOW", self.cancel.invoke)
+        t.bind("<Return>", lambda event: (self.ok.flash(), self.ok.invoke()))
+        t.bind("<Escape>", lambda event: (self.cancel.flash(), self.cancel.invoke()))
+
+        m.pack(side="top", anchor="w")
+        e.pack(side="top", anchor="e")
+        f.pack(side="top", anchor="e")
+        self.ok.pack(side="left", padx=3, pady=3)
+        self.cancel.pack(side="left", padx=3, pady=3)
+
+    def ok(self):
+        self.u.set(True)
+        self.t.destroy()
+
+    def cancel(self):
+        self.u.set(False)
+        self.t.destroy()
+
+    def check_valid(self, *args):
+        try:
+            self.v.get()
+        except ValueError:
+            self.ok.configure(state="disabled")
+        else:
+            self.ok.configure(state="normal")
+
+    def do_focus(self):
+        if not self.e.winfo_viewable():
+            print "..."
+            self.t.after(10, self.do_focus)
+        else:
+            self.e.focus()
+            self.e.selection_range(0, "end")
+
+    def run(self):
+        self.t.grab_set()
+        self.t.after_idle(self.do_focus)
+        self.t.wait_variable(self.u)
+        self.t.destroy()
+        if self.u.get(): return self.v.get()
+        return None
+
+def prompt_float(title, text, default):
+    t = _prompt_float(title, text, default)
+    return t.run()
+
 class TclCommands(nf.TclCommands):
     def launch_website(event=None):
         import webbrowser
@@ -1869,6 +1932,24 @@ class TclCommands(nf.TclCommands):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.home("xyzabc".index(vars.current_axis.get()))
+    def touch_off(event=None):
+        if not manual_ok(): return
+        offset_axis = "xyzabc".index(vars.current_axis.get())
+        new_axis_value = prompt_float(_("Touch Off"), _("Touch off: Enter %s coordinate relative to workpiece") % vars.current_axis.get().upper(), 0.0)
+        if new_axis_value is None: return
+        ensure_mode(emc.MODE_MDI)
+        s.poll()
+        lu = s.linear_units or 1
+        position = (s.position[offset_axis] - new_axis_value) / (25.4 * lu)
+        if 210 in s.gcodes:
+            position *= 25.4
+        offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
+        c.mdi(offset_command)
+        ensure_mode(emc.MODE_MANUAL)
+        s.poll()
+        o.tkRedraw()
+        commands.reload_file()
+
     def set_axis_offset(event=None):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MDI)
@@ -2033,6 +2114,7 @@ root_window.bind("#", commands.toggle_coord_type)
 
 root_window.bind("<Home>", commands.home_axis)
 root_window.bind("<Shift-Home>", commands.set_axis_offset)
+root_window.bind("<End>", commands.touch_off)
 widgets.mdi_history.bind("<Configure>", "%W see {end - 1 lines}")
 
 def jog(*args):

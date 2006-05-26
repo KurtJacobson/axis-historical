@@ -30,13 +30,72 @@ Tcl_Interp *get_interpreter(PyObject *tkapp) {
     return (Tcl_Interp*)interpaddr;
 }
 
+static Atom NET_WM_ICON, NET_WM_NAME, CARDINAL, UTF8_STRING;
+PyObject *setname(PyObject *s, PyObject *o) {
+    Tcl_Interp *trp;
+    Tk_Window tkwin, tkwrap;
+    PyObject *win, *app, *path;
+    char *title=0;
+    int sz=0;
+
+    if(!PyArg_ParseTuple(o, "Oes#", &win, "utf-8", &title, &sz))
+        return NULL;
+
+    printf("title[%d] %s\n", sz, title);
+    app = PyObject_GetAttrString(win, "tk");
+    if(!app) goto OUT_NULL; 
+    path = PyObject_GetAttrString(win, "_w");
+    if(!path) goto OUT_NULL;
+    if(!PyString_Check(path)) {
+        PyErr_SetString(PyExc_ValueError, "Not a widget?");
+    }
+
+    trp = get_interpreter(app);    
+    if(!PyString_Check(path)) {
+        PyErr_SetString(PyExc_ValueError, "Not a widget?");
+        goto OUT_NULL;
+    }
+
+    tkwin = Tk_NameToWindow(trp, PyString_AsString(path), Tk_MainWindow(trp));
+    Tk_MakeWindowExist(tkwin);
+    tkwrap = TkpGetWrapperWindow(tkwin);
+    if(!tkwrap) {
+        PyErr_SetString(PyExc_ValueError, "No wrapper widget?");
+        goto OUT_NULL;
+    }
+    Tk_MakeWindowExist(tkwrap);
+
+    if(!NET_WM_NAME) {
+        NET_WM_NAME = XInternAtom(Tk_Display(tkwin), "_NET_WM_NAME", True);
+    }
+    if(!UTF8_STRING) {
+        UTF8_STRING = XInternAtom(Tk_Display(tkwin), "UTF8_STRING", True);
+    }
+    printf("NET_WM_NAME=%d\nUTF8_STRING=%d\n", NET_WM_NAME, UTF8_STRING);
+    fflush(stdout);
+
+    XChangeProperty(Tk_Display(tkwin), Tk_WindowId(tkwrap), NET_WM_NAME,
+        UTF8_STRING, 8, PropModeReplace, (unsigned char *)title, sz);
+    XChangeProperty(Tk_Display(tkwin), Tk_WindowId(tkwin), NET_WM_NAME,
+        UTF8_STRING, 8, PropModeReplace, (unsigned char *)title, sz);
+
+    PyMem_Free(title);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+
+OUT_NULL:
+    if(title) PyMem_Free(title);
+    return NULL;
+}
+
+
 PyObject *seticon(PyObject *s, PyObject *o) {
     Tcl_Interp *trp;
     Tk_Window tkwin, tkwrap;
     PyObject *win, *app, *path;
     char *icon;
     int sz;
-    static Atom NET_WM_ICON, CARDINAL;
 
     if(!PyArg_ParseTuple(o, "Os#", &win, &icon, &sz)) return NULL;
 
@@ -82,6 +141,7 @@ PyObject *seticon(PyObject *s, PyObject *o) {
 
 PyMethodDef methods[] = {
     {"seticon", (PyCFunction)seticon, METH_VARARGS, "Set the NET_WM_ICON"},
+    {"setname", (PyCFunction)setname, METH_VARARGS, "Set the NET_WM_NAME"},
     {NULL}
 };
 
