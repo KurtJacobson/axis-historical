@@ -3,7 +3,7 @@ Maintainer: Chris Radek <chris@timeguy.com>
 Section: misc
 Priority: optional
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 4.1.67), emc2-dev, python2.4-dev, libgl1-mesa-dev, libglu1-mesa-dev, libxmu-dev, tk8.4-dev
+Build-Depends: debhelper (>= 4.1.67), emc2-dev, python2.4-dev, libgl1-mesa-dev, libglu1-mesa-dev, libxmu-dev, tk8.4-dev, emc2, python2.4-tk
 
 Package: emc2-axis
 Architecture: i386

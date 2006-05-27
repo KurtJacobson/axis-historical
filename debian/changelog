@@ -1,3 +1,10 @@
+emc2-axis (1.4a0-0.1) unstable; urgency=low
+
+  Upgrade to AXIS 1.4 CVS.  List new items in build-depends, which
+  brings the Ubuntu package closer to building under 'pbuilder'
+
+ -- jepler <jepler@localhost.localdomain>  Sat, 27 May 2006 09:46:04 -0500
+
 emc2-axis (1.2a2-0.2) unstable; urgency=low
 
   Color jogs a different color, add halconfig to the edit menu
