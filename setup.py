@@ -210,6 +210,7 @@ if os.getenv("USE_SYSTEM_BWIDGET"):
     bwidget = []
 
 def lang(f):
+    import os
     return os.path.splitext(os.path.basename(f))[0]
 i18n = [(os.path.join(LOCALEDIR,lang(f),"LC_MESSAGES"), [(f, "axis.mo")])
             for f in glob("i18n/??.mo") + glob("i18n/??_??.mo")]
