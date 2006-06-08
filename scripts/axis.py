@@ -112,7 +112,7 @@ def install_help(app):
         ("C", _("Continuous jog")),
         ("Home", _("Send active axis home")),
         ("Shift-Home", _("Zero G54 offset for active axis")),
-        ("End", _("Touch-off G54 offset for active axis")),
+        ("End", _("Set G54 offset for active axis")),
         ("Left, Right", _("Jog first axis")),
         ("Up, Down", _("Jog second axis")),
         ("Pg Up, Pg Dn", _("Jog third axis")),
@@ -135,7 +135,8 @@ def install_help(app):
         ("T", _("Step program")),
         ("P", _("Pause program")),
         ("S", _("Resume program")),
-        ("ESC", _("Stop program")),
+        ("ESC", _("Stop running program, or")),
+        ("", "stop loading program preview"),
         ("", ""),
         ("F7", _("Toggle mist")),
         ("F8", _("Toggle flood")),
@@ -1254,6 +1255,11 @@ class AxisCanon(GLCanon):
         self.aborted = False
         root_window.bind_class(".info.progress", "<Escape>", self.do_cancel)
 
+    def comment(self, arg):
+        if arg.startswith("AXIS"):
+            print repr(command)
+            if command == "stop": self.aborted = True
+
     def do_cancel(self, event):
         self.aborted = True
 
@@ -1934,7 +1940,7 @@ class TclCommands(nf.TclCommands):
     def touch_off(event=None):
         if not manual_ok(): return
         offset_axis = "xyzabc".index(vars.current_axis.get())
-        new_axis_value = prompt_float(_("Touch Off"), _("Touch off: Enter %s coordinate relative to workpiece") % vars.current_axis.get().upper(), 0.0)
+        new_axis_value = prompt_float(_("Touch Off"), _("Enter %s coordinate relative to workpiece:") % vars.current_axis.get().upper(), 0.0)
         if new_axis_value is None: return
         ensure_mode(emc.MODE_MDI)
         s.poll()
