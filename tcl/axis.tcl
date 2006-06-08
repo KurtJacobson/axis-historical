@@ -503,7 +503,7 @@ proc show_all_tabs w {
 after 1 after idle show_all_tabs ${pane_top}.tabs
 
 set _tabs_manual [${pane_top}.tabs insert end manual -text [_ "Manual Control \[F3\]"] -raisecmd {focus .}]
-set _tabs_mdi [${pane_top}.tabs insert end mdi -text [_ "Code Entry \[F5\]"]]
+set _tabs_mdi [${pane_top}.tabs insert end mdi -text [_ "MDI \[F5\]"]]
 $_tabs_manual configure -borderwidth 2
 $_tabs_mdi configure -borderwidth 2
 
@@ -651,10 +651,10 @@ button $_tabs_manual.jogf.zerohome.home \
 setup_widget_accel $_tabs_manual.jogf.zerohome.home [_ Home]
 
 button $_tabs_manual.jogf.zerohome.zero \
-	-command set_axis_offset \
+	-command touch_off \
 	-padx 2m \
 	-pady 0
-setup_widget_accel $_tabs_manual.jogf.zerohome.zero [_ Offset]
+setup_widget_accel $_tabs_manual.jogf.zerohome.zero [_ "Touch Off"]
 
 checkbutton $_tabs_manual.jogf.override \
 	-command toggle_override_limits \
@@ -1354,9 +1354,9 @@ proc update_title {args} {
 
 proc update_state {args} {
     switch $::task_state \
-        $::STATE_ESTOP { set ::task_state_string [_ ESTOP] } \
-        $::STATE_ESTOP_RESET { set ::task_state_string [_ "ESTOP RESET"] } \
-        $::STATE_ON { set ::task_state_string [_ ON] } \
+        $::STATE_ESTOP { set ::task_state_string [_ "ESTOP"] } \
+        $::STATE_ESTOP_RESET { set ::task_state_string [_ "OFF"] } \
+        $::STATE_ON { set ::task_state_string [_ "ON"] } \
 
     relief {$task_state == $STATE_ESTOP} .toolbar.machine_estop
     state  {$task_state != $STATE_ESTOP} .toolbar.machine_power 
@@ -1569,7 +1569,7 @@ DynamicHelp::add $_tabs_manual.spindlef.brake -text [_ "Turn spindle brake on \[
 DynamicHelp::add $_tabs_manual.flood -text [_ "Turn flood on or off \[F8\]"]
 DynamicHelp::add $_tabs_manual.mist -text [_ "Turn mist on or off \[F7\]"]
 DynamicHelp::add $_tabs_manual.jogf.zerohome.home -text [_ "Send active axis home \[Home\]"]
-DynamicHelp::add $_tabs_manual.jogf.zerohome.zero -text [_ "Set G54 offset for active axis \[Shift-Home\]"]
+DynamicHelp::add $_tabs_manual.jogf.zerohome.zero -text [_ "Set G54 offset for active axis \[End\]"]
 DynamicHelp::add $_tabs_manual.axes.axisx -text [_ "Activate axis \[X\]"]
 DynamicHelp::add $_tabs_manual.axes.axisy -text [_ "Activate axis \[Y\]"]
 DynamicHelp::add $_tabs_manual.axes.axisz -text [_ "Activate axis \[Z\]"]
