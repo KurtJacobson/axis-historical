@@ -1858,8 +1858,11 @@ class TclCommands(nf.TclCommands):
         if running(): return
         s.poll()
         if not loaded_file: return
+        line = vars.highlight_line.get()
         o.set_highlight_line(None)
         open_file_guts(loaded_file)
+        if line:
+            o.set_highlight_line(line)
 
     def task_run(*event):
         warnings = []
