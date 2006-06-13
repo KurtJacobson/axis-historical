@@ -2230,12 +2230,19 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     else:
         root_window.tk.eval("${pane_top}.jogspeed.l1 configure -text in/min")
 
+    step_size = 1
     for a in range(axiscount):
         section = "AXIS_%d" % a
         unit = float(inifile.find(section, "UNITS")) * 25.4
         machine_limit_min[a] = float(inifile.find(section, "MIN_LIMIT")) / unit
         machine_limit_max[a] = float(inifile.find(section, "MAX_LIMIT")) / unit
-
+        try:
+            step_size = min(step_size, 1. / float(inifile.find(section, "INPUT_SCALE").split()[0]))
+        except ValueError:
+            continue
+    print "smallest step size", step_size
+    if step_size != 1:
+        root_window.tk.call("set_slider_min", step_size*30)
     increments = inifile.find("DISPLAY", "INCREMENTS")
     if increments:
         root_window.call(widgets.jogspeed._w, "list", "delete", "1", "end")
