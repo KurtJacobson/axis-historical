@@ -1545,7 +1545,6 @@ proc val2vel_show {val} {
 
 proc set_slider_min {minval} {
     global pane_top
-    puts "-from [setval $minval]"
     ${pane_top}.jogspeed.s configure -from [setval $minval]
 }
 
