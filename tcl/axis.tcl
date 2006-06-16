@@ -526,7 +526,8 @@ radiobutton $_tabs_manual.axes.axisx \
 	-value x \
 	-variable current_axis \
 	-width 2 \
-        -text X
+        -text X \
+        -command axis_activated
 
 radiobutton $_tabs_manual.axes.axisy \
 	-anchor w \
@@ -535,7 +536,8 @@ radiobutton $_tabs_manual.axes.axisy \
 	-value y \
 	-variable current_axis \
 	-width 2 \
-        -text Y
+        -text Y \
+        -command axis_activated
 
 radiobutton $_tabs_manual.axes.axisz \
 	-anchor w \
@@ -544,7 +546,8 @@ radiobutton $_tabs_manual.axes.axisz \
 	-value z \
 	-variable current_axis \
 	-width 2 \
-        -text Z
+        -text Z \
+        -command axis_activated
 
 radiobutton $_tabs_manual.axes.axisa \
 	-anchor w \
@@ -553,7 +556,8 @@ radiobutton $_tabs_manual.axes.axisa \
 	-value a \
 	-variable current_axis \
 	-width 2 \
-        -text A
+        -text A \
+        -command axis_activated
 
 radiobutton $_tabs_manual.axes.axisb \
 	-anchor w \
@@ -562,7 +566,8 @@ radiobutton $_tabs_manual.axes.axisb \
 	-value b \
 	-variable current_axis \
 	-width 2 \
-        -text B
+        -text B \
+        -command axis_activated
 
 radiobutton $_tabs_manual.axes.axisc \
 	-anchor w \
@@ -571,7 +576,8 @@ radiobutton $_tabs_manual.axes.axisc \
 	-value c \
 	-variable current_axis \
 	-width 2 \
-        -text C
+        -text C \
+        -command axis_activated
 
 # Grid widget $_tabs_manual.axes.axisa
 grid $_tabs_manual.axes.axisa \

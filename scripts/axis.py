@@ -94,6 +94,9 @@ if sys.version_info <= (2,3):
             yield index, item
             index += 1
 
+def halcmd_sets(signal, value):
+    os.spawnvp(os.P_WAIT, "halcmd", ["halcmd", "sets", signal, str(value)])
+
 def install_help(app):
     help1 = [
         ("F1", _("Emergency stop")),
@@ -2074,6 +2077,14 @@ class TclCommands(nf.TclCommands):
             commands.set_view_x()
         else:
             commands.set_view_z()
+
+    def axis_activated(*args):
+        halcmd_sets("axisui.jog.x", vars.current_axis.get() == "x")
+        halcmd_sets("axisui.jog.y", vars.current_axis.get() == "y")
+        halcmd_sets("axisui.jog.z", vars.current_axis.get() == "z")
+        halcmd_sets("axisui.jog.a", vars.current_axis.get() == "a")
+        halcmd_sets("axisui.jog.b", vars.current_axis.get() == "b")
+        halcmd_sets("axisui.jog.c", vars.current_axis.get() == "c")
 
 commands = TclCommands(root_window)
 
