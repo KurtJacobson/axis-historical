@@ -97,27 +97,28 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
 
     def draw_lines(self, lines, for_selection):
         if for_selection:
+            last_lineno = None
+            glBegin(GL_LINES)
             for lineno, l1, l2 in lines:
-                glLoadName(lineno)
-                glBegin(GL_LINES)
+                if lineno != last_lineno:
+                    glEnd()
+                    glLoadName(lineno)
+                    last_lineno = lineno
+                    glBegin(GL_LINES)
                 glVertex3fv(l1)
                 glVertex3fv(l2)
-                glEnd()
+            glEnd()
         else:
-            first = True
+            ol = None
+            glBegin(GL_LINE_STRIP)
             for lineno, l1, l2 in lines:
-                if first:
-                    glBegin(GL_LINE_STRIP)
-                    first = False
-                    glVertex3fv(l1)
-                elif l1 != ol:
+                if l1 != ol:
                     glEnd()
                     glBegin(GL_LINE_STRIP)
                     glVertex3fv(l1)
                 glVertex3fv(l2)
                 ol = l2
-            if not first:
-                glEnd()
+            glEnd()
 
     def highlight(self, lineno):
         glLineWidth(3)
