@@ -1921,6 +1921,12 @@ class TclCommands(nf.TclCommands):
         c.mdi(command)
         o.tkRedraw()
 
+    def ensure_manual(*event):
+        ensure_mode(emc.MODE_MANUAL)
+
+    def ensure_mdi(*event):
+        ensure_mode(emc.MODE_MDI)
+
     def redraw(*ignored):
         o.tkRedraw()
 

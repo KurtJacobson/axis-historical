@@ -502,14 +502,17 @@ proc show_all_tabs w {
 }
 after 1 after idle show_all_tabs ${pane_top}.tabs
 
-set _tabs_manual [${pane_top}.tabs insert end manual -text [_ "Manual Control \[F3\]"] -raisecmd {focus .}]
+set _tabs_manual [${pane_top}.tabs insert end manual -text [_ "Manual Control \[F3\]"] -raisecmd {focus .; ensure_manual}]
 set _tabs_mdi [${pane_top}.tabs insert end mdi -text [_ "MDI \[F5\]"]]
 $_tabs_manual configure -borderwidth 2
 $_tabs_mdi configure -borderwidth 2
 
-${pane_top}.tabs itemconfigure mdi -raisecmd [list focus ${_tabs_mdi}.command]
-${pane_top}.tabs raise manual
-after idle ${pane_top}.tabs compute_size
+${pane_top}.tabs itemconfigure mdi -raisecmd "[list focus ${_tabs_mdi}.command]; ensure_mdi"
+#${pane_top}.tabs raise manual
+after idle {
+    ${pane_top}.tabs raise manual
+    after idle ${pane_top}.tabs compute_size
+}
 
 label $_tabs_manual.axis
 setup_widget_accel $_tabs_manual.axis [_ Axis:]
@@ -1400,10 +1403,20 @@ proc update_state {args} {
     set ::position [list [_ "Position:"] $coord_str $display_str]
 
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
+        set_mode_from_tab
         enable_group $::manual
     } else {
         disable_group $::manual
     }
+}
+
+proc set_mode_from_tab {} {
+    set page [${::pane_top}.tabs raise]
+    switch $page {
+        mdi { ensure_mdi }
+        default { ensure_manual }
+    }
+
 }
 
 proc queue_update_state {args} { 
