@@ -1335,7 +1335,7 @@ double dt() {
     return diff;
 }
 
-const double weight_factor = .9;
+const double weight_factor = .99;
 
 static double hypot3(double a, double b, double c) {
     return sqrt(a*a + b*b + c*c);
