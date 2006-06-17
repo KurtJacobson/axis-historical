@@ -1511,7 +1511,6 @@ pane_bottom = str(root_window.tk.call("set", "pane_bottom"))
 widgets = nf.Widgets(root_window, 
     ("help_window", Toplevel, ".keys"),
     ("about_window", Toplevel, ".about"),
-    ("menu_view", Menu, ".menu.view"),
     ("text", Text, pane_bottom + ".t.text"),
     ("preview_frame", Frame, pane_top + ".preview"),
     ("mdi_history", Text, tabs_mdi + ".history"),
@@ -1544,6 +1543,7 @@ widgets = nf.Widgets(root_window,
     ("feedoverride", Scale, pane_top + ".feedoverride.foscale"),
 
     ("menu_view", Menu, ".menu.view"),
+    ("menu_machine", Menu, ".menu.machine"),
 )
 
 def activate_axis(i, force=0):
@@ -2266,7 +2266,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
         root_window.call(widgets.jogspeed._w, "list", "insert", "end", *increments.split())
     del sys.argv[1:3]
 else:
-    widgets.menu_view.entryconfigure(_("Show EMC Status"), state="disabled")
+    widgets.menu_machine.entryconfigure(_("Show EMC Status"), state="disabled")
 
 if lathe:
     bind_axis("Left", "Right", 2)
@@ -2387,6 +2387,7 @@ if lathe:
     widgets.view_p.pack_forget()
     widgets.axis_y.grid_forget()
     widgets.menu_view.delete(0, 5)
+
 o.mainloop()
 
 live_plotter.stop()
