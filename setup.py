@@ -88,7 +88,7 @@ if is_emc2:
 
     emc = Extension("emc", ["extensions/emcmodule.cc"],
         define_macros=[('DEFAULT_NMLFILE',
-            '"%s/configs/emc.nml"' % emcroot),
+            '"%s/configs/sim/emc.nml"' % emcroot),
             ('AXIS_USE_EMC2', 1)],
         libraries = ["emc", "nml", "m", "stdc++", "GL"],
         include_dirs=include_dirs,
