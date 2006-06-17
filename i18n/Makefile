@@ -6,7 +6,7 @@ axis.pot: ../scripts/axis.py ../tcl/axis.tcl
 %.po: axis.pot
 	if [ -f $@ ]; \
 	then \
-	    msgmerge -N --no-wrap -U $@ $< && touch $@; \
+	    msgmerge --no-wrap -U $@ $< && touch $@; \
 	else \
 	    cp $< $@; \
 	fi
