@@ -1200,6 +1200,7 @@ class Progress:
         self.phase = 0
         self.total = total
         self.lastcount = 0
+        self.text = None
         self.old_focus = root_window.tk.call("focus", "-lastfor", ".")
         root_window.tk.call("canvas", ".info.progress",
                     "-width", 1, "-height", 1,
@@ -1249,6 +1250,14 @@ class Progress:
     def __del__(self):
         if root_window.tk.call("winfo", "exists", ".info.progress"):
             self.done()
+
+    def set_text(self, text):
+        if self.text is None:
+            self.text = root_window.tk.call(".info.progress", "create", "text",
+                (1, 1), "-text", text, "-anchor", "nw")
+        else:
+            root_window.tk.call(".info.progress", "itemconfigure", text,
+                "-text", text)
 
 class AxisCanon(GLCanon):
     def __init__(self, widget, text, linecount, progress):
@@ -1379,21 +1388,48 @@ class AxisCanon(GLCanon):
     def get_external_length_units(self):
         return s.linear_units or 1.0
 
+def filter_program(program_filter, infilename, outfilename):
+    import subprocess
+    outfile = open(outfilename, "w")
+    print program_filter, infilename
+    p = subprocess.Popen([program_filter, infilename], stdin=subprocess.PIPE,
+                        stdout=outfile, stderr=sys.stderr)
+    p.stdin.close()  # No input for you
+
+    progress = Progress(1, 1)
+    print "f_p", progress
+    progress.set_text("Filtering...")
+    try:
+        while p.poll() is None: # XXX add checking for abort
+            t.update()
+            t.after(100)
+        return p.returncode
+    finally:
+        progress.done()
+
 loaded_file = None
 def open_file_guts(f, filtered = False):
     if not filtered:
         global loaded_file
         loaded_file = f
-    if program_filter and not filtered:
-        tempfile = os.path.join(tempdir, os.path.basename(f))
-        result = os.system("%s < %s > %s" % (program_filter, f, tempfile))
-        if result:
-            root_window.tk.call("nf_dialog", ".error",
-                    _("Program_filter %r failed") % program_filter,
-                    _("Exit code %d") % result,
-                    "error",0,_("OK"))
-            return
-        return open_file_guts(tempfile, True)
+        ext = os.path.splitext(f)[1]
+        if ext:
+            program_filter = inifile.find("FILTER", ext[1:])
+            print "O_FG", ext, program_filter
+        else:
+            program_filter = none
+        if program_filter:
+            tempfile = os.path.join(tempdir, os.path.basename(f))
+            result = filter_program(program_filter, f, tempfile)
+            if result:
+                if result == "aborted":
+                    return
+                root_window.tk.call("nf_dialog", ".error",
+                        _("Program_filter %r failed") % program_filter,
+                        _("Exit code %d") % result,
+                        "error",0,_("OK"))
+                return
+            return open_file_guts(tempfile, True)
 
     set_first_line(0)
     t0 = time.time()
@@ -1824,10 +1860,12 @@ class TclCommands(nf.TclCommands):
     def open_file(*event):
         if running(): return
         global open_directory
-        all_extensions = \
-            dict([(".ngc", True)] + [(e[1], True) for e in extensions]).keys()
+        all_extensions = set([".ngc"])
+        for e in extensions:
+            s = all_extensions.update(e[1])
+        all_extensions = tuple(sorted(all_extensions))
         types = (
-            (_("All machinable files"), tuple(all_extensions)),
+            (_("All machinable files"), all_extensions),
             (_("rs274ngc files"), ".ngc")) + extensions + \
             ((_("All files"), "*"),)
         f = root_window.tk.call("tk_getOpenFile", "-initialdir", open_directory,
@@ -2220,10 +2258,9 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     axiscount = int(inifile.find("TRAJ", "AXES"))
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
     open_directory = inifile.find("DISPLAY", "PROGRAM_PREFIX")
-    program_filter = inifile.find("EMC", "PROGRAM_FILTER")
-    extensions = inifile.findall("EMC", "PROGRAM_EXTENSION")
+    extensions = inifile.findall("FILTER", "PROGRAM_EXTENSION")
     extensions = [e.split(None, 1) for e in extensions]
-    extensions = tuple([(v, k) for k, v in extensions])
+    extensions = tuple([(v, tuple(k.split(","))) for k, v in extensions])
     max_feed_override = float(inifile.find("DISPLAY", "MAX_FEED_OVERRIDE"))
     max_feed_override = int(max_feed_override * 100 + 0.5)
     vars.jog_speed.set(float(inifile.find("TRAJ", "DEFAULT_VELOCITY")))
