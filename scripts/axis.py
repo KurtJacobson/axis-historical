@@ -1268,8 +1268,9 @@ class AxisCanon(GLCanon):
         root_window.bind_class(".info.progress", "<Escape>", self.do_cancel)
 
     def comment(self, arg):
-        if arg.startswith("AXIS"):
-            print repr(command)
+        if arg.startswith("AXIS,"):
+            parts = arg.split(",")
+            command = parts[1]
             if command == "stop": self.aborted = True
 
     def do_cancel(self, event):
@@ -1391,13 +1392,11 @@ class AxisCanon(GLCanon):
 def filter_program(program_filter, infilename, outfilename):
     import subprocess
     outfile = open(outfilename, "w")
-    print program_filter, infilename
     p = subprocess.Popen([program_filter, infilename], stdin=subprocess.PIPE,
                         stdout=outfile, stderr=sys.stderr)
     p.stdin.close()  # No input for you
 
     progress = Progress(1, 1)
-    print "f_p", progress
     progress.set_text("Filtering...")
     try:
         while p.poll() is None: # XXX add checking for abort
@@ -1415,7 +1414,6 @@ def open_file_guts(f, filtered = False):
         ext = os.path.splitext(f)[1]
         if ext:
             program_filter = inifile.find("FILTER", ext[1:])
-            print "O_FG", ext, program_filter
         else:
             program_filter = none
         if program_filter:
@@ -2294,7 +2292,6 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
             step_size = min(step_size, 1. / float(inifile.find(section, "INPUT_SCALE").split()[0]))
         except ValueError:
             continue
-    print "smallest step size", step_size
     if step_size != 1:
         root_window.tk.call("set_slider_min", step_size*30)
     increments = inifile.find("DISPLAY", "INCREMENTS")
