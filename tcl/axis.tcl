@@ -1409,11 +1409,15 @@ proc update_state {args} {
     set ::position [list [_ "Position:"] $coord_str $display_str]
 
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
-        set_mode_from_tab
+        if {$::last_interp_state != $::INTERP_IDLE || $::last_task_state != $::task_state} {
+            set_mode_from_tab
+        }
         enable_group $::manual
     } else {
         disable_group $::manual
     }
+    set ::last_interp_state $::interp_state
+    set ::last_task_state $::task_state
 }
 
 proc set_mode_from_tab {} {
@@ -1432,8 +1436,10 @@ proc queue_update_state {args} {
 
 set taskfile ""
 set task_state -1
+set last_task_state 0
 set task_mode -1
 set interp_pause 0
+set last_interp_state 0
 set interp_state 0
 set running_line -1
 set highlight_line -1

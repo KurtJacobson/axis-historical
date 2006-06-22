@@ -1904,6 +1904,7 @@ class TclCommands(nf.TclCommands):
             o.set_highlight_line(line)
 
     def task_run(*event):
+        print "task_run"
         warnings = []
         if o.g:
             for i in range(min(axiscount, 3)): # Does not enforce angle limits
@@ -1961,9 +1962,11 @@ class TclCommands(nf.TclCommands):
         o.tkRedraw()
 
     def ensure_manual(*event):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
 
     def ensure_mdi(*event):
+        if not manual_ok(): return
         ensure_mode(emc.MODE_MDI)
 
     def redraw(*ignored):
@@ -2263,7 +2266,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     max_feed_override = int(max_feed_override * 100 + 0.5)
     vars.jog_speed.set(float(inifile.find("TRAJ", "DEFAULT_VELOCITY")))
     vars.max_speed.set(float(inifile.find("TRAJ", "MAX_VELOCITY")))
-    root_window.tk.eval("set jog_slider_val [setval $jog_speed]")
+    root_window.tk.eval("${pane_top}.jogspeed.s set [setval $jog_speed]")
     widgets.feedoverride.configure(to=max_feed_override)
     emc.nmlfile = inifile.find("EMC", "NML_FILE")
     vars.coord_type.set(inifile.find("DISPLAY", "POSITION_OFFSET") == "RELATIVE")
