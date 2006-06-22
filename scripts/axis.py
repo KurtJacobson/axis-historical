@@ -2289,7 +2289,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
         machine_limit_min[a] = float(inifile.find(section, "MIN_LIMIT")) / unit
         machine_limit_max[a] = float(inifile.find(section, "MAX_LIMIT")) / unit
         try:
-            step_size = min(step_size, 1. / float(inifile.find(section, "INPUT_SCALE").split()[0]))
+            step_size = min(step_size, 1. / abs(float(inifile.find(section, "INPUT_SCALE").split()[0])))
         except ValueError:
             continue
     if step_size != 1:
