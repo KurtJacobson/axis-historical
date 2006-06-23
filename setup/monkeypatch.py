@@ -240,4 +240,8 @@ def TERMINAL(s):
     if os.name == "nt": return "%s.py" % s
     return s
 
+distutils.sysconfig.get_config_vars()['OPT'] = \
+    distutils.sysconfig.get_config_vars()['OPT'] \
+        .replace("-Wstrict-prototypes", "")
+
 # vim:sw=4:sts=4:et:
