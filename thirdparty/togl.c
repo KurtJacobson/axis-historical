@@ -1057,8 +1057,11 @@ int Togl_Configure(Tcl_Interp *interp, struct Togl *togl,
    int oldStencilSize = togl->StencilSize;
    int oldAuxNumber   = togl->AuxNumber;
 
+#ifndef CONST84
+#define CONST84
+#endif
    if (Tk_ConfigureWidget(interp, togl->TkWin, configSpecs,
-                          argc, argv, (char *)togl, flags) == TCL_ERROR) {
+                          argc, (CONST84 char**)argv, (char *)togl, flags) == TCL_ERROR) {
       return(TCL_ERROR);
    }
 #ifndef USE_OVERLAY
