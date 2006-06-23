@@ -65,17 +65,6 @@ extern char *_rs274ngc_errors[];
 
 #define iserror(x) ((x) < 0 || (x) >= RS274NGC_MIN_ERROR)
 
-static PyObject *pose(const EmcPose &p) {
-    PyObject *res = PyTuple_New(6);
-    PyTuple_SET_ITEM(res, 0, PyFloat_FromDouble(p.tran.x));
-    PyTuple_SET_ITEM(res, 1, PyFloat_FromDouble(p.tran.y));
-    PyTuple_SET_ITEM(res, 2, PyFloat_FromDouble(p.tran.z));
-    PyTuple_SET_ITEM(res, 3, PyFloat_FromDouble(p.a));
-    PyTuple_SET_ITEM(res, 4, PyFloat_FromDouble(p.b));
-    PyTuple_SET_ITEM(res, 5, PyFloat_FromDouble(p.c));
-    return res;
-}
-
 static PyObject *int_array(int *arr, int sz) {
     PyObject *res = PyTuple_New(sz);
     for(int i = 0; i < sz; i++) {

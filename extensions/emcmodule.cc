@@ -544,11 +544,6 @@ static void dict_add(PyObject *d, char *name, unsigned char v) {
     PyDict_SetItemString(d, name, o = PyInt_FromLong(v));
     Py_XDECREF(o);
 }
-static void dict_add(PyObject *d, char *name, long v) {
-    PyObject *o;
-    PyDict_SetItemString(d, name, o = PyInt_FromLong(v));
-    Py_XDECREF(o);
-}
 static void dict_add(PyObject *d, char *name, double v) {
     PyObject *o;
     PyDict_SetItemString(d, name, o = PyFloat_FromDouble(v));

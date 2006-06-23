@@ -138,7 +138,7 @@ static PyObject *pyglBitmap(PyObject *s, PyObject *o) {
                 &xorg, &yorg, &xmove, &ymove, &bitmap, &nbitmap)) {
         return NULL;
     }
-    glBitmap(width, height, xorg, yorg, xmove, ymove, bitmap);
+    glBitmap(width, height, xorg, yorg, xmove, ymove, (GLubyte*)bitmap);
     CHECK_ERROR;
     Py_INCREF(Py_None);
     return Py_None;
@@ -280,7 +280,7 @@ static PyObject *pyglPolygonStipple(PyObject *s, PyObject *o) {
         PyErr_SetString(PyExc_ValueError, "Buffer must be 128 bytes long");
         return NULL;
     }
-    glPolygonStipple(buf);
+    glPolygonStipple((GLubyte*)buf);
     CHECK_ERROR;
     Py_INCREF(Py_None);
     return Py_None;
@@ -529,7 +529,7 @@ static PyObject *pygluUnProject(PyObject *s, PyObject *o) {
     return Py_BuildValue("ddd", ox, oy, oz);
 }
 #endif
-static int *select_buffer = NULL;
+static GLuint *select_buffer = NULL;
 static PyObject *pyglSelectBuffer( PyObject *s, PyObject *o) {
     int sz;
     if(!PyArg_ParseTuple(o, "i", &sz))
