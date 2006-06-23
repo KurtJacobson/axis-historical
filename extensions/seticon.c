@@ -71,8 +71,6 @@ PyObject *setname(PyObject *s, PyObject *o) {
     if(!UTF8_STRING) {
         UTF8_STRING = XInternAtom(Tk_Display(tkwin), "UTF8_STRING", True);
     }
-    printf("NET_WM_NAME=%d\nUTF8_STRING=%d\n", NET_WM_NAME, UTF8_STRING);
-    fflush(stdout);
 
     XChangeProperty(Tk_Display(tkwin), Tk_WindowId(tkwrap), NET_WM_NAME,
         UTF8_STRING, 8, PropModeReplace, (unsigned char *)title, sz);
