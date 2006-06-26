@@ -998,8 +998,17 @@ def make_cone():
     gluDeleteQuadric(q)
 
 current_tool = None
+lathe_shapes = [
+    None,                           # 0
+    (1,-1), (1,1), (-1,1), (-1,-1), # 1..4
+    (-1,0), (1,0), (1,0), (-1,0),   # 5..8
+    (0,0)                           # 9
+]
+
 def lathetool():
     diameter, frontangle, backangle, orientation = current_tool[0][-4:]
+    w = 3/8. 
+
     radius = diameter/2.0
     glColor3f(*o.colors['cone'])
     glBegin(GL_LINES)
@@ -1008,11 +1017,53 @@ def lathetool():
     glVertex3f(0.0,0.0,-radius/2.0)
     glVertex3f(0.0,0.0,radius/2.0)
     glEnd()
-    glBegin(GL_LINE_STRIP)
-    for i in range(37):
-        t = i * math.pi / 18.0
-        glVertex3f(radius + radius * math.cos(t), 0.0, radius + radius * math.sin(t))
-    glEnd()
+
+    glNormal3f(0,1,0)
+    
+    if orientation == 9:
+        glBegin(GL_TRIANGLE_FAN)
+        for i in range(37):
+            t = i * math.pi / 18
+            glVertex3f(radius * math.cos(t), 0.0, radius * math.sin(t))
+        glEnd(GL_TRIANGLE_FAN)
+    else:
+        dx, dy = lathe_shapes[orientation]
+
+        min_angle = min(backangle, frontangle) * math.pi / 180
+        max_angle = max(backangle, frontangle) * math.pi / 180
+
+        sinmax = sin(max_angle)
+        cosmax = cos(max_angle)
+        tanmax = cos(max_angle)
+        sinmin = sin(min_angle)
+        cosmin = cos(min_angle)
+        tanmin = cos(min_angle)
+
+        circleminangle = - pi/2 + min_angle
+        circlemaxangle = - 3*pi/2 + max_angle
+        d0 = 0
+
+        x1 = (w - d0)
+
+        if radius: sz = 3 * radius
+        else: sz = w
+
+        glBegin(GL_TRIANGLE_FAN)
+        glVertex3f(
+            radius * dx + radius * math.sin(circleminangle) + sz * sinmin,
+            0,
+            radius * dy + radius * math.cos(circleminangle) + sz * cosmin)
+        for i in range(37):
+            #t = circleminangle + i * (circlemaxangle - circleminangle)/36.
+            t = circleminangle + i * (circlemaxangle - circleminangle)/36.
+            glVertex3f(radius*dx + radius * math.sin(t), 0.0, radius*dy + radius * math.cos(t))
+
+        glVertex3f(
+            radius * dx + radius * math.sin(circlemaxangle) + sz * sinmax,
+            0,
+            radius * dy + radius * math.cos(circlemaxangle) + sz * cosmax)
+        
+        glEnd()
 
 def make_selection_list(g):
     global select_program
