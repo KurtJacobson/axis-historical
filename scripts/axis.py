@@ -724,10 +724,13 @@ class MyOpengl(Opengl):
                         glRotatef(s.position[3], 0, 1, 0)
                     elif axisnames[3] == "C":
                         glRotatef(s.position[3], 0, 0, 1)
-                if lathe:
-                    glRotatef(90, 0, 1, 0)
-                glScalef(cone_scale, cone_scale, cone_scale)
-                glCallList(cone_program)
+                if lathe and current_tool != []:
+                    lathetool()
+                else:
+                    if lathe:
+                        glRotatef(90, 0, 1, 0)
+                    glScalef(cone_scale, cone_scale, cone_scale)
+                    glCallList(cone_program)
                 glPopMatrix()
         if vars.show_live_plot.get() or vars.show_program.get():
             s.poll()
@@ -994,6 +997,23 @@ def make_cone():
     glEndList()
     gluDeleteQuadric(q)
 
+current_tool = None
+def lathetool():
+    diameter, frontangle, backangle, orientation = current_tool[0][-4:]
+    radius = diameter/2.0
+    glColor3f(*o.colors['cone'])
+    glBegin(GL_LINES)
+    glVertex3f(-radius/2.0,0.0,0.0)
+    glVertex3f(radius/2.0,0.0,0.0)
+    glVertex3f(0.0,0.0,-radius/2.0)
+    glVertex3f(0.0,0.0,radius/2.0)
+    glEnd()
+    glBegin(GL_LINE_STRIP)
+    for i in range(37):
+        t = i * math.pi / 18.0
+        glVertex3f(radius + radius * math.cos(t), 0.0, radius + radius * math.sin(t))
+    glEnd()
+
 def make_selection_list(g):
     global select_program
     if select_program is None: select_program = glGenLists(1)
@@ -1141,6 +1161,7 @@ class LivePlotter:
         if time.time() > feedrate_blackout:
             vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
         vupdate(vars.override_limits, self.stat.axis[0]['override_limits'])
+        global current_tool
         current_tool = [i for i in self.stat.tool_table 
                             if i[0] == self.stat.tool_in_spindle]
         if self.stat.tool_in_spindle == 0:
