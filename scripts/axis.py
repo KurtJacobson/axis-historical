@@ -1933,7 +1933,6 @@ class TclCommands(nf.TclCommands):
             o.set_highlight_line(line)
 
     def task_run(*event):
-        print "task_run"
         warnings = []
         if o.g:
             for i in range(min(axiscount, 3)): # Does not enforce angle limits
@@ -1949,7 +1948,6 @@ class TclCommands(nf.TclCommands):
                 "warning",
                 1, _("Run Anyway"), _("Cancel")))
             if r: return
-        global program_start_line, program_start_line_last
         global program_start_line, program_start_line_last
         program_start_line_last = program_start_line;
         ensure_mode(emc.MODE_AUTO)
