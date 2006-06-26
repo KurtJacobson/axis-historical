@@ -1149,7 +1149,7 @@ class LivePlotter:
             vupdate(vars.tool, _("Unknown tool %d") % self.stat.tool_in_spindle)
         else:
             vupdate(vars.tool,
-                 _("Tool %d, offset %g, diameter %g") % current_tool[0])
+                    _("Tool %d, zo %g, xo %g, dia %g") % current_tool[0][:4])
         active_codes = []
         for i in self.stat.gcodes[1:]:
             if i == -1: continue
@@ -1389,7 +1389,7 @@ class AxisCanon(GLCanon):
         for t in s.tool_table:
             if t[0] == tool:
                 return t
-        return tool,0.,0.
+        return tool,0.,0.,0.,0.,0.,0
 
     def get_external_angular_units(self):
         return s.angular_units or 1.0

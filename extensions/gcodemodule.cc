@@ -332,7 +332,7 @@ void PROGRAM_END() {}
 void PALLET_SHUTTLE() {}
 void CHANGE_TOOL(int tool) {}
 void SELECT_TOOL(int tool) {}
-void USE_TOOL_LENGTH_OFFSET(double length) {}
+void USE_TOOL_LENGTH_OFFSET(double xoffset, double zoffset) {}
 void OPTIONAL_PROGRAM_STOP() {}
 void DISABLE_FEED_OVERRIDE() {}
 void DISABLE_SPEED_OVERRIDE() {}
@@ -376,12 +376,14 @@ void GET_EXTERNAL_PARAMETER_FILE_NAME(char *name, int max_size) {
 }
 int GET_EXTERNAL_LENGTH_UNIT_TYPE() { return CANON_UNITS_INCHES; }
 CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int tool) {
-    CANON_TOOL_TABLE t = {0,0,0};
+    CANON_TOOL_TABLE t = {0,0,0,0,0,0,0};
     if(interp_error) return t;
     PyObject *result =
         PyObject_CallMethod(callback, "get_tool", "i", tool);
     if(result == NULL ||
-        !PyArg_ParseTuple(result, "idd", &t.id, &t.length, &t.diameter))
+        !PyArg_ParseTuple(result, "idddddi", &t.id, &t.zoffset, &t.xoffset, 
+                          &t.diameter, &t.frontangle, &t.backangle, 
+                          &t.orientation))
             interp_error ++;
     Py_XDECREF(result);
     return t;

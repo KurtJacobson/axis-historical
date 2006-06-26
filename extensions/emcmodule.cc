@@ -622,10 +622,14 @@ static PyObject *Stat_tool_table(pyStatChannel *s) {
     for(int i=1; i<=CANON_TOOL_MAX; i++) {
         struct CANON_TOOL_TABLE &t = s->status.io.tool.toolTable[i];
         if(t.id == 0) continue;
-        PyObject *tool = PyTuple_New(3);
+        PyObject *tool = PyTuple_New(7);
         PyTuple_SetItem(tool, 0, PyInt_FromLong(t.id));
-        PyTuple_SetItem(tool, 1, PyFloat_FromDouble(t.length));
-        PyTuple_SetItem(tool, 2, PyFloat_FromDouble(t.diameter));
+        PyTuple_SetItem(tool, 1, PyFloat_FromDouble(t.zoffset));
+        PyTuple_SetItem(tool, 2, PyFloat_FromDouble(t.xoffset));
+        PyTuple_SetItem(tool, 3, PyFloat_FromDouble(t.diameter));
+        PyTuple_SetItem(tool, 4, PyFloat_FromDouble(t.frontangle));
+        PyTuple_SetItem(tool, 5, PyFloat_FromDouble(t.backangle));
+        PyTuple_SetItem(tool, 6, PyInt_FromLong(t.orientation));
         PyTuple_SetItem(res, j, tool);
         j++;
     }
