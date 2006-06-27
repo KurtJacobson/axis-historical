@@ -724,7 +724,7 @@ class MyOpengl(Opengl):
                         glRotatef(s.position[3], 0, 1, 0)
                     elif axisnames[3] == "C":
                         glRotatef(s.position[3], 0, 0, 1)
-                if lathe and current_tool != []:
+                if lathe and current_tool != [] and current_tool[0][-1:] != 0:
                     lathetool()
                 else:
                     if lathe:
