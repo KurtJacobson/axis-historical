@@ -22,6 +22,7 @@
 #include <structmember.h>
 #include "rcs.hh"
 #include "emc.hh"
+#include "axisversion.h"
 #if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 #include "config.h"
 #include "inifile.hh"
@@ -622,6 +623,7 @@ static PyObject *Stat_tool_table(pyStatChannel *s) {
     for(int i=1; i<=CANON_TOOL_MAX; i++) {
         struct CANON_TOOL_TABLE &t = s->status.io.tool.toolTable[i];
         if(t.id == 0) continue;
+#if EMC_VERSION_CHECK(2,1,0)
         PyObject *tool = PyTuple_New(7);
         PyTuple_SetItem(tool, 0, PyInt_FromLong(t.id));
         PyTuple_SetItem(tool, 1, PyFloat_FromDouble(t.zoffset));
@@ -630,6 +632,12 @@ static PyObject *Stat_tool_table(pyStatChannel *s) {
         PyTuple_SetItem(tool, 4, PyFloat_FromDouble(t.frontangle));
         PyTuple_SetItem(tool, 5, PyFloat_FromDouble(t.backangle));
         PyTuple_SetItem(tool, 6, PyInt_FromLong(t.orientation));
+#else
+        PyObject *tool = PyTuple_New(3);
+        PyTuple_SetItem(tool, 0, PyInt_FromLong(t.id));
+        PyTuple_SetItem(tool, 1, PyFloat_FromDouble(t.length));
+        PyTuple_SetItem(tool, 2, PyFloat_FromDouble(t.diameter));
+#endif
         PyTuple_SetItem(res, j, tool);
         j++;
     }

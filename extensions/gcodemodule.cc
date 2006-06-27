@@ -22,6 +22,7 @@
 #include "rcs.hh"
 #include "emc.hh"
 #include "rs274ngc.hh"
+#include "axisversion.h"
 
 #if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 #include "interp_return.hh"
@@ -333,6 +334,7 @@ void PALLET_SHUTTLE() {}
 void CHANGE_TOOL(int tool) {}
 void SELECT_TOOL(int tool) {}
 void USE_TOOL_LENGTH_OFFSET(double xoffset, double zoffset) {}
+void USE_TOOL_LENGTH_OFFSET(double offset) {}
 void OPTIONAL_PROGRAM_STOP() {}
 void DISABLE_FEED_OVERRIDE() {}
 void DISABLE_SPEED_OVERRIDE() {}
@@ -376,6 +378,7 @@ void GET_EXTERNAL_PARAMETER_FILE_NAME(char *name, int max_size) {
 }
 int GET_EXTERNAL_LENGTH_UNIT_TYPE() { return CANON_UNITS_INCHES; }
 CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int tool) {
+#if EMC_VERSION_CHECK(2,1,0)
     CANON_TOOL_TABLE t = {0,0,0,0,0,0,0};
     if(interp_error) return t;
     PyObject *result =
@@ -385,6 +388,19 @@ CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int tool) {
                           &t.diameter, &t.frontangle, &t.backangle, 
                           &t.orientation))
             interp_error ++;
+#else
+    CANON_TOOL_TABLE t = {0,0,0};
+    double dummy1, dummy2, dummy3;
+    int dummy4;
+    if(interp_error) return t;
+    PyObject *result =
+        PyObject_CallMethod(callback, "get_tool", "i", tool);
+    if(result == NULL ||
+        !PyArg_ParseTuple(result, "idd|dddi", &t.id, &t.length, &t.diameter,
+                &dummy1, &dummy2, &dummy3, &dummy4))
+            interp_error ++;
+#endif
+
     Py_XDECREF(result);
     return t;
 }

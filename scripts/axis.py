@@ -1219,9 +1219,12 @@ class LivePlotter:
             vupdate(vars.tool, _("No tool"))
         elif current_tool == []:
             vupdate(vars.tool, _("Unknown tool %d") % self.stat.tool_in_spindle)
-        else:
+        elif len(current_tool) == 7:
             vupdate(vars.tool,
                     _("Tool %d, zo %g, xo %g, dia %g") % current_tool[0][:4])
+        else:
+            vupdate(vars.tool,
+                    _("Tool %d, offset %g, diameter %g") % current_tool[0][:3])
         active_codes = []
         for i in self.stat.gcodes[1:]:
             if i == -1: continue
