@@ -97,6 +97,8 @@
 #undef offsetof
 #define offsetof(T,x) (size_t)(-1+(char*)&(((T*)1)->x))
 
+static bool feq(double a, double b) { return fabs(a-b) < 1e-5; }
+
 struct pyIniFile {
     PyObject_HEAD
 #if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
@@ -1342,7 +1344,7 @@ double dt() {
     return diff;
 }
 
-const double weight_factor = .99;
+const double weight_factor = .92;
 
 static double hypot3(double a, double b, double c) {
     return sqrt(a*a + b*b + c*c);
@@ -1388,9 +1390,14 @@ static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
 
             double delta = dt();
             if(s->npts) {
-                double dist = hypot3(op.x - x, op.y - y, op.z - z);
-                double ddt = dist / delta;
-                s->ave_ddt = s->ave_ddt*weight_factor + ddt*(1-weight_factor);
+                if(feq(op.x, x) && feq(op.y, y) && feq(op.z, z)) {
+                    s->ave_ddt = 0;
+                } else {
+                    double dist = hypot3(op.x - x, op.y - y, op.z - z);
+                    double ddt = dist / delta;
+                    s->ave_ddt = s->ave_ddt*weight_factor
+                        + ddt*(1-weight_factor);
+                }
             }
             if(add_point) {
                 // 1 or 2 points may be added, make room whenever

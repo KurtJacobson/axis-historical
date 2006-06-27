@@ -218,6 +218,7 @@ class MyOpengl(Opengl):
         self.last_position = None
         self.last_homed = None
         self.last_origin = None
+        self.last_tool = None
         self.g = None
         self.set_eyepoint(5.)
         self.get_resources()
@@ -784,7 +785,7 @@ class MyOpengl(Opengl):
             homed = s.homed[:]
 
         if vars.show_machine_speed.get():
-            positions.append("Speed: % 9.4f" % (live_plotter.logger.average_speed*60))
+            positions.append("Vel: % 6.2f" % (live_plotter.logger.average_speed*60))
 
         maxlen = max([len(p) for p in positions])
         pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
@@ -808,13 +809,16 @@ class MyOpengl(Opengl):
         glColor3f(*o.colors['overlay_foreground'])
         for string in positions:
             maxlen = max(maxlen, len(string))
-            if homed[i]:
+            if i < len(homed) and homed[i]:
                 glRasterPos2i(6, ypos)
                 glBitmap(13, 16, 0, 3, 17, 0, homeicon)
-            glRasterPos2i(23, ypos)
+            if string.startswith("Vel:"):
+                glRasterPos2i(5, ypos)
+            else:
+                glRasterPos2i(23, ypos)
             for char in string:
                 glCallList(fontbase + ord(char))
-            if limit[i]:
+            if i < len(homed) and limit[i]:
                 glBitmap(13, 16, -5, 3, 17, 0, limiticon)
             ypos -= coordinate_linespace
             i = i + 1
@@ -1178,25 +1182,24 @@ class LivePlotter:
         lu = self.stat.linear_units or 1
 
         try:
-            ddt = abs(live_plotter.logger.average_speed - self.last_speed)
+            speed = live_plotter.logger.average_speed
         except NameError, detail:
-            ddt = 0
-            
+            speed = 0
+ 
         if (self.logger.npts != self.lastpts
                 or self.stat.actual_position != o.last_position
                 or self.stat.homed != o.last_homed
                 or self.stat.origin != o.last_origin
                 or self.stat.limit != o.last_limit
-                or ddt > .0001):
+                or self.stat.tool_in_spindle != o.last_tool
+                or abs(speed - self.last_speed) > .01):
             o.redraw_soon()
             o.last_limit = self.stat.limit
             o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
             o.last_origin = self.stat.origin
-            try:
-                self.last_speed = live_plotter.logger.average_speed
-            except NameError, detail:
-                pass
+            o.last_tool = self.stat.tool_in_spindle
+            self.last_speed = speed
             self.lastpts = self.logger.npts
 
         vupdate(vars.exec_state, self.stat.exec_state)
@@ -1619,7 +1622,7 @@ vars.show_program.set(1)
 vars.show_live_plot.set(1)
 vars.show_tool.set(1)
 vars.show_extents.set(1)
-vars.show_machine_speed.set(0)
+vars.show_machine_speed.set(1)
 
 tabs_mdi = str(root_window.tk.call("set", "_tabs_mdi"))
 tabs_manual = str(root_window.tk.call("set", "_tabs_manual"))
