@@ -1025,7 +1025,7 @@ def lathetool():
         for i in range(37):
             t = i * math.pi / 18
             glVertex3f(radius * math.cos(t), 0.0, radius * math.sin(t))
-        glEnd(GL_TRIANGLE_FAN)
+        glEnd()
     else:
         dx, dy = lathe_shapes[orientation]
 
