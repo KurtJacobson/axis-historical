@@ -87,6 +87,10 @@ setup_menu_accel .menu.machine end [_ "_Resume"]
 	-command task_stop
 setup_menu_accel .menu.machine end [_ "S_top"]
 
+.menu.machine add command \
+	-command reload_tool_table
+setup_menu_accel .menu.machine end [_ "Reload tool ta_ble"]
+
 .menu.machine add separator
 
 .menu.machine add command \
@@ -1377,7 +1381,7 @@ proc update_state {args} {
 
     state  {$task_state == $STATE_ON && $interp_state == $INTERP_IDLE \
             && $taskfile != ""} \
-                .toolbar.program_run {.menu.machine 4}
+                .toolbar.program_run {.menu.machine 4} {.menu.machine 9}
     relief {$interp_state != $INTERP_IDLE} .toolbar.program_run
     state  {$task_state == $STATE_ON && $taskfile != "" && \
       ($interp_state == $INTERP_PAUSED)} \

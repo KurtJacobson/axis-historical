@@ -1798,6 +1798,9 @@ class TclCommands(nf.TclCommands):
         line = vars.highlight_line.get()
         if line != -1: set_first_line(line)
 
+    def reload_tool_table(*args):
+        c.load_tool_table()
+
     def program_verify(*args):
         set_first_line(-1)
         commands.task_run()

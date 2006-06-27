@@ -940,6 +940,15 @@ static PyObject *brake(pyCommandChannel *s, PyObject *o) {
     return Py_None;
 }
 
+static PyObject *load_tool_table(pyCommandChannel *s, PyObject *o) {
+    EMC_TOOL_LOAD_TOOL_TABLE m;
+    m.file[0] = '\0'; // don't override the ini file
+    m.serial_number = next_serial(s);
+    s->c->write(m);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 static PyObject *emcabort(pyCommandChannel *s, PyObject *o) {
     EMC_TASK_ABORT m;
     m.serial_number = next_serial(s);
@@ -1099,6 +1108,7 @@ static PyMethodDef Command_methods[] = {
     {"mist", (PyCFunction)mist, METH_VARARGS},
     {"flood", (PyCFunction)flood, METH_VARARGS},
     {"brake", (PyCFunction)brake, METH_VARARGS},
+    {"load_tool_table", (PyCFunction)load_tool_table, METH_NOARGS},
     {"abort", (PyCFunction)emcabort, METH_NOARGS},
     {"override_limits", (PyCFunction)override_limits, METH_NOARGS},
     {"home", (PyCFunction)home, METH_VARARGS},
