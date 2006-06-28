@@ -1581,6 +1581,7 @@ def open_file_guts(f, filtered = False):
         except UnboundLocalError:
             pass
         o.tkRedraw()
+        root_window.tk.call("set_mode_from_tab")
 
 vars = nf.Variables(root_window, 
     ("emctop_command", StringVar),
@@ -1985,7 +1986,9 @@ class TclCommands(nf.TclCommands):
     def reload_file(*event):
         if running(): return
         s.poll()
-        if not loaded_file: return
+        if not loaded_file:
+            root_window.tk.call("set_mode_from_tab")
+            return
         line = vars.highlight_line.get()
         o.set_highlight_line(None)
         open_file_guts(loaded_file)
