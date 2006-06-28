@@ -1113,7 +1113,6 @@ class LivePlotter:
         self.lastpts = -1
         self.last_speed = -1
         self.last_limit = None
-        self.start()
 
     def start(self):
         if self.running.get(): return
@@ -1136,8 +1135,6 @@ class LivePlotter:
         o.after_idle(lambda: thread.start_new_thread(self.logger.start, (.01,)))
 
         self.running.set(True)
-        if self.after is None:
-            self.update()
 
     def stop(self):
         if not self.running.get(): return
@@ -2454,6 +2451,7 @@ coordinate_linespace = int(coordinate_font_metrics[linespace_index+1])
 
 fontbase = int(o.tk.call(o._w, "loadbitmapfont", coordinate_font))
 live_plotter = LivePlotter(o)
+live_plotter.start()
 hershey = Hershey()
 
 def color_limit(cond):
@@ -2517,8 +2515,8 @@ if lathe:
     widgets.axis_y.grid_forget()
     widgets.menu_view.delete(0, 5)
 
+live_plotter.update()
 o.mainloop()
-
 live_plotter.stop()
 
 
