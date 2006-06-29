@@ -64,9 +64,11 @@ oldvalues = {}
 def timer():
     try:
         s.poll()
-    except emc.error: raise SystemExit
+    except emc.error:
+	root.destroy()
     pos = t.yview()[0]
     t.delete("0.0", "end")
+    first = True
     for k in dir(s):
         if k.startswith("_"): continue
         if maps.has_key(k) and maps[k] == None: continue
@@ -85,9 +87,13 @@ def timer():
             vtag = "changedvalue"
         else:
             vtag = "value"
+	if first: first = False
+	else: t.insert("end", "\n")
         t.insert("end", k, "key", "\t")
-        t.insert("end", v, vtag, "\n")
+        t.insert("end", v, vtag)
     t.yview_moveto(pos)
     t.after(100, timer)
 timer()
 t.mainloop()
+
+# vim:sw=4:sts=4:et
