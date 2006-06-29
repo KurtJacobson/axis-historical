@@ -98,8 +98,8 @@ setup_menu_accel .menu.machine end [_ "Reload tool ta_ble"]
 setup_menu_accel .menu.machine end [_ "_Calibration"]
 
 .menu.machine add command \
-        -command {exec $env(EMC2_TCL_DIR)/bin/halconfig.tcl -- -ini $emcini &}
-setup_menu_accel .menu.machine end [_ "_Hal Configuration"]
+        -command {exec $env(EMC2_TCL_DIR)/bin/halshow.tcl -- -ini $emcini &}
+setup_menu_accel .menu.machine end [_ "Show _Hal Configuration"]
 
 .menu.machine add command \
         -command {exec halscope -- -ini $emcini &}
