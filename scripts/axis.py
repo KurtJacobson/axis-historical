@@ -1301,7 +1301,13 @@ class Progress:
                                 "-fill", "blue", "-outline", "blue")
         root_window.update_idletasks()
         root_window.tk.call("focus", "-force", ".info.progress")
-        root_window.tk.call("grab", ".info.progress")
+        self.do_grab()
+
+    def do_grab(self):
+        try:
+            root_window.tk.call("grab", ".info.progress")
+        except Tkinter.TclError, detail:
+            root_window.after_idle(self.do_grab)
 
     def update(self, count):
         if count - self.lastcount > 100:
