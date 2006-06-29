@@ -94,7 +94,7 @@ if sys.version_info <= (2,3):
             yield index, item
             index += 1
 
-halcmd = subprocess.Popen(["halcmd", "-f", "/proc/self/fd/0"],
+halcmd = subprocess.Popen(["halcmd", "-sf"],
     stdin=subprocess.PIPE)
 def halcmd_sets(signal, value):
     global halcmd
@@ -2521,6 +2521,7 @@ if lathe:
     widgets.axis_y.grid_forget()
     widgets.menu_view.delete(0, 5)
 
+commands.set_feedrate(100)
 live_plotter.update()
 o.mainloop()
 live_plotter.stop()
