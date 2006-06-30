@@ -1199,6 +1199,7 @@ class LivePlotter:
             self.last_speed = speed
             self.lastpts = self.logger.npts
 
+        root_window.update_idletasks()
         vupdate(vars.exec_state, self.stat.exec_state)
         vupdate(vars.interp_state, self.stat.interp_state)
         vupdate(vars.task_mode, self.stat.task_mode)
@@ -1609,7 +1610,7 @@ vars = nf.Variables(root_window,
     ("show_extents", IntVar),
     ("show_machine_speed", IntVar),
     ("feedrate", IntVar),
-    ("tool", IntVar),
+    ("tool", StringVar),
     ("active_codes", StringVar),
     ("metric", IntVar),
     ("coord_type", IntVar),
