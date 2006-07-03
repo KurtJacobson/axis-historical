@@ -1949,10 +1949,7 @@ class TclCommands(nf.TclCommands):
         commands.open_file_name(f)
 
     def open_file_name(f):
-        import hotshot
-        prof = hotshot.Profile("open_file_guts.prof")
-        print prof.runcall(open_file_guts, f)
-        prof.close()
+        open_file_guts(f)
         if str(widgets.view_x['relief']) == "sunken":
             commands.set_view_x()
         elif str(widgets.view_y['relief']) == "sunken":
