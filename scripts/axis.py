@@ -725,7 +725,7 @@ class MyOpengl(Opengl):
                         glRotatef(s.position[3], 0, 1, 0)
                     elif axisnames[3] == "C":
                         glRotatef(s.position[3], 0, 0, 1)
-                if lathe and current_tool and current_tool[0][-1:] != 0:
+                if lathe and current_tool and current_tool[-1:] != 0:
                     lathetool()
                 else:
                     if lathe:
@@ -1010,7 +1010,7 @@ lathe_shapes = [
 ]
 
 def lathetool():
-    diameter, frontangle, backangle, orientation = current_tool[0][-4:]
+    diameter, frontangle, backangle, orientation = current_tool[-4:]
     w = 3/8. 
 
     radius = diameter/2.0
@@ -1214,18 +1214,20 @@ class LivePlotter:
             vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
         vupdate(vars.override_limits, self.stat.axis[0]['override_limits'])
         global current_tool
-        current_tool = [i for i in self.stat.tool_table 
-                            if i[0] == self.stat.tool_in_spindle]
+        current_tool = None
+        for i in self.stat.tool_table:
+            if i[0] == self.stat.tool_in_spindle:
+                current_tool = i
         if self.stat.tool_in_spindle == 0:
             vupdate(vars.tool, _("No tool"))
-        elif current_tool == []:
+        elif current_tool is None:
             vupdate(vars.tool, _("Unknown tool %d") % self.stat.tool_in_spindle)
         elif len(current_tool) == 7:
             vupdate(vars.tool,
-                    _("Tool %d, zo %g, xo %g, dia %g") % current_tool[0][:4])
+                    _("Tool %d, zo %g, xo %g, dia %g") % current_tool[:4])
         else:
             vupdate(vars.tool,
-                    _("Tool %d, offset %g, diameter %g") % current_tool[0][:3])
+                    _("Tool %d, offset %g, diameter %g") % current_tool[:3])
         active_codes = []
         for i in self.stat.gcodes[1:]:
             if i == -1: continue
