@@ -17,9 +17,4 @@
      (EMC_VERSION_MAJOR == (major) && EMC_VERSION_MINOR == (minor) && \
       EMC_VERSION_MICRO >= (micro)))
 
-#warning AXIS providing its own EMC_VERSION_CHECK
-#if EMC_VERSION_CHECK(2,1,0)
-#error ...
-#endif
-
 #endif
