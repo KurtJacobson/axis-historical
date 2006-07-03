@@ -1313,7 +1313,7 @@ class Progress:
             root_window.after_idle(self.do_grab)
 
     def update(self, count):
-        if count - self.lastcount > 100:
+        if count - self.lastcount > 400:
             fraction = (self.phase + count * 1. / self.total) / self.num_phases
             self.lastcount = count
             try:
@@ -1372,32 +1372,8 @@ class AxisCanon(GLCanon):
         root_window.update()
         if self.aborted: raise KeyboardInterrupt
 
-    def draw_lines(self, lines, for_selection, j0=0):
-        if for_selection:
-            for j, (lineno, l1, l2) in enumerate(lines):
-                self.progress.update(j+j0)
-                glLoadName(lineno)
-                glBegin(GL_LINES)
-                glVertex3f(*l1)
-                glVertex3f(*l2)
-                glEnd()
-        else:
-            first = True
-            for j, (lineno, l1, l2) in enumerate(lines):
-                self.progress.update(j+j0)
-                if first:
-                    glBegin(GL_LINE_STRIP)
-                    first = False
-                    glVertex3f(*l1)
-                elif l1 != ol:
-                    glEnd()
-                    glBegin(GL_LINE_STRIP)
-                    glVertex3f(*l1)
-                glVertex3f(*l2)
-                ol = l2
-            if not first:
-                glEnd()
-
+    def draw_lines(self, lines, for_selection, j=0):
+        return draw_lines(lines, for_selection)
 
     def draw_dwells(self, dwells, for_selection, j0=0):
         delta = .015625
@@ -1465,9 +1441,9 @@ class AxisCanon(GLCanon):
 
 
     def next_line(self, st):
-        lineno = st.sequence_number + 1
+        self.state = st
+        lineno = self.lineno = st.sequence_number + 1
         self.progress.update(lineno)
-        GLCanon.next_line(self, st)
 
     def get_tool(self, tool):
         for t in s.tool_table:
@@ -1565,6 +1541,7 @@ def open_file_guts(f, filtered = False):
 
         t.configure(state="disabled")
 
+        canon.calc_extents()
         make_main_list(canon)
         make_selection_list(canon)
 
@@ -1972,7 +1949,10 @@ class TclCommands(nf.TclCommands):
         commands.open_file_name(f)
 
     def open_file_name(f):
-        open_file_guts(f)
+        import hotshot
+        prof = hotshot.Profile("open_file_guts.prof")
+        print prof.runcall(open_file_guts, f)
+        prof.close()
         if str(widgets.view_x['relief']) == "sunken":
             commands.set_view_x()
         elif str(widgets.view_y['relief']) == "sunken":

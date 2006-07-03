@@ -46,10 +46,13 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.state = st
         self.lineno = self.state.sequence_number + 1
 
-    def calc_extents(self, p):
-        for i in [0,1,2]:
-            self.min_extents[i] = min(self.min_extents[i], p[i])
-            self.max_extents[i] = max(self.max_extents[i], p[i])
+    def calc_extents(self):
+        x = [f[1][0] for f in self.arcfeed] + [f[1][0] for f in self.feed] + [f[1][0] for f in self.traverse]
+        y = [f[1][1] for f in self.arcfeed] + [f[1][1] for f in self.feed] + [f[1][1] for f in self.traverse]
+        z = [f[1][2] for f in self.arcfeed] + [f[1][2] for f in self.feed] + [f[1][2] for f in self.traverse]
+        if x:
+            self.min_extents = [min(x), min(y), min(z)]
+            self.max_extents = [max(x), max(y), max(z)]
 
     def set_spindle_rate(self, arg): pass
     def set_feed_rate(self, arg): pass
@@ -68,7 +71,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         l = (x + self.offset_x,y + self.offset_y,z + self.offset_z)
         self.traverse_append((self.lineno, self.lo, l))
         self.lo = l
-        self.calc_extents(l)
 
     def arc_feed(self, *args):
         self.in_arc = True
@@ -84,7 +86,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         else:
             self.feed_append((self.lineno, self.lo, l))
         self.lo = l
-        self.calc_extents(l)
 
     def user_defined_function(self, i, p, q):
         color = self.colors['m1xx']
