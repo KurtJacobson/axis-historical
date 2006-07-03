@@ -2024,23 +2024,31 @@ class TclCommands(nf.TclCommands):
         program_start_line = 0
 
     def task_step(*event):
+        if s.task_mode != emc.MODE_AUTO or s.interp_state != emc.INTERP_PAUSED:
+            return
         ensure_mode(emc.MODE_AUTO)
         c.auto(emc.AUTO_STEP)
 
     def task_pause(*event):
+        if s.task_mode != emc.MODE_AUTO or s.interp_state not in (emc.INTERP_READING, emc.INTERP_WAITING):
+            return
         ensure_mode(emc.MODE_AUTO)
         c.auto(emc.AUTO_PAUSE)
 
     def task_resume(*event):
+        if s.task_mode != emc.MODE_AUTO or s.interp_state != emc.INTERP_PAUSED:
+            return
         ensure_mode(emc.MODE_AUTO)
         c.auto(emc.AUTO_RESUME)
 
     def task_pauseresume(*event):
+        if s.task_mode != emc.MODE_AUTO:
+            return
         ensure_mode(emc.MODE_AUTO)
         s.poll()
         if s.interp_state == emc.INTERP_PAUSED:
             c.auto(emc.AUTO_RESUME)
-        else:
+        elif s.interp_state != emc.INTERP_IDLE:
             c.auto(emc.AUTO_PAUSE)
 
     def task_stop(*event):
