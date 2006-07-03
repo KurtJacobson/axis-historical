@@ -2524,10 +2524,11 @@ if lathe:
     widgets.axis_y.grid_forget()
     widgets.menu_view.delete(0, 5)
 
+widgets.feedoverride.set(100)
 commands.set_feedrate(100)
+
 live_plotter.update()
 o.mainloop()
 live_plotter.stop()
-
 
 # vim:sw=4:sts=4:et:
