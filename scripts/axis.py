@@ -20,6 +20,14 @@
 
 from __future__ import generators
 
+try:
+    import psyco
+    psyco.profile()
+except ImportError:
+    pass
+    #print 'Psyco not found, ignoring it'
+
+ 
 import sys, os
 BASE = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), ".."))
 sys.path.insert(0, os.path.join(BASE, "lib", "python"))
