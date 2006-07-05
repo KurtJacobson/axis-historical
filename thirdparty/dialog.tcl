@@ -29,6 +29,19 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
 
+proc patient_grab w {
+    set ret [catch { grab $w } res]
+    if {!$ret} { return }
+    set sei $::errorInfo
+    if {$res == "grab failed: another application has grab"
+        || $res == "grab failed: window not viewable"} {
+        after 100
+        after idle patient_grab $w
+    } else {
+        error $ret $savedInfo
+    }
+}
+
 #
 # nf_dialog:
 #
@@ -182,7 +195,7 @@ proc nf_dialog {w title text image default args} {
     if {[string compare $oldGrab ""]} {
 	set grabStatus [grab status $oldGrab]
     }
-    grab $w
+    patient_grab $w
     if {$default >= 0} {
 	focus $w.button$default
     } else {
