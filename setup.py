@@ -117,6 +117,7 @@ elif is_bdi4:
         extra_link_args = [
             '-Wl,-rpath,%s' % os.path.join(emcroot, "plat/linux_rtai/lib"),
             os.path.join(emcroot, "src", ".tmp", "rs274.o"),
+            '-lnml', '-lm', '-lstdc++'
         ]
     )
 
