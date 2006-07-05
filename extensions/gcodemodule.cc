@@ -60,7 +60,7 @@ char _parameter_file_name[LINELEN];
  * 'invalid offsetof from non-POD type'.
  */
 #undef offsetof
-#define offsetof(T,x) (int)(-1+(char*)&(((T*)1)->x))
+#define offsetof(T,x) (size_t)(-1+(char*)&(((T*)1)->x))
 
 extern char *_rs274ngc_errors[];
 
