@@ -56,6 +56,7 @@ minigl = Extension("minigl",
         ["extensions/minigl.c"],
         libraries = ["GL", "GLU"],
 	library_dirs = ["/usr/X11R6/lib"])
+hal = None
 
 if is_emc2:
     run_installed = (os.environ.has_key("EMC_RUN_INSTALLED") \
@@ -95,6 +96,15 @@ if is_emc2:
         library_dirs=library_dirs,
         extra_link_args = extra_link_args,
     )
+
+    if os.path.exists(os.path.join(emcroot, "lib", "libemchal.so")):
+        hal = Extension("hal", ["extensions/halmodule.c"],
+        libraries = ["emchal"],
+        include_dirs=include_dirs,
+        library_dirs=library_dirs,
+        extra_link_args = extra_link_args,
+    )
+
     os.environ['USE_SYSTEM_BWIDGET']="yes"
 
 elif is_bdi4:
@@ -195,6 +205,8 @@ togl = Extension("_togl", ["extensions/_toglmodule.c"], **flags)
 seticon = Extension("_tk_seticon", ["extensions/seticon.c"], **flags)
 
 ext_modules = [emc, togl, gcode, minigl, seticon]
+if hal:
+    ext_modules.append(hal)
 
 bwidget = [
   (os.path.join(SHAREDIR, "tcl/bwidget"),
