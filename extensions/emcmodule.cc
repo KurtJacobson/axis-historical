@@ -487,6 +487,24 @@ static PyObject *Stat_actual(pyStatChannel *s) {
     return pose(s->status.motion.traj.actualPosition);
 }
 
+static PyObject *Stat_joint_position(pyStatChannel *s) {
+    PyObject *res = PyTuple_New(EMC_AXIS_MAX);
+    for(int i=0; i<EMC_AXIS_MAX; i++) {
+        PyTuple_SetItem(res, i,
+                PyFloat_FromDouble(s->status.motion.axis[i].output));
+    }
+    return res;
+}
+
+static PyObject *Stat_joint_actual(pyStatChannel *s) {
+    PyObject *res = PyTuple_New(EMC_AXIS_MAX);
+    for(int i=0; i<EMC_AXIS_MAX; i++) {
+        PyTuple_SetItem(res, i,
+                PyFloat_FromDouble(s->status.motion.axis[i].input));
+    }
+    return res;
+}
+
 static PyObject *Stat_probed(pyStatChannel *s) {
     return pose(s->status.motion.traj.probedPosition);
 }
@@ -663,6 +681,8 @@ static PyGetSetDef Stat_getsetlist[] = {
     {"mcodes", (getter)Stat_activemcodes},
     {"origin", (getter)Stat_origin},
     {"position", (getter)Stat_position},
+    {"joint_position", (getter)Stat_joint_position},
+    {"joint_actual_position", (getter)Stat_joint_actual},
     {"probed_position", (getter)Stat_probed},
     {"settings", (getter)Stat_activesettings},
     {"tool_offset", (getter)Stat_tool_offset},
