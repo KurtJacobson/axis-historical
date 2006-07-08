@@ -6,11 +6,23 @@
 #define Py_RETURN_NONE return Py_INCREF(Py_None), Py_None
 #endif
 
+union ptrunion {
+    void *v;
+    hal_bit_t *b;
+    hal_u8_t *u8;
+    hal_s8_t *s8;
+    hal_u16_t *u16;
+    hal_s16_t *s16;
+    hal_u32_t *u32;
+    hal_s32_t *s32;
+    hal_float_t *f;
+};
+
 typedef struct halpin { 
     char *name;
     hal_type_t type;
     hal_dir_t dir;
-    void *data;
+    union ptrunion *u; 
 } halpin;
 
 typedef struct halobject {
@@ -30,6 +42,8 @@ static PyObject *pyhal_error(int code) {
         case HAL_UNSUP:
             PyErr_SetString(pyhal_error_type, "Function not supported"); break;
         case HAL_BADVAR:
+            PyErr_SetString(pyhal_error_type, "Duplicate or not-found variable name"); break;
+        case HAL_INVAL:
             PyErr_SetString(pyhal_error_type, "Invalid argument"); break;
         case HAL_NOMEM:
             PyErr_SetString(pyhal_error_type, "Not enough memory"); break;
@@ -88,16 +102,17 @@ static int pyhal_write_common(halpin *pin, PyObject *value) {
     int is_int = PyInt_Check(value);
     int intval = is_int ? PyInt_AsLong(value) : -1;
     unsigned int uintval;
+    if(!pin) return -1;
 
     switch(pin->type) {
         case HAL_BIT:
-            **(hal_bit_t**)(pin->data) = PyObject_IsTrue(value);
+            *pin->u->b = PyObject_IsTrue(value);
             break;
         case HAL_FLOAT:
             if(PyFloat_Check(value)) 
-                **(hal_bit_t**)(pin->data) = PyFloat_AsDouble(value);
+                *pin->u->f = PyFloat_AsDouble(value);
             else if(is_int)
-                **(hal_bit_t**)(pin->data) = intval;
+                *pin->u->f = intval;
             else {
                 PyErr_Format(PyExc_TypeError,
                         "Integer or float expected, not %s",
@@ -108,31 +123,27 @@ static int pyhal_write_common(halpin *pin, PyObject *value) {
         case HAL_U8:
             if(!is_int) goto typeerr;
             if(intval < 0 || intval > 0xff) goto rangeerr;
-            **(hal_u8_t**)(pin->data) = intval;
+            *pin->u->u8 = intval;
             break;
         case HAL_S8:
             if(!is_int) goto typeerr;
             if(intval < -0x80 || intval > 0x7f) goto rangeerr;
-            **(hal_s8_t**)(pin->data) = intval;
+            *pin->u->s8 = intval;
             break;
         case HAL_U16:
             if(!is_int) goto typeerr;
             if(intval < 0 || intval > 0xffff) goto rangeerr;
-            **(hal_u16_t**)(pin->data) = intval;
+            *pin->u->u16 = intval;
             break;
         case HAL_S16:
             if(!is_int) goto typeerr;
             if(intval < -0x8000 || intval > 0x7fff) goto rangeerr;
-            **(hal_s16_t**)(pin->data) = intval;
-            break;
-        case HAL_S32:
-            if(!is_int) goto typeerr;
-            **(hal_s32_t**)(pin->data) = intval;
+            *pin->u->s16 = intval;
             break;
         case HAL_U32:
             if(is_int) {
                 if(intval < 0) goto rangeerr;
-                **(hal_u32_t**)(pin->data) = intval;
+                *pin->u->u32 = intval;
                 break;
             }
             if(!PyLong_Check(value)) {
@@ -143,7 +154,11 @@ static int pyhal_write_common(halpin *pin, PyObject *value) {
             }
             uintval = PyLong_AsUnsignedLong(value);
             if(PyErr_Occurred()) return -1;
-            **(hal_u32_t**)(pin->data) = uintval;
+            *pin->u->u32 = uintval;
+            break;
+        case HAL_S32:
+            if(!is_int) goto typeerr;
+            *pin->u->s32 = intval;
             break;
         default:
             PyErr_Format(pyhal_error_type, "Invalid pin type %d", pin->type);
@@ -161,14 +176,14 @@ rangeerr:
 static PyObject *pyhal_read_common(halpin *pin) {
     if(!pin) return NULL;
     switch(pin->type) {
-        case HAL_BIT: return PyBool_FromLong(**(hal_bit_t**)pin->data);
-        case HAL_U8: return PyInt_FromLong(**(hal_u8_t**)pin->data);
-        case HAL_S8: return PyInt_FromLong(**(hal_s8_t**)pin->data);
-        case HAL_U16: return PyInt_FromLong(**(hal_u16_t**)pin->data);
-        case HAL_S16: return PyInt_FromLong(**(hal_s16_t**)pin->data);
-        case HAL_U32: return PyLong_FromUnsignedLong(**(hal_u32_t**)pin->data);
-        case HAL_S32: return PyInt_FromLong(**(hal_s32_t**)pin->data);
-        case HAL_FLOAT: return PyFloat_FromDouble(**(hal_float_t**)pin->data);
+        case HAL_BIT: return PyBool_FromLong(*(pin->u->b));
+        case HAL_U8: return PyInt_FromLong(*(pin->u->u8));
+        case HAL_S8: return PyInt_FromLong(*(pin->u->s8));
+        case HAL_U16: return PyInt_FromLong(*(pin->u->u16));
+        case HAL_S16: return PyInt_FromLong(*(pin->u->s16));
+        case HAL_U32: return PyLong_FromUnsignedLong(*(pin->u->u32));
+        case HAL_S32: return PyInt_FromLong(*(pin->u->s32));
+        case HAL_FLOAT: return PyFloat_FromDouble(*(pin->u->f));
     }
     PyErr_Format(pyhal_error_type, "Invalid pin type %d", pin->type);
     return NULL;
@@ -218,15 +233,15 @@ static PyObject * pyhal_create_common(halobject *self, char *name, hal_type_t ty
 
     pin->type = type;
     pin->dir = dir;
-    pin->data = hal_malloc(MAX_PIN_SIZE);
-    if(!pin->data) {
+    pin->u = hal_malloc(MAX_PIN_SIZE);
+    if(!pin->u) {
         free(pin->name);
         PyErr_SetString(PyExc_MemoryError, "hal_malloc failed");
         return NULL;
     }
 
     snprintf(pin_name, HAL_NAME_LEN, "%s.%s", self->name, name);
-    res = hal_pin_new(pin_name, type, dir, pin->data, self->hal_id);
+    res = hal_pin_new(pin_name, type, dir, (void*)pin->u, self->hal_id);
     if(res) return pyhal_error(res);
 
     self->npins ++;
