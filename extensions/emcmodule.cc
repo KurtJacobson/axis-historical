@@ -1408,9 +1408,9 @@ static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
 #ifdef AXIS_USE_EMC2
             colornum = status->motion.traj.motion_type;
 #endif
-            x = status->motion.traj.position.tran.x;
-            y = status->motion.traj.position.tran.y;
-            z = status->motion.traj.position.tran.z;
+            x = status->motion.traj.position.tran.x - status->task.toolOffset.tran.x;
+            y = status->motion.traj.position.tran.y - status->task.toolOffset.tran.y;
+            z = status->motion.traj.position.tran.z - status->task.toolOffset.tran.z;
 
             struct color c = s->colors[colornum];
             struct logger_point &op = s->p[s->npts-1];
