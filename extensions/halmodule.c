@@ -256,7 +256,6 @@ static PyObject *pyhal_new_pin(halobject *self, PyObject *o) {
     if(!PyArg_ParseTuple(o, "sii", &name, &type, &dir)) 
         return NULL;
 
-    printf("pyhal_new_pin: %s %d %d\n", name, type, dir);
     return pyhal_create_common(self, name, type, dir);
 }
 
