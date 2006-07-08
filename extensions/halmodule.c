@@ -2,6 +2,10 @@
 #define ULAPI
 #include "hal.h"
 
+#ifndef Py_RETURN_NONE
+#define Py_RETURN_NONE return Py_INCREF(Py_None), Py_None
+#endif
+
 typedef struct halpin { 
     char *name;
     hal_type_t type;
