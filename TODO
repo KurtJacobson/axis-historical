@@ -10,6 +10,17 @@ Items to be completed before 1.3rc release
 * Screenshot updates
 
 ------------------------------------------------------------------------
+Notes on support for machines with nontrivial kinematics:
+$: toggle joint/world (also in menu -- machine or view?)
+    cannot toggle from joint->world when all joints are not homed
+
+joint numbers are displayed instead of axis names when in joint mode
+
+machine/relative, actual/commanded, "touch off": disabled when in "joint" mode
+ 
+start up in joint mode if kinematics is nontrivial / disable joint mode if
+kinematics is trivial
+------------------------------------------------------------------------
 Wishlist items
 * Larger Buttons for "+" and "-"
 * Display spindle speed in RPM
