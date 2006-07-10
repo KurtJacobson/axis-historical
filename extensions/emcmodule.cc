@@ -401,12 +401,18 @@ static PyMemberDef Stat_members[] = {
     {"tool_prepped", T_INT, O(io.tool.toolPrepped), READONLY},
     {"tool_in_spindle", T_INT, O(io.tool.toolInSpindle), READONLY},
     
-// EMC_SPINDLE_STAT io.spindle
-    {"spindle_speed", T_DOUBLE, O(io.spindle.speed), READONLY},
-    {"spindle_direction", T_INT, O(io.spindle.direction), READONLY},
-    {"spindle_brake", T_INT, O(io.spindle.brake), READONLY},
-    {"spindle_increasing", T_INT, O(io.spindle.increasing), READONLY},
-    {"spindle_enabled", T_INT, O(io.spindle.enabled), READONLY},
+
+// EMC_SPINDLE_STAT io.spindle (renamed motion.spindle in 2.1.0)
+#if EMC_VERSION_CHECK(2,1,0)
+#define SPINDLE motion.spindle
+#else
+#define SPINDLE io.spindle
+#endif
+    {"spindle_speed", T_DOUBLE, O(SPINDLE.speed), READONLY},
+    {"spindle_direction", T_INT, O(SPINDLE.direction), READONLY},
+    {"spindle_brake", T_INT, O(SPINDLE.brake), READONLY},
+    {"spindle_increasing", T_INT, O(SPINDLE.increasing), READONLY},
+    {"spindle_enabled", T_INT, O(SPINDLE.enabled), READONLY},
 
 // EMC_COOLANT_STAT io.cooland
     {"mist", T_INT, O(io.coolant.mist), READONLY},
