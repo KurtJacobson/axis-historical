@@ -1085,28 +1085,79 @@ static PyObject *emcauto(pyCommandChannel *s, PyObject *o) {
         s->c->write(run);
     } else {
         PyErr_Clear();
-        if(PyArg_ParseTuple(o, "i", &fn)) {
-            switch(fn) {
-            case LOCAL_AUTO_PAUSE:
-                pause.serial_number = next_serial(s);
-                s->c->write(pause);
-                break;
-            case LOCAL_AUTO_RESUME:
-                resume.serial_number = next_serial(s);
-                s->c->write(resume);
-                break;
-            case LOCAL_AUTO_STEP:
-                step.serial_number = next_serial(s);
-                s->c->write(step);
-                break;
-            default:
+        if(!PyArg_ParseTuple(o, "i", &fn)) return NULL;
+        switch(fn) {
+        case LOCAL_AUTO_PAUSE:
+            pause.serial_number = next_serial(s);
+            s->c->write(pause);
+            break;
+        case LOCAL_AUTO_RESUME:
+            resume.serial_number = next_serial(s);
+            s->c->write(resume);
+            break;
+        case LOCAL_AUTO_STEP:
+            step.serial_number = next_serial(s);
+            s->c->write(step);
+            break;
+        default:
+            PyErr_Format(error, "Unexpected argument '%d' to command.auto", fn);
             return NULL;
-            }
         }
     }
     Py_INCREF(Py_None);
     return Py_None;
 }
+
+PyObject *debug(pyCommandChannel *s, PyObject *o) {
+    EMC_SET_DEBUG d;
+
+    if(!PyArg_ParseTuple(o, "i", &d.debug)) return NULL;
+    d.serial_number = next_serial(s);
+    s->c->write(d);
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject *teleop(pyCommandChannel *s, PyObject *o) {
+    EMC_TRAJ_SET_TELEOP_ENABLE en;
+
+    if(!PyArg_ParseTuple(o, "i", &en.enable)) return NULL;
+
+    en.serial_number = next_serial(s);
+    s->c->write(en);
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject *set_traj_mode(pyCommandChannel *s, PyObject *o) {
+    EMC_TRAJ_SET_MODE mo;
+
+    if(!PyArg_ParseTuple(o, "i", &mo.mode)) return NULL;
+
+    mo.serial_number = next_serial(s);
+    s->c->write(mo);
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject *set_teleop_vector(pyCommandChannel *s, PyObject *o) {
+    EMC_TRAJ_SET_TELEOP_VECTOR mo;
+
+    mo.vector.a = mo.vector.b = mo.vector.c = 0.;
+
+    if(!PyArg_ParseTuple(o, "ddd|ddd", &mo.vector.tran.x, &mo.vector.tran.y, &mo.vector.tran.z, &mo.vector.a, &mo.vector.b, &mo.vector.c))
+        return NULL;
+
+    mo.serial_number = next_serial(s);
+    s->c->write(mo);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 
 PyObject *wait_complete(pyCommandChannel *s, PyObject *o) {
     return PyInt_FromLong(emcWaitCommandComplete(s->serial, s->s));
@@ -1118,6 +1169,10 @@ static PyMemberDef Command_members[] = {
 };
 
 static PyMethodDef Command_methods[] = {
+    {"debug", (PyCFunction)debug, METH_VARARGS},
+    {"teleop_enable", (PyCFunction)teleop, METH_VARARGS},
+    {"teleop_vector", (PyCFunction)set_teleop_vector, METH_VARARGS},
+    {"traj_mode", (PyCFunction)set_traj_mode, METH_VARARGS},
     {"wait_complete", (PyCFunction)wait_complete, METH_NOARGS},
     {"state", (PyCFunction)state, METH_VARARGS},
     {"mdi", (PyCFunction)mdi, METH_VARARGS},
@@ -1670,6 +1725,10 @@ initemc(void) {
     ENUMX(6, LOCAL_AUTO_PAUSE);
     ENUMX(6, LOCAL_AUTO_RESUME);
     ENUMX(6, LOCAL_AUTO_STEP);
+
+    ENUMX(4, EMC_TRAJ_MODE_FREE);
+    ENUMX(4, EMC_TRAJ_MODE_COORD);
+    ENUMX(4, EMC_TRAJ_MODE_TELEOP);
 
     pthread_mutex_init(&mutex, NULL);
 }
