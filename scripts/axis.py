@@ -2483,7 +2483,12 @@ if o.g:
     y = (o.g.min_extents[1] + o.g.max_extents[1])/2
     z = (o.g.min_extents[2] + o.g.max_extents[2])/2
     o.set_centerpoint(x, y, z)
-root_window.bind("<Visibility>", "after 100 { catch { send -async popimage exit }}; bind . <Visibility {}")
+
+try:
+    root_window.tk.call("send", "-async", "popimage", "destroy .")
+except Tkinter.TclError:
+    pass
+
 o.update_idletasks()
 
 import _tk_seticon
