@@ -182,9 +182,15 @@ proc nf_dialog {w title text image default args} {
 
     wm withdraw $w
     update idletasks
+
     set parent [winfo parent $w]
-    set x [expr {[winfo rootx $parent]+([winfo reqwidth $parent]-[winfo reqwidth $w])/2}]
-    set y [expr {[winfo rooty $parent]+([winfo reqheight $parent]-[winfo reqheight $w])/2}]
+    if {[winfo viewable $parent]} { 
+        set x [expr {[winfo rootx $parent]+([winfo reqwidth $parent]-[winfo reqwidth $w])/2}]
+        set y [expr {[winfo rooty $parent]+([winfo reqheight $parent]-[winfo reqheight $w])/2}]
+    } else {
+        set x [expr {([winfo screenwidth $w]-[winfo reqwidth $w])/2}]
+        set y [expr {([winfo screenheight $w]-[winfo reqheight $w])/2}]
+    }
     wm geom $w +$x+$y
     wm deiconify $w
 
