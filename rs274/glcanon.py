@@ -36,6 +36,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.max_extents = [-9e99,-9e99,-9e99]
         self.colors = widget.colors
         self.in_arc = 0
+        self.old_xo = self.old_zo = 0
 
     def message(self, message): pass
 
@@ -54,6 +55,13 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
             self.min_extents = [min(x), min(y), min(z)]
             self.max_extents = [max(x), max(y), max(z)]
 
+    def tool_offset(self, zo, xo):
+        x, y, z = self.lo
+        self.lo = (x - xo + self.old_xo, y, z - zo + self.old_zo)
+        self.old_xo = xo
+        self.old_zo = zo
+        print "utlo", zo, xo
+
     def set_spindle_rate(self, arg): pass
     def set_feed_rate(self, arg): pass
     def comment(self, arg): pass
@@ -63,6 +71,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         return tool, .75, .0625
 
     def set_origin_offsets(self, offset_x, offset_y, offset_z, offset_a, offset_b, offset_c):
+        print "set origin offsets", offset_x, offset_y, offset_z
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.offset_z = offset_z

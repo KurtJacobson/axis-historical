@@ -316,6 +316,22 @@ void COMMENT(char *comment) {
     Py_XDECREF(result);
 }
 
+void USE_TOOL_LENGTH_OFFSET(double xoffset, double zoffset) {
+    maybe_new_line();
+    if(interp_error) return;
+    PyObject *result = PyObject_CallMethod(callback, "tool_offset", "dd",
+            zoffset, xoffset);
+    if(result == NULL) interp_error ++;
+    Py_XDECREF(result);
+}
+void USE_TOOL_LENGTH_OFFSET(double offset) {
+    maybe_new_line();
+    if(interp_error) return;
+    PyObject *result = PyObject_CallMethod(callback, "tool_offset", "dd",
+            offset, 0);
+    if(result == NULL) interp_error ++;
+}
+
 void SET_FEED_REFERENCE(double reference) { }
 void SET_CUTTER_RADIUS_COMPENSATION(double radius) {}
 void START_CUTTER_RADIUS_COMPENSATION(int direction) {}
@@ -333,8 +349,6 @@ void PROGRAM_END() {}
 void PALLET_SHUTTLE() {}
 void CHANGE_TOOL(int tool) {}
 void SELECT_TOOL(int tool) {}
-void USE_TOOL_LENGTH_OFFSET(double xoffset, double zoffset) {}
-void USE_TOOL_LENGTH_OFFSET(double offset) {}
 void OPTIONAL_PROGRAM_STOP() {}
 void DISABLE_FEED_OVERRIDE() {}
 void DISABLE_SPEED_OVERRIDE() {}
