@@ -259,6 +259,12 @@ static PyObject *pyhal_new_pin(halobject *self, PyObject *o) {
     return pyhal_create_common(self, name, type, dir);
 }
 
+static PyObject *pyhal_ready(halobject *self, PyObject *o) {
+    int res = hal_ready(self->hal_id);
+    if(res) return pyhal_error(res);
+    Py_RETURN_NONE;
+}
+
 static PyObject *pyhal_exit(halobject *self, PyObject *o) {
     if(self->hal_id > 0) 
         hal_exit(self->hal_id);
@@ -290,6 +296,8 @@ static PyMethodDef hal_methods[] = {
         "Create a new pin"},
     {"exit", (PyCFunction)pyhal_exit, METH_NOARGS,
         "Call hal_exit"},
+    {"ready", (PyCFunction)pyhal_ready, METH_NOARGS,
+        "Call hal_ready"},
     {NULL},
 };
 
