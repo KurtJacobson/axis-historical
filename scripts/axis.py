@@ -678,6 +678,21 @@ class MyOpengl(Opengl):
                     hershey.plot_string(f, .5)
                     glPopMatrix()
 
+        if vars.show_live_plot.get() or vars.show_program.get():
+            s.poll()
+            glPushMatrix()
+
+            lu = (s.linear_units or 1)*25.4
+            if vars.coord_type.get() and (s.origin[0] or s.origin[1] or 
+                                          s.origin[2]):
+                draw_small_origin()
+                glTranslatef(s.origin[0]/lu, s.origin[1]/lu, s.origin[2]/lu)
+                draw_axes()
+            else:
+                draw_axes()
+            glPopMatrix()
+
+
         if vars.show_live_plot.get():
             glDepthFunc(GL_LEQUAL)
             glLineWidth(3)
@@ -725,6 +740,12 @@ class MyOpengl(Opengl):
                         glRotatef(s.position[3], 0, 1, 0)
                     elif axisnames[3] == "C":
                         glRotatef(s.position[3], 0, 0, 1)
+
+                glEnable(GL_BLEND)
+                glEnable(GL_CULL_FACE);
+                glBlendColor(0,0,0,.2)
+                glBlendFunc(GL_ONE, GL_CONSTANT_ALPHA);
+
                 if lathe and current_tool and current_tool.orientation != 0:
                     lathetool()
                 else:
@@ -736,7 +757,7 @@ class MyOpengl(Opengl):
                         glEnable(GL_LIGHTING)
                         glColor3f(*o.colors['cone'])
                         gluCylinder(q, r, r, 8*r, 32, 1)
-                        gluDisk(q, 0, r, 32, 1)
+                        gluDisk(q, 0, -r, 32, 1)
                         glTranslatef(0,0,8*r)
                         gluDisk(q, 0, r, 32, 1)
                         glDisable(GL_LIGHTING)
@@ -745,20 +766,6 @@ class MyOpengl(Opengl):
                         glScalef(cone_scale, cone_scale, cone_scale)
                         glCallList(cone_program)
                 glPopMatrix()
-        if vars.show_live_plot.get() or vars.show_program.get():
-            s.poll()
-            glPushMatrix()
-
-            lu = (s.linear_units or 1)*25.4
-            if vars.coord_type.get() and (s.origin[0] or s.origin[1] or 
-                                          s.origin[2]):
-                draw_small_origin()
-                glTranslatef(s.origin[0]/lu, s.origin[1]/lu, s.origin[2]/lu)
-                draw_axes()
-            else:
-                draw_axes()
-            glPopMatrix()
-
 
         glMatrixMode(GL_PROJECTION)
         glPushMatrix()

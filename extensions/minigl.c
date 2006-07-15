@@ -77,6 +77,7 @@ static PyObject *py##name(PyObject *s, PyObject *o) { \
 GLCALL1V(glBegin, "i", int)
 GLCALL3V(glColor3f, "fff", float, float, float)
 GLCALL4V(glColor4f, "ffff", float, float, float, float)
+GLCALL4V(glBlendColor, "ffff", float, float, float, float)
 GLCALL3V(glVertex3f, "fff", float, float, float);
 GLCALL2V(glLineStipple, "ii", int, int)
 GLCALL1V(glLineWidth, "f", float)
@@ -631,6 +632,7 @@ static PyMethodDef methods[] = {
 METH(glBegin, ""),
 METH(glColor3f, ""),
 METH(glColor4f, ""),
+METH(glBlendColor, ""),
 METH(glDeleteLists, ""),
 METH(glBlendFunc, ""),
 METH(glCallList, ""),
@@ -731,6 +733,8 @@ void initminigl(void) {
     CONST(GL_MODELVIEW);
     CONST(GL_MODELVIEW_MATRIX);
     CONST(GL_ONE_MINUS_SRC_ALPHA);
+    CONST(GL_CONSTANT_ALPHA);
+    CONST(GL_ONE);
     CONST(GL_PROJECTION);
     CONST(GL_PROJECTION_MATRIX);
     CONST(GL_QUADS);
