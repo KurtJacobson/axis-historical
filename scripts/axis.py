@@ -725,13 +725,25 @@ class MyOpengl(Opengl):
                         glRotatef(s.position[3], 0, 1, 0)
                     elif axisnames[3] == "C":
                         glRotatef(s.position[3], 0, 0, 1)
-                if lathe and current_tool and current_tool[-1:] != 0:
+                if lathe and current_tool and current_tool.orientation != 0:
                     lathetool()
                 else:
                     if lathe:
                         glRotatef(90, 0, 1, 0)
-                    glScalef(cone_scale, cone_scale, cone_scale)
-                    glCallList(cone_program)
+                    if current_tool and current_tool.diameter != 0:
+                        r = current_tool.diameter / 2.
+                        q = gluNewQuadric()
+                        glEnable(GL_LIGHTING)
+                        glColor3f(*o.colors['cone'])
+                        gluCylinder(q, r, r, 8*r, 32, 1)
+                        gluDisk(q, 0, r, 32, 1)
+                        glTranslatef(0,0,8*r)
+                        gluDisk(q, 0, r, 32, 1)
+                        glDisable(GL_LIGHTING)
+                        gluDeleteQuadric(q)
+                    else:    
+                        glScalef(cone_scale, cone_scale, cone_scale)
+                        glCallList(cone_program)
                 glPopMatrix()
         if vars.show_live_plot.get() or vars.show_program.get():
             s.poll()
@@ -1223,8 +1235,12 @@ class LivePlotter:
         elif current_tool is None:
             vupdate(vars.tool, _("Unknown tool %d") % self.stat.tool_in_spindle)
         elif len(current_tool) == 7:
-            vupdate(vars.tool,
-                    _("Tool %d, zo %g, xo %g, dia %g") % current_tool[:4])
+            if current_tool.xoffset == 0 and not lathe:
+                vupdate(vars.tool, _("Tool %d, offset %g, diameter %g") % (
+                            current_tool[0], current_tool[1], current_tool[3]))
+            else:
+                vupdate(vars.tool,
+                        _("Tool %d, zo %g, xo %g, dia %g") % current_tool[:4])
         else:
             vupdate(vars.tool,
                     _("Tool %d, offset %g, diameter %g") % current_tool[:3])
@@ -1442,7 +1458,7 @@ class AxisCanon(GLCanon):
     def get_tool(self, tool):
         for t in s.tool_table:
             if t[0] == tool:
-                return t
+                return tuple(t)
         return tool,0.,0.,0.,0.,0.,0
 
     def get_external_angular_units(self):

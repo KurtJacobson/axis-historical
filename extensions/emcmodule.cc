@@ -17,6 +17,7 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <Python.h>
+#include <structseq.h>
 #include <pthread.h>
 #include <GL/gl.h>
 #include <structmember.h>
@@ -643,26 +644,50 @@ static PyObject *Stat_axis(pyStatChannel *s) {
     return res;
 }
 
+static PyStructSequence_Field tool_fields[] = {
+    {"id", },
+    {"zoffset", },
+    {"xoffset", },
+    {"diameter", },
+    {"frontangle", },
+    {"backangle", },
+    {"orientation", },
+    {0,},
+};
+
+static PyStructSequence_Desc tool_result_desc = {
+    "tool_result", /* name */
+    "", /* doc */
+    tool_fields,
+    7
+};
+
+
+static PyTypeObject ToolResultType;
+
 static PyObject *Stat_tool_table(pyStatChannel *s) {
     PyObject *res = PyTuple_New(CANON_TOOL_MAX);
     int j=0;
     for(int i=1; i<=CANON_TOOL_MAX; i++) {
         struct CANON_TOOL_TABLE &t = s->status.io.tool.toolTable[i];
         if(t.id == 0) continue;
+        PyObject *tool = PyStructSequence_New(&ToolResultType);
 #if EMC_VERSION_CHECK(2,1,0)
-        PyObject *tool = PyTuple_New(7);
-        PyTuple_SetItem(tool, 0, PyInt_FromLong(t.id));
-        PyTuple_SetItem(tool, 1, PyFloat_FromDouble(t.zoffset));
-        PyTuple_SetItem(tool, 2, PyFloat_FromDouble(t.xoffset));
-        PyTuple_SetItem(tool, 3, PyFloat_FromDouble(t.diameter));
-        PyTuple_SetItem(tool, 4, PyFloat_FromDouble(t.frontangle));
-        PyTuple_SetItem(tool, 5, PyFloat_FromDouble(t.backangle));
-        PyTuple_SetItem(tool, 6, PyInt_FromLong(t.orientation));
+        PyStructSequence_SET_ITEM(tool, 0, PyInt_FromLong(t.id));
+        PyStructSequence_SET_ITEM(tool, 1, PyFloat_FromDouble(t.zoffset));
+        PyStructSequence_SET_ITEM(tool, 2, PyFloat_FromDouble(t.xoffset));
+        PyStructSequence_SET_ITEM(tool, 3, PyFloat_FromDouble(t.diameter));
+        PyStructSequence_SET_ITEM(tool, 4, PyFloat_FromDouble(t.frontangle));
+        PyStructSequence_SET_ITEM(tool, 5, PyFloat_FromDouble(t.backangle));
+        PyStructSequence_SET_ITEM(tool, 6, PyInt_FromLong(t.orientation));
 #else
-        PyObject *tool = PyTuple_New(3);
-        PyTuple_SetItem(tool, 0, PyInt_FromLong(t.id));
-        PyTuple_SetItem(tool, 1, PyFloat_FromDouble(t.length));
-        PyTuple_SetItem(tool, 2, PyFloat_FromDouble(t.diameter));
+        PyStructSequence_SET_ITEM(tool, 0, PyInt_FromLong(t.id));
+        PyStructSequence_SET_ITEM(tool, 1, PyFloat_FromDouble(t.length));
+        PyStructSequence_SET_ITEM(tool, 2, PyFloat_FromDouble(0.));
+        PyStructSequence_SET_ITEM(tool, 3, PyFloat_FromDouble(t.diameter));
+        PyStructSequence_SET_ITEM(tool, 4, PyFloat_FromDouble(0.));
+        PyStructSequence_SET_ITEM(tool, 5, PyFloat_FromDouble(0.));
+        PyStructSequence_SET_ITEM(tool, 6, PyFloat_FromDouble(0.));
 #endif
         PyTuple_SetItem(res, j, tool);
         j++;
@@ -1689,6 +1714,9 @@ initemc(void) {
     PyModule_AddIntConstant(m, "NML_ERROR", NML_ERROR_TYPE);
     PyModule_AddIntConstant(m, "NML_TEXT", NML_TEXT_TYPE);
     PyModule_AddIntConstant(m, "NML_DISPLAY", NML_DISPLAY_TYPE);
+
+    PyStructSequence_InitType(&ToolResultType, &tool_result_desc);
+    PyModule_AddObject(m, "tool", (PyObject*)&ToolResultType);
 
     ENUMX(4, EMC_AXIS_LINEAR);
     ENUMX(4, EMC_AXIS_ANGULAR);
