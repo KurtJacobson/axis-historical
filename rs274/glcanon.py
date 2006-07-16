@@ -40,9 +40,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
 
     def message(self, message): pass
 
-    def get_external_parameter_filename(self): # XXX not used and wrong
-        return "/usr/src/emc/sim.var"
-
     def next_line(self, st):
         self.state = st
         self.lineno = self.state.sequence_number + 1
