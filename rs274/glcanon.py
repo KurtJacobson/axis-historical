@@ -60,7 +60,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         self.lo = (x - xo + self.old_xo, y, z - zo + self.old_zo)
         self.old_xo = xo
         self.old_zo = zo
-        print "utlo", zo, xo
 
     def set_spindle_rate(self, arg): pass
     def set_feed_rate(self, arg): pass
@@ -71,7 +70,6 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
         return tool, .75, .0625
 
     def set_origin_offsets(self, offset_x, offset_y, offset_z, offset_a, offset_b, offset_c):
-        print "set origin offsets", offset_x, offset_y, offset_z
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.offset_z = offset_z
