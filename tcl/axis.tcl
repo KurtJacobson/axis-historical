@@ -225,6 +225,21 @@ setup_menu_accel .menu.view end [_ "Show machine position"]
 	-command redraw
 setup_menu_accel .menu.view end [_ "Show relative position"]
 
+.menu.view add separator
+
+.menu.view add radiobutton \
+        -value 0 \
+        -variable joint_mode \
+        -accelerator $ \
+        -command set_joint_mode
+setup_menu_accel .menu.view end [_ "World mode"]
+
+.menu.view add radiobutton \
+        -value 1 \
+        -variable joint_mode \
+        -accelerator $ \
+        -command set_joint_mode
+setup_menu_accel .menu.view end [_ "Joint mode"]
 # ----------------------------------------------------------------------
 .menu.help add command \
 	-command {
@@ -1310,6 +1325,8 @@ set INTERP_READING 2
 set INTERP_PAUSED 3
 set INTERP_WAITING 4
 
+set TRAJ_MODE_FREE 1
+
 set manual [concat [winfo children $_tabs_manual.axes] \
     $_tabs_manual.jogf.zerohome.home \
     $_tabs_manual.jogf.zerohome.zero \
@@ -1408,9 +1425,14 @@ proc update_state {args} {
                 $::_tabs_manual.spindlef.spindleminus \
                 $::_tabs_manual.spindlef.spindleplus
 
-    set coord_str [lindex [list [_ Machine] [_ Relative]] $::coord_type]
-    set display_str [lindex [list [_ Actual] [_ Commanded]] $::display_type]
-    set ::position [list [_ "Position:"] $coord_str $display_str]
+    if {$::motion_mode == $::TRAJ_MODE_FREE} {
+        set ::position [concat [_ "Position:"] Joint]
+    } else {
+        set coord_str [lindex [list [_ Machine] [_ Relative]] $::coord_type]
+        set display_str [lindex [list [_ Actual] [_ Commanded]] $::display_type]
+
+        set ::position [concat [_ "Position:"] $coord_str $display_str]
+    }
 
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE} {
         if {$::last_interp_state != $::INTERP_IDLE || $::last_task_state != $::task_state} {
@@ -1450,6 +1472,7 @@ set highlight_line -1
 set coord_type 1
 set display_type 0
 set spindledir {}
+set motion_mode 0
 trace variable taskfile w update_title
 trace variable taskfile w queue_update_state
 trace variable task_state w queue_update_state
@@ -1461,6 +1484,7 @@ trace variable highlight_line w queue_update_state
 trace variable spindledir w queue_update_state
 trace variable coord_type w queue_update_state
 trace variable display_type w queue_update_state
+trace variable motion_mode w queue_update_state
 
 bind . <Control-Tab> {
     set page [${pane_top}.tabs raise]

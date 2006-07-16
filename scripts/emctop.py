@@ -35,6 +35,8 @@ def show_gcodes(l):
     return " ".join(["G%g" % (i/10.) for i in l[1:] if i != -1])
 
 maps = {
+'motion_mode':{emc.TRAJ_MODE_FREE: 'free', emc.TRAJ_MODE_COORD: 'coord',
+                emc.TRAJ_MODE_TELEOP: 'teleop'},
 'interp_state':{emc.INTERP_IDLE: 'idle', emc.INTERP_PAUSED: 'paused', 
                 emc.INTERP_READING: 'reading', emc.INTERP_WAITING: 'waiting'},
 'task_state':  {emc.STATE_ESTOP: 'estop', emc.STATE_ESTOP_RESET: 'estop reset',

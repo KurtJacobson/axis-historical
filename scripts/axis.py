@@ -1229,6 +1229,7 @@ class LivePlotter:
         vupdate(vars.flood, self.stat.flood)
         vupdate(vars.brake, self.stat.spindle_brake)
         vupdate(vars.spindledir, self.stat.spindle_direction)
+        vupdate(vars.motion_mode, self.stat.motion_mode)
         if time.time() > feedrate_blackout:
             vupdate(vars.feedrate, int(100 * self.stat.feedrate + .5))
         vupdate(vars.override_limits, self.stat.axis[0]['override_limits'])
@@ -1615,6 +1616,8 @@ vars = nf.Variables(root_window,
     ("view_type", IntVar),
     ("jog_speed", DoubleVar),
     ("max_speed", DoubleVar),
+    ("joint_mode", IntVar),
+    ("motion_mode", IntVar),
 )
 vars.emctop_command.set(os.path.join(os.path.dirname(sys.argv[0]), "emctop"))
 vars.highlight_line.set(-1)
@@ -2189,6 +2192,10 @@ class TclCommands(nf.TclCommands):
         vars.display_type.set(not vars.display_type.get())
         o.tkRedraw()
 
+    def toggle_joint_mode(*args):
+        vars.joint_mode.set(not vars.joint_mode.get())
+        commands.set_joint_mode()
+
     def toggle_coord_type(*args):
         vars.coord_type.set(not vars.coord_type.get())
         o.tkRedraw()
@@ -2222,6 +2229,9 @@ class TclCommands(nf.TclCommands):
         halcmd_sets("axisui.jog.a", vars.current_axis.get() == "a")
         halcmd_sets("axisui.jog.b", vars.current_axis.get() == "b")
         halcmd_sets("axisui.jog.c", vars.current_axis.get() == "c")
+
+    def set_joint_mode(*args):
+        c.teleop_enable(vars.joint_mode.get())
 
 commands = TclCommands(root_window)
 
@@ -2274,6 +2284,7 @@ root_window.bind("c", lambda event: jogspeed_continuous())
 root_window.bind("i", lambda event: jogspeed_incremental())
 root_window.bind("@", commands.toggle_display_type)
 root_window.bind("#", commands.toggle_coord_type)
+root_window.bind("$", commands.toggle_joint_mode)
 
 root_window.bind("<Home>", commands.home_axis)
 root_window.bind("<Shift-Home>", commands.set_axis_offset)
@@ -2288,7 +2299,7 @@ def jog(*args):
 # XXX correct for machines with more than six axes
 jog_after = [None] * 6
 jog_cont  = [False] * 6
-jogging   = [False] * 6
+jogging   = [0] * 6
 def jog_on(a, b):
     if not manual_ok(): return
     if isinstance(a, (str, unicode)):
@@ -2298,20 +2309,25 @@ def jog_on(a, b):
         jog_after[a] = None
         return
     jogspeed = widgets.jogspeed.get()
-    if jogspeed != _("Continuous"):
-        s.poll()
-        if s.state != 1: return
-        if "/" in jogspeed:
-            p, q = jogspeed.split("/")
-            jogspeed = float(p) / float(q)
-        else:
-            jogspeed = float(jogspeed)
-        jog(emc.JOG_INCREMENT, a, b, jogspeed)
+    if s.motion_mode == emc.TRAJ_MODE_TELEOP:
+        jogging[a] = b
         jog_cont[a] = False
+        c.teleop_vector(*jogging)
     else:
-        jog(emc.JOG_CONTINUOUS, a, b)
-        jog_cont[a] = True
-        jogging[a] = True
+        if jogspeed != _("Continuous"):
+            s.poll()
+            if s.state != 1: return
+            if "/" in jogspeed:
+                p, q = jogspeed.split("/")
+                jogspeed = float(p) / float(q)
+            else:
+                jogspeed = float(jogspeed)
+            jog(emc.JOG_INCREMENT, a, b, jogspeed)
+            jog_cont[a] = False
+        else:
+            jog(emc.JOG_CONTINUOUS, a, b)
+            jog_cont[a] = True
+            jogging[a] = b
 
 def jog_off(a):
     if isinstance(a, (str, unicode)):
@@ -2323,9 +2339,12 @@ def jog_off_actual(a):
     if not manual_ok(): return
     activate_axis(a)
     jog_after[a] = None
-    if jog_cont[a]:
-        jogging[a] = False
-        jog(emc.JOG_STOP, a)
+    jogging[a] = 0
+    if s.motion_mode == emc.TRAJ_MODE_TELEOP:
+        c.teleop_vector(*jogging)
+    else:
+        if jog_cont[a]:
+            jog(emc.JOG_STOP, a)
 
 def jog_off_all():
     for i in range(6):
