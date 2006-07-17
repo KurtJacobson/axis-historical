@@ -1727,16 +1727,28 @@ class SelectionHandler:
 
 selection = SelectionHandler(root_window)
 
-class _prompt_float:
+class DummyCanon:
+    def next_line(*args): pass
+    def set_origin_offsets(*args): pass
+    def get_external_angular_units(self): return 1.0
+    def get_external_length_units(self): return 1.0
 
+    def set_feed_rate(self, f):
+        self.number = f
+
+class _prompt_float:
+    """ Prompt for a g-code floating point expression """
     def __init__(self, title, text, default):
         t = self.t = Toplevel(root_window, padx=7, pady=7)
         t.wm_title(title)
         t.wm_transient(root_window)
         t.wm_resizable(0, 0)
-        m = Message(t, text=text, aspect=500)
-        self.v = v = DoubleVar(t)
+        m = Message(t, text=text, aspect=500, anchor="w", justify="left")
+        self.v = v = StringVar(t)
         self.u = u = BooleanVar(t)
+        self.w = w = StringVar(t)
+        l = Tkinter.Message(t, textvariable=w, justify="left", anchor="w",
+                aspect=500)
         v.set(default)
         self.e = e = Entry(t, textvariable=v)
         f = Tkinter.Frame(t)
@@ -1749,6 +1761,7 @@ class _prompt_float:
 
         m.pack(side="top", anchor="w")
         e.pack(side="top", anchor="e")
+        l.pack(side="top", anchor="w", fill="x", expand=1)
         f.pack(side="top", anchor="e")
         self.ok.pack(side="left", padx=3, pady=3)
         self.cancel.pack(side="left", padx=3, pady=3)
@@ -1762,12 +1775,42 @@ class _prompt_float:
         self.t.destroy()
 
     def check_valid(self, *args):
-        try:
-            self.v.get()
-        except ValueError:
-            self.ok.configure(state="disabled")
-        else:
+        v = self.v.get()
+
+        st = 0
+        ok = 1
+
+        if "#" in v:
+            ok = 0
+            self.w.set("Variables may not be used here")
+
+        if ok:
+            for ch in v:
+                if ch == "[": st += 1
+                elif ch == "]": st -= 1
+                if st < 0:
+                    ok = 0
+                    self.w.set("Right bracket without matching left bracket")
+                    break
+            if st != 0:
+                self.w.set("Left bracket without matching right bracket")
+                ok = 0
+
+        if ok:
+            f = os.path.devnull
+            canon = DummyCanon()
+            result, seq = gcode.parse("", canon, "F["+v+"]", "M2")
+
+            if result > gcode.MIN_ERROR:
+                self.w.set(gcode.strerror(result))
+                ok = 0
+            else:
+                self.w.set("= %f" % canon.number)
+
+        if ok: 
             self.ok.configure(state="normal")
+        else:
+            self.ok.configure(state="disabled")
 
     def do_focus(self):
         if not self.e.winfo_viewable():
@@ -2107,12 +2150,19 @@ class TclCommands(nf.TclCommands):
         if new_axis_value is None: return
         ensure_mode(emc.MODE_MDI)
         s.poll()
+
         lu = s.linear_units or 1
-        if vars.metric.get(): new_axis_value = new_axis_value / 25.4
-        position = s.position[offset_axis] / (25.4 * lu) - new_axis_value
+        p0 = s.position[offset_axis] / (25.4 * lu) 
+
+        if vars.metric.get(): scale = 1/25.4
+        else: scale = 1
+
         if 210 in s.gcodes:
-            position *= 25.4
-        offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
+            scale *= 25.4
+            p0 *= 25.4
+
+        offset_command = "G10 L2 P1 %c[%s-[%s*[%s]]]\n" % (vars.current_axis.get(), p0, scale, new_axis_value)
+        print offset_command
         c.mdi(offset_command)
         ensure_mode(emc.MODE_MANUAL)
         s.poll()
