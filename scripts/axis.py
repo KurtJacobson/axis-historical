@@ -29,7 +29,7 @@ gettext.install("axis", localedir=os.path.join(BASE, "share", "locale"), unicode
 
 version="1.4a0"
 
-import array, time, atexit, tempfile, shutil, errno, thread, subprocess
+import array, time, atexit, tempfile, shutil, errno, thread
 
 if os.environ.has_key('EMC2VERSION'):
     version = version + " / emc2 " + os.environ['EMC2VERSION']
@@ -94,16 +94,24 @@ if sys.version_info <= (2,3):
             yield index, item
             index += 1
 
-halcmd = subprocess.Popen(["halcmd", "-sf"],
-    stdin=subprocess.PIPE)
-def halcmd_sets(signal, value):
-    global halcmd
-    if halcmd is None: return
-    if halcmd.poll() is not None:
+try:
+    import subprocess
+except ImportError:  # python-1.3 and older
+    def halcmd_sets(signal, value): pass
+else:
+    try:
+        halcmd = subprocess.Popen(["halcmd", "-sf"],
+            stdin=subprocess.PIPE)
+    except os.error:
         halcmd = None
-        return
-    halcmd.stdin.write("sets %s %s\n" % (signal, value))
-    halcmd.stdin.flush()
+    def halcmd_sets(signal, value):
+        global halcmd
+        if halcmd is None: return
+        if halcmd.poll() is not None:
+            halcmd = None
+            return
+        halcmd.stdin.write("sets %s %s\n" % (signal, value))
+        halcmd.stdin.flush()
 
 def install_help(app):
     help1 = [
