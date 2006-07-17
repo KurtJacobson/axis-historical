@@ -1145,7 +1145,7 @@ setup_widget_accel ${pane_top}.feedoverride.foentry [_ 0]
 scale ${pane_top}.feedoverride.foscale \
 	-command set_feedrate \
 	-orient horizontal \
-	-resolution 5.0 \
+	-resolution 1.0 \
 	-showvalue 0 \
 	-takefocus 0 \
 	-to 120.0 \
