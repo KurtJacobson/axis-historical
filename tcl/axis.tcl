@@ -1126,7 +1126,7 @@ pack ${pane_bottom}.t.sb \
 frame ${pane_top}.jogspeed
 label ${pane_top}.jogspeed.l0 -text [_ "Jog Speed:"]
 label ${pane_top}.jogspeed.l1
-scale ${pane_top}.jogspeed.s -bigincrement 0 -from .06 -to 1 -resolution .005 -showvalue 0 -variable jog_slider_val -command update_jog_slider_vel -orient h
+scale ${pane_top}.jogspeed.s -bigincrement 0 -from .06 -to 1 -resolution .010 -showvalue 0 -variable jog_slider_val -command update_jog_slider_vel -orient h
 label ${pane_top}.jogspeed.l -textv jog_speed -width 6 -anchor e
 pack ${pane_top}.jogspeed.l0 -side left
 pack ${pane_top}.jogspeed.l -side left
