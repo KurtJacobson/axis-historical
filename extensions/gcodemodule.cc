@@ -25,7 +25,11 @@
 #include "axisversion.h"
 
 #if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
+#if defined(AXIS_USE_EMC2)
 #include "interp_return.hh"
+#else
+#include "rs274ngc_return.hh"
+#endif
 #define active_settings  interp_new.active_settings
 #define active_g_codes   interp_new.active_g_codes
 #define active_m_codes   interp_new.active_m_codes
