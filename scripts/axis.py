@@ -751,12 +751,13 @@ class MyOpengl(Opengl):
 
                 glEnable(GL_BLEND)
                 glEnable(GL_CULL_FACE);
-                glBlendColor(0,0,0,.2)
                 glBlendFunc(GL_ONE, GL_CONSTANT_ALPHA);
 
                 if lathe and current_tool and current_tool.orientation != 0:
+                    glBlendColor(0,0,0,.1)
                     lathetool()
                 else:
+                    glBlendColor(0,0,0,.2)
                     if lathe:
                         glRotatef(90, 0, 1, 0)
                     if current_tool and current_tool.diameter != 0:
@@ -1037,6 +1038,7 @@ lathe_shapes = [
 ]
 
 def lathetool():
+    glDepthFunc(GL_ALWAYS)
     diameter, frontangle, backangle, orientation = current_tool[-4:]
     w = 3/8. 
 
@@ -1095,6 +1097,7 @@ def lathetool():
             radius * dy + radius * math.cos(circlemaxangle) + sz * cosmax)
         
         glEnd()
+    glDepthFunc(GL_LESS)
 
 def make_selection_list(g):
     global select_program
