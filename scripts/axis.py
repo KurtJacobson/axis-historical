@@ -2576,7 +2576,9 @@ if args:
 elif os.environ.has_key("AXIS_OPEN_FILE"):
     open_file_guts(os.environ["AXIS_OPEN_FILE"])
 elif not lathe:
-    open_file_guts(os.path.join(BASE, "share", "axis", "images", "axis.ngc"))
+    demofile = os.path.join(BASE, "share", "axis", "images", "axis.ngc")
+    if os.path.exists(demofile):
+        open_file_guts(demofile)
 if lathe:
     commands.set_view_y()
 else:
