@@ -815,6 +815,13 @@ class MyOpengl(Opengl):
         if vars.show_machine_speed.get():
             positions.append("Vel: % 6.2f" % (live_plotter.logger.average_speed*60))
 
+        if vars.show_distance_to_go.get():
+            dtg = s.distance_to_go / (25.4 * lu)
+            if vars.metric.get():
+                positions.append("DTG: % 6.2f" % (dtg * 25.4))
+            else:
+                positions.append("DTG: % 6.4f" % (dtg))
+
         maxlen = max([len(p) for p in positions])
         pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
                         for p in positions])
@@ -1617,6 +1624,7 @@ vars = nf.Variables(root_window,
     ("show_tool", IntVar),
     ("show_extents", IntVar),
     ("show_machine_speed", IntVar),
+    ("show_distance_to_go", IntVar),
     ("feedrate", IntVar),
     ("tool", StringVar),
     ("active_codes", StringVar),
@@ -1638,6 +1646,7 @@ vars.show_live_plot.set(1)
 vars.show_tool.set(1)
 vars.show_extents.set(1)
 vars.show_machine_speed.set(1)
+vars.show_distance_to_go.set(0)
 
 tabs_mdi = str(root_window.tk.call("set", "_tabs_mdi"))
 tabs_manual = str(root_window.tk.call("set", "_tabs_manual"))

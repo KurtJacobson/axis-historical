@@ -395,6 +395,7 @@ static PyMemberDef Stat_members[] = {
     {"kinematics_type", T_INT, O(motion.traj.kinematics_type), READONLY},
 #if defined(AXIS_USE_EMC2)
     {"motion_type", T_INT, O(motion.traj.motion_type), READONLY},
+    {"distance_to_go", T_DOUBLE, O(motion.traj.distance_to_go), READONLY},
 #endif
 
 // io

@@ -188,6 +188,11 @@ setup_menu_accel .menu.view end [_ "Show e_xtents"]
 	-command redraw
 setup_menu_accel .menu.view end [_ "Show machine sp_eed"]
 
+.menu.view add checkbutton \
+	-variable show_distance_to_go \
+	-command redraw
+setup_menu_accel .menu.view end [_ "Show _distance to go"]
+
 .menu.view add command \
 	-accelerator [_ "Ctrl-K"] \
 	-command clear_live_plot
