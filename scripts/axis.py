@@ -800,10 +800,10 @@ class MyOpengl(Opengl):
 
 
         if vars.metric.get():
-            positions = ["%c:% 9.2f" % i for i in 
+            positions = ["  %c:% 9.2f" % i for i in 
                     zip(axisnames, map(lambda p: p*25.4, positions))]
         else:
-            positions = ["%c:% 9.4f" % i for i in zip(axisnames, positions)]
+            positions = ["  %c:% 9.4f" % i for i in zip(axisnames, positions)]
         if lathe:
             limit = [s.limit[0]] + list(s.limit[2:])
             homed = [s.homed[0]] + list(s.homed[2:])
@@ -828,13 +828,14 @@ class MyOpengl(Opengl):
         glDepthFunc(GL_ALWAYS)
         glDepthMask(GL_FALSE)
         glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        glColor4f(*(o.colors['overlay_background'] + (o.colors['overlay_alpha'],)))
+        glBlendFunc(GL_ONE, GL_CONSTANT_ALPHA)
+        glColor3f(*o.colors['overlay_background'])
+        glBlendColor(0,0,0,1-o.colors['overlay_alpha'])
         glBegin(GL_QUADS)
         glVertex3f(0, ypos, 1)
-        glVertex3f(pixel_width+48, ypos, 1)
-        glVertex3f(pixel_width+48, ypos - 20 - coordinate_linespace*axiscount, 1)
-        glVertex3f(0, ypos - 20 - coordinate_linespace*axiscount, 1)
+        glVertex3f(0, ypos - 8 - coordinate_linespace*len(positions), 1)
+        glVertex3f(pixel_width+24, ypos - 8 - coordinate_linespace*len(positions), 1)
+        glVertex3f(pixel_width+24, ypos, 1)
         glEnd()
         glDisable(GL_BLEND)
 
@@ -847,10 +848,7 @@ class MyOpengl(Opengl):
             if i < len(homed) and homed[i]:
                 glRasterPos2i(6, ypos)
                 glBitmap(13, 16, 0, 3, 17, 0, homeicon)
-            if string.startswith("Vel:"):
-                glRasterPos2i(5, ypos)
-            else:
-                glRasterPos2i(23, ypos)
+            glRasterPos2i(5, ypos)
             for char in string:
                 glCallList(fontbase + ord(char))
             if i < len(homed) and limit[i]:
