@@ -704,6 +704,7 @@ class MyOpengl(Opengl):
         if vars.show_live_plot.get():
             glDepthFunc(GL_LEQUAL)
             glLineWidth(3)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
             glEnable(GL_BLEND)
             glPushMatrix()
             lu = 1/((s.linear_units or 1)*25.4)
