@@ -98,7 +98,7 @@ if is_emc2:
     )
 
     if os.path.exists(os.path.join(emcroot, "lib", "libemchal.so")):
-        hal = Extension("hal", ["extensions/halmodule.c"],
+        hal = Extension("hal", ["extensions/halmodule.cc"],
         libraries = ["emchal"],
         include_dirs=include_dirs,
         library_dirs=library_dirs,

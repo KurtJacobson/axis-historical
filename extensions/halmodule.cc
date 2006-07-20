@@ -2,6 +2,9 @@
 #define ULAPI
 #include "hal.h"
 
+#include "emc.hh"
+#include "axisversion.h"
+
 #ifndef Py_RETURN_NONE
 #define Py_RETURN_NONE return Py_INCREF(Py_None), Py_None
 #endif
@@ -215,7 +218,7 @@ static PyObject * pyhal_create_common(halobject *self, char *name, hal_type_t ty
     if(self->npins == self->mpins) {
         halpin *pins;
         self->mpins = 2 * self->mpins + 1;
-        pins = realloc(self->pins, sizeof(halpin) * self->mpins);
+        pins = (halpin*)realloc(self->pins, sizeof(halpin) * self->mpins);
         if(!pins) {
             PyErr_SetString(PyExc_MemoryError, "realloc(pins) failed");
             return NULL;
@@ -233,7 +236,7 @@ static PyObject * pyhal_create_common(halobject *self, char *name, hal_type_t ty
 
     pin->type = type;
     pin->dir = dir;
-    pin->u = hal_malloc(MAX_PIN_SIZE);
+    pin->u = (ptrunion*)hal_malloc(MAX_PIN_SIZE);
     if(!pin->u) {
         free(pin->name);
         PyErr_SetString(PyExc_MemoryError, "hal_malloc failed");
@@ -241,7 +244,7 @@ static PyObject * pyhal_create_common(halobject *self, char *name, hal_type_t ty
     }
 
     snprintf(pin_name, HAL_NAME_LEN, "%s.%s", self->name, name);
-    res = hal_pin_new(pin_name, type, dir, (void*)pin->u, self->hal_id);
+    res = hal_pin_new(pin_name, type, dir, (void**)pin->u, self->hal_id);
     if(res) return pyhal_error(res);
 
     self->npins ++;
@@ -256,12 +259,15 @@ static PyObject *pyhal_new_pin(halobject *self, PyObject *o) {
     if(!PyArg_ParseTuple(o, "sii", &name, &type, &dir)) 
         return NULL;
 
-    return pyhal_create_common(self, name, type, dir);
+    return pyhal_create_common(self, name, (hal_type_t)type, (hal_dir_t)dir);
 }
 
 static PyObject *pyhal_ready(halobject *self, PyObject *o) {
+#if EMC_VERSION_CHECK(2,1,0)
+    // hal_ready did not exist in EMC 2.0.x, make it a no-op
     int res = hal_ready(self->hal_id);
     if(res) return pyhal_error(res);
+#endif
     Py_RETURN_NONE;
 }
 
@@ -350,6 +356,7 @@ PyMethodDef module_methods[] = {
     {NULL},
 };
 
+extern "C"
 void inithal(void) {
     PyObject *m = Py_InitModule3("hal", module_methods,
             "Interface to emc2's hal");
