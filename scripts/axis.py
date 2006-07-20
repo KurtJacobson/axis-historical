@@ -1558,7 +1558,12 @@ def open_file_guts(f, filtered = False):
         progress.nextphase(len(lines))
         f = os.path.abspath(f)
         o.g = canon = AxisCanon(o, widgets.text, i, progress)
-        canon.parameter_file = inifile.find("RS274NGC", "PARAMETER_FILE")
+
+        parameter = inifile.find("RS274NGC", "PARAMETER_FILE")
+        temp_parameter = os.path.join(tempdir, os.path.basename(parameter))
+        shutil.copy(parameter, temp_parameter)
+        canon.parameter_File = temp_parameter
+
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
         unitcode = "G%d" % (20 + (s.linear_units == 1))
         try:
