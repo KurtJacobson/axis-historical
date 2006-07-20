@@ -1580,6 +1580,9 @@ def open_file_guts(f, filtered = False):
                     "error",0,_("OK"))
 
         t.configure(state="disabled")
+ 
+        if canon.traverse and canon.traverse[0][1] == (0,0,0):
+            del canon.traverse[0]
 
         canon.calc_extents()
         make_main_list(canon)
