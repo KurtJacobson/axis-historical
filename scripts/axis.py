@@ -1562,7 +1562,7 @@ def open_file_guts(f, filtered = False):
         parameter = inifile.find("RS274NGC", "PARAMETER_FILE")
         temp_parameter = os.path.join(tempdir, os.path.basename(parameter))
         shutil.copy(parameter, temp_parameter)
-        canon.parameter_File = temp_parameter
+        canon.parameter_file = temp_parameter
 
         initcode = inifile.find("EMC", "RS274NGC_STARTUP_CODE") or ""
         unitcode = "G%d" % (20 + (s.linear_units == 1))
