@@ -557,7 +557,10 @@ class MyOpengl(Opengl):
 
                 # Labels
                 if vars.coord_type.get():
-                    offset = [i/dimscale for i in s.origin]
+                    lu = (s.linear_units or 1)*25.4
+                    offset = [i/dimscale/lu for i in s.origin]
+                    if vars.metric.get():
+                        offset = [i*25.4 for i in offset]
                 else:
                     offset = 0, 0, 0
                 if view != z and g.max_extents[z] > g.min_extents[z]:
