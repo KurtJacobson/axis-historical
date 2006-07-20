@@ -1752,8 +1752,8 @@ class DummyCanon:
     def get_external_angular_units(self): return 1.0
     def get_external_length_units(self): return 1.0
 
-    def set_feed_rate(self, f):
-        self.number = f
+    def user_defined_function(self, m, p, q):
+        self.number = p
 
 class _prompt_float:
     """ Prompt for a g-code floating point expression """
@@ -1818,7 +1818,7 @@ class _prompt_float:
         if ok:
             f = os.path.devnull
             canon = DummyCanon()
-            result, seq = gcode.parse("", canon, "F["+v+"]", "M2")
+            result, seq = gcode.parse("", canon, "M199 P["+v+"]", "M2")
 
             if result > gcode.MIN_ERROR:
                 self.w.set(gcode.strerror(result))
@@ -2181,7 +2181,6 @@ class TclCommands(nf.TclCommands):
             p0 *= 25.4
 
         offset_command = "G10 L2 P1 %c[%s-[%s*[%s]]]\n" % (vars.current_axis.get(), p0, scale, new_axis_value)
-        print offset_command
         c.mdi(offset_command)
         ensure_mode(emc.MODE_MANUAL)
         s.poll()
