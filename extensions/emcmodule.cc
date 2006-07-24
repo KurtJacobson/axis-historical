@@ -23,6 +23,7 @@
 #include <structmember.h>
 #include "rcs.hh"
 #include "emc.hh"
+#include "kinematics.h"
 #include "axisversion.h"
 #if defined(AXIS_USE_EMC2) || defined(AXIS_USE_BDI4)
 #include "config.h"
@@ -1764,6 +1765,11 @@ initemc(void) {
     ENUMX(4, EMC_TRAJ_MODE_FREE);
     ENUMX(4, EMC_TRAJ_MODE_COORD);
     ENUMX(4, EMC_TRAJ_MODE_TELEOP);
+
+    ENUM(KINEMATICS_IDENTITY);
+    ENUM(KINEMATICS_FORWARD_ONLY);
+    ENUM(KINEMATICS_INVERSE_ONLY);
+    ENUM(KINEMATICS_BOTH);
 
     pthread_mutex_init(&mutex, NULL);
 }

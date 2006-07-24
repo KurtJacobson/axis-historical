@@ -790,41 +790,49 @@ class MyOpengl(Opengl):
         glLoadIdentity()
         s.poll()
 
-        if vars.display_type.get():
-            positions = s.position
-        else:
-            positions = s.actual_position
+        if s.motion_mode != emc.TRAJ_MODE_FREE:
+            if vars.display_type.get():
+                positions = s.position
+            else:
+                positions = s.actual_position
 
-        if vars.coord_type.get():
-            positions = [(i-j) for i, j in zip(positions, s.origin)]
+            if vars.coord_type.get():
+                positions = [(i-j) for i, j in zip(positions, s.origin)]
 
-        lu = s.linear_units or 1    
-        # XXX: assumes all axes are linear, which is wrong
-        positions = [pi / (25.4 * lu) for pi in positions]
+            lu = s.linear_units or 1    
+            # XXX: assumes all axes are linear, which is wrong
+            positions = [pi / (25.4 * lu) for pi in positions]
 
 
-        if vars.metric.get():
-            positions = ["  %c:% 9.2f" % i for i in 
-                    zip(axisnames, map(lambda p: p*25.4, positions))]
-        else:
-            positions = ["  %c:% 9.4f" % i for i in zip(axisnames, positions)]
-        if lathe:
-            limit = [s.limit[0]] + list(s.limit[2:])
-            homed = [s.homed[0]] + list(s.homed[2:])
-            positions = [positions[0]] + positions[2:]
+            if vars.metric.get():
+                positions = ["  %c:% 9.2f" % i for i in 
+                        zip(axisnames, map(lambda p: p*25.4, positions))]
+            else:
+                positions = ["  %c:% 9.4f" % i for i in
+                        zip(axisnames, positions)]
+            if lathe:
+                limit = [s.limit[0]] + list(s.limit[2:])
+                homed = [s.homed[0]] + list(s.homed[2:])
+                positions = [positions[0]] + positions[2:]
+            else:
+                limit = s.limit[:]
+                homed = s.homed[:]
+
+            if vars.show_machine_speed.get():
+                positions.append("Vel: % 6.2f" %
+                    (live_plotter.logger.average_speed*60))
+
+            if vars.show_distance_to_go.get():
+                dtg = s.distance_to_go / (25.4 * lu)
+                if vars.metric.get():
+                    positions.append("DTG: % 6.2f" % (dtg * 25.4))
+                else:
+                    positions.append("DTG: % 6.4f" % (dtg))
         else:
             limit = s.limit[:]
             homed = s.homed[:]
-
-        if vars.show_machine_speed.get():
-            positions.append("Vel: % 6.2f" % (live_plotter.logger.average_speed*60))
-
-        if vars.show_distance_to_go.get():
-            dtg = s.distance_to_go / (25.4 * lu)
-            if vars.metric.get():
-                positions.append("DTG: % 6.2f" % (dtg * 25.4))
-            else:
-                positions.append("DTG: % 6.4f" % (dtg))
+            positions = ["  %s:% 9.4f" % i for i in
+                zip(jointnames, s.joint_actual_position)]
 
         maxlen = max([len(p) for p in positions])
         pixel_width = max([int(o.tk.call("font", "measure", coordinate_font, p))
@@ -1152,6 +1160,8 @@ class LivePlotter:
         self.lastpts = -1
         self.last_speed = -1
         self.last_limit = None
+        self.last_motion_mode = None
+        self.last_joint_position = None
 
     def start(self):
         if self.running.get(): return
@@ -1224,17 +1234,21 @@ class LivePlotter:
  
         if (self.logger.npts != self.lastpts
                 or self.stat.actual_position != o.last_position
+                or self.stat.joint_actual_position != o.last_joint_position
                 or self.stat.homed != o.last_homed
                 or self.stat.origin != o.last_origin
                 or self.stat.limit != o.last_limit
                 or self.stat.tool_in_spindle != o.last_tool
+                or self.stat.motion_mode != o.last_motion_mode
                 or abs(speed - self.last_speed) > .01):
             o.redraw_soon()
             o.last_limit = self.stat.limit
             o.last_homed = self.stat.homed
             o.last_position = self.stat.actual_position
             o.last_origin = self.stat.origin
+            o.last_motion_mode = self.stat.motion_mode
             o.last_tool = self.stat.tool_in_spindle
+            o.last_joint_position = self.stat.joint_actual_position
             self.last_speed = speed
             self.lastpts = self.logger.npts
 
@@ -1647,6 +1661,7 @@ vars = nf.Variables(root_window,
     ("max_speed", DoubleVar),
     ("joint_mode", IntVar),
     ("motion_mode", IntVar),
+    ("kinematics_type", IntVar),
 )
 vars.emctop_command.set(os.path.join(os.path.dirname(sys.argv[0]), "emctop"))
 vars.highlight_line.set(-1)
@@ -2164,6 +2179,7 @@ class TclCommands(nf.TclCommands):
         c.home("xyzabc".index(vars.current_axis.get()))
     def touch_off(event=None):
         if not manual_ok(): return
+        if s.motion_mode == emc.TRAJ_MODE_FREE: return
         offset_axis = "xyzabc".index(vars.current_axis.get())
         new_axis_value = prompt_float(_("Touch Off"), _("Enter %s coordinate relative to workpiece:") % vars.current_axis.get().upper(), 0.0)
         if new_axis_value is None: return
@@ -2442,7 +2458,8 @@ def set_tabs(e):
 
 import sys, getopt
 axiscount = 3
-axisnames = "X Y Z".split()
+axisnames = ["X", "Y", "Z"]
+jointnames = ["0", "1", "2"]
 machine_limit_min = [-10] * 6
 machine_limit_max = [-10] * 6
 
@@ -2454,6 +2471,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '-ini':
     vars.emcini.set(sys.argv[2])
     axiscount = int(inifile.find("TRAJ", "AXES"))
     axisnames = inifile.find("TRAJ", "COORDINATES").split()
+    jointnames = "012345678"[:axiscount]
     open_directory = inifile.find("DISPLAY", "PROGRAM_PREFIX")
     extensions = inifile.findall("FILTER", "PROGRAM_EXTENSION")
     extensions = [e.split(None, 1) for e in extensions]
@@ -2619,6 +2637,17 @@ from rs274.icon import icon
 _tk_seticon.seticon(root_window, icon)
 _tk_seticon.seticon(widgets.about_window, icon)
 _tk_seticon.seticon(widgets.help_window, icon)
+
+print s.kinematics_type
+
+vars.kinematics_type.set(s.kinematics_type)
+if s.kinematics_type == emc.KINEMATICS_IDENTITY:
+    print "sending teleop_enable"
+    c.teleop_enable(1)
+    vars.joint_mode.set(1)
+else:
+    c.teleop_enable(0)
+    vars.joint_mode.set(0)
 
 if lathe:
     root_window.after_idle(commands.set_view_y)

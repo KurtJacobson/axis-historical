@@ -237,14 +237,14 @@ setup_menu_accel .menu.view end [_ "Show relative position"]
         -variable joint_mode \
         -accelerator $ \
         -command set_joint_mode
-setup_menu_accel .menu.view end [_ "World mode"]
+setup_menu_accel .menu.view end [_ "Joint mode"]
 
 .menu.view add radiobutton \
         -value 1 \
         -variable joint_mode \
         -accelerator $ \
         -command set_joint_mode
-setup_menu_accel .menu.view end [_ "Joint mode"]
+setup_menu_accel .menu.view end [_ "World mode"]
 # ----------------------------------------------------------------------
 .menu.help add command \
 	-command {
@@ -1331,13 +1331,12 @@ set INTERP_PAUSED 3
 set INTERP_WAITING 4
 
 set TRAJ_MODE_FREE 1
+set KINEMATICS_IDENTITY 1
 
 set manual [concat [winfo children $_tabs_manual.axes] \
     $_tabs_manual.jogf.zerohome.home \
-    $_tabs_manual.jogf.zerohome.zero \
     $_tabs_manual.jogf.jog.jogminus \
     $_tabs_manual.jogf.jog.jogplus \
-    $_tabs_manual.jogf.jog.jogspeed \
     $_tabs_manual.spindlef.cw $_tabs_manual.spindlef.ccw \
     $_tabs_manual.spindlef.stop $_tabs_manual.spindlef.brake \
     $_tabs_manual.flood $_tabs_manual.mist $_tabs_mdi.command \
@@ -1447,6 +1446,22 @@ proc update_state {args} {
     } else {
         disable_group $::manual
     }
+
+    if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE &&
+        ($::motion_mode == $::TRAJ_MODE_FREE
+            || $::kinematics_type == $::KINEMATICS_IDENTITY)} {
+        $::_tabs_manual.jogf.jog.jogspeed configure -state normal
+    } else {
+        $::_tabs_manual.jogf.jog.jogspeed configure -state disabled
+    }
+
+    if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE &&
+        $::motion_mode != $::TRAJ_MODE_FREE} {
+        $::_tabs_manual.jogf.zerohome.zero configure -state normal
+    } else {
+        $::_tabs_manual.jogf.zerohome.zero configure -state disabled
+    }
+
     set ::last_interp_state $::interp_state
     set ::last_task_state $::task_state
 }
@@ -1458,6 +1473,24 @@ proc set_mode_from_tab {} {
         default { ensure_manual }
     }
 
+}
+
+proc joint_mode_switch {args} {
+    if {$::motion_mode != $::TRAJ_MODE_FREE} {
+        $::_tabs_manual.axes.axisx configure -text X
+        $::_tabs_manual.axes.axisy configure -text Y
+        $::_tabs_manual.axes.axisz configure -text Z
+        $::_tabs_manual.axes.axisa configure -text A
+        $::_tabs_manual.axes.axisb configure -text B
+        $::_tabs_manual.axes.axisc configure -text C
+    } else {
+        $::_tabs_manual.axes.axisx configure -text 0
+        $::_tabs_manual.axes.axisy configure -text 1
+        $::_tabs_manual.axes.axisz configure -text 2
+        $::_tabs_manual.axes.axisa configure -text 3
+        $::_tabs_manual.axes.axisb configure -text 4
+        $::_tabs_manual.axes.axisc configure -text 5
+    }
 }
 
 proc queue_update_state {args} { 
@@ -1478,6 +1511,7 @@ set coord_type 1
 set display_type 0
 set spindledir {}
 set motion_mode 0
+set kinematics_type -1
 trace variable taskfile w update_title
 trace variable taskfile w queue_update_state
 trace variable task_state w queue_update_state
@@ -1490,6 +1524,8 @@ trace variable spindledir w queue_update_state
 trace variable coord_type w queue_update_state
 trace variable display_type w queue_update_state
 trace variable motion_mode w queue_update_state
+trace variable kinematics_type w queue_update_state
+trace variable motion_mode w joint_mode_switch
 
 bind . <Control-Tab> {
     set page [${pane_top}.tabs raise]
