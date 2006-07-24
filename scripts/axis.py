@@ -2648,10 +2648,10 @@ _tk_seticon.seticon(widgets.help_window, icon)
 
 vars.kinematics_type.set(s.kinematics_type)
 if s.kinematics_type == emc.KINEMATICS_IDENTITY:
-    c.teleop_enable(1)
+#    c.teleop_enable(1)
     vars.joint_mode.set(1)
 else:
-    c.teleop_enable(0)
+#    c.teleop_enable(0)
     vars.joint_mode.set(0)
 
 if lathe:
