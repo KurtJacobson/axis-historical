@@ -188,6 +188,7 @@ color_names = [
     ('back', 'Background'),
     'dwell', 'm1xx', 'straight_feed', 'arc_feed', 'traverse',
     'backplotjog', 'backplotfeed', 'backplotarc', 'backplottraverse',
+    'backplottoolchange', 'backplotprobing',
     'selected',
 
     'overlay_foreground', ('overlay_background', 'Background'),
@@ -247,6 +248,10 @@ class MyOpengl(Opengl):
             float(self.option_get("backplotarc_alpha", "Float"))
         self.colors['backplottraverse_alpha'] = \
             float(self.option_get("backplottraverse_alpha", "Float"))
+        self.colors['backplottoolchange_alpha'] = \
+            float(self.option_get("backplottoolchange_alpha", "Float"))
+        self.colors['backplotprobing_alpha'] = \
+            float(self.option_get("backplotprobing_alpha", "Float"))
         self.colors['overlay_alpha'] = \
             float(self.option_get("overlay_alpha", "Float"))
 
@@ -1180,7 +1185,10 @@ class LivePlotter:
             C('backplotjog'),
             C('backplottraverse'),
             C('backplotfeed'),
-            C('backplotarc'))
+            C('backplotarc'),
+            C('backplottoolchange'),
+            C('backplotprobing'),
+        )
         o.after_idle(lambda: thread.start_new_thread(self.logger.start, (.01,)))
 
         self.running.set(True)

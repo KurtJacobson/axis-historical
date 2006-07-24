@@ -1397,11 +1397,13 @@ struct logger_point {
     struct color c;
 };
 
+#define NUMCOLORS 6
+
 typedef struct {
     PyObject_HEAD
     int npts, mpts, lpts;
     struct logger_point *p;
-    struct color colors[4];
+    struct color colors[NUMCOLORS];
     bool exit, clear, changed;
     double ave_ddt;
     pyStatChannel *st;
@@ -1433,12 +1435,15 @@ static int Logger_init(pyPositionLogger *self, PyObject *a, PyObject *k) {
     self->exit = self->clear = 0;
     self->changed = 1;
     self->ave_ddt = 0;
-    if(!PyArg_ParseTuple(a, "O!(BBBB)(BBBB)(BBBB)(BBBB)",
+    if(!PyArg_ParseTuple(a, "O!(BBBB)(BBBB)(BBBB)(BBBB)(BBBB)(BBBB)",
             &Stat_Type, &self->st,
             &c[0].r,&c[0].g, &c[0].b, &c[0].a,
             &c[1].r,&c[1].g, &c[1].b, &c[1].a,
             &c[2].r,&c[2].g, &c[2].b, &c[2].a,
-            &c[3].r,&c[3].g, &c[3].b, &c[3].a))
+            &c[3].r,&c[3].g, &c[3].b, &c[3].a,
+            &c[4].r,&c[4].g, &c[4].b, &c[4].a,
+            &c[5].r,&c[5].g, &c[5].b, &c[5].a
+            ))
         return -1;
     return 0;
 }
@@ -1491,10 +1496,11 @@ static PyObject *Logger_start(pyPositionLogger *s, PyObject *o) {
         }
         if(s->st->c->valid() && s->st->c->peek() == EMC_STAT_TYPE) {
             EMC_STAT *status = static_cast<EMC_STAT*>(s->st->c->get_address());
-            int colornum = 0;
+            int colornum = 2;
             double x, y, z;
 #ifdef AXIS_USE_EMC2
             colornum = status->motion.traj.motion_type;
+            if(colornum < 0 || colornum > NUMCOLORS) colornum = 0;
 #endif
             x = status->motion.traj.position.tran.x - status->task.toolOffset.tran.x;
             y = status->motion.traj.position.tran.y - status->task.toolOffset.tran.y;
