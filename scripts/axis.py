@@ -2646,11 +2646,8 @@ _tk_seticon.seticon(root_window, icon)
 _tk_seticon.seticon(widgets.about_window, icon)
 _tk_seticon.seticon(widgets.help_window, icon)
 
-print s.kinematics_type
-
 vars.kinematics_type.set(s.kinematics_type)
 if s.kinematics_type == emc.KINEMATICS_IDENTITY:
-    print "sending teleop_enable"
     c.teleop_enable(1)
     vars.joint_mode.set(1)
 else:

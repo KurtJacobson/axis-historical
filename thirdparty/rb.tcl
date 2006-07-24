@@ -19,7 +19,6 @@ namespace eval ::rb {}
 foreach b [bind Radiobutton] {
     bind ::rb::nicer_rb $b { after cancel ::rb::nicer_rb_update %W; after idle ::rb::nicer_rb_update %W }
     bind ::rb::nicer_rb_b $b [subst -nocommands {
-        puts "sending $b to [winfo parent %W]"
         event generate [winfo parent %W] $b \
             -button %b -state %s -time %t -x %x -y %y \
             -rootx %X -rooty %Y
