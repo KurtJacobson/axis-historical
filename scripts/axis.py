@@ -795,7 +795,7 @@ class MyOpengl(Opengl):
         glLoadIdentity()
         s.poll()
 
-        if s.motion_mode != emc.TRAJ_MODE_FREE:
+        if s.kinematics_type == emc.KINEMATICS_IDENTITY or s.motion_mode != emc.TRAJ_MODE_FREE:
             if vars.display_type.get():
                 positions = s.position
             else:
@@ -2187,7 +2187,7 @@ class TclCommands(nf.TclCommands):
         c.home("xyzabc".index(vars.current_axis.get()))
     def touch_off(event=None):
         if not manual_ok(): return
-        if s.motion_mode == emc.TRAJ_MODE_FREE: return
+        if s.motion_mode == emc.TRAJ_MODE_FREE and s.kinematics_type != emc.KINEMATICS_IDENTITY: return
         offset_axis = "xyzabc".index(vars.current_axis.get())
         new_axis_value = prompt_float(_("Touch Off"), _("Enter %s coordinate relative to workpiece:") % vars.current_axis.get().upper(), 0.0)
         if new_axis_value is None: return
@@ -2647,12 +2647,14 @@ _tk_seticon.seticon(widgets.about_window, icon)
 _tk_seticon.seticon(widgets.help_window, icon)
 
 vars.kinematics_type.set(s.kinematics_type)
-if s.kinematics_type == emc.KINEMATICS_IDENTITY:
-#    c.teleop_enable(1)
-    vars.joint_mode.set(1)
-else:
-#    c.teleop_enable(0)
+if s.kinematics_type != emc.KINEMATICS_IDENTITY:
+    c.teleop_enable(0)
     vars.joint_mode.set(0)
+else:
+    widgets.menu_view.delete("end")
+    widgets.menu_view.delete("end")
+    widgets.menu_view.delete("end")
+    root_window.bind("$", "")
 
 if lathe:
     root_window.after_idle(commands.set_view_y)

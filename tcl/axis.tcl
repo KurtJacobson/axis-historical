@@ -1429,7 +1429,7 @@ proc update_state {args} {
                 $::_tabs_manual.spindlef.spindleminus \
                 $::_tabs_manual.spindlef.spindleplus
 
-    if {$::motion_mode == $::TRAJ_MODE_FREE} {
+    if {$::motion_mode == $::TRAJ_MODE_FREE && $::kinematics_type != $::KINEMATICS_IDENTITY} {
         set ::position [concat [_ "Position:"] Joint]
     } else {
         set coord_str [lindex [list [_ Machine] [_ Relative]] $::coord_type]
@@ -1456,7 +1456,8 @@ proc update_state {args} {
     }
 
     if {$::task_state == $::STATE_ON && $::interp_state == $::INTERP_IDLE &&
-        $::motion_mode != $::TRAJ_MODE_FREE} {
+        ($::motion_mode != $::TRAJ_MODE_FREE
+            || $::kinematics_type == $::KINEMATICS_IDENTITY)} {
         $::_tabs_manual.jogf.zerohome.zero configure -state normal
     } else {
         $::_tabs_manual.jogf.zerohome.zero configure -state disabled
@@ -1476,7 +1477,7 @@ proc set_mode_from_tab {} {
 }
 
 proc joint_mode_switch {args} {
-    if {$::motion_mode != $::TRAJ_MODE_FREE} {
+    if {$::motion_mode != $::TRAJ_MODE_FREE || $::kinematics_type == $::KINEMATICS_IDENTITY} {
         $::_tabs_manual.axes.axisx configure -text X
         $::_tabs_manual.axes.axisy configure -text Y
         $::_tabs_manual.axes.axisz configure -text Z
