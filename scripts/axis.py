@@ -2164,6 +2164,7 @@ class TclCommands(nf.TclCommands):
     def ensure_manual(*event):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
+        commands.set_joint_mode()
 
     def ensure_mdi(*event):
         if not manual_ok(): return
