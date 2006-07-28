@@ -99,11 +99,14 @@ try:
 except ImportError:  # python-1.3 and older
     def halcmd_sets(signal, value): pass
 else:
+    dev_null = open("/dev/null", "w")
     try:
         halcmd = subprocess.Popen(["halcmd", "-sf"],
-            stdin=subprocess.PIPE)
+            stdin=subprocess.PIPE, stdout=dev_null)
     except os.error:
         halcmd = None
+    dev_null.close()
+
     def halcmd_sets(signal, value):
         global halcmd
         if halcmd is None: return
