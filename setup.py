@@ -20,6 +20,9 @@ import sys, os
 sys.path.insert(0, "lib")
 sys.path.insert(0, "setup")
 
+if sys.hexversion < 0x2040000:
+    raise SystemExit, "Python 2.4 is required for AXIS"
+
 from glob import glob
 from distutils import sysconfig
 from distutils.core import setup, Extension
