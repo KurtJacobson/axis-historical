@@ -13,7 +13,7 @@ The AXIS user interface is intended to be self-documenting by use of
 familiar controls and plain language on tooltips and menus.  A few less
 evident features are documented by Help > Quick Reference.
 
-Python 2.2 or newer with Tkinter is required.  Hardware accelerated
+Python 2.4 or newer with Tkinter is required.  Hardware accelerated
 OpenGL is nice, but not required.
 
 AXIS is compatible with emc1 and emc2.
