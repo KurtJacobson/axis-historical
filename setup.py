@@ -211,20 +211,6 @@ ext_modules = [emc, togl, gcode, minigl, seticon]
 if hal:
     ext_modules.append(hal)
 
-bwidget = [
-  (os.path.join(SHAREDIR, "tcl/bwidget"),
-    glob("thirdparty/bwidget/*.tcl")),
-  (os.path.join(SHAREDIR, "tcl/bwidget/lang"),
-    glob("thirdparty/bwidget/lang/*.rc")),
-  (os.path.join(SHAREDIR, "tcl/bwidget/images"),
-    glob("thirdparty/bwidget/images/*.gif")),
-  (os.path.join(SHAREDIR, "tcl/bwidget/images"),
-    glob("thirdparty/bwidget/images/*.xbm")),
-  (DOCDIR, ["thirdparty/bwidget/LICENSE.txt"]),
-]
-if os.getenv("USE_SYSTEM_BWIDGET"):
-    bwidget = []
-
 def lang(f):
     import os
     return os.path.splitext(os.path.basename(f))[0]
@@ -249,7 +235,7 @@ setup(name=name, version=version,
                   (os.path.join(SHAREDIR, "images"), ["images/axis.ngc"]),
                   (DOCDIR, ["COPYING", "README", "BUGS",
                         "doc/axis_light_background",
-                        "thirdparty/LICENSE-Togl"])] + bwidget + i18n,
+                        "thirdparty/LICENSE-Togl"])] + i18n,
     ext_modules = ext_modules,
     url="http://axis.unpythonic.net/",
     license="GPL",
