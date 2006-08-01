@@ -18,8 +18,6 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-from __future__ import generators
-
 import sys, os
 BASE = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), ".."))
 sys.path.insert(0, os.path.join(BASE, "lib", "python"))
@@ -830,7 +828,7 @@ class MyOpengl(Opengl):
                 positions.append("Vel: % 6.2f" %
                     (live_plotter.logger.average_speed*60))
 
-            if vars.show_distance_to_go.get():
+            if hasattr(s, "distance_to_go") and vars.show_distance_to_go.get():
                 dtg = s.distance_to_go / (25.4 * lu)
                 if vars.metric.get():
                     positions.append("DTG: % 6.2f" % (dtg * 25.4))
@@ -2659,6 +2657,9 @@ else:
     widgets.menu_view.delete("end")
     widgets.menu_view.delete("end")
     root_window.bind("$", "")
+
+if not hasattr(s, "distance_to_go"):
+    widgets.menu_view.delete(14)  # argh hard-coded numbers suck
 
 if lathe:
     root_window.after_idle(commands.set_view_y)
