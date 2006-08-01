@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.join(BASE, "lib", "python"))
 
 import gettext;
 gettext.install("axis", localedir=os.path.join(BASE, "share", "locale"), unicode=True)
-
+r_ = gettext.translation("rs274_err", localedir=os.path.join(BASE, "share", "locale"), fallback=True).ugettext
 version="1.4a0"
 
 import array, time, atexit, tempfile, shutil, errno, thread
@@ -1599,7 +1599,7 @@ def open_file_guts(f, filtered = False):
         # According to the documentation, MIN_ERROR is the largest value that is
         # not an error.  Crazy though that sounds...
         if result > gcode.MIN_ERROR:
-            error_str = gcode.strerror(result)
+            error_str = r_(gcode.strerror(result))
             root_window.tk.call("nf_dialog", ".error",
                     _("G-Code error in %s") % os.path.basename(f),
                     _("Near line %d of %s:\n%s") % (seq+1, f, error_str),
