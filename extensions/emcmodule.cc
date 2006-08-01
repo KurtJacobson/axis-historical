@@ -691,7 +691,7 @@ static PyObject *Stat_tool_table(pyStatChannel *s) {
         PyStructSequence_SET_ITEM(tool, 3, PyFloat_FromDouble(t.diameter));
         PyStructSequence_SET_ITEM(tool, 4, PyFloat_FromDouble(0.));
         PyStructSequence_SET_ITEM(tool, 5, PyFloat_FromDouble(0.));
-        PyStructSequence_SET_ITEM(tool, 6, PyFloat_FromDouble(0.));
+        PyStructSequence_SET_ITEM(tool, 6, PyInt_FromLong(0));
 #endif
         PyTuple_SetItem(res, j, tool);
         j++;
