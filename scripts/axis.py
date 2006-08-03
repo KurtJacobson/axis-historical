@@ -802,6 +802,8 @@ class MyOpengl(Opengl):
             else:
                 positions = s.actual_position
 
+            positions = [(i-j) for i, j in zip(positions, s.tool_offset)]
+
             if vars.coord_type.get():
                 positions = [(i-j) for i, j in zip(positions, s.origin)]
 
@@ -2197,7 +2199,8 @@ class TclCommands(nf.TclCommands):
         s.poll()
 
         lu = s.linear_units or 1
-        p0 = s.position[offset_axis] / (25.4 * lu) 
+
+        p0 = (s.position[offset_axis] - s.tool_offset[offset_axis]) / (25.4 * lu) 
 
         if vars.metric.get(): scale = 1/25.4
         else: scale = 1
