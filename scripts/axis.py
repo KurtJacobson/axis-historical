@@ -204,6 +204,35 @@ def parse_color(c):
     if c == "": return (1,0,0)
     return tuple([i/65535. for i in root_window.winfo_rgb(c)])
 
+def to_internal_units(pos, unit=None):
+    if unit is None:
+        unit = s.linear_units
+    lu = (unit or 1) * 25.4
+
+    lus = [lu, lu, lu, 1, 1, 1]
+    return [a/b for a, b in zip(pos, lus)]
+
+def to_internal_linear_unit(v, unit=None):
+    if unit is None:
+        unit = s.linear_units
+    lu = (unit or 1) * 25.4
+    return v/lu
+   
+def from_internal_units(pos, unit=None):
+    if unit is None:
+        unit = s.linear_units
+    lu = (unit or 1) * 25.4
+
+    lus = [lu, lu, lu, 1, 1, 1]
+    return [a*b for a, b in zip(pos, lus)]
+
+def from_internal_linear_unit(v, unit=None):
+    if unit is None:
+        unit = s.linear_units
+    lu = (unit or 1) * 25.4
+    return v*lu
+   
+
 class MyOpengl(Opengl):
     def __init__(self, *args, **kw):
         self.after_id = None
@@ -563,10 +592,7 @@ class MyOpengl(Opengl):
 
                 # Labels
                 if vars.coord_type.get():
-                    lu = (s.linear_units or 1)*25.4
-                    offset = [i/dimscale/lu for i in s.origin]
-                    if vars.metric.get():
-                        offset = [i*25.4 for i in offset]
+                    offset = to_internal_units(s.origin)
                 else:
                     offset = 0, 0, 0
                 if view != z and g.max_extents[z] > g.min_extents[z]:
@@ -699,11 +725,11 @@ class MyOpengl(Opengl):
             s.poll()
             glPushMatrix()
 
-            lu = (s.linear_units or 1)*25.4
             if vars.coord_type.get() and (s.origin[0] or s.origin[1] or 
                                           s.origin[2]):
                 draw_small_origin()
-                glTranslatef(s.origin[0]/lu, s.origin[1]/lu, s.origin[2]/lu)
+                origin = from_internal_units(s.origin)[:3]
+                glTranslatef(*origin)
                 draw_axes()
             else:
                 draw_axes()
@@ -738,7 +764,6 @@ class MyOpengl(Opengl):
                 pos = live_plotter.logger.last()
                 if pos is None:
                     pos = live_plotter.stat.actual_position
-                lu = (live_plotter.stat.linear_units or 1) * 25.4
                 if program is not None:
                     g = self.g
                     x,y,z = 0,1,2
@@ -748,7 +773,7 @@ class MyOpengl(Opengl):
                                    2 ) * .5
                 else:
                     cone_scale = 1
-                pos = [q / lu for q in pos[:3]]
+                pos = to_internal_units(pos[:3])
                 glPushMatrix()
                 glTranslatef(*pos)
                 if len(axisnames) > 3:
@@ -807,17 +832,15 @@ class MyOpengl(Opengl):
             if vars.coord_type.get():
                 positions = [(i-j) for i, j in zip(positions, s.origin)]
 
-            lu = s.linear_units or 1    
-            # XXX: assumes all axes are linear, which is wrong
-            positions = [pi / (25.4 * lu) for pi in positions]
-
+            positions = to_internal_units(positions)
 
             if vars.metric.get():
-                positions = ["  %c:% 9.2f" % i for i in 
-                        zip(axisnames, map(lambda p: p*25.4, positions))]
+                positions = from_internal_units(positions, 1)
+                format = "  %c:% 9.2f"
             else:
-                positions = ["  %c:% 9.4f" % i for i in
-                        zip(axisnames, positions)]
+                format = "  %c:% 9.4f"
+            positions = [format % i for i in zip(axisnames, positions)]
+
             if lathe:
                 limit = [s.limit[0]] + list(s.limit[2:])
                 homed = [s.homed[0]] + list(s.homed[2:])
@@ -831,7 +854,7 @@ class MyOpengl(Opengl):
                     (live_plotter.logger.average_speed*60))
 
             if hasattr(s, "distance_to_go") and vars.show_distance_to_go.get():
-                dtg = s.distance_to_go / (25.4 * lu)
+                dtg = to_internal_linear_unit(s.distance_to_go)
                 if vars.metric.get():
                     positions.append("DTG: % 6.2f" % (dtg * 25.4))
                 else:
@@ -839,6 +862,7 @@ class MyOpengl(Opengl):
         else:
             limit = s.limit[:]
             homed = s.homed[:]
+            # N.B. no conversion here because joint positions are unitless
             positions = ["  %s:% 9.4f" % i for i in
                 zip(jointnames, s.joint_actual_position)]
 
@@ -892,7 +916,7 @@ def init():
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 
 def draw_small_origin():
-    r = 2.0/25.4;
+    r = 2.0/25.4
     glColor3f(*o.colors['small_origin'])
 
     glBegin(GL_LINE_STRIP)
@@ -1235,8 +1259,6 @@ class LivePlotter:
             self.win.set_current_line(self.stat.read_line)
         else:
             self.win.set_current_line(self.stat.motion_line)
-
-        lu = self.stat.linear_units or 1
 
         try:
             speed = live_plotter.logger.average_speed
@@ -2189,18 +2211,21 @@ class TclCommands(nf.TclCommands):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
         c.home("xyzabc".index(vars.current_axis.get()))
-    def touch_off(event=None):
+    def touch_off(event=None, new_axis_value = None):
         if not manual_ok(): return
         if s.motion_mode == emc.TRAJ_MODE_FREE and s.kinematics_type != emc.KINEMATICS_IDENTITY: return
         offset_axis = "xyzabc".index(vars.current_axis.get())
-        new_axis_value = prompt_float(_("Touch Off"), _("Enter %s coordinate relative to workpiece:") % vars.current_axis.get().upper(), 0.0)
+        if new_axis_value is None:
+            new_axis_value = prompt_float(_("Touch Off"),
+                _("Enter %s coordinate relative to workpiece:")
+                        % vars.current_axis.get().upper(), 0.0)
         if new_axis_value is None: return
         ensure_mode(emc.MODE_MDI)
         s.poll()
 
-        lu = s.linear_units or 1
-
-        p0 = (s.position[offset_axis] - s.tool_offset[offset_axis]) / (25.4 * lu) 
+        pos = [(a-b) for a, b in zip(s.position , s.tool_offset)]
+        pos = to_internal_units(pos)
+        p0 = pos[offset_axis]
 
         if vars.metric.get(): scale = 1/25.4
         else: scale = 1
@@ -2217,20 +2242,8 @@ class TclCommands(nf.TclCommands):
         commands.reload_file()
 
     def set_axis_offset(event=None):
-        if not manual_ok(): return
-        ensure_mode(emc.MODE_MDI)
-        offset_axis = "xyzabc".index(vars.current_axis.get())
-        s.poll()
-        lu = s.linear_units or 1
-        position = s.position[offset_axis] / (25.4 * lu)
-        if 210 in s.gcodes:
-            position *= 25.4
-        offset_command = "g10 L2 p1 %c%9.4f\n" % (vars.current_axis.get(), position)
-        c.mdi(offset_command)
-        ensure_mode(emc.MODE_MANUAL)
-        s.poll()
-        o.tkRedraw()
-        commands.reload_file()
+        commands.touch_off(new_axis_value=0.)
+
     def brake(event=None):
         if not manual_ok(): return
         ensure_mode(emc.MODE_MANUAL)
