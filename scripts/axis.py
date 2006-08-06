@@ -1799,6 +1799,7 @@ class DummyCanon:
     def set_origin_offsets(*args): pass
     def get_external_angular_units(self): return 1.0
     def get_external_length_units(self): return 1.0
+    def set_plane(self): pass
 
     def user_defined_function(self, m, p, q):
         self.number = p
