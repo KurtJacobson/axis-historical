@@ -728,7 +728,7 @@ class MyOpengl(Opengl):
             if vars.coord_type.get() and (s.origin[0] or s.origin[1] or 
                                           s.origin[2]):
                 draw_small_origin()
-                origin = from_internal_units(s.origin)[:3]
+                origin = to_internal_units(s.origin)[:3]
                 glTranslatef(*origin)
                 draw_axes()
             else:
