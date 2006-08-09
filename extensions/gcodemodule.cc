@@ -98,6 +98,7 @@ PyObject *LineCode_mcodes(LineCode *l) {
 PyGetSetDef LineCodeGetSet[] = {
     {"gcodes", (getter)LineCode_gcodes},
     {"mcodes", (getter)LineCode_mcodes},
+    {NULL, NULL},
 };
 
 PyMemberDef LineCodeMembers[] = {
